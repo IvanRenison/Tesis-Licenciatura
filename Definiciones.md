@@ -1,6 +1,6 @@
 #### Monomios
 
-Sea $X$ un alfabeto
+Sea $X$ un alfabeto finito
 
 Se define:
 
@@ -19,6 +19,16 @@ Sean $v, w ∈ ⟨X⟩$:
 Se define:
 
     $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
+
+Sea $≤$ un orden total sobre $⟨X⟩$
+
+Se define:
+
+    $≤$ es un buen orden monomial si y solo si:
+
+    a) $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
+
+    b) $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
 
 #### Álgebra libre (asociativa):
 
@@ -54,12 +64,52 @@ $w_1, …, w_n, w ∈ ⟨X⟩$
 
 $f = \sum_{i = 1}^n c_i w_i$
 
+$≤$ un buen orden monomial
+
 Se define:
 
-    $\text{coef}(f, w) = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $ 
+    $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $ 
 
     $\text{sup}(f) = \{w_1, …, w_n\}$
 
+    $\text{lm}_≤(f) = \min_≤(\text{sup}(f))$
+
+    $\text{lc}_≤(f) = f_{\text{lm}(f)}$
+
+    $\text{lt}_≤(f) = \text{lc}_≤(f) · \text{lm}_≤(f)$
+
+    $f$ es mónico $⇔ \text{lc}_≤(f) = 1$
+
 #### Forman un anillo
 
-$(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo
+$(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo.
+
+En particular vale la definición de ideal.
+
+#### Reducciones
+
+Sean:
+
+X un alfabeto
+
+$K$ un cuerpo
+
+$G ⊆ K⟨X⟩$
+
+$g ∈ K⟨X⟩ - \{0\}$
+
+$a, b ∈ ⟨X⟩$
+
+$f, f' ∈ K⟨X⟩$
+
+$≤$ un buen orden monomial
+
+Se define:
+
+    $f →_{≤, a, g, b} f' ⇔ \text{lm}_≤(agb) ∈ \text{sup}(f) ∧ f' = f - \frac{f_{\text{lm}_≤(agb)}}{\text{lc}_≤(g)}agb$
+
+    $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
+
+    $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
+
+Se puede probar que $→_{≤, G}$ es terminante
