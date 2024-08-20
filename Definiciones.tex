@@ -7,7 +7,7 @@
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
 \begin{document}
-\fontsize{20pt}{24pt}\selectfont % Increase the font size
+\fontsize{16pt}{19pt}\selectfont % Increase the font size
 
 \section{Monomios}
 
@@ -95,7 +95,29 @@ Se define:
 
 $(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo.
 
-En particular vale la definición de ideal.
+En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
+
+Sean:
+
+$R$ un anillo
+
+$I ⊆ R$
+
+$B ⊆ R$
+
+Se define:
+
+    $I$ es un ideal de $R ⇔$:
+
+        a) $I ≠ Ø$
+
+        b) $∀a, b ∈ I : a + b ∈ I$
+
+        c) $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
+
+    $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
+
+Se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
 
 \section{Reducciones}
 
@@ -141,7 +163,7 @@ $≤$ un buen orden monomial
 
 Se define:
 
-    $G$ es una base de Gröbner de $I ⇔ (G) = I \ ∧ →_{≤, G}$ es confluente
+    $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
 
 
 \end{document}
