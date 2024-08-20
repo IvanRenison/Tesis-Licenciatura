@@ -90,7 +90,7 @@ En particular vale la definición de ideal.
 
 Sean:
 
-X un alfabeto
+$X$ un alfabeto
 
 $K$ un cuerpo
 
@@ -112,4 +112,22 @@ Se define:
 
     $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 
-Se puede probar que $→_{≤, G}$ es terminante
+Se puede probar que $→_{≤, G}$ es terminante, y que hay casos en los que no es confluente. Eso motiva la siguiente definición.
+
+#### Bases de Gröbner
+
+Sean:
+
+$X$ un alfabeto
+
+$K$ un cuerpo
+
+$I$ un ideal de $K⟨X⟩$
+
+$G ⊆ K⟨X⟩$
+
+$≤$ un buen orden monomial
+
+Se define:
+
+    $G$ es una base de Gröbner de $I ⇔ (G) = I \ ∧ →_{≤, G}$ es confluente
