@@ -6,84 +6,122 @@
 
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
+\newtheoremstyle{customstyle} % <name>
+{10pt} % <Space above>
+{10pt} % <Space below>
+{} % <Body font>
+{1em} % <Indent amount>
+{\bfseries} % <Theorem head font>
+{:} % <Punctuation after theorem head>
+{.5em} % <Space after theorem head>
+{} % <Theorem head spec (can be left empty, meaning `normal`)
+
+\theoremstyle{customstyle}
+\newtheorem{definition}{Definición}[section]
+
+\newcommand{\definición}[2][]{
+  \begin{definition}[#1]
+  \setlength{\parindent}{2em} % Ajustar la indentación del contenido
+  #2
+  \end{definition}
+}
+
+
 \begin{document}
 \fontsize{16pt}{19pt}\selectfont % Increase the font size
 
-\section{Monomios}
 
+\section{Definiciones preliminares}
+
+En esta sección se explican los conceptos matemáticos necesarios para entender el resto del trabajo.
+En particular se explica …. % Completar
+
+
+\definición[Monomio libre] {
 Sea $X$ un alfabeto finito
 
 Se define:
 
-    $⟨X⟩ = X^*$
+  $⟨X⟩ = X^*$
 
+Y a $⟨X⟩$ se lo llama monomios libres sobre $X$.
+}
+
+En lo que sigue de esta sección fijamos $X$ un alfabeto finito.
+
+\definición[Monomio libre] {
 Se define el producto como la concatenación:
 
-    $· : ⟨X⟩^2 → ⟨X⟩$
+  $· : ⟨X⟩^2 → ⟨X⟩$
 
-    $v · w = vw$
+  $v · w = vw$
 
-Y a $(⟨X⟩, ·)$ se lo llama monoide libre sobre $⟨X⟩$.
+Y a la estructura $(⟨X⟩, ·)$ se la llama monoide libre sobre $⟨X⟩$.
+}
 
-Sean $v, w ∈ ⟨X⟩$:
+\definición[Divisibilidad] {
+Sean $v, w ∈ ⟨X⟩$
 
 Se define:
 
-    $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
+  $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
 
+Y cuando $v | w$ se dice que $v$ divide a $w$.
+}
+
+\definición[Buen orden monomial] {
 Sea $≤$ un orden total sobre $⟨X⟩$
 
 Se define:
 
-    $≤$ es un buen orden monomial si y solo si:
+  $≤$ es un buen orden monomial si y solo si:
 
     a) $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
 
     b) $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
+}
 
-\section{Álgebra libre (asociativa):}
-
-Sean:
-
-$R$ un anillo conmutativo
-
-$X$ un alfabeto
+\definición[Álgebra libre (asociativa)] {
+Sea $R$ un anillo conmutativo
 
 Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
 
-    $R⟨X⟩ = \{\sum_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}$
+  $R⟨X⟩ = \{\sum_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}$
 
 La suma en $R⟨X⟩$ se define de la manera esperable.
 
 El producto por escalares de define como:
 
-    $c (\sum_{i = 1}^n c_i w_i) = (\sum_{i = 1}^n c c_i w_i)$
+  $c (\sum_{i = 1}^n c_i w_i) = (\sum_{i = 1}^n c c_i w_i)$
 
 El producto entre elementos de $R⟨X⟩$ se define como:
 
-    $(\sum_{i = 1}^n c_i w_i) · (\sum_{i = 1}^m c'_i w'_i) = \sum_{i = 1}^n \sum_{j = 1}^m c_i c'_j w_i w_j$
+  $(\sum_{i = 1}^n c_i w_i) · (\sum_{i = 1}^m c'_i w'_i) = \sum_{i = 1}^n \sum_{j = 1}^m c_i c'_j w_i w_j$
 
-\section{Cosas de los polinomios no conmutativos:}
+A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
+% Esta definición creo que hay que mejorarla, pero no se como
+}
 
-Sean:
+Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
 
-$p ∈ R⟨X⟩$
+$p_0 = a$
 
-$c_1, …, c_n ∈ R$
+$p_1 = ab + ba$
 
-$w_1, …, w_n, w ∈ ⟨X⟩$
+$p_2 = 3 abb + 4 bcca - 2 acab$
 
-$f = \sum_{i = 1}^n c_i w_i$
+Sobre los polinomios no conmutativos se hace la siguiente definición
 
-$≤$ un buen orden monomial
+\definición[] {
+Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial
 
 Se define:
 
     $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $
 
-    $\text{sup}(f) = \{w_1, …, w_n\}$
+    $\text{sop}(f) = \{w_1, …, w_n\}$
 
-    $\text{lm}_≤(f) = \min_≤(\text{sup}(f))$
+    $\text{lm}_≤(f) = \min_≤(\text{sop}(f))$
 
     $\text{lc}_≤(f) = f_{\text{lm}(f)}$
 
@@ -91,19 +129,16 @@ Se define:
 
     $f$ es mónico $⇔ \text{lc}_≤(f) = 1$
 
-\section{Forman un anillo}
+A $\text{sop}(f)$ se lo llama soporte de $f$, a $\text{lm}_≤(f)$ se lo llama monomio principal de $f$, a $\text{lc}_≤(f)$ se lo llama coeficiente principal de $f$ y a $\text{lt}_≤(f)$ se lo llama término principal de $f$.
 
-$(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo.
+}
+
+Fijado $R$ un anillo conmutativo $(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo.
 
 En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
 
-Sean:
-
-$R$ un anillo
-
-$I ⊆ R$
-
-$B ⊆ R$
+\definición[] {
+Sean $R$ un anillo e $I, B ⊆ R$
 
 Se define:
 
@@ -116,54 +151,33 @@ Se define:
         c) $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
 
     $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
+}
 
-Se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
+Además se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
 
-\section{Reducciones}
+A partir de ahora fijemos un cuerpo $K$ y un buen orden monomial $≤$.
 
-Sean:
-
-$X$ un alfabeto
-
-$K$ un cuerpo
-
-$G ⊆ K⟨X⟩$
-
-$g ∈ K⟨X⟩ - \{0\}$
-
-$a, b ∈ ⟨X⟩$
-
-$f, f' ∈ K⟨X⟩$
-
-$≤$ un buen orden monomial
+\definición[Reducciones] {
+Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$
 
 Se define:
 
-    $f →_{≤, a, g, b} f' ⇔ \text{lm}_≤(agb) ∈ \text{sup}(f) ∧ f' = f - \frac{f_{\text{lm}_≤(agb)}}{\text{lc}_≤(g)}agb$
+    $f →_{≤, a, g, b} f' ⇔ \text{lm}_≤(agb) ∈ \text{sop}(f) ∧ f' = f - \frac{f_{\text{lm}_≤(agb)}}{\text{lc}_≤(g)}agb$
 
     $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
     $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 
-Se puede probar que $→_{≤, G}$ es terminante, y que hay casos en los que no es confluente. Eso motiva la siguiente definición.
+}
 
-\section{Bases de Gröbner}
+Se puede probar que $→_{≤, G}$ es terminante y que hay casos en los que no es confluente. Eso motiva la siguiente definición.
 
-Sean:
-
-$X$ un alfabeto
-
-$K$ un cuerpo
-
-$I$ un ideal de $K⟨X⟩$
-
-$G ⊆ K⟨X⟩$
-
-$≤$ un buen orden monomial
+\definición[Bases de Gröbner] {
+Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$
 
 Se define:
 
     $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
-
+}
 
 \end{document}
