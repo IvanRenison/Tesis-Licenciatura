@@ -36,6 +36,40 @@
 En esta sección se explican los conceptos matemáticos necesarios para entender el resto del trabajo.
 En particular se explica …. % Completar
 
+\subsection{Sistemas de re-escritura}
+
+En esta sub-sección se explican algunas definiciones básicas de sistemas de re-escritura.
+
+Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
+
+\definición[Formas normales] {
+Sean $a, b ∈ A$
+
+Se define:
+
+  $a$ está en forma normal $⇔ ∃x ∈ A : a → x$
+
+  $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal
+
+  $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
+
+  $a ↓ b ⇔ ∃x ∈ A : a → x ∧ b → x$
+}
+
+\definición[] {
+
+
+Se define:
+
+  $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
+
+  $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
+
+  $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
+}
+
+
+\subsection{Álgebra libre}
 
 \definición[Monomio libre] {
 Sea $X$ un alfabeto finito
@@ -137,7 +171,7 @@ Fijado $R$ un anillo conmutativo $(R⟨X⟩, +, ·)$ es un anillo, por lo tanto 
 
 En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
 
-\definición[] {
+\definición[Ideal] {
 Sean $R$ un anillo e $I, B ⊆ R$
 
 Se define:
@@ -167,10 +201,9 @@ Se define:
     $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
     $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
-
 }
 
-Se puede probar que $→_{≤, G}$ es terminante y que hay casos en los que no es confluente. Eso motiva la siguiente definición.
+Se puede probar que $→_{≤, G}$ es normalizante y terminante, pero que hay casos en los que no es confluente. Eso motiva la siguiente definición.
 
 \definición[Bases de Gröbner] {
 Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$
