@@ -6,6 +6,10 @@
 
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\SetKw{KwEnd}{}
+\DontPrintSemicolon
+
 \newtheoremstyle{customstyle} % <name>
 {10pt} % <Space above>
 {10pt} % <Space below>
@@ -216,6 +220,20 @@ Se define:
 
 }
 
+Los casos en los que no es confluente motivan la siguiente definición.
+
+\definición[Estrategia de reducción] {
+Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$
+
+Se define:
+
+    $e_≤$ es una estrategia de reducción $⇔$
+
+        $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
+
+}
+
+
 \subsection{Algoritmo de Buchberger}
 
 \definición[Ambigüedades] {
@@ -233,17 +251,23 @@ La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
 
     Relevante $⇔$ es de superposición o de inclusión
 
-Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad de $f, g$ si y solo si $(a, b, c, d, \text{lm}_≤{(f)}, \text{lm}_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \text{lm}_≤{(f)}, \text{lm}_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+
+Sea además $G ⊆ K⟨X⟩$, se define:
+
+    $\text{amb}(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
+
+    $\text{amb}(G) = \bigcup_{f, g ∈ G - \{0\}}{\text{amb}(f, g)}$
 
 }
 
-A partir de ahora fijamos $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad.
-
-Se puede probar que si $α$ es una ambigüedad entonces $\text{lm}_≤{(afb)} = \text{lm}_≤{(cgd)}$
+Se puede probar que si $α = (a, b, c, d, f, g)$ es una ambigüedad entonces $\text{lm}_≤{(afb)} = \text{lm}_≤{(cgd)}$
 
 Eso motiva la siguiente definición.
 
 \definición[Monomios principales de ambigüedades] {
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad.
+
 Se define:
 
     $\text{lm}_≤{(α)} = \text{lm}_≤{(afb)}$
@@ -251,10 +275,48 @@ Se define:
 Notar que también $\text{lm}_≤{(α)} = \text{lm}_≤{(cgb)}$
 
 \definición[S-polinomios] {
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad.
+
 Se define:
 
     $\text{S}(α) = \frac{afb}{\text{lc}_≤{(f)}} - \frac{cgd}{\text{lc}_≤{(g)}}$
 }
 Se puede probar que $\text{lm}_≤{(\text{S}(α))} < \text{lm}_≤{(α)}$
+
+% Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
+
+A continuación se describe el algoritmo de Buchberger, el cual … % Explicar
+
+\definición[Algoritmo de Buchberger no-conmutativo] {
+Sean $G ⊆ K⟨X⟩, e_≤$ una estrategia de reducción
+
+Se define:
+
+    $\text{B}_≤^0(G) = G$
+
+    $\text{B}_≤^{i + 1}(G) = \text{B}_≤^i(G) ∪ \{e_≤(\text{B}_≤^i(G))(\text{S}(α)) : α ∈ \text{amb}(\text{B}_≤^i(G))\}$
+
+    $\text{B}_≤(G) = \bigcup_{i = 0}^∞ \text{B}_≤^i(G)$
+
+}
+
+Si $G$ es finito se puede probar que $\text{B}_≤(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \text{B}_≤^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\text{B}_≤^i(G)$ van enumerando a $(G)$
+
+
+% \begin{algorithm}
+%   \caption{Buchberger}
+%   \KwData{Datos de entrada}
+%   \KwResult{Resultado esperado}
+%   Inicializar variables\;
+%   \For{cada elemento en la lista}{
+%     \If{condición}{
+%       Realizar acción
+%     }
+%     \Else{
+%       Realizar otra acción
+%     }
+%   }
+% \end{algorithm}
+
 
 \end{document}
