@@ -266,7 +266,7 @@ Se puede probar que si $α = (a, b, c, d, f, g)$ es una ambigüedad entonces $\t
 Eso motiva la siguiente definición.
 
 \definición[Monomios principales de ambigüedades] {
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad.
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
 Se define:
 
@@ -275,7 +275,7 @@ Se define:
 Notar que también $\text{lm}_≤{(α)} = \text{lm}_≤{(cgb)}$
 
 \definición[S-polinomios] {
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad.
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
 Se define:
 
@@ -287,20 +287,20 @@ Se puede probar que $\text{lm}_≤{(\text{S}(α))} < \text{lm}_≤{(α)}$
 
 A continuación se describe el algoritmo de Buchberger, el cual … % Explicar
 
-\definición[Algoritmo de Buchberger no-conmutativo] {
-Sean $G ⊆ K⟨X⟩, e_≤$ una estrategia de reducción
+\definición[Conjuntos del algoritmo de Buchberger] {
+Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
 
 Se define:
 
-    $\text{B}_≤^0(G) = G$
+    $\text{B}_{e_≤}^0(G) = G$
 
-    $\text{B}_≤^{i + 1}(G) = \text{B}_≤^i(G) ∪ \{e_≤(\text{B}_≤^i(G))(\text{S}(α)) : α ∈ \text{amb}(\text{B}_≤^i(G))\}$
+    $\text{B}_{e_≤}^{i + 1}(G) = \text{B}_{e_≤}^i(G) ∪ \{e_≤(\text{B}_{e_≤}^i(G))(\text{S}(α)) : α ∈ \text{amb}(\text{B}_{e_≤}^i(G))\}$
 
-    $\text{B}_≤(G) = \bigcup_{i = 0}^∞ \text{B}_≤^i(G)$
+    $\text{B}_{e_≤}(G) = \bigcup_{i = 0}^∞ \text{B}_{e_≤}^i(G)$
 
 }
 
-Si $G$ es finito se puede probar que $\text{B}_≤(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \text{B}_≤^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\text{B}_≤^i(G)$ van enumerando a $(G)$
+Si $G$ es finito se puede probar que $\text{B}_{e_≤}(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \text{B}_{e_≤}^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\text{B}_{e_≤}^i(G)$ van enumerando a $(G)$
 
 
 % \begin{algorithm}
