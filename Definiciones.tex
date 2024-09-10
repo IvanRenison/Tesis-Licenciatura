@@ -150,6 +150,11 @@ $p_2 = 3 abb + 4 bcca - 2 acab$
 
 Sobre los polinomios no conmutativos se hace la siguiente definición
 
+\newcommand{\sop}{\text{sop}}
+\newcommand{\lm}{\text{lm}}
+\newcommand{\lc}{\text{lc}}
+\newcommand{\lt}{\text{lt}}
+
 \definición[] {
 Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial
 
@@ -157,17 +162,17 @@ Se define:
 
     $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $
 
-    $\text{sop}(f) = \{w_1, …, w_n\}$
+    $\sop(f) = \{w_1, …, w_n\}$
 
-    $\text{lm}_≤(f) = \min_≤(\text{sop}(f))$
+    $\lm_≤(f) = \min_≤(\sop(f))$
 
-    $\text{lc}_≤(f) = f_{\text{lm}(f)}$
+    $\lc_≤(f) = f_{\lm(f)}$
 
-    $\text{lt}_≤(f) = \text{lc}_≤(f) · \text{lm}_≤(f)$
+    $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$
 
-    $f$ es mónico $⇔ \text{lc}_≤(f) = 1$
+    $f$ es mónico $⇔ \lc_≤(f) = 1$
 
-A $\text{sop}(f)$ se lo llama soporte de $f$, a $\text{lm}_≤(f)$ se lo llama monomio principal de $f$, a $\text{lc}_≤(f)$ se lo llama coeficiente principal de $f$ y a $\text{lt}_≤(f)$ se lo llama término principal de $f$.
+A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$.
 
 }
 
@@ -200,7 +205,7 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 
 Se define:
 
-    $f →_{≤, a, g, b} f' ⇔ \text{lm}_≤(agb) ∈ \text{sop}(f) ∧ f' = f - \frac{f_{\text{lm}_≤(agb)}}{\text{lc}_≤(g)}agb$
+    $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 
     $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
@@ -236,6 +241,8 @@ Se define:
 
 \subsection{Algoritmo de Buchberger}
 
+\newcommand{\amb}{\text{amb}}
+
 \definición[Ambigüedades] {
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
 
@@ -251,17 +258,17 @@ La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
 
     Relevante $⇔$ es de superposición o de inclusión
 
-Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \text{lm}_≤{(f)}, \text{lm}_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
 Sea además $G ⊆ K⟨X⟩$, se define:
 
-    $\text{amb}(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
+    $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
 
-    $\text{amb}(G) = \bigcup_{f, g ∈ G - \{0\}}{\text{amb}(f, g)}$
+    $\amb(G) = \bigcup_{f, g ∈ G - \{0\}}{\amb(f, g)}$
 
 }
 
-Se puede probar que si $α = (a, b, c, d, f, g)$ es una ambigüedad entonces $\text{lm}_≤{(afb)} = \text{lm}_≤{(cgd)}$
+Se puede probar que si $α = (a, b, c, d, f, g)$ es una ambigüedad entonces $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
 Eso motiva la siguiente definición.
 
@@ -270,37 +277,41 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una
 
 Se define:
 
-    $\text{lm}_≤{(α)} = \text{lm}_≤{(afb)}$
+    $\lm_≤{(α)} = \lm_≤{(afb)}$
 }
-Notar que también $\text{lm}_≤{(α)} = \text{lm}_≤{(cgb)}$
+Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$
+
+\renewcommand{\S}{\text{S}}
 
 \definición[S-polinomios] {
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
 Se define:
 
-    $\text{S}(α) = \frac{afb}{\text{lc}_≤{(f)}} - \frac{cgd}{\text{lc}_≤{(g)}}$
+    $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
 }
-Se puede probar que $\text{lm}_≤{(\text{S}(α))} < \text{lm}_≤{(α)}$
+Se puede probar que $\lm_≤{(\S(α))} < \lm_≤{(α)}$
 
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
 
 A continuación se describe el algoritmo de Buchberger, el cual … % Explicar
+
+\newcommand{\B}{\text{B}}
 
 \definición[Conjuntos del algoritmo de Buchberger] {
 Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
 
 Se define:
 
-    $\text{B}_{e_≤}^0(G) = G$
+    $\B_{e_≤}^0(G) = G$
 
-    $\text{B}_{e_≤}^{i + 1}(G) = \text{B}_{e_≤}^i(G) ∪ \{e_≤(\text{B}_{e_≤}^i(G))(\text{S}(α)) : α ∈ \text{amb}(\text{B}_{e_≤}^i(G))\}$
+    $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$
 
-    $\text{B}_{e_≤}(G) = \bigcup_{i = 0}^∞ \text{B}_{e_≤}^i(G)$
+    $\B_{e_≤}(G) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(G)$
 
 }
 
-Si $G$ es finito se puede probar que $\text{B}_{e_≤}(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \text{B}_{e_≤}^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\text{B}_{e_≤}^i(G)$ van enumerando a $(G)$
+Si $G$ es finito se puede probar que $\B_{e_≤}(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \B_{e_≤}^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\B_{e_≤}^i(G)$ van enumerando a $(G)$
 
 
 % \begin{algorithm}
