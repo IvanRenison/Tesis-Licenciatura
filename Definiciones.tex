@@ -22,12 +22,20 @@
 
 \theoremstyle{customstyle}
 \newtheorem{definition}{Definición}[section]
+\newtheorem{theorem}{Teorema}[section]
 
 \newcommand{\definición}[2][]{
   \begin{definition}[#1]
   \setlength{\parindent}{2em} % Ajustar la indentación del contenido
   #2
   \end{definition}
+}
+
+\newcommand{\teorema}[2][]{
+  \begin{theorem}[#1]
+  \setlength{\parindent}{2em} % Ajustar la indentación del contenido
+  #2
+  \end{theorem}
 }
 
 
@@ -176,8 +184,14 @@ A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio princ
 
 }
 
-Fijado $R$ un anillo conmutativo $(R⟨X⟩, +, ·)$ es un anillo, por lo tanto aplican todas las definiciones de anillo.
+\teorema[]{
+Sea $R$ un anillo conmutativo
 
+    $(R⟨X⟩, +, ·)$ es un anillo
+
+}
+
+Esto significa que aplican todas las definiciones y teoremas de anillo.
 En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
 
 \definición[Ideal] {
@@ -212,7 +226,16 @@ Se define:
     $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 }
 
-Se puede probar que $→_{≤, G}$ es normalizante y terminante, pero que hay casos en los que no es confluente. Eso motiva la siguiente definición.
+\teorema[]{
+Sea $G ⊆ K⟨X⟩$
+
+    $→_{≤, G}$ es normalizante
+
+    $→_{≤, G}$ es terminante
+
+}
+
+Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva la siguiente definición.
 
 \definición[Bases de Gröbner] {
 Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$
@@ -268,7 +291,13 @@ Sea además $G ⊆ K⟨X⟩$, se define:
 
 }
 
-Se puede probar que si $α = (a, b, c, d, f, g)$ es una ambigüedad entonces $\lm_≤{(afb)} = \lm_≤{(cgd)}$
+\teorema[]{
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad
+
+    $\lm_≤{(afb)} = \lm_≤{(cgd)}$
+
+}
+
 
 Eso motiva la siguiente definición.
 
@@ -279,7 +308,7 @@ Se define:
 
     $\lm_≤{(α)} = \lm_≤{(afb)}$
 }
-Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$
+Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$ % ¿Se puede agregar una referencia al teorema?
 
 \renewcommand{\S}{\text{S}}
 
@@ -290,11 +319,15 @@ Se define:
 
     $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
 }
-Se puede probar que $\lm_≤{(\S(α))} < \lm_≤{(α)}$
+
+\teorema[]{
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad
+
+    $\lm_≤{(\S(α))} < \lm_≤{(α)}$
+
+}
 
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
-
-A continuación se describe el algoritmo de Buchberger, el cual … % Explicar
 
 \newcommand{\B}{\text{B}}
 
@@ -311,7 +344,14 @@ Se define:
 
 }
 
-Si $G$ es finito se puede probar que $\B_{e_≤}(G)$ es una base de Gröbner reducida de $(G)$, y además, que si $(G)$ tiene una base finita entonces $∃i ∈ ℕ : \B_{e_≤}^i(G) = (G)$ y si $(G)$ no tiene una base finita, entonces los $\B_{e_≤}^i(G)$ van enumerando a $(G)$
+\teorema[]{
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
+
+    $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
+
+    $(G)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G)) = (G)$
+}
+
 
 
 % \begin{algorithm}
