@@ -43,6 +43,8 @@
 \DeclareMathOperator{\lc}{lc}
 \DeclareMathOperator{\lt}{lt}
 \DeclareMathOperator{\amb}{amb}
+\renewcommand{\S}{\text{S}}
+\DeclareMathOperator{\B}{B}
 
 
 \begin{document}
@@ -158,10 +160,12 @@ Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son 
 
 $p_0 = a$
 
-$p_1 = ab + ba$
+$p_1 = ab + cb$
 
 $p_2 = 3 abb + 4 bcca - 2 acab$
-% Mostrar que no es igual a alguno conmutando
+
+Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo
+
 Sobre los polinomios no conmutativos se hace la siguiente definición
 
 
@@ -310,8 +314,6 @@ Se define:
 }
 Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$ % ¿Se puede agregar una referencia al teorema?
 
-\renewcommand{\S}{\text{S}}
-
 \definición[S-polinomios] {
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
@@ -328,8 +330,6 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una am
 }
 
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
-
-\newcommand{\B}{\text{B}}
 
 \definición[Conjuntos del algoritmo de Buchberger] {
 Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
