@@ -125,6 +125,8 @@ Se define:
 Y cuando $v | w$ se dice que $v$ divide a $w$.
 }
 
+Mas adelante va a ser falta tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, si no que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
+
 \definición[Buen orden monomial] {
 Sea $≤$ un orden total sobre $⟨X⟩$.
 
@@ -136,6 +138,21 @@ Se define:
 
     b) $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
 }
+
+Ahora un ejemplo de orden que cumple con esta definición:
+
+\definición[Orden lexicográfico por grado] {
+Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
+
+El orden lexicográfico por grado se define:
+
+  $≤_{deglex} ⊆ ⟨X⟩^2$
+
+  $a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b)$
+}
+
+O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico.
+
 
 \definición[Álgebra libre (asociativa)] {
 Sea $R$ un anillo conmutativo
