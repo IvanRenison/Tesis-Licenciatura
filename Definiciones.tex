@@ -38,6 +38,12 @@
   \end{theorem}
 }
 
+\DeclareMathOperator{\sop}{sop}
+\DeclareMathOperator{\lm}{lm}
+\DeclareMathOperator{\lc}{lc}
+\DeclareMathOperator{\lt}{lt}
+\DeclareMathOperator{\amb}{amb}
+
 
 \begin{document}
 \fontsize{16pt}{19pt}\selectfont % Increase the font size
@@ -84,7 +90,7 @@ Se define:
 \subsection{Álgebra libre}
 
 \definición[Monomio libre] {
-Sea $X$ un alfabeto finito
+Sea $X$ un alfabeto finito.
 
 Se define:
 
@@ -116,7 +122,7 @@ Y cuando $v | w$ se dice que $v$ divide a $w$.
 }
 
 \definición[Buen orden monomial] {
-Sea $≤$ un orden total sobre $⟨X⟩$
+Sea $≤$ un orden total sobre $⟨X⟩$.
 
 Se define:
 
@@ -155,13 +161,9 @@ $p_0 = a$
 $p_1 = ab + ba$
 
 $p_2 = 3 abb + 4 bcca - 2 acab$
-
+% Mostrar que no es igual a alguno conmutando
 Sobre los polinomios no conmutativos se hace la siguiente definición
 
-\newcommand{\sop}{\text{sop}}
-\newcommand{\lm}{\text{lm}}
-\newcommand{\lc}{\text{lc}}
-\newcommand{\lt}{\text{lt}}
 
 \definición[] {
 Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial
@@ -185,7 +187,7 @@ A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio princ
 }
 
 \teorema[]{
-Sea $R$ un anillo conmutativo
+Sea $R$ un anillo conmutativo, entonces:
 
     $(R⟨X⟩, +, ·)$ es un anillo
 
@@ -227,7 +229,7 @@ Se define:
 }
 
 \teorema[]{
-Sea $G ⊆ K⟨X⟩$
+Sea $G ⊆ K⟨X⟩$, entonces:
 
     $→_{≤, G}$ es normalizante
 
@@ -264,8 +266,6 @@ Se define:
 
 \subsection{Algoritmo de Buchberger}
 
-\newcommand{\amb}{\text{amb}}
-
 \definición[Ambigüedades] {
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
 
@@ -292,7 +292,7 @@ Sea además $G ⊆ K⟨X⟩$, se define:
 }
 
 \teorema[]{
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
 
     $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
@@ -321,7 +321,7 @@ Se define:
 }
 
 \teorema[]{
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad, entonces:
 
     $\lm_≤{(\S(α))} < \lm_≤{(α)}$
 
@@ -345,7 +345,7 @@ Se define:
 }
 
 \teorema[]{
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 
     $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
 
