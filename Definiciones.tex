@@ -170,17 +170,17 @@ Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, �
 
 Se define:
 
-    $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $
+  $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. $
 
-    $\sop(f) = \{w_1, …, w_n\}$
+  $\sop(f) = \{w_1, …, w_n\}$
 
-    $\lm_≤(f) = \min_≤(\sop(f))$
+  $\lm_≤(f) = \min_≤(\sop(f))$
 
-    $\lc_≤(f) = f_{\lm(f)}$
+  $\lc_≤(f) = f_{\lm(f)}$
 
-    $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$
+  $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$
 
-    $f$ es mónico $⇔ \lc_≤(f) = 1$
+  $f$ es mónico $⇔ \lc_≤(f) = 1$
 
 A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$.
 
@@ -189,7 +189,7 @@ A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio princ
 \teorema[]{
 Sea $R$ un anillo conmutativo, entonces:
 
-    $(R⟨X⟩, +, ·)$ es un anillo
+  $(R⟨X⟩, +, ·)$ es un anillo
 
 }
 
@@ -201,15 +201,15 @@ Sean $R$ un anillo e $I, B ⊆ R$
 
 Se define:
 
-    $I$ es un ideal de $R ⇔$:
+  $I$ es un ideal de $R ⇔$:
 
-        a) $I ≠ Ø$
+    a) $I ≠ Ø$
 
-        b) $∀a, b ∈ I : a + b ∈ I$
+    b) $∀a, b ∈ I : a + b ∈ I$
 
-        c) $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
+    c) $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
 
-    $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
+  $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
 }
 
 Además se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
@@ -221,19 +221,19 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 
 Se define:
 
-    $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+  $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 
-    $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
+  $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
-    $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
+  $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 }
 
 \teorema[]{
 Sea $G ⊆ K⟨X⟩$, entonces:
 
-    $→_{≤, G}$ es normalizante
+  $→_{≤, G}$ es normalizante
 
-    $→_{≤, G}$ es terminante
+  $→_{≤, G}$ es terminante
 
 }
 
@@ -244,9 +244,9 @@ Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$
 
 Se define:
 
-    $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
+  $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
 
-    $G$ es una base de Gröbner reducida de $I ⇔ G$ es una base de Gröbner de $I ∧ ∀g ∈ G : g$ es irreducible con respecto a $→_{≤, G - \{g\}}$
+  $G$ es una base de Gröbner reducida de $I ⇔ G$ es una base de Gröbner de $I ∧ ∀g ∈ G : g$ es irreducible con respecto a $→_{≤, G - \{g\}}$
 
 }
 
@@ -257,9 +257,9 @@ Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$
 
 Se define:
 
-    $e_≤$ es una estrategia de reducción $⇔$
+  $e_≤$ es una estrategia de reducción $⇔$
 
-        $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
+    $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
 
 }
 
@@ -271,30 +271,30 @@ Sean $p, q, a, b, c, d ∈ ⟨X⟩$
 
 Se define:
 
-    $(a, b, c, d, p, q)$ es una ambigüedad $ ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p|$
+  $(a, b, c, d, p, q)$ es una ambigüedad $ ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p|$
 
 La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
 
-    De superposición $⇔ a = ε = d ∨ b = ε = c$
+  De superposición $⇔ a = ε = d ∨ b = ε = c$
 
-    De inclusión $⇔ a = ε = b ∨ c = ε = d$
+  De inclusión $⇔ a = ε = b ∨ c = ε = d$
 
-    Relevante $⇔$ es de superposición o de inclusión
+  Relevante $⇔$ es de superposición o de inclusión
 
 Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
 Sea además $G ⊆ K⟨X⟩$, se define:
 
-    $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
+  $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
 
-    $\amb(G) = \bigcup_{f, g ∈ G - \{0\}}{\amb(f, g)}$
+  $\amb(G) = \bigcup_{f, g ∈ G - \{0\}}{\amb(f, g)}$
 
 }
 
 \teorema[]{
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
 
-    $\lm_≤{(afb)} = \lm_≤{(cgd)}$
+  $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
 }
 
@@ -306,7 +306,7 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una
 
 Se define:
 
-    $\lm_≤{(α)} = \lm_≤{(afb)}$
+  $\lm_≤{(α)} = \lm_≤{(afb)}$
 }
 Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$ % ¿Se puede agregar una referencia al teorema?
 
@@ -317,13 +317,13 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una
 
 Se define:
 
-    $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
+  $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
 }
 
 \teorema[]{
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad, entonces:
 
-    $\lm_≤{(\S(α))} < \lm_≤{(α)}$
+  $\lm_≤{(\S(α))} < \lm_≤{(α)}$
 
 }
 
@@ -336,20 +336,20 @@ Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
 
 Se define:
 
-    $\B_{e_≤}^0(G) = G$
+  $\B_{e_≤}^0(G) = G$
 
-    $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$
+  $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$
 
-    $\B_{e_≤}(G) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(G)$
+  $\B_{e_≤}(G) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(G)$
 
 }
 
 \teorema[]{
   Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 
-    $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
+  $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
 
-    $(G)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G)) = (G)$
+  $(G)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G)) = (G)$
 }
 
 
