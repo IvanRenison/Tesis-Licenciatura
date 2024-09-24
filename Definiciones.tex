@@ -1,5 +1,6 @@
 \documentclass{amsbook}
 \usepackage{fontspec}
+\usepackage{enumitem}
 \defaultfontfeatures{Renderer=Basic,Ligatures={TeX}}
 \usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
 \setmathfont{Asana Math}
@@ -65,9 +66,7 @@ En esta sub-sección se explican algunas definiciones básicas de sistemas de re
 Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
 
 \definición[Formas normales] {
-Sean $a, b ∈ A$
-
-Se define:
+Sean $a, b ∈ A$:
 
   $a$ está en forma normal $⇔ ∃x ∈ A : a → x$
 
@@ -78,10 +77,7 @@ Se define:
   $a ↓ b ⇔ ∃x ∈ A : a → x ∧ b → x$
 }
 
-\definición[] {
-
-
-Se define:
+\definición[] {: % ARREGLAR
 
   $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
 
@@ -94,19 +90,16 @@ Se define:
 \subsection{Álgebra libre}
 
 \definición[Monomio libre] {
-Sea $X$ un alfabeto finito.
-
-Se define:
+Sea $X$ un alfabeto finito:
 
   $⟨X⟩ = X^*$
 
 Y a $⟨X⟩$ se lo llama monomios libres sobre $X$.
 }
 
-A partir de ahora fijamos $X$ un alfabeto finito.
+A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el producto como la concatenación:
 
-\definición[Producto de monomio libre] {
-Se define el producto como la concatenación:
+\definición[Producto de monomio libre] {: % ARREGLAR
 
   $· : ⟨X⟩^2 → ⟨X⟩$
 
@@ -116,27 +109,24 @@ Y a la estructura $(⟨X⟩, ·)$ se la llama monoide libre sobre $⟨X⟩$.
 }
 
 \definición[Divisibilidad] {
-Sean $v, w ∈ ⟨X⟩$
-
-Se define:
+Sean $v, w ∈ ⟨X⟩$:
 
   $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
 
 Y cuando $v | w$ se dice que $v$ divide a $w$.
 }
 
-Mas adelante va a ser falta tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, si no que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
+Mas adelante va a ser falta tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
 \definición[Buen orden monomial] {
-Sea $≤$ un orden total sobre $⟨X⟩$.
-
-Se define:
+Sea $≤$ un orden total sobre $⟨X⟩$:
 
   $≤$ es un buen orden monomial si y solo si:
+\begin{enumerate}[label=(\alph*)]
+\item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
 
-    a) $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
-
-    b) $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
+\item $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
+\end{enumerate}
 }
 
 Ahora un ejemplo de orden que cumple con esta definición:
@@ -144,7 +134,7 @@ Ahora un ejemplo de orden que cumple con esta definición:
 \definición[Orden lexicográfico por grado] {
 Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
 
-El orden lexicográfico por grado se define:
+El orden lexicográfico por grado se define así:
 
   $≤_{deglex} ⊆ ⟨X⟩^2$
 
@@ -183,9 +173,9 @@ $p_1 = ab + cb$
 
 $p_2 = 3 abb + 4 bcca - 2 acab$
 
-Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo
+Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
-Sobre los polinomios no conmutativos se hace la siguiente definición
+Sobre los polinomios no conmutativos se hacen las siguientes definiciones, que serán de utilidad:
 
 
 \definición[] {
@@ -222,15 +212,14 @@ En particular vale la definición de ideal, que como es muy importante para este
 \definición[Ideal] {
 Sean $R$ un anillo e $I, B ⊆ R$
 
-Se define:
-
   $I$ es un ideal de $R ⇔$:
+\begin{enumerate}[label=(\alph*)]
+\item $I ≠ Ø$
 
-    a) $I ≠ Ø$
+\item $∀a, b ∈ I : a + b ∈ I$
 
-    b) $∀a, b ∈ I : a + b ∈ I$
-
-    c) $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
+\item $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
+\end{enumerate}
 
   $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
 }
@@ -240,9 +229,7 @@ Además se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el id
 A partir de ahora fijamos un cuerpo $K$ y un buen orden monomial $≤$.
 
 \definición[Reducciones] {
-Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$
-
-Se define:
+Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 
   $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 
@@ -260,20 +247,16 @@ Sea $G ⊆ K⟨X⟩$, entonces:
 
 }
 
-Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva la siguiente definición.
+Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
 
 \definición[Bases de Gröbner] {
-Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$
-
-Se define:
+Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$:
 
   $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
 
   $G$ es una base de Gröbner reducida de $I ⇔ G$ es una base de Gröbner de $I ∧ ∀g ∈ G : g$ es irreducible con respecto a $→_{≤, G - \{g\}}$
 
 }
-
-Los casos en los que no es confluente motivan la siguiente definición.
 
 \definición[Estrategia de reducción] {
 Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$
@@ -283,16 +266,15 @@ Se define:
   $e_≤$ es una estrategia de reducción $⇔$
 
     $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
-
 }
+
+En los casos en los que $G$ es confluente hay una sola $e_≤(G)$ posible, pero cuando no es confluente puede haber muchas.
 
 
 \subsection{Algoritmo de Buchberger}
 
 \definición[Ambigüedades] {
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
-
-Se define:
 
   $(a, b, c, d, p, q)$ es una ambigüedad $ ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p|$
 
@@ -306,7 +288,7 @@ La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
 
 Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
-Sea además $G ⊆ K⟨X⟩$, se define:
+Sea además $G ⊆ K⟨X⟩$:
 
   $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
 
@@ -327,16 +309,13 @@ Eso motiva la siguiente definición.
 \definición[Monomios principales de ambigüedades] {
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
-Se define:
-
   $\lm_≤{(α)} = \lm_≤{(afb)}$
 }
-Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$ % ¿Se puede agregar una referencia al teorema?
+
+Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$
 
 \definición[S-polinomios] {
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
-
-Se define:
 
   $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
 }
@@ -351,9 +330,7 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una am
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
 
 \definición[Conjuntos del algoritmo de Buchberger] {
-Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción
-
-Se define:
+Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 
   $\B_{e_≤}^0(G) = G$
 
