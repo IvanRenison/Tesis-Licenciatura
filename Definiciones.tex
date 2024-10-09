@@ -26,32 +26,6 @@
 \newtheorem{theorem}{Teorema}[section]
 \renewcommand{\proofname}{\textbf{Demostración:}}
 
-\newcommand{\definición}[2][]{
-  \begin{definition}[#1]
-  \setlength{\parindent}{2em} % Ajustar la indentación del contenido
-  #2
-  \qed
-  \end{definition}
-}
-
-\newcommand{\teorema}[2][]{
-  \begin{theorem}[#1]
-  \setlength{\parindent}{2em} % Ajustar la indentación del contenido
-  #2
-  \qed
-  \end{theorem}
-}
-
-\newcommand{\teoremaConDemostración}[3][]{
-  \begin{theorem}[#1]
-  \setlength{\parindent}{2em} % Ajustar la indentación del contenido
-  #2
-  \end{theorem}
-  \begin{proof}
-  #3
-  \end{proof} % Esto ya pone un □ solo
-}
-
 \DeclareMathOperator{\sop}{sop}
 \DeclareMathOperator{\lm}{lm}
 \DeclareMathOperator{\lc}{lc}
@@ -77,7 +51,7 @@ En esta sub-sección se explican algunas definiciones básicas de sistemas de re
 
 Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
 
-\definición[Formas normales] {
+\begin{definition}[Formas normales]
 Sean $a, b ∈ A$:
 
   $a$ está en forma normal $⇔ ∄x ∈ A : a → x$
@@ -87,50 +61,50 @@ Sean $a, b ∈ A$:
   $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
 
   $a ↓ b ⇔ ∃x ∈ A : a → x ∧ b → x$
-}
+\end{definition}
 
-\definición[] {: % ARREGLAR
+\begin{definition}: % Arreglar
 
   $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
 
   $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
 
   $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
-}
+\end{definition}
 
 
 \subsection{Álgebra libre}
 
-\definición[Monomio libre] {
+\begin{definition}[Monomio libre]
 Sea $X$ un alfabeto finito:
 
-  $⟨X⟩ = X^*$
+$⟨X⟩ = X^*$
 
-Y a $⟨X⟩$ se lo llama monomios libres sobre $X$.
-}
+a $⟨X⟩$ se lo llama monomios libres sobre $X$.
+\end{definition}
 
 A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el producto como la concatenación:
 
-\definición[Producto de monomio libre] {: % ARREGLAR
+\begin{definition}[Producto de monomio libre]: % Arreglar
 
   $· : ⟨X⟩^2 → ⟨X⟩$
 
   $v · w = vw$
 
 Y a la estructura $(⟨X⟩, ·)$ se la llama monoide libre sobre $⟨X⟩$.
-}
+\end{definition}
 
-\definición[Divisibilidad] {
+\begin{definition}[Divisibilidad]
 Sean $v, w ∈ ⟨X⟩$:
 
   $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
 
 Y cuando $v | w$ se dice que $v$ divide a $w$.
-}
+\end{definition}
 
-Mas adelante va a ser falta tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
-\definición[Buen orden monomial] {
+\begin{definition}[Buen orden monomial]
 Sea $≤$ un orden total sobre $⟨X⟩$:
 
   $≤$ es un buen orden monomial si y solo si:
@@ -139,11 +113,11 @@ Sea $≤$ un orden total sobre $⟨X⟩$:
 
 \item $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
 \end{enumerate}
-}
+\end{definition}
 
 Ahora un ejemplo de orden que cumple con esta definición:
 
-\definición[Orden lexicográfico por grado] {
+\begin{definition}[Orden lexicográfico por grado]
 Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
 
 El orden lexicográfico por grado se define así:
@@ -151,21 +125,21 @@ El orden lexicográfico por grado se define así:
   $≤_{deglex} ⊆ ⟨X⟩^2$
 
   $a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b)$
-}
+\end{definition}
 
 O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico.
 
 A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y $>$ como se usan habitualmente.
 
-Ahora una propiedad sobre el orden monomial que es consecuencia directa de b de la definición:
+Ahora una propiedad sobre el orden monomial que es consecuencia directa De la definición:
 
-\teorema[$≤$ no tiene cadenas estrictamente decrecientes infinitas] {
+\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]
 
   $∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i$
 
-}
+\end{theorem}
 
-\definición[Álgebra libre (asociativa)] {
+\begin{definition}[Álgebra libre (asociativa)]
 Sea $R$ un anillo conmutativo
 
 Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
@@ -184,7 +158,7 @@ El producto entre elementos de $R⟨X⟩$ se define como:
 
 A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
 % Esta definición creo que hay que mejorarla, pero no se como
-}
+\end{definition}
 
 Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
 
@@ -199,7 +173,7 @@ Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones, que serán de utilidad:
 
 
-\definición[] {
+\begin{definition}: % Arreglar
 Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial
 
 Se define:
@@ -220,19 +194,19 @@ Se define:
 
 A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$.
 
-}
+\end{definition}
 
-\teorema[]{
+\begin{theorem}
 Sea $R$ un anillo conmutativo, entonces:
 
   $(R⟨X⟩, +, ·)$ es un anillo
 
-}
+\end{theorem}
 
 Esto significa que aplican todas las definiciones y teoremas de anillo.
 En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
 
-\definición[Ideal] {
+\begin{definition}[Ideal]
 Sean $R$ un anillo e $I, B ⊆ R$
 
   $I$ es un ideal de $R ⇔$:
@@ -245,7 +219,7 @@ Sean $R$ un anillo e $I, B ⊆ R$
 \end{enumerate}
 
   $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
-}
+\end{definition}
 
 Además se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
 
@@ -259,24 +233,24 @@ La respuesta a esa pregunta es que no, porque el problema es indecible
 
 Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨K⟩$ así:
 
-\definición[Extensión de orden monomial a polinomios] {
+\begin{definition}[Extensión de orden monomial a polinomios]
 Sean $f, g ∈  K⟨X⟩$:
 
   $f < g ⇔ (f = 0 ∧ g ≠ 0) ∨ \lm(f) < \lm(g) ∨ (\lm(f) = \lm(g) ∧ \tail(f) < \tail(g))$
 
-}
-
+\end{definition}
 Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes ordenada de mayor a menor.
 
 Ahora algunos teoremas sobre el orden de los polinomios.
 
-\teorema[] {
+\begin{theorem}
 $<$ como relación de $K⟨X⟩$ es un pre-orden.
-}
+\end{theorem}
 
-\teoremaConDemostración[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas] {
+\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]
   $∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i$
-}{
+\end{theorem}
+\begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
 
 (tomar este mínimo está bien por el teorema ...) % Mencionar el teorema sobre monomios
@@ -298,11 +272,11 @@ Notar que:
 
 Sin embargo, (3) contradice (1) ya que por (4) $\lm(\tail(P_1)) < \lm(P_1)$.
 
-}
+\end{proof}
 
 
 
-\definición[Reducciones] {
+\begin{definition}[Reducciones]
 Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 
   $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
@@ -310,15 +284,15 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
   $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
   $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
-}
+\end{definition}
 
-\teorema[]{
+\begin{theorem}
 Sea $G ⊆ K⟨X⟩$, entonces:
 
   $→_{≤, G}$ es normalizante
 
   $→_{≤, G}$ es terminante
-} %{ % Hay que agregar la demostración
+\end{theorem} %{ % Hay que agregar la demostración
 
 %$→_{≤, G}$ es normalizante: % A completar
 
@@ -346,16 +320,16 @@ Sea $G ⊆ K⟨X⟩$, entonces:
 
 Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
 
-\definición[Bases de Gröbner] {
+\begin{definition}[Bases de Gröbner]
 Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$:
 
   $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
 
   $G$ es una base de Gröbner reducida de $I ⇔ G$ es una base de Gröbner de $I ∧ ∀g ∈ G : g$ es irreducible con respecto a $→_{≤, G - \{g\}}$
 
-}
+\end{definition}
 
-\definición[Estrategia de reducción] {
+\begin{definition}[Estrategia de reducción]
 Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$
 
 Se define:
@@ -363,14 +337,14 @@ Se define:
   $e_≤$ es una estrategia de reducción $⇔$
 
     $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
-}
+\end{definition}
 
 En los casos en los que $G$ es confluente hay una sola $e_≤(G)$ posible, pero cuando no es confluente puede haber muchas.
 
 
 \subsection{Algoritmo de Buchberger}
 
-\definición[Ambigüedades] {
+\begin{definition}[Ambigüedades]
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
 
   $(a, b, c, d, p, q)$ es una ambigüedad $ ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p|$
@@ -391,42 +365,42 @@ Sea además $G ⊆ K⟨X⟩$:
 
   $\amb(G) = \bigcup_{f, g ∈ G - \{0\}}{\amb(f, g)}$
 
-}
+\end{definition}
 
-\teorema[]{
+\begin{theorem}
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
 
   $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
-}
+\end{theorem}
 
 
 Eso motiva la siguiente definición.
 
-\definición[Monomios principales de ambigüedades] {
+\begin{definition}[Monomios principales de ambigüedades]
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
   $\lm_≤{(α)} = \lm_≤{(afb)}$
-}
+\end{definition}
 
 Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$
 
-\definición[S-polinomios] {
+\begin{definition}[S-polinomios]
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
 
   $\S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
-}
+\end{definition}
 
-\teorema[]{
+\begin{theorem}
 Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una amiguedad, entonces:
 
   $\lm_≤{(\S(α))} < \lm_≤{(α)}$
 
-}
+\end{theorem}
 
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
 
-\definición[Conjuntos del algoritmo de Buchberger] {
+\begin{definition}[Conjuntos del algoritmo de Buchberger]
 Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 
   $\B_{e_≤}^0(G) = G$
@@ -435,15 +409,15 @@ Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 
   $\B_{e_≤}(G) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(G)$
 
-}
+\end{definition}
 
-\teorema[]{
+\begin{theorem}
   Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 
   $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
 
   $(G)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G)) = (G)$
-}
+\end{theorem}
 
 
 
