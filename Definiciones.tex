@@ -48,7 +48,7 @@ En particular se explica …. % Completar
 
 \subsection{Sistemas de re-escritura}
 
-En esta sub-sección se explican algunas definiciones básicas de sistemas de re-escritura.
+En esta sub-sección se explican algunas definiciones y teoremas básicos de sistemas de re-escritura.
 
 Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
 
@@ -72,6 +72,10 @@ Sean $a, b ∈ A$:
 
   $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
 \end{definition}
+
+\begin{theorem}\label{thm:confluente_implica_normalizante}
+$→$ es confluente $⇒ →$ es normalizante
+\end{theorem}
 
 
 \subsection{Álgebra libre}
@@ -248,7 +252,7 @@ Ahora algunos teoremas sobre el orden de los polinomios.
 $<$ como relación de $K⟨X⟩$ es un pre-orden.
 \end{theorem}
 
-\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]
+\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:le_en_KX_no_tiene_cadenas_estrictamente_decrecientes_infinitas}
   $∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i$
 \end{theorem}
 \begin{proof}
@@ -287,37 +291,64 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
   $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 \end{definition}
 
+\begin{theorem}[Las reducciones achican]\label{thm:reducciones_achican}
+Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
+\begin{enumerate}[label=(\alph*)]
+\item $f →_{≤, a, g, b} f' ⇒ f' < f$
+
+\item $f →_{≤, g} f' ⇒ f' < f$
+
+\item $f →_{≤, G} f' ⇒ f' < f$
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Por la definición de las reducciones (a) $⇒$ (b) $⇒$ (c), por lo cual alcanza con probar (a).
+
+Supongamos $f →_{≤, a, g, b} f'$ (1)
+
+Esto implica por definición de reducciones:
+
+  $\lm_≤(agb) ∈ \sop(f)$ (2)
+
+  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (3)
+
+Escribamos $f = \sum_{i = 1}^n c_i w_i$ con $c_1, …, c_n ∈ K$, $w_1, …, w_n ∈ ⟨X⟩, w_1 > w_2 > … > w_n$ (4)
+
+Sea $i$ tal que $w_i = \lm_≤(agb)$ (5), el cual existe por (2)
+
+Notar también que $w_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (6) porque es (5) multiplicado por un escalar
+
+Si $i ≠ 0$:
+
+  (6) significa que los términos $c_1 w_1, c_2 w_2, …, c_{i-1}, w_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas.
+
+  Además, como $w_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{w_i} = 0$, por ende, el término que sigue después de $w_{i-1}$ (si es que hay) es menor que $w_i$ y por ende $' < f$.
+
+Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$ anteriores.
+
+\end{proof}
+
 \begin{theorem}
 Sea $G ⊆ K⟨X⟩$, entonces:
 
   $→_{≤, G}$ es normalizante
 
   $→_{≤, G}$ es terminante
-\end{theorem} %{ % Hay que agregar la demostración
+\end{theorem}
+\begin{proof}
+Por el teorema \ref{thm:confluente_implica_normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
 
-%$→_{≤, G}$ es normalizante: % A completar
+Supongamos que $→_{≤, G}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
-%   $→_{≤, G}$ es normalizante
+$∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}$
 
-% $⇔$
+Por el teorema \ref{thm:reducciones_achican} esto implica que:
 
-%   $∀x ∈ K⟨X⟩ : x$ tiene forma normal
+$∀i ∈ ℕ : P_i > P_{i+1}$
 
-% $⇔$
+Pero esto contradice el teorema \ref{thm:le_en_KX_no_tiene_cadenas_estrictamente_decrecientes_infinitas} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
 
-%   $∀x ∈ K⟨X⟩ : ∃y ∈ K⟨X⟩ : y$ es forma normal de $x$
-
-% $⇔$
-
-%   $∀x ∈ K⟨X⟩ : ∃y ∈ K⟨X⟩ : x →^* y ∧ y$ está en forma normal
-
-% $⇔$
-
-%   $∀x ∈ K⟨X⟩ : ∃y ∈ K⟨X⟩ : x →^* y ∧ ∄z ∈ K⟨X⟩ : y → z$
-
-%$→_{≤, G}$ es terminante:
-
-%}
+\end{proof}
 
 Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
 
