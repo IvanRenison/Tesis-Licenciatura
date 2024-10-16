@@ -287,8 +287,6 @@ Sin embargo, (3) contradice (1) ya que por (4) $\lm(\tail(P_1)) < \lm(P_1)$.
 
 \end{proof}
 
-
-
 \begin{definition}[Reducciones]
 Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 
@@ -355,6 +353,21 @@ Por el teorema \ref{thm:reducciones_achican} esto implica que:
 $∀i ∈ ℕ : P_i > P_{i+1}$
 
 Pero esto contradice el teorema \ref{thm:le_en_KX_no_tiene_cadenas_estrictamente_decrecientes_infinitas} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
+
+\end{proof}
+
+\begin{theorem}[Caracterización de las formas normales de $→$]
+Sea $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces:
+
+  $f$ está en forma normal con respecto a $→_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m$
+
+\end{theorem}
+\begin{proof}
+Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$
+
+Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
+
+Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
 \end{proof}
 
