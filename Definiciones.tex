@@ -1,4 +1,5 @@
 \documentclass{amsbook}
+\usepackage{amsthm}
 \usepackage{fontspec}
 \usepackage{enumitem}
 \usepackage[bookmarks]{hyperref}
@@ -8,15 +9,18 @@
 
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
-\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
-\SetKw{KwEnd}{}
-\DontPrintSemicolon
+%\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+%\SetKw{KwEnd}{}
+%\DontPrintSemicolon
+
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
 
 \newtheoremstyle{customstyle} % <name>
-{10pt} % <Space above>
-{10pt} % <Space below>
+{} % <Space above>
+{} % <Space below>
 {} % <Body font>
-{1em} % <Indent amount>
+{} % <Indent amount>
 {\bfseries} % <Theorem head font>
 {:} % <Punctuation after theorem head>
 {.5em} % <Space after theorem head>
@@ -25,7 +29,7 @@
 \theoremstyle{customstyle}
 \newtheorem{definition}{Definición}[section]
 \newtheorem{theorem}{Teorema}[section]
-\renewcommand{\proofname}{\textbf{Demostración:}}
+\addto\captionsspanish{\renewcommand{\proofname}{\textbf{Demostración:}}}
 
 \DeclareMathOperator{\sop}{sop}
 \DeclareMathOperator{\lm}{lm}
@@ -64,7 +68,7 @@ Sean $a, b ∈ A$:
   $a ↓ b ⇔ ∃x ∈ A : a → x ∧ b → x$
 \end{definition}
 
-\begin{definition}: % Arreglar
+\begin{definition}\ % Según internet acá tendría que usar \\, pero eso da error
 
   $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
 
@@ -90,7 +94,7 @@ a $⟨X⟩$ se lo llama monomios libres sobre $X$.
 
 A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el producto como la concatenación:
 
-\begin{definition}[Producto de monomio libre]: % Arreglar
+\begin{definition}[Producto de monomio libre]\
 
   $· : ⟨X⟩^2 → ⟨X⟩$
 
@@ -113,7 +117,7 @@ Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$,
 Sea $≤$ un orden total sobre $⟨X⟩$:
 
   $≤$ es un buen orden monomial si y solo si:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label = (\alph*)]
 \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
 
 \item $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
@@ -138,7 +142,7 @@ A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y 
 
 Ahora una propiedad sobre el orden monomial que es consecuencia directa De la definición:
 
-\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]
+\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:le_no_cadenas_dec_inf}\
 
   $∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i$
 
@@ -178,8 +182,8 @@ Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones, que serán de utilidad:
 
 
-\begin{definition}: % Arreglar
-Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial
+\begin{definition}
+Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = \sum_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
 
 Se define:
 
@@ -215,7 +219,7 @@ En particular vale la definición de ideal, que como es muy importante para este
 Sean $R$ un anillo e $I, B ⊆ R$
 
   $I$ es un ideal de $R ⇔$:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label = (\alph*)]
 \item $I ≠ Ø$
 
 \item $∀a, b ∈ I : a + b ∈ I$
@@ -266,7 +270,7 @@ $<$ como relación de $K⟨X⟩$ es un pre-orden.
 \begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
 
-(tomar este mínimo está bien por el teorema ...) % Mencionar el teorema sobre monomios
+(tomar este mínimo está bien por el teorema \ref{thm:le_no_cadenas_dec_inf}) % Mencionar el teorema sobre monomios
 
 Notar que:
 
@@ -299,7 +303,7 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 
 \begin{theorem}[Las reducciones achican]\label{thm:reducciones_achican}
 Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
-\begin{enumerate}[label=(\alph*)]
+\begin{enumerate}[label = (\alph*)]
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
 
 \item $f →_{≤, g} f' ⇒ f' < f$
@@ -392,8 +396,6 @@ Se define:
     $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
 \end{definition}
 
-En los casos en los que $G$ es confluente hay una sola $e_≤(G)$ posible, pero cuando no es confluente puede haber muchas.
-
 
 \subsection{Algoritmo de Buchberger}
 
@@ -427,7 +429,7 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una am
 
 \end{theorem}
 
-\begin{proof}\ % La \ es para que se ponga un salto de linea
+\begin{proof}\
 
   $\lm_≤{(afb)}$
 
