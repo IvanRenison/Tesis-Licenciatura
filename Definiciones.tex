@@ -9,9 +9,8 @@
 
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
-%\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
-%\SetKw{KwEnd}{}
-%\DontPrintSemicolon
+\usepackage{float}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
 
 \usepackage{polyglossia}
 \setdefaultlanguage{spanish}
@@ -395,6 +394,35 @@ Se define:
 
     $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
 \end{definition}
+
+En los casos en los que $G$ es una base de Gröbner y por ende $→_{≤, G}$ es confluente hay una sola $e_≤(G)$ posible, pero cuando no es confluente puede haber muchas. Tener definida la estrategia de reducción como una función nos va a venir bien mas adelante para hablar de una forma normal manteniendo la generalidad de como se calcula una forma normal de cada elemento.
+
+Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
+
+\begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \KwData{$G = \{g_1, …, g_n\} ⊆ K⟨X⟩, f ∈ K⟨X⟩$}
+  \KwResult{$f' ∈ K⟨X⟩$}
+  $f' ← f$
+
+  $i ← 1$
+
+  \While{$i ≤ n$} {
+    \While{$i ≤ n$} {
+      \If{$g_i ∈ \sop(f')$} {
+        $f' ← f' - \frac{f'_{\lm(g_i)}}{\lc(g_i)}g_i$
+
+        $i ← 1$
+
+        \textbf{break}
+      }
+      \Else{
+        $i ← i + 1$
+      }
+    }
+  }
+  \Return{$f'$}
+\end{algorithm}
+
 
 
 \subsection{Algoritmo de Buchberger}
