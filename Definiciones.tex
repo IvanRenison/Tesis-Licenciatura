@@ -212,9 +212,9 @@ Sea $R$ un anillo conmutativo, entonces:
 \end{theorem}
 
 Esto significa que aplican todas las definiciones y teoremas de anillo.
-En particular vale la definición de ideal, que como es muy importante para este trabajo la escribo acá también:
+En particular vale la definición de ideal y algunas definiciones y teoremas relacionados, que como son muy importantes para este trabajo las escribo acá también:
 
-\begin{definition}[Ideal]
+\begin{definition}[Ideal]\label{def:ideal}
 Sean $R$ un anillo e $I, B ⊆ R$
 
   $I$ es un ideal de $R ⇔$:
@@ -229,7 +229,29 @@ Sean $R$ un anillo e $I, B ⊆ R$
   $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
 \end{definition}
 
-Además se puede probar que $(B)$ es un ideal de $R$ y a $(B)$ se lo llama el ideal generado por $B$.
+\begin{theorem}
+Sean $R$ un anillo y $B ⊆ R$:
+
+  $(B)$ es un ideal de $R$
+
+\end{theorem}
+Además a $(B)$ se lo llama el ideal generado por $B$.
+
+\begin{definition}[Congruencia modulo un ideal]\label{def:congruencia_mod_ideal}
+Sean $R$ un anillo e $I ⊆ R$, se define la siguiente relación:
+
+  $≡_I ⊆ R^2$
+
+  $a ≡_I b ⇔ a - b ∈ I$
+
+\end{definition}
+
+\begin{theorem}\label{thm:congruencia_mod_ideal_es_equivalencia}
+Sean $R$ un anillo y $I ⊆ R$ un ideal:
+
+  $≡_I$ es una relación de equivalencia
+\end{theorem}
+
 
 A partir de ahora fijamos un cuerpo $K$.
 
@@ -239,7 +261,7 @@ La respuesta a esa pregunta es que no, porque el problema es indecible
 
 % Acá hay que explicar que ese problema no es computable, pero que se puede hacer un intento …
 
-Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨K⟩$ así:
+Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}[Extensión de orden monomial a polinomios]
 Sean $f, g ∈  K⟨X⟩$:
@@ -337,6 +359,44 @@ Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$
 
 \end{proof}
 
+\begin{theorem}[Clausura reflexo transitiva de las reducciones]
+Sean $G ⊆ K⟨X⟩$, entonces:
+
+  $↔^*_{≤, G} = ≡_{(G)}$
+
+(Donde $≡_{(G)}$ la congruencia modulo un ideal definida en la definición \ref{def:congruencia_mod_ideal})
+\end{theorem}
+\begin{proof}
+Lo vamos a probar por doble inclusión
+
+Prueba de $↔^*_{≤, G} ⊆ ≡_{(G)}$:
+
+  Como tanto $↔^*_{≤, G}$ como $≡_{(G)}$ son relaciones de equivalencia y además $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, así que alcanza con probar $→_{≤, G} ⊆ ≡_{(G)}$
+
+  Supongamos $f →_{≤, G} f'$ (1), queremos probar $f ≡_{(G)} f'$
+
+  Sean $g ∈ G, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, G}$
+
+  Tenemos:
+
+    $f ≡_{(G)} f'$
+
+  $⇔$
+
+    $f - f' ∈ (G)$
+
+  $⇔$
+
+    $f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (G)$
+
+  $⇔$
+
+    $\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (G)$
+
+  Y esto último es claramente cierto por la definición de ideal (\ref{def:ideal})
+
+\end{proof}
+
 \begin{theorem}
 Sea $G ⊆ K⟨X⟩$, entonces:
 
@@ -400,6 +460,7 @@ En los casos en los que $G$ es una base de Gröbner y por ende $→_{≤, G}$ es
 Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia_de_reduccion}
   \KwData{$G = \{g_1, …, g_n\} ⊆ K⟨X⟩, f ∈ K⟨X⟩$}
   \KwResult{$f' ∈ K⟨X⟩$}
   $f' ← f$
