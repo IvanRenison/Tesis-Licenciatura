@@ -7,6 +7,8 @@
 \usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
 \setmathfont{Asana Math}
 
+\hfuzz=1000pt % Elimina warnings de "Overfull \hbox"
+
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
@@ -64,22 +66,29 @@ Sean $a, b ∈ A$:
 
   $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
 
-  $a ↓ b ⇔ ∃x ∈ A : a → x ∧ b → x$
+  $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$
 \end{definition}
 
 \begin{definition}\ % Según internet acá tendría que usar \\, pero eso da error
 
   $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
 
+  $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔^* y ⇔ x ↓ y$
+
   $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
 
   $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
+
+
 \end{definition}
 
 \begin{theorem}\label{thm:confluente_implica_normalizante}
 $→$ es confluente $⇒ →$ es normalizante
 \end{theorem}
 
+\begin{theorem}\label{thm:confluente_sii_Church-Rosser}
+  $→$ es confluente $⇔ →$ es Church-Rosser
+\end{theorem}
 
 \subsection{Álgebra libre}
 
@@ -252,6 +261,12 @@ Sean $R$ un anillo y $I ⊆ R$ un ideal:
   $≡_I$ es una relación de equivalencia
 \end{theorem}
 
+\begin{theorem}\label{thm:en_ideal_sii_congruente_cero}
+Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$:
+
+  $a ∈ I ⇔ a ≡_I 0$
+\end{theorem}
+
 
 A partir de ahora fijamos un cuerpo $K$.
 
@@ -359,7 +374,15 @@ Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$
 
 \end{proof}
 
-\begin{theorem}[Clausura reflexo transitiva de las reducciones]
+\begin{theorem}\label{thm:suma_→↓}
+Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
+
+  $f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} + f_1$
+
+\end{theorem}
+% TODO: Probar esto
+
+\begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:CRT_reduciones}
 Sean $G ⊆ K⟨X⟩$, entonces:
 
   $↔^*_{≤, G} = ≡_{(G)}$
@@ -485,6 +508,127 @@ Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudo
 \end{algorithm}
 
 Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el que reducir, y parar cuando ya no hay ninguno.
+
+\begin{theorem}[Equivalencias de base de Gröbner]
+Sean $I$ un ideal de $K⟨X⟩$, $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción.
+
+Son equivalentes:
+\begin{enumerate}
+\item $G$ es una base de Gröbner de $I$
+
+\item $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$
+
+\end{enumerate}
+% Quizás agregue mas en algún momento
+
+\end{theorem}
+\begin{proof}\
+
+Primero probemos (1) $⇒$ (2):
+
+Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
+
+  Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$
+
+  Vamos de un lado para el otro:
+
+    $f ∈ I$
+
+  $⇔$ (Teorema \ref{thm:en_ideal_sii_congruente_cero})
+
+    $f ≡_I 0$
+
+  $⇔$ (Teorema \ref{thm:CRT_reduciones})
+
+    $f ↔^*_{≤, G} 0$
+
+  $⇔$ (Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente_sii_Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)
+
+    $f ↓_{≤, G} 0$
+
+  $⇔$ (Definición de $↓$)
+
+    $∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f'$
+
+  $⇔$ (Como $0$ es el mínimo elemento y el teorema \ref{thm:reducciones_achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)
+
+    $f →^*_{≤, G} 0$
+
+Ahora probemos (2) $⇒$ (1):
+
+Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (3), tenemos que probar que $G$ es una base de Gröbner de $I$:
+
+  $G$ es una base de Gröbner de $I$
+
+$⇔$ (Definición de base de Gröbner)
+
+  $(G) = I ∧ →_{≤, G}$ es confluente
+
+Probemos cada termino del $∧$ por separado:
+
+Prueba de $(G) = I$:
+
+  Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
+
+  Ida ($⇒$):
+
+    Supongamos $f ∈ (G)$
+
+    Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = \sum_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$
+
+    Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$
+
+    Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
+
+    Esto siguiente que $f →^*_{≤, G} 0$ y por ende por (3) $f ∈ I$
+
+  Vuelta ($⇐$):
+
+    Supongamos $f ∈ I$
+
+    Por (3) tenemos que $f →^*_{≤, G} 0$
+
+    Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
+
+    Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$
+
+    Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = \sum_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$
+
+Prueba de $→_{≤, G}$ es confluente:
+
+  Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
+
+  Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
+
+  $f →^*_{≤, G} f_0 ∧ f →^*{≤, G} f_1$
+
+$⇒$
+
+  $f_0 ↔^*_{≤, G} f_1$
+
+$⇒$ (Teorema \ref{thm:CRT_reduciones})
+
+  $f_0 ≡_{(G)} f_1$
+
+$⇒$ (Definición $≡_{\ ·\ }$)
+
+  $f_0 - f_1 ∈ (G)$
+
+$⇒$ ((3), ya probamos que $(G) = I$)
+
+  $f_0 - f_1 →^*_{≤, G} 0$
+
+$⇒$ (Teorema \ref{thm:suma_→↓})
+
+  $(f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1$
+
+$⇒$
+
+  $f_0 ↓_{≤, G} f_1$
+
+Con esto se termina la prueba.
+
+\end{proof}
 
 
 \subsection{Algoritmo de Buchberger}
