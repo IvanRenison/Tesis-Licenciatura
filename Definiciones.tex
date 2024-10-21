@@ -9,6 +9,9 @@
 
 \hfuzz=1000pt % Elimina warnings de "Overfull \hbox"
 
+% \usepackage{silence} % Para eliminar el warning "Non-breaking space (`~') should have been used."
+% \WarningFilter{latex}{Non-breaking space} % Pero no anda 😕
+
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
@@ -31,6 +34,9 @@
 \newtheorem{definition}{Definición}[section]
 \newtheorem{theorem}{Teorema}[section]
 \addto\captionsspanish{\renewcommand{\proofname}{\textbf{Demostración:}}}
+
+
+
 
 \DeclareMathOperator{\sop}{sop}
 \DeclareMathOperator{\lm}{lm}
@@ -377,10 +383,80 @@ Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$
 \begin{theorem}\label{thm:suma →↓}
 Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 
-  $f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} + f_1$
+  $f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f$
 
 \end{theorem}
-% TODO: Probar esto
+\begin{proof}
+Supongamos el antecedente $f_0 →_{≤, G} f_1$ (1)
+
+Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (2), los cuales existen por el antecedente y por definición de $→_{≤, G}$
+
+Dividamos en casos según si $\lm_≤(agb) ∈ \sop(f)$:
+
+Caso $\lm_≤(agb) ∉ \sop(f)$:
+
+  En este caso tenemos $f_0 + f →_{≤, G} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, G} f_1 + f$
+
+
+Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
+
+  Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$ (4):
+
+  Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$
+
+  Como además $\lm_≤(agb) ∉ \sop(f_1)$ por (1), tenemos:
+
+    $f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$ ((4))
+
+    $f_1 + f →_{≤, G} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$ ((2))
+
+    $f_1 + f →_{≤, G} f_0 + f$
+
+  $⇒$
+
+    $f_1 + f ↓_{≤, G} f_0 + f$
+
+  Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:
+
+  En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, G}$:
+
+    $f_0 + f →_{≤, G} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$
+
+    $f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$
+
+    $f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$ ((2))
+
+    $f_0 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (5)
+
+  Además por (3) y (4) también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
+
+    $f_1 + f →_{≤, G} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$
+
+    $f_1 + f →_{≤, G} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$ ($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, G} f_1$ y definición de $→_{≤, G}$)
+
+    $f_1 + f →_{≤, G} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$
+
+    $f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (6)
+
+  Por (5) y (6) tenemos $f_0 + f ↓_{≤, G} f_1 + f$
+
+\end{proof}
 
 \begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:→^* = ≡}
 Sean $G ⊆ K⟨X⟩$, entonces:
