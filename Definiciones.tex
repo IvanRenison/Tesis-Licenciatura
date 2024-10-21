@@ -82,11 +82,11 @@ Sean $a, b ∈ A$:
 
 \end{definition}
 
-\begin{theorem}\label{thm:confluente_implica_normalizante}
+\begin{theorem}\label{thm:confluente ⇒ normalizante}
 $→$ es confluente $⇒ →$ es normalizante
 \end{theorem}
 
-\begin{theorem}\label{thm:confluente_sii_Church-Rosser}
+\begin{theorem}\label{thm:confluente ⇔ Church-Rosser}
   $→$ es confluente $⇔ →$ es Church-Rosser
 \end{theorem}
 
@@ -150,7 +150,7 @@ A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y 
 
 Ahora una propiedad sobre el orden monomial que es consecuencia directa De la definición:
 
-\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:le_no_cadenas_dec_inf}\
+\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< no cadenas dec inf}\
 
   $∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i$
 
@@ -246,7 +246,7 @@ Sean $R$ un anillo y $B ⊆ R$:
 \end{theorem}
 Además a $(B)$ se lo llama el ideal generado por $B$.
 
-\begin{definition}[Congruencia modulo un ideal]\label{def:congruencia_mod_ideal}
+\begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
 Sean $R$ un anillo e $I ⊆ R$, se define la siguiente relación:
 
   $≡_I ⊆ R^2$
@@ -255,13 +255,13 @@ Sean $R$ un anillo e $I ⊆ R$, se define la siguiente relación:
 
 \end{definition}
 
-\begin{theorem}\label{thm:congruencia_mod_ideal_es_equivalencia}
+\begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
 Sean $R$ un anillo y $I ⊆ R$ un ideal:
 
   $≡_I$ es una relación de equivalencia
 \end{theorem}
 
-\begin{theorem}\label{thm:en_ideal_sii_congruente_cero}
+\begin{theorem}\label{thm:en ideal ⇔ congruente 0}
 Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$:
 
   $a ∈ I ⇔ a ≡_I 0$
@@ -300,13 +300,13 @@ Ahora algunos teoremas sobre el orden de los polinomios.
 $<$ como relación de $K⟨X⟩$ es un pre-orden.
 \end{theorem}
 
-\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:le_en_KX_no_tiene_cadenas_estrictamente_decrecientes_infinitas}
+\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< en KX no cadenas dec inf}
   $∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i$
 \end{theorem}
 \begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
 
-(tomar este mínimo está bien por el teorema \ref{thm:le_no_cadenas_dec_inf}) % Mencionar el teorema sobre monomios
+(tomar este mínimo está bien por el teorema \ref{thm:< no cadenas dec inf}) % Mencionar el teorema sobre monomios
 
 Notar que:
 
@@ -337,7 +337,7 @@ Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
   $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 \end{definition}
 
-\begin{theorem}[Las reducciones achican]\label{thm:reducciones_achican}
+\begin{theorem}[Las reducciones achican]\label{thm:→ achican}
 Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 \begin{enumerate}[label = (\alph*)]
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
@@ -374,7 +374,7 @@ Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$
 
 \end{proof}
 
-\begin{theorem}\label{thm:suma_→↓}
+\begin{theorem}\label{thm:suma →↓}
 Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 
   $f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} + f_1$
@@ -382,12 +382,12 @@ Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 \end{theorem}
 % TODO: Probar esto
 
-\begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:CRT_reduciones}
+\begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:→^* = ≡}
 Sean $G ⊆ K⟨X⟩$, entonces:
 
   $↔^*_{≤, G} = ≡_{(G)}$
 
-(Donde $≡_{(G)}$ la congruencia modulo un ideal definida en la definición \ref{def:congruencia_mod_ideal})
+(Donde $≡_{(G)}$ la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
 \end{theorem}
 \begin{proof}
 Lo vamos a probar por doble inclusión
@@ -428,17 +428,17 @@ Sea $G ⊆ K⟨X⟩$, entonces:
   $→_{≤, G}$ es terminante
 \end{theorem}
 \begin{proof}
-Por el teorema \ref{thm:confluente_implica_normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
+Por el teorema \ref{thm:confluente ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
 
 Supongamos que $→_{≤, G}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
 $∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}$
 
-Por el teorema \ref{thm:reducciones_achican} esto implica que:
+Por el teorema \ref{thm:→ achican} esto implica que:
 
 $∀i ∈ ℕ : P_i > P_{i+1}$
 
-Pero esto contradice el teorema \ref{thm:le_en_KX_no_tiene_cadenas_estrictamente_decrecientes_infinitas} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
+Pero esto contradice el teorema \ref{thm:< en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
 
 \end{proof}
 
@@ -483,7 +483,7 @@ En los casos en los que $G$ es una base de Gröbner y por ende $→_{≤, G}$ es
 Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
-  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia_de_reduccion}
+  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reduccion}
   \KwData{$G = \{g_1, …, g_n\} ⊆ K⟨X⟩, f ∈ K⟨X⟩$}
   \KwResult{$f' ∈ K⟨X⟩$}
   $f' ← f$
@@ -534,15 +534,15 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
     $f ∈ I$
 
-  $⇔$ (Teorema \ref{thm:en_ideal_sii_congruente_cero})
+  $⇔$ (Teorema \ref{thm:en ideal ⇔ congruente 0})
 
     $f ≡_I 0$
 
-  $⇔$ (Teorema \ref{thm:CRT_reduciones})
+  $⇔$ (Teorema \ref{thm:→^* = ≡})
 
     $f ↔^*_{≤, G} 0$
 
-  $⇔$ (Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente_sii_Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)
+  $⇔$ (Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)
 
     $f ↓_{≤, G} 0$
 
@@ -550,7 +550,7 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
     $∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f'$
 
-  $⇔$ (Como $0$ es el mínimo elemento y el teorema \ref{thm:reducciones_achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)
+  $⇔$ (Como $0$ es el mínimo elemento y el teorema \ref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)
 
     $f →^*_{≤, G} 0$
 
@@ -606,7 +606,7 @@ $⇒$
 
   $f_0 ↔^*_{≤, G} f_1$
 
-$⇒$ (Teorema \ref{thm:CRT_reduciones})
+$⇒$ (Teorema \ref{thm:→^* = ≡})
 
   $f_0 ≡_{(G)} f_1$
 
@@ -618,7 +618,7 @@ $⇒$ ((3), ya probamos que $(G) = I$)
 
   $f_0 - f_1 →^*_{≤, G} 0$
 
-$⇒$ (Teorema \ref{thm:suma_→↓})
+$⇒$ (Teorema \ref{thm:suma →↓})
 
   $(f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1$
 
