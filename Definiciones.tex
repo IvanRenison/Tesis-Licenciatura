@@ -299,9 +299,9 @@ Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$:
 
 A partir de ahora fijamos un cuerpo $K$.
 
-Una pregunta que surge es dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, ¿se puede calcular si $f ∈ (G)$?
+Una pregunta que surge es dado un conjunto finito $F ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, ¿se puede calcular si $f ∈ (F)$?
 
-La respuesta a esa pregunta es que no, porque el problema es indecible. Sin embargo, si existen algoritmos que cuando $f ∈ (G)$ termina y devuelve una prueba, pero que cuando $f ∉ (G)$ puede no terminar. Sobre esos algoritmos se trata este trabajo.
+La respuesta a esa pregunta es que no, porque el problema es indecible. Sin embargo, si existen algoritmos que cuando $f ∈ (F)$ termina y devuelve una prueba, pero que cuando $f ∉ (F)$ puede no terminar. Sobre esos algoritmos se trata este trabajo.
 
 Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
@@ -355,23 +355,23 @@ Sin embargo, (3) contradice (1) ya que por (4) $\lm(\tail(P_1)) < \lm(P_1)$.
 \end{proof}
 
 \begin{definition}[Reducciones]
-Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
+Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 
   $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 
   $→_{≤, g} = \bigcup_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
 
-  $→_{≤, G} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
+  $→_{≤, F} = \bigcup_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
 \end{definition}
 
 \begin{theorem}[Las reducciones achican]\label{thm:→ achican}
-Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
+Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 \begin{enumerate}[label = (\alph*)]
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
 
 \item $f →_{≤, g} f' ⇒ f' < f$
 
-\item $f →_{≤, G} f' ⇒ f' < f$
+\item $f →_{≤, F} f' ⇒ f' < f$
 \end{enumerate}
 \end{theorem}
 \begin{proof}
@@ -402,21 +402,21 @@ Si $i = 0$ aplica lo mismo pero directamente a $m_0$ sin tener en cuenta los $w$
 \end{proof}
 
 \begin{theorem}\label{thm:suma →↓}
-Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
+Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 
-  $f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f$
+  $f_0 →_{≤, F} f_1 ⇒ f_0 + f ↓_{≤, F} f_1 + f$
 
 \end{theorem}
 \begin{proof}
-Supongamos el antecedente $f_0 →_{≤, G} f_1$ (1)
+Supongamos el antecedente $f_0 →_{≤, F} f_1$ (1)
 
-Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (2), los cuales existen por el antecedente y por definición de $→_{≤, G}$
+Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (2), los cuales existen por el antecedente y por definición de $→_{≤, F}$
 
 Dividamos en casos según si $\lm_≤(agb) ∈ \sop(f)$:
 
 Caso $\lm_≤(agb) ∉ \sop(f)$:
 
-  En este caso tenemos $f_0 + f →_{≤, G} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, G} f_1 + f$
+  En este caso tenemos $f_0 + f →_{≤, F} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, F} f_1 + f$
 
 
 Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
@@ -427,109 +427,109 @@ Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
 
   Como además $\lm_≤(agb) ∉ \sop(f_1)$ por (1), tenemos:
 
-    $f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$ ((4))
 
-    $f_1 + f →_{≤, G} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$ ((2))
 
-    $f_1 + f →_{≤, G} f_0 + f$
+    $f_1 + f →_{≤, F} f_0 + f$
 
   $⇒$
 
-    $f_1 + f ↓_{≤, G} f_0 + f$
+    $f_1 + f ↓_{≤, F} f_0 + f$
 
   Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:
 
-  En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, G}$:
+  En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
 
-    $f_0 + f →_{≤, G} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$
-
-    $f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$
 
-    $f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+
+  $⇒$
+
+    $f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$ ((2))
 
-    $f_0 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (5)
+    $f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (5)
 
   Además por (3) y (4) también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
 
-    $f_1 + f →_{≤, G} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$
 
-    $f_1 + f →_{≤, G} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
-  $⇒$ ($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, G} f_1$ y definición de $→_{≤, G}$)
+  $⇒$ ($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)
 
-    $f_1 + f →_{≤, G} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
+    $f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
 
   $⇒$
 
-    $f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (6)
+    $f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (6)
 
-  Por (5) y (6) tenemos $f_0 + f ↓_{≤, G} f_1 + f$
+  Por (5) y (6) tenemos $f_0 + f ↓_{≤, F} f_1 + f$
 
 \end{proof}
 
 \begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:→^* = ≡}
-Sean $G ⊆ K⟨X⟩$, entonces:
+Sean $F ⊆ K⟨X⟩$, entonces:
 
-  $↔^*_{≤, G} = ≡_{(G)}$
+  $↔^*_{≤, F} = ≡_{(F)}$
 
-(Donde $≡_{(G)}$ es la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
+(Donde $≡_{(F)}$ es la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
 \end{theorem}
 \begin{proof}
 Lo vamos a probar por doble inclusión
 
-Prueba de $↔^*_{≤, G} ⊆ ≡_{(G)}$:
+Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 
-  Como tanto $↔^*_{≤, G}$ como $≡_{(G)}$ son relaciones de equivalencia y además $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, así que alcanza con probar $→_{≤, G} ⊆ ≡_{(G)}$
+  Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, así que alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
 
-  Supongamos $f →_{≤, G} f'$ (1), queremos probar $f ≡_{(G)} f'$
+  Supongamos $f →_{≤, F} f'$ (1), queremos probar $f ≡_{(F)} f'$
 
-  Sean $g ∈ G, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, G}$
+  Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, F}$
 
   Tenemos:
 
-    $f ≡_{(G)} f'$
+    $f ≡_{(F)} f'$
 
   $⇔$
 
-    $f - f' ∈ (G)$
+    $f - f' ∈ (F)$
 
   $⇔$
 
-    $f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (G)$
+    $f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F)$
 
   $⇔$
 
-    $\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (G)$
+    $\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F)$
 
   Y esto último es claramente cierto por la definición de ideal (\ref{def:ideal})
 
 \end{proof}
 
 \begin{theorem}
-Sea $G ⊆ K⟨X⟩$, entonces:
+Sea $F ⊆ K⟨X⟩$, entonces:
 
-  $→_{≤, G}$ es normalizante
+  $→_{≤, F}$ es normalizante
 
-  $→_{≤, G}$ es terminante
+  $→_{≤, F}$ es terminante
 \end{theorem}
 \begin{proof}
 Por el teorema \ref{thm:confluente ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
 
-Supongamos que $→_{≤, G}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
+Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
-$∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}$
+$∀i ∈ ℕ : P_i →_{≤, F} P_{i+1}$
 
 Por el teorema \ref{thm:→ achican} esto implica que:
 
@@ -540,28 +540,28 @@ Pero esto contradice el teorema \ref{thm:< en KX no cadenas dec inf} que dice qu
 \end{proof}
 
 \begin{theorem}[Caracterización de las formas normales de $→$]
-Sea $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces:
+Sea $F ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces:
 
-  $f$ está en forma normal con respecto a $→_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m$
+  $f$ está en forma normal con respecto a $→_{≤, F} ⇔ ∄g ∈ F, m ∈ \sop(f) : \lm(g) | m$
 
 \end{theorem}
 \begin{proof}
-Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$
+Por contradicción, supongamos que tenemos $g ∈ F, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$
 
 Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
 
-Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
+Entonces tenemos $f →_{≤, F} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
 \end{proof}
 
-Sin embargo $→_{≤, G}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
+Sin embargo $→_{≤, F}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
 
 \begin{definition}[Bases de Gröbner]
-Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$:
+Sean $I$ un ideal de $K⟨X⟩$ y $F ⊆ K⟨X⟩$:
 
-  $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente
+  $F$ es una base de Gröbner de $I ⇔ (F) = I ∧ →_{≤, F}$ es confluente
 
-  $G$ es una base de Gröbner reducida de $I ⇔ G$ es una base de Gröbner de $I ∧ ∀g ∈ G : g$ es irreducible con respecto a $→_{≤, G - \{g\}}$
+  $F$ es una base de Gröbner reducida de $I ⇔ F$ es una base de Gröbner de $I ∧ ∀g ∈ F : g$ es irreducible con respecto a $→_{≤, F - \{g\}}$
 
 \end{definition}
 
@@ -572,25 +572,25 @@ Se define:
 
   $e_≤$ es una estrategia de reducción $⇔$
 
-    $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$
+    $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f)$ es forma normal de $f$ con respecto a $→_{≤, F}$
 \end{definition}
 
-En los casos en los que $G$ es una base de Gröbner y por ende $→_{≤, G}$ es confluente hay una sola $e_≤(G)$ posible, pero cuando no es confluente puede haber muchas. Tener definida la estrategia de reducción como una función nos va a venir bien mas adelante para hablar de una forma normal manteniendo la generalidad de como se calcula una forma normal de cada elemento.
+En los casos en los que $F$ es una base de Gröbner y por ende $→_{≤, F}$ es confluente hay una sola $e_≤(F)$ posible, pero cuando no es confluente puede haber muchas. Tener definida la estrategia de reducción como una función nos va a venir bien mas adelante para hablar de una forma normal manteniendo la generalidad de como se calcula una forma normal de cada elemento.
 
 Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reduccion}
-  \KwData{$G = \{g_1, …, g_n\} ⊆ K⟨X⟩, f ∈ K⟨X⟩$}
-  \KwResult{$f' ∈ K⟨X⟩$}
-  $f' ← f$
+  \KwData{$F = \{f_1, …, f_n\} ⊆ K⟨X⟩, g ∈ K⟨X⟩$}
+  \KwResult{$g' ∈ K⟨X⟩$}
+  $g' ← g$
 
   $i ← 1$
 
   \While{$i ≤ n$} {
     \While{$i ≤ n$} {
-      \If{$g_i ∈ \sop(f')$} {
-        $f' ← f' - \frac{f'_{\lm(g_i)}}{\lc(g_i)}g_i$
+      \If{$f_i ∈ \sop(g')$} {
+        $g' ← g' - \frac{g'_{\lm(f_i)}}{\lc(f_i)}f_i$
 
         $i ← 1$
 
@@ -601,7 +601,7 @@ Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudo
       }
     }
   }
-  \Return{$f'$}
+  \Return{$g'$}
 \end{algorithm}
 
 Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el que reducir, y parar cuando ya no hay ninguno.
@@ -745,11 +745,11 @@ La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
 
 Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
-Sea además $G ⊆ K⟨X⟩$:
+Sea además $F ⊆ K⟨X⟩$:
 
   $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
 
-  $\amb(G) = \bigcup_{f, g ∈ G - \{0\}}{\amb(f, g)}$
+  $\amb(F) = \bigcup_{f, g ∈ F - \{0\}}{\amb(f, g)}$
 
 \end{definition}
 
@@ -808,22 +808,22 @@ Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
 
 \begin{definition}[Conjuntos del algoritmo de Buchberger]
-Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
+Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 
-  $\B_{e_≤}^0(G) = G$
+  $\B_{e_≤}^0(F) = F$
 
-  $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$
+  $\B_{e_≤}^{i + 1}(F) = \B_{e_≤}^i(F) ∪ \{e_≤(\B_{e_≤}^i(F))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(F))\}$
 
-  $\B_{e_≤}(G) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(G)$
+  $\B_{e_≤}(F) = \bigcup_{i = 0}^∞ \B_{e_≤}^i(F)$
 
 \end{definition}
 
 \begin{theorem}
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
+  Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 
-  $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$
+  $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$
 
-  $(G)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G)) = (G)$
+  $(F)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F)) = (F)$
 \end{theorem}
 
 
