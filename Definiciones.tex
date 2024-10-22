@@ -98,6 +98,8 @@ $→$ es confluente $⇒ →$ es normalizante
 
 \subsection{Álgebra libre}
 
+Ahora si empezamos con el tema de la tesis en si.
+
 \begin{definition}[Monomio libre]
 Sea $X$ un alfabeto finito:
 
@@ -106,9 +108,21 @@ $⟨X⟩ = X^*$
 a $⟨X⟩$ se lo llama monomios libres sobre $X$.
 \end{definition}
 
+Por ejemplo, si $X = \{a, b, c\}$ algunos monomios son:
+
+$m_0 = abbcb$
+
+$m_1 = bbc$
+
+$m_2 = bcb$
+
+$m_3 = ε$
+
+El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el la concatenación no es conmutativa.
+
 A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el producto como la concatenación:
 
-\begin{definition}[Producto de monomio libre]\
+\begin{definition}[Producto de monomios libre]\
 
   $· : ⟨X⟩^2 → ⟨X⟩$
 
@@ -117,6 +131,8 @@ A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el prod
 Y a la estructura $(⟨X⟩, ·)$ se la llama monoide libre sobre $⟨X⟩$.
 \end{definition}
 
+Siguiendo con el ejemplo de antes, tenemos $m_1 · m_2 = bccbcb$.
+
 \begin{definition}[Divisibilidad]
 Sean $v, w ∈ ⟨X⟩$:
 
@@ -124,6 +140,8 @@ Sean $v, w ∈ ⟨X⟩$:
 
 Y cuando $v | w$ se dice que $v$ divide a $w$.
 \end{definition}
+
+Y en el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
@@ -150,17 +168,21 @@ El orden lexicográfico por grado se define así:
   $a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b)$
 \end{definition}
 
-O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico.
+O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico, por ejemplo tenemos $bbc ≤_{deglex} ab$, $aabbc ≤_{deglex} abbcc$, $ab ≤_{deglex} abc$ y $ε ≤_{deglex} a$.
+
+Este orden se puede probar fácilmente que es un bueno orden monomial.
 
 A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y $>$ como se usan habitualmente.
 
-Ahora una propiedad sobre el orden monomial que es consecuencia directa De la definición:
+Ahora una propiedad sobre el orden monomial que es consecuencia directa de la definición:
 
 \begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< no cadenas dec inf}\
 
   $∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i$
 
 \end{theorem}
+
+Ahora pasamos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
 
 \begin{definition}[Álgebra libre (asociativa)]
 Sea $R$ un anillo conmutativo
@@ -215,7 +237,7 @@ Se define:
 
   $f$ es mónico $⇔ \lc_≤(f) = 1$
 
-A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$.
+A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$. Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 
 \end{definition}
 
@@ -227,7 +249,7 @@ Sea $R$ un anillo conmutativo, entonces:
 \end{theorem}
 
 Esto significa que aplican todas las definiciones y teoremas de anillo.
-En particular vale la definición de ideal y algunas definiciones y teoremas relacionados, que como son muy importantes para este trabajo las escribo acá también:
+En particular vale la definición de ideal y algunas definiciones y teoremas relacionados, que como son muy importantes para este trabajo las repasaremos a continuación.
 
 \begin{definition}[Ideal]\label{def:ideal}
 Sean $R$ un anillo e $I, B ⊆ R$
@@ -238,7 +260,7 @@ Sean $R$ un anillo e $I, B ⊆ R$
 
 \item $∀a, b ∈ I : a + b ∈ I$
 
-\item $∀a ∈ I, r, r' ∈ R : rar' ∈ I$
+\item $∀a ∈ I, r, r' ∈ R : r a r' ∈ I$
 \end{enumerate}
 
   $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
@@ -250,6 +272,7 @@ Sean $R$ un anillo y $B ⊆ R$:
   $(B)$ es un ideal de $R$
 
 \end{theorem}
+
 Además a $(B)$ se lo llama el ideal generado por $B$.
 
 \begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
@@ -278,9 +301,7 @@ A partir de ahora fijamos un cuerpo $K$.
 
 Una pregunta que surge es dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, ¿se puede calcular si $f ∈ (G)$?
 
-La respuesta a esa pregunta es que no, porque el problema es indecible
-
-% Acá hay que explicar que ese problema no es computable, pero que se puede hacer un intento …
+La respuesta a esa pregunta es que no, porque el problema es indecible. Sin embargo, si existen algoritmos que cuando $f ∈ (G)$ termina y devuelve una prueba, pero que cuando $f ∉ (G)$ puede no terminar. Sobre esos algoritmos se trata este trabajo.
 
 Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
@@ -323,7 +344,7 @@ Notar que:
 
 (3) $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
 
-  Esto por aplicar la definición del orden polinomial y (2).
+  Esto por aplicar la definición del orden polinomial, por (2) y por lo que estaos suponiendo sobre $P$.
 
 (4) $P_1 ≠ 0$
 
@@ -364,19 +385,19 @@ Esto implica por definición de reducciones:
 
   $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (3)
 
-Escribamos $f = \sum_{i = 1}^n c_i w_i$ con $c_1, …, c_n ∈ K$, $w_1, …, w_n ∈ ⟨X⟩, w_1 > w_2 > … > w_n$ (4)
+Escribamos $f = \sum_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$ (4)
 
-Sea $i$ tal que $w_i = \lm_≤(agb)$ (5), el cual existe por (2)
+Sea $i$ tal que $m_i = \lm_≤(agb)$ (5), el cual existe por (2)
 
-Notar también que $w_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (6) porque es (5) multiplicado por un escalar
+Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (6) porque es (5) multiplicado por un escalar
 
 Si $i ≠ 0$:
 
-  (6) significa que los términos $c_1 w_1, c_2 w_2, …, c_{i-1}, w_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas.
+  (6) significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas.
 
-  Además, como $w_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{w_i} = 0$, por ende, el término que sigue después de $w_{i-1}$ (si es que hay) es menor que $w_i$ y por ende $' < f$.
+  Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende $' < f$.
 
-Si $i = 0$ aplica lo mismo pero directamente a $w_0$ sin tener en cuenta los $w$ anteriores.
+Si $i = 0$ aplica lo mismo pero directamente a $m_0$ sin tener en cuenta los $w$ anteriores.
 
 \end{proof}
 
@@ -463,7 +484,7 @@ Sean $G ⊆ K⟨X⟩$, entonces:
 
   $↔^*_{≤, G} = ≡_{(G)}$
 
-(Donde $≡_{(G)}$ la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
+(Donde $≡_{(G)}$ es la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
 \end{theorem}
 \begin{proof}
 Lo vamos a probar por doble inclusión
