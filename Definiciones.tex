@@ -480,7 +480,7 @@ Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
 \end{proof}
 
 \begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:→^* = ≡}
-Sean $F ⊆ K⟨X⟩$, entonces:
+Sea $F ⊆ K⟨X⟩$, entonces:
 
   $↔^*_{≤, F} = ≡_{(F)}$
 
@@ -515,6 +515,16 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 
   Y esto último es claramente cierto por la definición de ideal (\ref{def:ideal})
 
+\end{proof}
+
+\begin{theorem}[Las reducciones se mantienen en ideal]\label{thm:→ mantiene pertenencia a ideal}
+Sean $F ⊆ K⟨X⟩, f, g ∈ (F)$, entonces:
+
+  $f →^*_{≤, F} f' ⇒ (f ∈ (F) ⇔ g ∈ (F))$
+
+\end{theorem}
+\begin{proof}
+Si asumimos $f →^*_{≤, F} f'$ tenemos por el teorema \ref{thm:→^* = ≡} $f ≡_{(F)} f'$ y entonces por el teorema \ref{thm:en ideal ⇔ congruente 0} tenemos $f ∈ (F) ⇔ f' ∈ (F)$
 \end{proof}
 
 \begin{theorem}
@@ -572,7 +582,7 @@ Se define:
 
   $e_≤$ es una estrategia de reducción $⇔$
 
-    $∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f)$ es forma normal de $f$ con respecto a $→_{≤, F}$
+    $∀F ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f)$ es forma normal de $f$ con respecto a $→_{≤, F}$
 \end{definition}
 
 En los casos en los que $F$ es una base de Gröbner y por ende $→_{≤, F}$ es confluente hay una sola $e_≤(F)$ posible, pero cuando no es confluente puede haber muchas. Tener definida la estrategia de reducción como una función nos va a venir bien mas adelante para hablar de una forma normal manteniendo la generalidad de como se calcula una forma normal de cada elemento.
@@ -580,7 +590,7 @@ En los casos en los que $F$ es una base de Gröbner y por ende $→_{≤, F}$ es
 Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
-  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reduccion}
+  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reducción}
   \KwData{$F = \{f_1, …, f_n\} ⊆ K⟨X⟩, g ∈ K⟨X⟩$}
   \KwResult{$g' ∈ K⟨X⟩$}
   $g' ← g$
@@ -606,7 +616,20 @@ Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudo
 
 Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el que reducir, y parar cuando ya no hay ninguno.
 
-\begin{theorem}[Equivalencias de base de Gröbner]
+Una propiedad sobre las estrategias de reducción que vamos a necesitar es la siguiente:
+
+\begin{theorem}[Las estrategias de reducción mantienen la pertenencia a ideales]\label{thm:e mantiene pertenencia a ideal}
+Sean $e_≤$ una estrategia de reducción, $F ⊆ K⟨X⟩$ y $f ∈ (F)$, entonces:
+
+  $e_≤(F)(f) ∈ (F)$
+
+\end{theorem}
+\begin{proof}
+Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)(f)$ y por ende por el teorema \ref{thm:S es cerrado en ideal} y que $F ⊆ K⟨X⟩$ tenemos $e_≤(F)(f) ∈ (F)$.
+\end{proof}
+
+
+\begin{theorem}[Equivalencias de base de Gröbner]\label{thm:equivalencias de base de Gröbner}
 Sean $I$ un ideal de $K⟨X⟩$, $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción.
 
 Son equivalentes:
@@ -759,7 +782,6 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una am
   $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
 \end{theorem}
-
 \begin{proof}\
 
   $\lm_≤{(afb)}$
@@ -795,15 +817,37 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una
 \end{definition}
 
 \begin{theorem}
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
 
   $\lm_≤{(\S(α))} < \lm_≤{(α)}$
 
 \end{theorem}
-
 \begin{proof}
 Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan
 \end{proof}
+
+\begin{theorem}\label{thm:S es cerrado en ideal}
+Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad
+
+  $\S(α) ∈ I$
+
+\end{theorem}
+\begin{proof}
+En la definición de $\S$ se ve claramente que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$ (en particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$)
+\end{proof}
+
+\begin{theorem}\label{thm:equivalencias de base de Gröbner (con ambs)}
+Sean $I$ un ideal de $K⟨X⟩$, $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción.
+
+Son equivalentes:
+\begin{enumerate}
+\item $G$ es una base de Gröbner de $I$
+
+\item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$
+
+\end{enumerate}
+\end{theorem}
+% TODO: Agregar prueba. De cualquier manera, Hof no lo prueba a esto
 
 % Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
 
@@ -819,13 +863,62 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 \end{definition}
 
 \begin{theorem}
-  Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
+Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 
-  $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$
+  $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$ (1)
 
-  $(F)$ tiene una base finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F)) = (F)$
+  $(F)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F))$ es una base de Gröbner (2)
 \end{theorem}
+\begin{proof}
+Primero vamos a probar algunos teoremas intermedios:
 
+(3) $∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
+
+  Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
+
+  Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
+
+  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$
+
+  El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva.
+
+  Para el otro caso tomemos ese $α$:
+
+    Por el teorema \ref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
+
+    Esto implica por el teorema \ref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+
+    Con lo cual queda probado (3).
+
+(4) $∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
+
+  Esto consecuencia directa de (3) y la definición de $\B_{e_≤}$
+
+(5) $(\B_{e_≤}(F)) = (F)$
+
+  Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por (4).
+
+(6) $∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
+
+  Tomemos $α ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$
+
+  Sea $(a, b, c, d, f, g) = α$
+
+  Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$
+
+  Sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$ y $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$
+
+  Tomemos $k = \max(i, j)$
+
+  Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$
+
+  Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probado (6).
+
+Y ahora, por (5) y (6) vale la definición de base de Gröbner, así que queda probado (1).
+
+% TODO: Probar (2)
+
+\end{proof}
 
 
 % \begin{algorithm}
