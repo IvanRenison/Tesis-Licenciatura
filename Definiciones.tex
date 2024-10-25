@@ -700,7 +700,7 @@ Prueba de $(G) = I$:
 
     Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
 
-    Esto siguiente que $f →^*_{≤, G} 0$ y por ende por (3) $f ∈ I$
+    Esto significa que $f →^*_{≤, G} 0$ y por ende por (3) $f ∈ I$
 
   Vuelta ($⇐$):
 
@@ -716,11 +716,11 @@ Prueba de $(G) = I$:
 
 Prueba de $→_{≤, G}$ es confluente:
 
-  Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
+  Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
 
   Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
 
-  $f →^*_{≤, G} f_0 ∧ f →^*{≤, G} f_1$
+  $f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1$
 
 $⇒$
 
@@ -777,7 +777,7 @@ Sea además $F ⊆ K⟨X⟩$:
 \end{definition}
 
 \begin{theorem}
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩, α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad:
 
   $\lm_≤{(afb)} = \lm_≤{(cgd)}$
 
@@ -837,7 +837,7 @@ En la definición de $\S$ se ve claramente que es una combinación lineal de $f$
 \end{proof}
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner (con ambs)}
-Sean $I$ un ideal de $K⟨X⟩$, $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción.
+Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
 
 Son equivalentes:
 \begin{enumerate}
@@ -870,7 +870,7 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
   $(F)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F))$ es una base de Gröbner (2)
 \end{theorem}
 \begin{proof}
-Primero vamos a probar algunos teoremas intermedios:
+Primero vamos a probar algunas afirmaciones intermedias:
 
 (3) $∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
 
