@@ -1,4 +1,8 @@
 \documentclass{amsbook}
+
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+
 \usepackage{amsthm}
 \usepackage{fontspec}
 \usepackage{enumitem}
@@ -9,16 +13,12 @@
 
 \hfuzz=50pt % Elimina warnings de "Overfull \hbox"
 
-% \usepackage{silence} % Para eliminar el warning "Non-breaking space (`~') should have been used."
-% \WarningFilter{latex}{Non-breaking space} % Pero no anda 😕
-
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
 \usepackage[ruled, vlined, linesnumbered]{algorithm2e}
 
-\usepackage{polyglossia}
-\setdefaultlanguage{spanish}
+\usepackage[capitalise]{cleveref}
 
 \newtheoremstyle{customstyle} % <name>
 {} % <Space above>
@@ -333,7 +333,7 @@ $<$ como relación de $K⟨X⟩$ es un pre-orden.
 \begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
 
-(tomar este mínimo está bien por el teorema \ref{thm:< no cadenas dec inf})
+(tomar este mínimo está bien por el \cref{thm:< no cadenas dec inf})
 
 Notar que:
 
@@ -465,7 +465,7 @@ Sea $F ⊆ K⟨X⟩$, entonces:
 
   $↔^*_{≤, F} = ≡_{(F)}$
 
-(Donde $≡_{(F)}$ es la congruencia modulo un ideal definida en la definición \ref{def:congruencia mod ideal})
+(Donde $≡_{(F)}$ es la congruencia modulo un ideal definida en la \cref{def:congruencia mod ideal})
 \end{theorem}
 \begin{proof}
 Lo vamos a probar por doble inclusión
@@ -483,9 +483,9 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 &f ≡_{(F)} f' \\
 & ⇔ f - f' ∈ (F) \\
 & ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F) \\
-& ⇔ frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F) \\
+& ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F) \\
 \end{align*}
-  Y esto último es claramente cierto por la definición de ideal (\ref{def:ideal})
+  Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
 
 \end{proof}
 
@@ -496,7 +496,7 @@ Sean $F ⊆ K⟨X⟩, f, g ∈ (F)$, entonces:
 
 \end{theorem}
 \begin{proof}
-Si asumimos $f →^*_{≤, F} f'$ tenemos por el teorema \ref{thm:→^* = ≡} $f ≡_{(F)} f'$ y entonces por el teorema \ref{thm:en ideal ⇔ congruente 0} tenemos $f ∈ (F) ⇔ f' ∈ (F)$
+Si asumimos $f →^*_{≤, F} f'$ tenemos por el \cref{thm:→^* = ≡} $f ≡_{(F)} f'$ y entonces por el \cref{thm:en ideal ⇔ congruente 0} tenemos $f ∈ (F) ⇔ f' ∈ (F)$
 \end{proof}
 
 \begin{theorem}
@@ -507,17 +507,17 @@ Sea $F ⊆ K⟨X⟩$, entonces:
   $→_{≤, F}$ es terminante
 \end{theorem}
 \begin{proof}
-Por el teorema \ref{thm:confluente ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
+Por el \cref{thm:confluente ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
 
 Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
 $∀i ∈ ℕ : P_i →_{≤, F} P_{i+1}$
 
-Por el teorema \ref{thm:→ achican} esto implica que:
+Por el \cref{thm:→ achican} esto implica que:
 
 $∀i ∈ ℕ : P_i > P_{i+1}$
 
-Pero esto contradice el teorema \ref{thm:< en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
+Pero esto contradice el \cref{thm:< en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
 
 \end{proof}
 
@@ -597,7 +597,7 @@ Sean $e_≤$ una estrategia de reducción, $F ⊆ K⟨X⟩$ y $f ∈ (F)$, enton
 
 \end{theorem}
 \begin{proof}
-Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)(f)$ y por ende por el teorema \ref{thm:S es cerrado en ideal} y que $F ⊆ K⟨X⟩$ tenemos $e_≤(F)(f) ∈ (F)$.
+Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)(f)$ y por ende por el \cref{thm:S es cerrado en ideal} y que $F ⊆ K⟨X⟩$ tenemos $e_≤(F)(f) ∈ (F)$.
 \end{proof}
 
 
@@ -626,11 +626,11 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
 \begin{align*}
 &f ∈ I &\\
-& ⇔ f ≡_I 0 &\text{(Teorema \ref{thm:en ideal ⇔ congruente 0})} \\
-& ⇔ f ↔^*_{≤, G} 0 &\text{(Teorema \ref{thm:→^* = ≡})} \\
-& ⇔ f ↓_{≤, G} 0 &\text{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
+& ⇔ f ≡_I 0 &\text{(\cref{thm:en ideal ⇔ congruente 0})} \\
+& ⇔ f ↔^*_{≤, G} 0 &\text{(\cref{thm:→^* = ≡})} \\
+& ⇔ f ↓_{≤, G} 0 &\text{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
 & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' &\text{(Definición de $↓$)} \\
-& ⇔ f →^*_{≤, G} 0 &\text{(Como $0$ es el mínimo elemento y el teorema \ref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
+& ⇔ f →^*_{≤, G} 0 &\text{(Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
 \end{align*}
 
 Ahora probemos (2) $⇒$ (1):
@@ -681,10 +681,10 @@ Prueba de $→_{≤, G}$ es confluente:
 \begin{align*}
 &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 &\\
 & ⇒ f_0 ↔^*_{≤, G} f_1 \\
-& ⇒ f_0 ≡_{(G)} f_1 &\text{(Teorema \ref{thm:→^* = ≡})} \\
+& ⇒ f_0 ≡_{(G)} f_1 &\text{(\cref{thm:→^* = ≡})} \\
 & ⇒ f_0 - f_1 ∈ (G) &\text{(Definición $≡_{\ ·\ }$)} \\
 & ⇒ f_0 - f_1 →^*_{≤, G} 0 &\text{((3), ya probamos que $(G) = I$)} \\
-& ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 &\text{(Teorema \ref{thm:suma →↓})}\\
+& ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 &\text{(\cref{thm:suma →↓})}\\
 & ⇒ f_0 ↓_{≤, G} f_1 &\\
 \end{align*}
 Con esto se termina la prueba.
@@ -816,9 +816,9 @@ Primero vamos a probar algunas afirmaciones intermedias:
 
   Para el otro caso tomemos ese $α$:
 
-    Por el teorema \ref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
+    Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
 
-    Esto implica por el teorema \ref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+    Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
 
     Con lo cual queda probado (3).
 
