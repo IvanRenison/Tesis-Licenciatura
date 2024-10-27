@@ -7,7 +7,7 @@
 \usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
 \setmathfont{Asana Math}
 
-\hfuzz=1000pt % Elimina warnings de "Overfull \hbox"
+\hfuzz=50pt % Elimina warnings de "Overfull \hbox"
 
 % \usepackage{silence} % Para eliminar el warning "Non-breaking space (`~') should have been used."
 % \WarningFilter{latex}{Non-breaking space} % Pero no anda 😕
@@ -263,7 +263,7 @@ Sean $R$ un anillo e $I, B ⊆ R$
 \item $∀a ∈ I, r, r' ∈ R : r a r' ∈ I$
 \end{enumerate}
 
-  $(B) = \{\sum_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
+  $(B) = \{∑_{i = 1}^n c_i b_i c_i' : n ∈ ℕ, b_1, …, b_n ∈ B, c_1, …, c_n, c_1', …, c_n' ∈ R\}$
 \end{definition}
 
 \begin{theorem}
@@ -333,7 +333,7 @@ $<$ como relación de $K⟨X⟩$ es un pre-orden.
 \begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
 
-(tomar este mínimo está bien por el teorema \ref{thm:< no cadenas dec inf}) % Mencionar el teorema sobre monomios
+(tomar este mínimo está bien por el teorema \ref{thm:< no cadenas dec inf})
 
 Notar que:
 
@@ -350,7 +350,7 @@ Notar que:
 
   Esto por que claramente $0$ es un mínimo.
 
-Sin embargo, (3) contradice (1) ya que por (4) $\lm(\tail(P_1)) < \lm(P_1)$.
+Sin embargo, (3) contradice (1) ya que por (4) vale que $\lm(\tail(P_1)) < \lm(P_1)$.
 
 \end{proof}
 
@@ -401,6 +401,8 @@ Si $i = 0$ aplica lo mismo pero directamente a $m_0$ sin tener en cuenta los $w$
 
 \end{proof}
 
+%%%% typ limit
+
 \begin{theorem}\label{thm:suma →↓}
 Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 
@@ -427,53 +429,32 @@ Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
 
   Como además $\lm_≤(agb) ∉ \sop(f_1)$ por (1), tenemos:
 
-    $f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$ ((4))
-
-    $f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$ ((2))
-
-    $f_1 + f →_{≤, F} f_0 + f$
-
-  $⇒$
-
-    $f_1 + f ↓_{≤, F} f_0 + f$
+\begin{align*}
+&f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb & \text{(4)} \\
+& ⇒ f_1 + f →_{≤, F} f_0 + f & \text{(2)} \\
+& ⇒ f_1 + f ↓_{≤, F} f_0 + f &
+\end{align*}
 
   Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:
 
   En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
-
-    $f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$
-
-    $f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$
-
-    $f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$ ((2))
-
-    $f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (5)
+\begin{align*}
+&f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\text{(2)}\\
+\end{align*}
+    Llamemos (5) a este último resultado.
 
   Además por (3) y (4) también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
-
-    $f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$
-
-    $f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$ ($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)
-
-    $f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$
-
-  $⇒$
-
-    $f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (6)
+\begin{align*}
+&f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\text{($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)} \\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
+\end{align*}
+    Llamemos (6) a este último resultado.
 
   Por (5) y (6) tenemos $f_0 + f ↓_{≤, F} f_1 + f$
 
@@ -498,21 +479,12 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
   Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, F}$
 
   Tenemos:
-
-    $f ≡_{(F)} f'$
-
-  $⇔$
-
-    $f - f' ∈ (F)$
-
-  $⇔$
-
-    $f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F)$
-
-  $⇔$
-
-    $\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F)$
-
+\begin{align*}
+&f ≡_{(F)} f' \\
+& ⇔ f - f' ∈ (F) \\
+& ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F) \\
+& ⇔ frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F) \\
+\end{align*}
   Y esto último es claramente cierto por la definición de ideal (\ref{def:ideal})
 
 \end{proof}
@@ -652,27 +624,14 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
   Vamos de un lado para el otro:
 
-    $f ∈ I$
-
-  $⇔$ (Teorema \ref{thm:en ideal ⇔ congruente 0})
-
-    $f ≡_I 0$
-
-  $⇔$ (Teorema \ref{thm:→^* = ≡})
-
-    $f ↔^*_{≤, G} 0$
-
-  $⇔$ (Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)
-
-    $f ↓_{≤, G} 0$
-
-  $⇔$ (Definición de $↓$)
-
-    $∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f'$
-
-  $⇔$ (Como $0$ es el mínimo elemento y el teorema \ref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)
-
-    $f →^*_{≤, G} 0$
+\begin{align*}
+&f ∈ I &\\
+& ⇔ f ≡_I 0 &\text{(Teorema \ref{thm:en ideal ⇔ congruente 0})} \\
+& ⇔ f ↔^*_{≤, G} 0 &\text{(Teorema \ref{thm:→^* = ≡})} \\
+& ⇔ f ↓_{≤, G} 0 &\text{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el teorema \ref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
+& ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' &\text{(Definición de $↓$)} \\
+& ⇔ f →^*_{≤, G} 0 &\text{(Como $0$ es el mínimo elemento y el teorema \ref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
+\end{align*}
 
 Ahora probemos (2) $⇒$ (1):
 
@@ -719,33 +678,15 @@ Prueba de $→_{≤, G}$ es confluente:
   Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
 
   Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
-
-  $f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1$
-
-$⇒$
-
-  $f_0 ↔^*_{≤, G} f_1$
-
-$⇒$ (Teorema \ref{thm:→^* = ≡})
-
-  $f_0 ≡_{(G)} f_1$
-
-$⇒$ (Definición $≡_{\ ·\ }$)
-
-  $f_0 - f_1 ∈ (G)$
-
-$⇒$ ((3), ya probamos que $(G) = I$)
-
-  $f_0 - f_1 →^*_{≤, G} 0$
-
-$⇒$ (Teorema \ref{thm:suma →↓})
-
-  $(f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1$
-
-$⇒$
-
-  $f_0 ↓_{≤, G} f_1$
-
+\begin{align*}
+&f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 &\\
+& ⇒ f_0 ↔^*_{≤, G} f_1 \\
+& ⇒ f_0 ≡_{(G)} f_1 &\text{(Teorema \ref{thm:→^* = ≡})} \\
+& ⇒ f_0 - f_1 ∈ (G) &\text{(Definición $≡_{\ ·\ }$)} \\
+& ⇒ f_0 - f_1 →^*_{≤, G} 0 &\text{((3), ya probamos que $(G) = I$)} \\
+& ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 &\text{(Teorema \ref{thm:suma →↓})}\\
+& ⇒ f_0 ↓_{≤, G} f_1 &\\
+\end{align*}
 Con esto se termina la prueba.
 
 \end{proof}
@@ -783,21 +724,12 @@ Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, 
 
 \end{theorem}
 \begin{proof}\
-
-  $\lm_≤{(afb)}$
-
-$=$ (Definición de ambigüedad para polinomios)
-
-  $a\lm_≤{(f)}b$
-
-$=$ (Definición de ambigüedad)
-
-  $c\lm_≤{(g)}d$
-
-$=$ (Definición de ambigüedad para polinomios)
-
-  $\lm_≤{(cgd)}$
-
+\begin{align*}
+&\lm_≤{(afb)} &\\
+& = a\lm_≤{(f)}b &\text{(Definición de ambigüedad para polinomios)} \\
+& = c\lm_≤{(g)}d &\text{(Definición de ambigüedad)} \\
+& = \lm_≤{(cgd)} &\text{(Definición de ambigüedad para polinomios)} \\
+\end{align*}
 \end{proof}
 
 Eso motiva la siguiente definición.
