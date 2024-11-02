@@ -439,8 +439,8 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 \end{proof}
 
 \begin{theorem}[Las reducciones se mantienen en ideal]\label{thm:→ mantiene pertenencia a ideal}
-Sean $F ⊆ K⟨X⟩, f, g ∈ (F)$, entonces:
-\[ f →^*_{≤, F} f' ⇒ (f ∈ (F) ⇔ g ∈ (F)) \]
+Sean $F ⊆ K⟨X⟩, f, f' ∈ (F)$, entonces:
+\[ f →^*_{≤, F} f' ⇒ (f ∈ (F) ⇔ f' ∈ (F)) \]
 \end{theorem}
 \begin{proof}
 Si asumimos $f →^*_{≤, F} f'$ tenemos por el \cref{thm:→^* = ≡} $f ≡_{(F)} f'$ y entonces por el \cref{thm:en ideal ⇔ congruente 0} tenemos $f ∈ (F) ⇔ f' ∈ (F)$
@@ -481,7 +481,7 @@ Entonces tenemos $f →_{≤, F} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y p
 
 Sin embargo $→_{≤, F}$ no necesariamente es confluente, eso motiva las siguientes dos definiciones.
 
-\begin{definition}[Bases de Gröbner]
+\begin{definition}[Bases de Gröbner]\label{def:base de Gröbner}
 Sean $I$ un ideal de $K⟨X⟩$ y $F ⊆ K⟨X⟩$:
 \[ F\text{ es una base de Gröbner de }I ⇔ (F) = I ∧ →_{≤, F} \text{es confluente} \]
 \[ F\text{ es una base de Gröbner reducida de }I ⇔ % Acá va un salto de linea, pero se como ponerlo
@@ -538,7 +538,7 @@ Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)
 \end{proof}
 
 \begin{theorem}[Equivalencias de base de Gröbner]\label{thm:equivalencias de base de Gröbner}
-Sean $I$ un ideal de $K⟨X⟩$, $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción.
+Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
 
 Son equivalentes:
 \begin{enumerate}
@@ -546,6 +546,11 @@ Son equivalentes:
 
 \item $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$
 
+\item $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ f →^*_{≤, G} 0)$
+
+\item $(G) = I ∧ ∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$
+
+\item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i$
 \end{enumerate}
 % Quizás agregue mas en algún momento
 
@@ -571,7 +576,7 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
 Ahora probemos (2) $⇒$ (1):
 
-Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (3), tenemos que probar que $G$ es una base de Gröbner de $I$:
+Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (6), tenemos que probar que $G$ es una base de Gröbner de $I$:
 
   $G$ es una base de Gröbner de $I$
 
@@ -595,13 +600,13 @@ Prueba de $(G) = I$:
 
     Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
 
-    Esto significa que $f →^*_{≤, G} 0$ y por ende por (3) $f ∈ I$
+    Esto significa que $f →^*_{≤, G} 0$ y por ende por (6) $f ∈ I$
 
   Vuelta ($⇐$):
 
     Supongamos $f ∈ I$
 
-    Por (3) tenemos que $f →^*_{≤, G} 0$
+    Por (6) tenemos que $f →^*_{≤, G} 0$
 
     Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
 
@@ -619,10 +624,45 @@ Prueba de $→_{≤, G}$ es confluente:
 & ⇒ f_0 ↔^*_{≤, G} f_1 \\
 & ⇒ f_0 ≡_{(G)} f_1 &\text{(\cref{thm:→^* = ≡})} \\
 & ⇒ f_0 - f_1 ∈ (G) &\text{(Definición $≡_{\ ·\ }$)} \\
-& ⇒ f_0 - f_1 →^*_{≤, G} 0 &\text{((3), ya probamos que $(G) = I$)} \\
+& ⇒ f_0 - f_1 →^*_{≤, G} 0 &\text{((6), ya probamos que $(G) = I$)} \\
 & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 &\text{(\cref{thm:suma →↓})}\\
 & ⇒ f_0 ↓_{≤, G} f_1 &\\
 \end{align*}
+
+(2) $⇒$ (3) es cierto porque la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es claramente cierta por el \cref{thm:→^* = ≡}.
+
+Ahora probemos (2) $⇒$ (4) suponiendo (2)
+
+  La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
+
+  Para la parte de $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ ∃g ∈ G : \lm(g) | \lm(f))$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
+
+  Por (2) tenemos $f →^*_{≤, G} 0$
+
+  Esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
+
+Ahora probemos (4) $⇒$ (3) por contradicción:
+
+  O sea, supongamos que vale (4) y que no vale (3), y en particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$
+
+  Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$
+
+  Sean también:
+
+    $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
+
+    $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+
+  Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$
+
+  Además por \cref{thm:→ achican} $f' < f$
+
+  Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$
+
+  Sin embargo esto contradice que $f$ sea mínimo
+
+Los casos (2) $⇒$ (5) y (5) $⇒$ (4) son muy fáciles y quedan como ejercicio. % Pongo esto hasta que la haga
+
 Con esto se termina la prueba.
 
 \end{proof}
@@ -767,9 +807,50 @@ Primero vamos a probar algunas afirmaciones intermedias:
 
 Y ahora, por (5) y (6) vale la definición de base de Gröbner, así que queda probado (1).
 
-% TODO: Probar (2)
+Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$
+
+Para cada $i ∈ \{1, …, n\}$ sean:
+
+  $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(F), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$ (7)
+
+    Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}
+
+  $F' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$
+
+  $k ∈ ℕ$ el mínimo tal que $F' ⊆ \B_{e_≤}^k(F)$
+
+    Notar que $k$ está bien definido porque $F'$ es finito
+
+Ahora vamos a probar que $\B_{e_≤}^k(F)$ es una base de Gröbner de $(F)$
+
+Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
+
+$∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i$
+
+Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
+
+Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{j_i} b'_i$
+
+\begin{align*}
+&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i &\\
+& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_i'} a_{i', j} g_{i', j} b_{i', j}) b'_i &\text{(7)}\\
+& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i', j} b_{i', j} b'_i &\\
+\end{align*}
+
+Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
+
+Con esto queda completada la prueba.
 
 \end{proof}
+
+
+
+% \begin{algorithm}
+%   \caption{Buchberger}
+%   \KwData{Datos de entrada}
+%   \KwResult{Resultado esperado}
+%   Inicializar variables\;
+%   \For{cada elemento en la list
 
 
 % \begin{algorithm}
