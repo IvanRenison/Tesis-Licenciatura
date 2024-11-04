@@ -10,6 +10,8 @@
 \defaultfontfeatures{Renderer=Basic,Ligatures={TeX}}
 \usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
 \setmathfont{Asana Math}
+\usepackage{witharrows}
+\WithArrowsOptions{fleqn,displaystyle,i,tikz={font={\small\normalfont}},ygap=0.5em,wrap-lines}
 
 \hfuzz=50pt % Elimina warnings de "Overfull \hbox"
 
@@ -379,31 +381,31 @@ Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
 
   Como además $\lm_≤(agb) ∉ \sop(f_1)$ por (1), tenemos:
 
-\begin{align*}
-&f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb & \text{(4)} \\
-& ⇒ f_1 + f →_{≤, F} f_0 + f & \text{(2)} \\
-& ⇒ f_1 + f ↓_{≤, F} f_0 + f &
-\end{align*}
+\begin{DispWithArrows*}
+&f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(4)} \\
+& ⇒ f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(2)} \\
+& ⇒ f_1 + f →_{≤, F} f_0 + f \\
+& ⇒ f_1 + f ↓_{≤, F} f_0 + f
+\end{DispWithArrows*}
 
   Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:
 
   En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
-\begin{align*}
-&f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\text{(2)}\\
-\end{align*}
+\begin{DispWithArrows*}
+&f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(2)}\\
+& ⇒ f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
+\end{DispWithArrows*}
     Llamemos (5) a este último resultado.
 
   Además por (3) y (4) también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
-\begin{align*}
-&f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\text{($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)} \\
-& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb &\\
-\end{align*}
+\begin{DispWithArrows*}
+&f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)}\\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
+\end{DispWithArrows*}
     Llamemos (6) a este último resultado.
 
   Por (5) y (6) tenemos $f_0 + f ↓_{≤, F} f_1 + f$
@@ -428,12 +430,12 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
   Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, F}$
 
   Tenemos:
-\begin{align*}
+\begin{DispWithArrows*}
 &f ≡_{(F)} f' \\
 & ⇔ f - f' ∈ (F) \\
 & ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F) \\
-& ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F) \\
-\end{align*}
+& ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F)
+\end{DispWithArrows*}
   Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
 
 \end{proof}
@@ -565,14 +567,14 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
   Vamos de un lado para el otro:
 
-\begin{align*}
-&f ∈ I &\\
-& ⇔ f ≡_I 0 &\text{(\cref{thm:en ideal ⇔ congruente 0})} \\
-& ⇔ f ↔^*_{≤, G} 0 &\text{(\cref{thm:→^* = ≡})} \\
-& ⇔ f ↓_{≤, G} 0 &\text{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
-& ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' &\text{(Definición de $↓$)} \\
-& ⇔ f →^*_{≤, G} 0 &\text{(Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
-\end{align*}
+\begin{DispWithArrows*}
+&f ∈ I \Arrow{(\cref{thm:en ideal ⇔ congruente 0})} \\
+& ⇔ f ≡_I 0 \Arrow{(\cref{thm:→^* = ≡})} \\
+& ⇔ f ↔^*_{≤, G} 0 \Arrow{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
+& ⇔ f ↓_{≤, G} 0 \Arrow{(Definición de $↓$)} \\
+& ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{(Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
+& ⇔ f →^*_{≤, G} 0
+\end{DispWithArrows*}
 
 Ahora probemos (2) $⇒$ (1):
 
@@ -619,15 +621,15 @@ Prueba de $→_{≤, G}$ es confluente:
   Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
 
   Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
-\begin{align*}
-&f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 &\\
-& ⇒ f_0 ↔^*_{≤, G} f_1 \\
-& ⇒ f_0 ≡_{(G)} f_1 &\text{(\cref{thm:→^* = ≡})} \\
-& ⇒ f_0 - f_1 ∈ (G) &\text{(Definición $≡_{\ ·\ }$)} \\
-& ⇒ f_0 - f_1 →^*_{≤, G} 0 &\text{((6), ya probamos que $(G) = I$)} \\
-& ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 &\text{(\cref{thm:suma →↓})}\\
-& ⇒ f_0 ↓_{≤, G} f_1 &\\
-\end{align*}
+\begin{DispWithArrows*}
+&f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
+& ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{(\cref{thm:→^* = ≡})} \\
+& ⇒ f_0 ≡_{(G)} f_1 \Arrow{(Definición $≡_{\ ·\ }$)} \\
+& ⇒ f_0 - f_1 ∈ (G) \Arrow{((6), ya probamos que $(G) = I$)} \\
+& ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{(\cref{thm:suma →↓})} \\
+& ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
+& ⇒ f_0 ↓_{≤, G} f_1
+\end{DispWithArrows*}
 
 (2) $⇒$ (3) es cierto porque la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es claramente cierta por el \cref{thm:→^* = ≡}.
 
@@ -693,12 +695,12 @@ Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, 
 
 \end{theorem}
 \begin{proof}\
-\begin{align*}
-&\lm_≤{(afb)} &\\
-& = a\lm_≤{(f)}b &\text{(Definición de ambigüedad para polinomios)} \\
-& = c\lm_≤{(g)}d &\text{(Definición de ambigüedad)} \\
-& = \lm_≤{(cgd)} &\text{(Definición de ambigüedad para polinomios)} \\
-\end{align*}
+\begin{DispWithArrows*}
+&\lm_≤{(afb)} \Arrow{(Definición de ambigüedad para polinomios)} \\
+& = a\lm_≤{(f)}b \Arrow{(Definición de ambigüedad)} \\
+& = c\lm_≤{(g)}d \Arrow{(Definición de ambigüedad para polinomios)} \\
+& = \lm_≤{(cgd)}
+\end{DispWithArrows*}
 \end{proof}
 
 Eso motiva la siguiente definición.
@@ -831,11 +833,11 @@ Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
 
 Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{j_i} b'_i$
 
-\begin{align*}
-&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i &\\
-& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_i'} a_{i', j} g_{i', j} b_{i', j}) b'_i &\text{(7)}\\
-& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i', j} b_{i', j} b'_i &\\
-\end{align*}
+\begin{DispWithArrows*}
+&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{(7)} \\
+& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_i'} a_{i', j} g_{i', j} b_{i', j}) b'_i \\
+& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i', j} b_{i', j} b'_i
+\end{DispWithArrows*}
 
 Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
 
