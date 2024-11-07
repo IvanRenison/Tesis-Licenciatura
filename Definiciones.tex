@@ -65,7 +65,20 @@ En esta sub-sección se explican algunas definiciones y teoremas básicos de sis
 
 Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
 
-\begin{definition}
+\begin{definition} Sea $⟿ ⊆ A^2$ otra relación sobre $A$:
+\begin{itemize}
+\item $→ ∘ ⟿ = \{(x, z) ∈ A^2 : ∃y ∈ A : x → y ∧ y ⟿ z\}$
+\item $→^0 = \{(x, x) : x ∈ A\}$
+\item $→^{n + 1} = →^n ∘ →$
+\item $→^* = ⋃_{n = 0}^∞ →^n$
+\item $← = \{(y, x) ∈ A^2 : (x, y) ∈ →\}$
+\item $↔ = → ∪ ←$
+\item $↔^* = →^* ∪ ←^*$
+\end{itemize}
+\end{definition}
+
+\begin{definition}\
+
 \begin{itemize}
 \item $a$ está en forma normal $⇔ ∄x ∈ A : a → x$
 \item $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal
