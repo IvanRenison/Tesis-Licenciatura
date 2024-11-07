@@ -80,8 +80,8 @@ Sean $a, b ∈ A$:
 \[ → \text{es terminante} ⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1} \]
 \end{definition}
 
-\begin{theorem}\label{thm:confluente ⇒ normalizante} % REVISAR
-$→$ es confluente $⇒ →$ es normalizante
+\begin{theorem}\label{thm:terminante ⇒ normalizante}
+$→$ es terminante $⇒ →$ es normalizante
 \end{theorem}
 
 \begin{theorem}\label{thm:confluente ⇔ Church-Rosser}
@@ -454,7 +454,7 @@ Sea $F ⊆ K⟨X⟩$, entonces:
 \[ →_{≤, F} \text{es terminante} \]
 \end{theorem}
 \begin{proof}
-Por el \cref{thm:confluente ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
+Por el \cref{thm:terminante ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
 
 Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
