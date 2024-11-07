@@ -1,4 +1,4 @@
-\documentclass[fleqn]{amsbook} % [fleqn] hace que las ecuaciones con \[  \] estén a la izquierda
+\documentclass{amsbook} % [fleqn] hace que las ecuaciones con \[  \] estén a la izquierda
 
 \usepackage{polyglossia}
 \setdefaultlanguage{spanish}
@@ -28,7 +28,7 @@
 {} % <Body font>
 {1.5em} % <Indent amount>
 {\bfseries} % <Theorem head font>
-{:} % <Punctuation after theorem head>
+{.} % <Punctuation after theorem head>
 {.5em} % <Space after theorem head>
 {} % <Theorem head spec (can be left empty, meaning `normal`)
 
@@ -80,7 +80,7 @@ Sean $a, b ∈ A$:
 \[ → \text{es terminante} ⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1} \]
 \end{definition}
 
-\begin{theorem}\label{thm:confluente ⇒ normalizante}
+\begin{theorem}\label{thm:confluente ⇒ normalizante} % REVISAR
 $→$ es confluente $⇒ →$ es normalizante
 \end{theorem}
 
@@ -160,7 +160,7 @@ A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y 
 Ahora una propiedad sobre el orden monomial que es consecuencia directa de la definición:
 
 \begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< no cadenas dec inf}
-\[ ∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i \]
+\[ ∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i \] % TODO
 \end{theorem}
 
 Ahora pasamos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
@@ -278,12 +278,12 @@ Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
 
 Ahora algunos teoremas sobre el orden de los polinomios.
 
-\begin{theorem}
+\begin{theorem} % TODO
 \[ < \text{como relación de }K⟨X⟩\text{ es un pre-orden.} \]
 \end{theorem}
 
 \begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< en KX no cadenas dec inf}
-\[ ∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i \]
+\[ ∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i \] % TODO
 \end{theorem}
 \begin{proof}
 Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
