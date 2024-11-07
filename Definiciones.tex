@@ -65,19 +65,23 @@ En esta sub-sección se explican algunas definiciones y teoremas básicos de sis
 
 Para toda está sección fijemos un conjunto $A$ y $→ ⊆ A^2$ una relación sobre $A$.
 
-\begin{definition}[Formas normales]
-Sean $a, b ∈ A$:
-\[ a\text{ está en forma normal} ⇔ ∄x ∈ A : a → x \]
-\[ b\text{ es forma normal de } a ⇔ a →^* b ∧ b\text{ está en forma normal} \]
-\[ a\text{ tiene forma normal} ⇔ ∃x ∈ A : x\text{ es forma normal de }a \]
-\[ a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x \]
+\begin{definition}
+\begin{itemize}
+\item $a$ está en forma normal $⇔ ∄x ∈ A : a → x$
+\item $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal
+\item $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
+\item $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$
+\end{itemize}
 \end{definition}
 
-\begin{definition}
-\[ → \text{es confluente} ⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z \]
-\[ → \text{es Church-Rosser} ⇔ ∀x, y ∈ A : x ↔^* y ⇔ x ↓ y \]
-\[ → \text{es normalizante} ⇔ ∀x ∈ A : x\text{ tiene forma normal} \]
-\[ → \text{es terminante} ⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1} \]
+\begin{definition}\
+
+\begin{itemize}
+\item $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
+\item $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔️^* y ⇔ x ↓ y$
+\item $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
+\item $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
+\end{itemize}
 \end{definition}
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
@@ -122,7 +126,9 @@ Siguiendo con el ejemplo de antes, tenemos $m_1 · m_2 = bccbcb$.
 
 \begin{definition}[Divisibilidad]
 Sean $v, w ∈ ⟨X⟩$:
-\[ v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb \]
+\begin{itemize}
+\item $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
+\end{itemize}
 
 Y cuando $v | w$ se dice que $v$ divide a $w$.
 \end{definition}
@@ -132,7 +138,7 @@ Y en el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
 \begin{definition}[Buen orden monomial]
-Sea $≤$ un orden total sobre $⟨X⟩$:
+Sea $≤$ un orden total sobre $⟨X⟩$: % TODO: Preguntar como hacer esto
 \[ ≤ \text{es un buen orden monomial si y solo si:} \] % ¿Se podrá hacer mejor esto?
 \begin{enumerate}[label = (\alph*)]
 \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
@@ -147,7 +153,7 @@ Ahora un ejemplo de orden que cumple con esta definición:
 Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
 
 El orden lexicográfico por grado se define así:
-\[ ≤_{deglex} ⊆ ⟨X⟩^2 \]
+\[ ≤_{deglex} ⊆ ⟨X⟩^2 \] % Preguntar como harían esto
 \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \]
 \end{definition}
 
@@ -194,15 +200,15 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones, que s
 
 \begin{definition}
 Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
-
-Se define:
-\[ f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right. \]
-\[ \sop(f) = \{w_1, …, w_n\} \]
-\[ \lm_≤(f) = \min_≤(\sop(f)) \]
-\[ \lc_≤(f) = f_{\lm(f)} \]
-\[ \lt_≤(f) = \lc_≤(f) · \lm_≤(f) \]
-\[ \tail_≤(f) = f - \lt_≤(f) \]
-\[ f\text{ es mónico} ⇔ \lc_≤(f) = 1 \]
+\begin{itemize}
+\item $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$
+\item $\sop(f) = \{w_1, …, w_n\}$
+\item $\lm_≤(f) = \min_≤(\sop(f))$
+\item $\lc_≤(f) = f_{\lm(f)}$
+\item $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$
+\item $\tail_≤(f) = f - \lt_≤(f)$
+\item $f$ es mónico $⇔ \lc_≤(f) = 1$
+\end{itemize}
 
 A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$. Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 
@@ -232,7 +238,7 @@ Sean $R$ un anillo e $I, B ⊆ R$
 \end{definition}
 
 \begin{theorem}
-Sean $R$ un anillo y $B ⊆ R$:
+Sean $R$ un anillo y $B ⊆ R$, entonces:
 \[ (B)\text{ es un ideal de }R \]
 
 \end{theorem}
@@ -241,7 +247,7 @@ Además a $(B)$ se lo llama el ideal generado por $B$.
 
 \begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
 Sean $R$ un anillo e $I ⊆ R$, se define la siguiente relación:
-\[ ≡_I ⊆ R^2 \]
+\[ ≡_I ⊆ R^2 \] % Preguntar mismo que mas arriba
 \[ a ≡_I b ⇔ a - b ∈ I \]
 \end{definition}
 
@@ -278,8 +284,7 @@ Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
 
 Ahora algunos teoremas sobre el orden de los polinomios.
 
-\begin{theorem} % TODO
-\[ < \text{como relación de }K⟨X⟩\text{ es un pre-orden.} \]
+\begin{theorem} La relación $<$ en $K⟨X⟩$ es un pre-orden.
 \end{theorem}
 
 \begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< en KX no cadenas dec inf}
@@ -311,13 +316,15 @@ Sin embargo, (3) contradice (1) ya que por (4) vale que $\lm(\tail(P_1)) < \lm(P
 
 \begin{definition}[Reducciones]
 Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
-\[ f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \]
-\[ →_{≤, g} = ⋃_{a, b ∈ ⟨X⟩} →_{≤, a, g, b} \]
-\[ →_{≤, F} = ⋃_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g} \]
+\begin{itemize}
+\item $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+\item $→_{≤, g} = ⋃_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
+\item $→_{≤, F} = ⋃_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
+\end{itemize}
 \end{definition}
 
 \begin{theorem}[Las reducciones achican]\label{thm:→ achican}
-Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
+Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$, entonces:
 \begin{enumerate}[label = (\alph*)]
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
 
@@ -357,9 +364,7 @@ Si $i = 0$ aplica lo mismo pero directamente a $m_0$ sin tener en cuenta los $w$
 
 \begin{theorem}\label{thm:suma →↓}
 Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
-
-  $f_0 →_{≤, F} f_1 ⇒ f_0 + f ↓_{≤, F} f_1 + f$
-
+\[ f_0 →_{≤, F} f_1 ⇒ f_0 + f ↓_{≤, F} f_1 + f \]
 \end{theorem}
 \begin{proof}
 Supongamos el antecedente $f_0 →_{≤, F} f_1$ (1)
@@ -450,8 +455,10 @@ Si asumimos $f →^*_{≤, F} f'$ tenemos por el \cref{thm:→^* = ≡} $f ≡_{
 
 \begin{theorem}
 Sea $F ⊆ K⟨X⟩$, entonces:
-\[ →_{≤, F} \text{es normalizante} \]
-\[ →_{≤, F} \text{es terminante} \]
+\begin{itemize}
+\item $→_{≤, F}$ es normalizante
+\item $→_{≤, F}$ es terminante
+\end{itemize}
 \end{theorem}
 \begin{proof}
 Por el \cref{thm:terminante ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
@@ -485,17 +492,17 @@ Sin embargo $→_{≤, F}$ no necesariamente es confluente, eso motiva las sigui
 
 \begin{definition}[Bases de Gröbner]\label{def:base de Gröbner}
 Sean $I$ un ideal de $K⟨X⟩$ y $F ⊆ K⟨X⟩$:
-\[ F\text{ es una base de Gröbner de }I ⇔ (F) = I ∧ →_{≤, F} \text{es confluente} \]
-\[ F\text{ es una base de Gröbner reducida de }I ⇔ % Acá va un salto de linea, pero se como ponerlo
-F \text{es una base de Gröbner de }I ∧ ∀g ∈ F : g\text{ es irreducible con respecto a} →_{≤, F - \{g\}} \]
+\begin{itemize}
+\item $F$ es una base de Gröbner de $I ⇔ (F) = I ∧ →_{≤, F}$ es confluente
+\item $F$ es una base de Gröbner reducida de $I ⇔ F$ es una base de Gröbner de $I ∧ ∀g ∈ F : g$ es irreducible con respecto a $→_{≤, F - \{g\}}$
+\end{itemize}
 \end{definition}
 
 \begin{definition}[Estrategia de reducción]
-Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$
-
-Se define:
-\[ e_≤ \text{es una estrategia de reducción} ⇔ % Acá también va un salto de linea
-∀F ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f) \text{es forma normal de $f$ con respecto a} →_{≤, F} \]
+Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
+\begin{itemize}
+\item $e_≤$ es una estrategia de reducción $⇔ ∀F ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f)$ es forma normal de $f$ con respecto a $→_{≤, F}$
+\end{itemize}
 \end{definition}
 
 En los casos en los que $F$ es una base de Gröbner y por ende $→_{≤, F}$ es confluente hay una sola $e_≤(F)$ posible, pero cuando no es confluente puede haber muchas. Tener definida la estrategia de reducción como una función nos va a venir bien mas adelante para hablar de una forma normal manteniendo la generalidad de como se calcula una forma normal de cada elemento.
@@ -674,23 +681,27 @@ Con esto se termina la prueba.
 
 \begin{definition}[Ambigüedades]
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
-\[ (a, b, c, d, p, q) \text{es una ambigüedad} ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p| \]
+\[ (a, b, c, d, p, q)\text{ es una ambigüedad} ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p| \]
 
 La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
-\[ \text{De superposición} ⇔ a = ε = d ∨ b = ε = c \]
-\[ \text{De inclusión} ⇔ a = ε = b ∨ c = ε = d \]
-\[ \text{Relevante} ⇔ \text{es de superposición o de inclusión} \]
+\begin{itemize}
+\item De superposición $⇔ a = ε = d ∨ b = ε = c$
+\item De inclusión $⇔ a = ε = b ∨ c = ε = d$
+\item Relevante $⇔$ es de superposición o de inclusión
+\end{itemize}
 
 Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
 Sea además $F ⊆ K⟨X⟩$:
-\[ \amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\} \]
-\[ \amb(F) = ⋃_{f, g ∈ F - \{0\}}{\amb(f, g)} \]
+\begin{itemize}
+\item $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
+\item $\amb(F) = ⋃_{f, g ∈ F - \{0\}}{\amb(f, g)}$
+\end{itemize}
 
 \end{definition}
 
 \begin{theorem}
-Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad:
+Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
 \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \]
 
 \end{theorem}
@@ -722,11 +733,11 @@ Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una
 \[ \lm_≤{(\S(α))} < \lm_≤{(α)} \]
 \end{theorem}
 \begin{proof}
-Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan
+Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan.
 \end{proof}
 
 \begin{theorem}\label{thm:S es cerrado en ideal}
-Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad
+Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
 \[ \S(α) ∈ I \]
 \end{theorem}
 \begin{proof}
@@ -750,9 +761,11 @@ Son equivalentes:
 
 \begin{definition}[Conjuntos del algoritmo de Buchberger]
 Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
-\[ \B_{e_≤}^0(F) = F \]
-\[ \B_{e_≤}^{i + 1}(F) = \B_{e_≤}^i(F) ∪ \{e_≤(\B_{e_≤}^i(F))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(F))\} \]
-\[ \B_{e_≤}(F) = ⋃_{i = 0}^∞ \B_{e_≤}^i(F) \]
+\begin{itemize}
+\item $\B_{e_≤}^0(F) = F$
+\item $\B_{e_≤}^{i + 1}(F) = \B_{e_≤}^i(F) ∪ \{e_≤(\B_{e_≤}^i(F))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(F))\}$
+\item $\B_{e_≤}(F) = ⋃_{i = 0}^∞ \B_{e_≤}^i(F)$
+\end{itemize}
 \end{definition}
 
 \begin{theorem}
