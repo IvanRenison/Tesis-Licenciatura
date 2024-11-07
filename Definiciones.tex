@@ -173,8 +173,8 @@ A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y 
 
 Ahora una propiedad sobre el orden monomial que es consecuencia directa de la definición:
 
-\begin{theorem}[$≤$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< no cadenas dec inf}
-\[ ∄M ∈ ⟨X⟩^ℕ : ∀i ∈ ℕ : M_{i + 1} < M_i \] % TODO
+\begin{theorem}\label{thm:≤ no cadenas dec inf}
+La relación $≤$ no tiene cadenas estrictamente decrecientes infinitas
 \end{theorem}
 
 Ahora pasamos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
@@ -295,30 +295,28 @@ Ahora algunos teoremas sobre el orden de los polinomios.
 \begin{theorem} La relación $<$ en $K⟨X⟩$ es un pre-orden.
 \end{theorem}
 
-\begin{theorem}[$<$ como relación de $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas]\label{thm:< en KX no cadenas dec inf}
-\[ ∄P ∈ K⟨X⟩^ℕ : ∀i ∈ ℕ : P_{i + 1} < P_i \] % TODO
+\begin{theorem}\label{thm:≤ en KX no cadenas dec inf}
+La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas
 \end{theorem}
 \begin{proof}
-Supongamos que existe tal $P$ y tomemos uno que minimize $\lm(P_1)$ (1)
-
-(tomar este mínimo está bien por el \cref{thm:< no cadenas dec inf})
+Supongamos que existe una cadena estrictamente decreciente infinita $P$ y tomemos una que minimize $\lm(P_1)$. Tomar este mínimo está bien por el \cref{thm:≤ no cadenas dec inf}
 
 Notar que:
 
-(2) $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
+(1) $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
 
-  Esto ya que no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería (1).
+  Esto ya que no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
 
 
-(3) $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
+(2) $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
 
-  Esto por aplicar la definición del orden polinomial, por (2) y por lo que estaos suponiendo sobre $P$.
+  Esto por aplicar la definición del orden polinomial, por (1) y por lo que estamos suponiendo sobre $P$.
 
-(4) $P_1 ≠ 0$
+(3) $P_1 ≠ 0$
 
   Esto por que claramente $0$ es un mínimo.
 
-Sin embargo, (3) contradice (1) ya que por (4) vale que $\lm(\tail(P_1)) < \lm(P_1)$.
+Sin embargo, (2) contradice la minimalidad de $\lm(P_1)$ ya que por (3) vale que $\lm(\tail(P_1)) < \lm(P_1)$.
 
 \end{proof}
 
@@ -479,7 +477,7 @@ Por el \cref{thm:→ achican} esto implica que:
 
 $∀i ∈ ℕ : P_i > P_{i+1}$
 
-Pero esto contradice el \cref{thm:< en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
+Pero esto contradice el \cref{thm:≤ en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
 
 \end{proof}
 
