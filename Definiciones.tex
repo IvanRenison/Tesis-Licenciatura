@@ -109,33 +109,28 @@ $→$ es confluente $⇔ →$ es Church-Rosser
 
 Ahora si empezamos con el tema de la tesis en si.
 
-\begin{definition}[Monomio libre]
-Sea $X$ un alfabeto finito:
-
-\[ ⟨X⟩ = X^* \]
-
-a $⟨X⟩$ se lo llama monomios libres sobre $X$.
+\begin{definition}[Monoide libre]
+Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
+\begin{itemize}
+\item $⟨X⟩$ son las palabras finitas sobre $X$
+\item $· : ⟨X⟩^2 → ⟨X⟩$ es la concatenación
+\end{itemize}
+A los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$, a $·$ el producto de $⟨X⟩$ y a $(⟨X⟩, ·)$ el monoide libre sobre $X$.
 \end{definition}
 
 Por ejemplo, si $X = \{a, b, c\}$ algunos monomios son:
 
-\[ m_0 = abbcb \]
-\[ m_1 = bbc \]
-\[ m_2 = bcb \]
-\[ m_3 = ε \]
+\begin{align*}
+m_0 &= abbcb \\
+m_1 &= bbc \\
+m_2 &= bcb \\
+m_3 &= ε \\
+m_1 · m_2 &= bccbcb
+\end{align*}
 
-El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el la concatenación no es conmutativa.
+El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no es conmutativo.
 
-A partir de ahora fijamos $X$ un alfabeto finito. En $⟨X⟩$ se define el producto como la concatenación:
-
-\begin{definition}[Producto de monomios libre]\
-\[· : ⟨X⟩^2 → ⟨X⟩ \]
-\[v · w = vw \]
-
-Y a la estructura $(⟨X⟩, ·)$ se la llama monoide libre sobre $⟨X⟩$.
-\end{definition}
-
-Siguiendo con el ejemplo de antes, tenemos $m_1 · m_2 = bccbcb$.
+A partir de ahora fijamos $X$ un alfabeto finito.
 
 \begin{definition}[Divisibilidad]
 Sean $v, w ∈ ⟨X⟩$:
