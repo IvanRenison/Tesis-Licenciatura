@@ -109,7 +109,7 @@ $→$ es confluente $⇔ →$ es Church-Rosser
 
 Ahora si empezamos con el tema de la tesis en si.
 
-\begin{definition}[Monoide libre]
+\begin{definition}
 Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
 \begin{itemize}
 \item $⟨X⟩$ son las palabras finitas sobre $X$
@@ -132,7 +132,7 @@ El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el product
 
 A partir de ahora fijamos $X$ un alfabeto finito.
 
-\begin{definition}[Divisibilidad]
+\begin{definition}
 Sean $v, w ∈ ⟨X⟩$:
 \begin{itemize}
 \item $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$
@@ -145,7 +145,7 @@ Y en el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
-\begin{definition}[Buen orden monomial]
+\begin{definition}
 Sea $≤$ un orden total sobre $⟨X⟩$: % TODO: Preguntar como hacer esto
 \[ ≤ \text{es un buen orden monomial si y solo si:} \] % ¿Se podrá hacer mejor esto?
 \begin{enumerate}[label = (\alph*)]
@@ -157,7 +157,7 @@ Sea $≤$ un orden total sobre $⟨X⟩$: % TODO: Preguntar como hacer esto
 
 Ahora un ejemplo de orden que cumple con esta definición:
 
-\begin{definition}[Orden lexicográfico por grado]
+\begin{definition}
 Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
 
 El orden lexicográfico por grado se define así:
@@ -230,10 +230,10 @@ Sea $R$ un anillo conmutativo, entonces:
 Esto significa que aplican todas las definiciones y teoremas de anillo.
 En particular vale la definición de ideal y algunas definiciones y teoremas relacionados, que como son muy importantes para este trabajo las repasaremos a continuación.
 
-\begin{definition}[Ideal]\label{def:ideal}
+\begin{definition}\label{def:ideal}
 Sean $R$ un anillo e $I, B ⊆ R$
 
-\[ I\text{ es un ideal de }R ⇔\text{:} \]
+\[ I\text{ es un ideal de }R\text{ si y solo si:} \]
 \begin{enumerate}[label = (\alph*)]
 \item $I ≠ Ø$
 
@@ -269,6 +269,7 @@ Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$:
 \[ a ∈ I ⇔ a ≡_I 0 \]
 \end{theorem}
 
+Ahora volvemos al álgebra libre.
 
 A partir de ahora fijamos un cuerpo $K$.
 
@@ -278,9 +279,15 @@ La respuesta a esa pregunta es que no, porque el problema es indecible. Sin emba
 
 Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
-\begin{definition}[Extensión de orden monomial a polinomios]
+\begin{definition}
 Sean $f, g ∈  K⟨X⟩$:
-\[ f < g ⇔ (f = 0 ∧ g ≠ 0) ∨ \lm(f) < \lm(g) ∨ (\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)) \]
+
+\[f < g\text{ si y solo si vale alguna de las siguientes:}\]
+\begin{enumerate}[label = (\alph*)]
+\item $f = 0 ∧ g ≠ 0$
+\item $\lm_≤(f) < \lm_≤(g)$
+\item $\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)$
+\end{enumerate}
 \end{definition}
 
 Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes ordenada de mayor a menor.
@@ -320,7 +327,7 @@ Sin embargo, (2) contradice la minimalidad de $\lm(P_1)$ ya que por (3) vale que
 
 \end{proof}
 
-\begin{definition}[Reducciones]
+\begin{definition}
 Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
 \begin{itemize}
 \item $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
@@ -504,7 +511,7 @@ Sean $I$ un ideal de $K⟨X⟩$ y $F ⊆ K⟨X⟩$:
 \end{itemize}
 \end{definition}
 
-\begin{definition}[Estrategia de reducción]
+\begin{definition}
 Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
 \begin{itemize}
 \item $e_≤$ es una estrategia de reducción $⇔ ∀F ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(F)(f)$ es forma normal de $f$ con respecto a $→_{≤, F}$
@@ -552,7 +559,7 @@ Sean $e_≤$ una estrategia de reducción, $F ⊆ K⟨X⟩$ y $f ∈ (F)$, enton
 Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)(f)$ y por ende por el \cref{thm:S es cerrado en ideal} y que $F ⊆ K⟨X⟩$ tenemos $e_≤(F)(f) ∈ (F)$.
 \end{proof}
 
-\begin{theorem}[Equivalencias de base de Gröbner]\label{thm:equivalencias de base de Gröbner}
+\begin{theorem}\label{thm:equivalencias de base de Gröbner}
 Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
 
 Son equivalentes:
@@ -685,7 +692,7 @@ Con esto se termina la prueba.
 
 \subsection{Algoritmo de Buchberger}
 
-\begin{definition}[Ambigüedades]
+\begin{definition}
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
 \[ (a, b, c, d, p, q)\text{ es una ambigüedad} ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p| \]
 
@@ -863,31 +870,6 @@ Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i}
 Con esto queda completada la prueba.
 
 \end{proof}
-
-
-
-% \begin{algorithm}
-%   \caption{Buchberger}
-%   \KwData{Datos de entrada}
-%   \KwResult{Resultado esperado}
-%   Inicializar variables\;
-%   \For{cada elemento en la list
-
-
-% \begin{algorithm}
-%   \caption{Buchberger}
-%   \KwData{Datos de entrada}
-%   \KwResult{Resultado esperado}
-%   Inicializar variables\;
-%   \For{cada elemento en la lista}{
-%     \If{condición}{
-%       Realizar acción
-%     }
-%     \Else{
-%       Realizar otra acción
-%     }
-%   }
-% \end{algorithm}
 
 
 \end{document}
