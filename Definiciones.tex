@@ -36,6 +36,18 @@
 \newtheorem{definition}{Definición}[section]
 \newtheorem{theorem}{Teorema}[section]
 \addto\captionsspanish{\renewcommand{\proofname}{\textbf{Demostración:}}}
+
+\newtheoremstyle{factstyle} % <name>
+{} % <Space above>
+{} % <Space below>
+{\normalfont} % <Body font> % Preguntar que opinan, y porque hay un warning
+{1.5em} % <Indent amount>
+{\bfseries} % <Theorem head font>
+{.} % <Punctuation after theorem head>
+{.5em} % <Space after theorem head>
+{} % <Theorem head spec (can be left empty, meaning `normal`)
+
+\theoremstyle{factstyle}
 \newtheorem{fact}{Afirmación}[theorem]
 
 
@@ -357,27 +369,29 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 \begin{proof}
 Por la definición de las reducciones (a) $⇒$ (b) $⇒$ (c), por lo cual alcanza con probar (a).
 
-Supongamos $f →_{≤, a, g, b} f'$ (1)
+Supongamos $f →_{≤, a, g, b} f'$
 
 Esto implica por definición de reducciones:
 
-  $\lm_≤(agb) ∈ \sop(f)$ (2)
+  $\lm_≤(agb) ∈ \sop(f)$ (1)
 
-  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (3)
+  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (2)
 
 Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$
 
-Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (2).
+Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (1).
+\begin{fact}\label{fact:→ achican:3}
+Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ porque es multiplicar por un escalar adentro del $\lm$ en la condición de $i$.
+\end{fact}
+\begin{description}
+\item[Si $i ≠ 0$]\
 
-Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (4) porque es multiplicar por un escalar adentro del $\lm$ en la condición de $i$.
+La \cref{fact:→ achican:3} significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (2)).
 
-Si $i ≠ 0$:
+Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
 
-  (4) significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (3)).
-
-  Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
-
-Si $i = 0$ aplica lo mismo pero directamente a $m_0$ solo que sin tener en cuenta los $m$ anteriores.
+\item[Si $i = 0$] aplica lo mismo pero directamente a $m_0$ solo que sin tener en cuenta los $m$ anteriores.
+\end{description}
 
 \end{proof}
 
@@ -388,52 +402,53 @@ Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 \begin{proof}
 Supongamos el antecedente $f_0 →_{≤, F} f_1$
 
-Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (2), los cuales existen por el antecedente y por definición de $→_{≤, F}$
+Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por el antecedente y por definición de $→_{≤, F}$
 
 Dividamos en casos según si $\lm_≤(agb) ∈ \sop(f)$:
 
-Caso $\lm_≤(agb) ∉ \sop(f)$:
+\begin{description}
+\item[Caso $\lm_≤(agb) ∉ \sop(f)$]\
 
-  En este caso tenemos $f_0 + f →_{≤, F} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, F} f_1 + f$
+En este caso tenemos $f_0 + f →_{≤, F} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, F} f_1 + f$
 
+\item[Caso $\lm_≤(agb) ∈ \sop(f)$]\
+\begin{description}
+\item[Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$]
 
-Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
-
-  Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$ (4):
-
-  Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$
-
-  Como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
+Como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
 
 \begin{DispWithArrows*}
-&f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(4)} \\
-& ⇒ f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(2)} \\
+&f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Subcaso} \\
+& ⇒ f_1 + f →_{≤, F} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$} \\
 & ⇒ f_1 + f →_{≤, F} f_0 + f \\
 & ⇒ f_1 + f ↓_{≤, F} f_0 + f
 \end{DispWithArrows*}
 
-  Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:
+\item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$]\
 
-  En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
+Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$
+
+En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
 \begin{DispWithArrows*}
 &f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
 & ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(2)}\\
+& ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$}\\
 & ⇒ f_0 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
 \end{DispWithArrows*}
-    Llamemos (5) a este último resultado.
+  Llamemos (1) a este último resultado.
 
-  Además por (3) y (4) también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
+Además por el caso y por subcaso también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
 \begin{DispWithArrows*}
 &f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
 & ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)}\\
 & ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
 & ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
 \end{DispWithArrows*}
-    Llamemos (6) a este último resultado.
+  Llamemos (2) a este último resultado.
 
-  Por (5) y (6) tenemos $f_0 + f ↓_{≤, F} f_1 + f$
-
+Por (1) y (2) tenemos $f_0 + f ↓_{≤, F} f_1 + f$
+\end{description}
+\end{description}
 \end{proof}
 
 \begin{theorem}[Clausura reflexo transitiva de las reducciones]\label{thm:→^* = ≡}
@@ -444,26 +459,27 @@ Sea $F ⊆ K⟨X⟩$, entonces:
 \end{theorem}
 \begin{proof}
 Lo vamos a probar por doble inclusión
+\begin{description}
 
-Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
+\item[Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$]\
 
-  Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
+Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
 
-  Supongamos $f →_{≤, F} f'$ (1), queremos probar $f ≡_{(F)} f'$
+Supongamos $f →_{≤, F} f'$ y probemos $f ≡_{(F)} f'$
 
-  Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por (1) y la definición de $→_{≤, F}$
+Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por lo que estamos suponiendo y por la definición de $→_{≤, F}$
 
-  Tenemos:
+Tenemos:
 \begin{DispWithArrows*}
 &f ≡_{(F)} f' \\
 & ⇔ f - f' ∈ (F) \\
 & ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (F) \\
 & ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F)
 \end{DispWithArrows*}
-  Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
+Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
 
 % Falta probar la vuelta
-
+\end{description}
 \end{proof}
 
 \begin{theorem}[Las reducciones se mantienen en ideal]\label{thm:→ mantiene pertenencia a ideal}
@@ -587,13 +603,16 @@ Son equivalentes:
 \end{theorem}
 \begin{proof}\
 
-Primero probemos (1) $⇒$ (2):
+Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (2) $⇒$ (4), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4)
+\begin{description}
+
+\item[(1) $⇒$ (2)]\
 
 Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 
-  Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$
+Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$
 
-  Vamos de un lado para el otro:
+Vamos de un lado para el otro:
 
 \begin{DispWithArrows*}
 &f ∈ I \Arrow{(\cref{thm:en ideal ⇔ congruente 0})} \\
@@ -604,51 +623,50 @@ Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
 & ⇔ f →^*_{≤, G} 0
 \end{DispWithArrows*}
 
-Ahora probemos (2) $⇒$ (1):
+\item[(2) $⇒$ (1)]
 
-Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (6), tenemos que probar que $G$ es una base de Gröbner de $I$:
-
-  $G$ es una base de Gröbner de $I$
-
-$⇔$ (Definición de base de Gröbner)
-
-  $(G) = I ∧ →_{≤, G}$ es confluente
+Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (6), tenemos que probar que $G$ es una base de Gröbner de $I$, o lo que es equivalente por definición de base de Gröbner:
+\[(G) = I ∧ →_{≤, G}\text{ es confluente}\]
 
 Probemos cada termino del $∧$ por separado:
 
-Prueba de $(G) = I$:
+\begin{description}
+\item[Prueba de $(G) = I$]\
 
-  Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
+Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
 
-  Ida ($⇒$):
+\begin{description}
+\item[Ida ($⇒$)]\
 
-    Supongamos $f ∈ (G)$
+Supongamos $f ∈ (G)$
 
-    Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$
+Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$
 
-    Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$
+Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$
 
-    Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
+Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
 
-    Esto significa que $f →^*_{≤, G} 0$ y por ende por (6) $f ∈ I$
+Esto significa que $f →^*_{≤, G} 0$ y por ende por (6) $f ∈ I$
 
-  Vuelta ($⇐$):
+\item[Vuelta ($⇐$)]
 
-    Supongamos $f ∈ I$
+Supongamos $f ∈ I$
 
-    Por (6) tenemos que $f →^*_{≤, G} 0$
+Por (6) tenemos que $f →^*_{≤, G} 0$
 
-    Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
+Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
 
-    Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$
+Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$
 
-    Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$
+Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$
 
-Prueba de $→_{≤, G}$ es confluente:
+\end{description}
 
-  Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
+\item[Prueba de $→_{≤, G}$ es confluente]\
 
-  Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
+Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
+
+Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
 \begin{DispWithArrows*}
 &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
 & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{(\cref{thm:→^* = ≡})} \\
@@ -658,43 +676,42 @@ Prueba de $→_{≤, G}$ es confluente:
 & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
 & ⇒ f_0 ↓_{≤, G} f_1
 \end{DispWithArrows*}
+\end{description}
 
-(2) $⇒$ (3) es cierto porque la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es claramente cierta por el \cref{thm:→^* = ≡}.
+\item[(2) $⇔$ (3)] La ida es claramente cierta y la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es cierta por el \cref{thm:→^* = ≡}.
 
-Ahora probemos (2) $⇒$ (4) suponiendo (2)
+\item[(2) $⇒$ (4)] lo probamos suponiendo (2)
 
-  La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
+La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
 
-  Para la parte de $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ ∃g ∈ G : \lm(g) | \lm(f))$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
+Para la parte de $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ ∃g ∈ G : \lm(g) | \lm(f))$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
 
-  Por (2) tenemos $f →^*_{≤, G} 0$
+Por (2) tenemos $f →^*_{≤, G} 0$
 
-  Esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
+Esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
 
-Ahora probemos (4) $⇒$ (3) por contradicción:
+\item[(4) $⇒$ (3)] Lo probamos por contradicción, o sea, supongamos que vale (4) y que no vale (3). En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$
 
-  O sea, supongamos que vale (4) y que no vale (3), y en particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$
+Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$
 
-  Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$
+Sean también:
 
-  Sean también:
+  $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
 
-    $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
+  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 
-    $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$
 
-  Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$
+Además por \cref{thm:→ achican} $f' < f$
 
-  Además por \cref{thm:→ achican} $f' < f$
+Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$
 
-  Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$
+Sin embargo esto contradice que $f$ sea mínimo
 
-  Sin embargo esto contradice que $f$ sea mínimo
+\item Los casos (2) $⇒$ (5) y (5) $⇒$ (4) son muy fáciles y quedan como ejercicio. % Pongo esto hasta que la haga
 
-Los casos (2) $⇒$ (5) y (5) $⇒$ (4) son muy fáciles y quedan como ejercicio. % Pongo esto hasta que la haga
-
+\end{description}
 Con esto se termina la prueba.
-
 \end{proof}
 
 
