@@ -36,7 +36,7 @@
 \newtheorem{definition}{Definición}[section]
 \newtheorem{theorem}{Teorema}[section]
 \addto\captionsspanish{\renewcommand{\proofname}{\textbf{Demostración:}}}
-
+\newtheorem{fact}{Afirmación}[theorem]
 
 
 
@@ -310,20 +310,28 @@ Supongamos que existe una cadena estrictamente decreciente infinita $P$ y tomemo
 
 Notar que:
 
-(1) $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
+\begin{fact}\label{fact:≤ en KX no cadenas dec inf:1} % Nombres de labels provisorios
+$∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
+\end{fact}
+\begin{proof}
+Esto ya que no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
+\end{proof}
 
-  Esto ya que no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
+\begin{fact}\label{fact:≤ en KX no cadenas dec inf:2}
+$\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
+\end{fact}
+\begin{proof}
+Esto por aplicar la definición del orden polinomial, por la \cref{fact:≤ en KX no cadenas dec inf:1} y por lo que estamos suponiendo sobre $P$.
+\end{proof}
 
+\begin{fact}\label{fact:≤ en KX no cadenas dec inf:3}
+$P_1 ≠ 0$
+\end{fact}
+\begin{proof}
+Esto por que claramente $0$ es un mínimo.
+\end{proof}
 
-(2) $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
-
-  Esto por aplicar la definición del orden polinomial, por (1) y por lo que estamos suponiendo sobre $P$.
-
-(3) $P_1 ≠ 0$
-
-  Esto por que claramente $0$ es un mínimo.
-
-Sin embargo, (2) contradice la minimalidad de $\lm(P_1)$ ya que por (3) vale que $\lm(\tail(P_1)) < \lm(P_1)$.
+Sin embargo, la \cref{fact:≤ en KX no cadenas dec inf:2} contradice la minimalidad de $\lm(P_1)$ ya que por la \cref{fact:≤ en KX no cadenas dec inf:3} vale que $\lm(\tail(P_1)) < \lm(P_1)$.
 
 \end{proof}
 
@@ -357,30 +365,28 @@ Esto implica por definición de reducciones:
 
   $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (3)
 
-Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$ (4)
+Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$
 
-Sea $i$ tal que $m_i = \lm_≤(agb)$ (5), el cual existe por (2)
+Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (2).
 
-Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (6) porque es (5) multiplicado por un escalar
+Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ (4) porque es multiplicar por un escalar adentro del $\lm$ en la condición de $i$.
 
 Si $i ≠ 0$:
 
-  (6) significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas.
+  (4) significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (3)).
 
-  Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende $' < f$.
+  Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
 
-Si $i = 0$ aplica lo mismo pero directamente a $m_0$ sin tener en cuenta los $w$ anteriores.
+Si $i = 0$ aplica lo mismo pero directamente a $m_0$ solo que sin tener en cuenta los $m$ anteriores.
 
 \end{proof}
-
-%%%% typ limit
 
 \begin{theorem}\label{thm:suma →↓}
 Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 \[ f_0 →_{≤, F} f_1 ⇒ f_0 + f ↓_{≤, F} f_1 + f \]
 \end{theorem}
 \begin{proof}
-Supongamos el antecedente $f_0 →_{≤, F} f_1$ (1)
+Supongamos el antecedente $f_0 →_{≤, F} f_1$
 
 Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$ (2), los cuales existen por el antecedente y por definición de $→_{≤, F}$
 
@@ -397,7 +403,7 @@ Caso $\lm_≤(agb) ∈ \sop(f)$ (3):
 
   Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$
 
-  Como además $\lm_≤(agb) ∉ \sop(f_1)$ por (1), tenemos:
+  Como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
 
 \begin{DispWithArrows*}
 &f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{(4)} \\
@@ -441,7 +447,7 @@ Lo vamos a probar por doble inclusión
 
 Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 
-  Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, así que alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
+  Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
 
   Supongamos $f →_{≤, F} f'$ (1), queremos probar $f ≡_{(F)} f'$
 
@@ -455,6 +461,8 @@ Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$:
 & ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (F)
 \end{DispWithArrows*}
   Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
+
+% Falta probar la vuelta
 
 \end{proof}
 
@@ -781,7 +789,7 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 \end{itemize}
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}\label{thm:Buchberger correctitud}
 Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 \begin{enumerate}
 \item $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$
@@ -791,49 +799,59 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 \begin{proof}
 Primero vamos a probar algunas afirmaciones intermedias:
 
-(3) $∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
+\begin{fact}\label{fact:Buchberger correctitud:3}
+$∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
+\end{fact}
+\begin{proof}
+Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
 
-  Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
+Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
 
-  Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
+Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$
 
-  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$
+El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva.
 
-  El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva.
+Para el otro caso tomemos ese $α$:
 
-  Para el otro caso tomemos ese $α$:
+  Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
 
-    Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
+  Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+\end{proof}
 
-    Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+\begin{fact}\label{fact:Buchberger correctitud:4}
+$∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
+\end{fact}
+\begin{proof}
+Esto es consecuencia directa de la \cref{fact:Buchberger correctitud:3} y la definición de $\B_{e_≤}$
+\end{proof}
 
-    Con lo cual queda probado (3).
+\begin{fact}\label{fact:Buchberger correctitud:5}
+$(\B_{e_≤}(F)) = (F)$
+\end{fact}
+\begin{proof}
+Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por la \cref{fact:Buchberger correctitud:4}.
+\end{proof}
 
-(4) $∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
+\begin{fact}\label{fact:Buchberger correctitud:6}
+$∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
+\end{fact}
+\begin{proof}
+Tomemos $α ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$
 
-  Esto consecuencia directa de (3) y la definición de $\B_{e_≤}$
+Sea $(a, b, c, d, f, g) = α$
 
-(5) $(\B_{e_≤}(F)) = (F)$
+Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$
 
-  Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por (4).
+Sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$ y $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$
 
-(6) $∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
+Tomemos $k = \max(i, j)$
 
-  Tomemos $α ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$
+Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$
 
-  Sea $(a, b, c, d, f, g) = α$
+Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probada la afirmación.
+\end{proof}
 
-  Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$
-
-  Sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$ y $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$
-
-  Tomemos $k = \max(i, j)$
-
-  Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$
-
-  Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probado (6).
-
-Y ahora, por (5) y (6) vale la definición de base de Gröbner, así que queda probado (1).
+Y ahora, por \cref{fact:Buchberger correctitud:5} y \cref{fact:Buchberger correctitud:6} vale la definición de base de Gröbner, así que queda probado (1).
 
 Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$
 
@@ -857,12 +875,12 @@ $∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1
 
 Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
 
-Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{j_i} b'_i$
+Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$
 
 \begin{DispWithArrows*}
-&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{(7)} \\
-& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_i'} a_{i', j} g_{i', j} b_{i', j}) b'_i \\
-& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i', j} b_{i', j} b'_i
+&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Definición de $g_{i_i}$} \\
+& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
+& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
 \end{DispWithArrows*}
 
 Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
