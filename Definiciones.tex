@@ -35,7 +35,9 @@
 \theoremstyle{customstyle}
 \newtheorem{definition}{Definición}[section]
 \newtheorem{theorem}{Teorema}[section]
-\addto\captionsspanish{\renewcommand{\proofname}{\textbf{Demostración:}}}
+\newtheorem{lemma}{Lema:}[section]
+\addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
+\renewenvironment{proof}[1][\proofname]{{\bfseries #1: }} % Estilo del título de la demostración
 
 \newtheoremstyle{factstyle} % <name>
 {} % <Space above>
@@ -170,10 +172,7 @@ Sea $≤$ un orden total sobre $⟨X⟩$: % TODO: Preguntar como hacer esto
 Ahora un ejemplo de orden que cumple con esta definición:
 
 \begin{definition}
-Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$
-
-El orden lexicográfico por grado se define así:
-\[ ≤_{deglex} ⊆ ⟨X⟩^2 \] % Preguntar como harían esto
+Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
 \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \]
 \end{definition}
 
@@ -266,8 +265,7 @@ Sean $R$ un anillo y $B ⊆ R$, entonces:
 Además a $(B)$ se lo llama el ideal generado por $B$.
 
 \begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
-Sean $R$ un anillo e $I ⊆ R$, se define la siguiente relación:
-\[ ≡_I ⊆ R^2 \] % Preguntar mismo que mas arriba
+Sean $R$ un anillo e $I ⊆ R$, se define $≡_I$ como relación en $R$ así:
 \[ a ≡_I b ⇔ a - b ∈ I \]
 \end{definition}
 
@@ -318,30 +316,25 @@ Ahora algunos teoremas sobre el orden de los polinomios.
 La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas
 \end{theorem}
 \begin{proof}
-Supongamos que existe una cadena estrictamente decreciente infinita $P$ y tomemos una que minimize $\lm(P_1)$. Tomar este mínimo está bien por el \cref{thm:≤ no cadenas dec inf}
+Supongamos que existen cadenas estrictamente decreciente infinita. Tomemos una $P$ que minimize $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no cadenas dec inf}
 
 Notar que:
 
 \begin{fact}\label{fact:≤ en KX no cadenas dec inf:1} % Nombres de labels provisorios
 $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
 \end{fact}
-\begin{proof}
-Esto ya que no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
-\end{proof}
+En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
 
 \begin{fact}\label{fact:≤ en KX no cadenas dec inf:2}
 $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
 \end{fact}
-\begin{proof}
-Esto por aplicar la definición del orden polinomial, por la \cref{fact:≤ en KX no cadenas dec inf:1} y por lo que estamos suponiendo sobre $P$.
-\end{proof}
+Esto vale por aplicar la definición del orden polinomial, por la \cref{fact:≤ en KX no cadenas dec inf:1} y por lo que estamos suponiendo sobre $P$.
+
+Como claramente $0$ es un mínimo:
 
 \begin{fact}\label{fact:≤ en KX no cadenas dec inf:3}
-$P_1 ≠ 0$
+$P_1 ≠ 0$.
 \end{fact}
-\begin{proof}
-Esto por que claramente $0$ es un mínimo.
-\end{proof}
 
 Sin embargo, la \cref{fact:≤ en KX no cadenas dec inf:2} contradice la minimalidad de $\lm(P_1)$ ya que por la \cref{fact:≤ en KX no cadenas dec inf:3} vale que $\lm(\tail(P_1)) < \lm(P_1)$.
 
@@ -358,7 +351,7 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 
 \begin{theorem}[Las reducciones achican]\label{thm:→ achican}
 Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$, entonces:
-\begin{enumerate}[label = (\alph*)]
+\begin{enumerate}[leftmargin=*,label=(\alph*),topsep=4pt,itemsep=2pt,partopsep=2pt, parsep=2pt] % Hacer global
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
 
 \item $f →_{≤, g} f' ⇒ f' < f$
@@ -440,7 +433,7 @@ En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos
 Además por el caso y por subcaso también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
 \begin{DispWithArrows*}
 &f_1 + f →_{≤, F} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{($\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$)}\\
+& ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{$\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, F} f_1$ y definición de $→_{≤, F}$}\\
 & ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
 & ⇒ f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
 \end{DispWithArrows*}
@@ -584,9 +577,7 @@ Como $e_≤(F)(f)$ es una forma normal de $f$ tenemos $f →^*_{≤, F} e_≤(F)
 \end{proof}
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
-Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
-
-Son equivalentes:
+Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Las siguientes afirmaciones son equivalentes:
 \begin{enumerate}
 \item $G$ es una base de Gröbner de $I$
 
@@ -601,32 +592,22 @@ Son equivalentes:
 % Quizás agregue mas en algún momento
 
 \end{theorem}
-\begin{proof}\
-
-Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (2) $⇒$ (4), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4)
+\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (2) $⇒$ (4), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
 \begin{description}
 
-\item[(1) $⇒$ (2)]\
-
-Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$.
-
-Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$
-
-Vamos de un lado para el otro:
+\item[(1) $⇒$ (2)] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
 
 \begin{DispWithArrows*}
-&f ∈ I \Arrow{(\cref{thm:en ideal ⇔ congruente 0})} \\
-& ⇔ f ≡_I 0 \Arrow{(\cref{thm:→^* = ≡})} \\
-& ⇔ f ↔^*_{≤, G} 0 \Arrow{(Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser)} \\
-& ⇔ f ↓_{≤, G} 0 \Arrow{(Definición de $↓$)} \\
-& ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{(Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$)} \\
+&f ∈ I \Arrow{\cref{thm:en ideal ⇔ congruente 0}} \\
+& ⇔ f ≡_I 0 \Arrow{\cref{thm:→^* = ≡}} \\
+& ⇔ f ↔^*_{≤, G} 0 \Arrow{Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser} \\
+& ⇔ f ↓_{≤, G} 0 \Arrow{Definición de $↓$} \\
+& ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$} \\
 & ⇔ f →^*_{≤, G} 0
 \end{DispWithArrows*}
 
 \item[(2) $⇒$ (1)]
-
-Supongamos $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$ (6), tenemos que probar que $G$ es una base de Gröbner de $I$, o lo que es equivalente por definición de base de Gröbner:
-\[(G) = I ∧ →_{≤, G}\text{ es confluente}\]
+Supongamos (2), o sea $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente.
 
 Probemos cada termino del $∧$ por separado:
 
@@ -646,13 +627,13 @@ Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$
 
 Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
 
-Esto significa que $f →^*_{≤, G} 0$ y por ende por (6) $f ∈ I$
+Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) $f ∈ I$
 
 \item[Vuelta ($⇐$)]
 
 Supongamos $f ∈ I$
 
-Por (6) tenemos que $f →^*_{≤, G} 0$
+Por (2) tenemos que $f →^*_{≤, G} 0$
 
 Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
 
@@ -669,10 +650,10 @@ Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀
 Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
 \begin{DispWithArrows*}
 &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
-& ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{(\cref{thm:→^* = ≡})} \\
-& ⇒ f_0 ≡_{(G)} f_1 \Arrow{(Definición $≡_{\ ·\ }$)} \\
-& ⇒ f_0 - f_1 ∈ (G) \Arrow{((6), ya probamos que $(G) = I$)} \\
-& ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{(\cref{thm:suma →↓})} \\
+& ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{thm:→^* = ≡}} \\
+& ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
+& ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
+& ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{thm:suma →↓}} \\
 & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
 & ⇒ f_0 ↓_{≤, G} f_1
 \end{DispWithArrows*}
@@ -745,9 +726,9 @@ Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, 
 \end{theorem}
 \begin{proof}\
 \begin{DispWithArrows*}
-&\lm_≤{(afb)} \Arrow{(Definición de ambigüedad para polinomios)} \\
-& = a\lm_≤{(f)}b \Arrow{(Definición de ambigüedad)} \\
-& = c\lm_≤{(g)}d \Arrow{(Definición de ambigüedad para polinomios)} \\
+&\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\
+& = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
+& = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
 & = \lm_≤{(cgd)}
 \end{DispWithArrows*}
 \end{proof}
@@ -806,6 +787,8 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
 \end{itemize}
 \end{definition}
 
+Estos conjuntos forman esencialmente el algoritmo de Buchberger. Para probar la correctitud vamos a querer probar esto:
+
 \begin{theorem}\label{thm:Buchberger correctitud}
 Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 \begin{enumerate}
@@ -813,12 +796,12 @@ Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
 \item $(F)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F))$ es una base de Gröbner
 \end{enumerate}
 \end{theorem}
-\begin{proof}
-Primero vamos a probar algunas afirmaciones intermedias:
 
-\begin{fact}\label{fact:Buchberger correctitud:3}
+Pero para probar eso primero vamos a probar algunos lemas en el contexto de este teorema.
+
+\begin{lemma}\label{lemma:Buchberger correctitud:3}
 $∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
-\end{fact}
+\end{lemma}
 \begin{proof}
 Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
 
@@ -835,23 +818,23 @@ Para el otro caso tomemos ese $α$:
   Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
 \end{proof}
 
-\begin{fact}\label{fact:Buchberger correctitud:4}
+\begin{lemma}\label{lemma:Buchberger correctitud:4}
 $∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
-\end{fact}
+\end{lemma}
 \begin{proof}
-Esto es consecuencia directa de la \cref{fact:Buchberger correctitud:3} y la definición de $\B_{e_≤}$
+Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$
 \end{proof}
 
-\begin{fact}\label{fact:Buchberger correctitud:5}
+\begin{lemma}\label{lemma:Buchberger correctitud:5}
 $(\B_{e_≤}(F)) = (F)$
-\end{fact}
+\end{lemma}
 \begin{proof}
-Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por la \cref{fact:Buchberger correctitud:4}.
+Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por la \cref{lemma:Buchberger correctitud:4}.
 \end{proof}
 
-\begin{fact}\label{fact:Buchberger correctitud:6}
+\begin{lemma}\label{lemma:Buchberger correctitud:6}
 $∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
-\end{fact}
+\end{lemma}
 \begin{proof}
 Tomemos $α ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$
 
@@ -868,7 +851,8 @@ Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende
 Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probada la afirmación.
 \end{proof}
 
-Y ahora, por \cref{fact:Buchberger correctitud:5} y \cref{fact:Buchberger correctitud:6} vale la definición de base de Gröbner, así que queda probado (1).
+\begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
+Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner del \cref{thm:equivalencias de base de Gröbner (con ambs)}, así que (1) queda probado.
 
 Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$
 
