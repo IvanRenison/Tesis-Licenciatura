@@ -22,6 +22,8 @@
 
 \usepackage[capitalise]{cleveref}
 
+\setlist[enumerate,1]{label={\em{(\arabic*)}}}
+
 \newtheoremstyle{customstyle} % <name>
 {} % <Space above>
 {} % <Space below>
@@ -161,7 +163,7 @@ Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$,
 
 \begin{definition}
 Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
-\begin{enumerate}[label = (\alph*)]
+\begin{enumerate}
 \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
 
 \item $∀S ⊆ ⟨X⟩ : S ≠ Ø ⇒ S$ tiene mínimo elemento con respecto a $≤$
@@ -240,7 +242,7 @@ En particular vale la definición de ideal y algunas definiciones y teoremas rel
 
 \begin{definition}\label{def:ideal}
 Sean $R$ un anillo e $I, B ⊆ R$, definimos que $I$ es un ideal de $R$ si y solo si:
-\begin{enumerate}[label = (\alph*)]
+\begin{enumerate}
 \item $I ≠ Ø$
 
 \item $∀a, b ∈ I : a + b ∈ I$
@@ -284,7 +286,7 @@ Mas adelante va a hacer falta comprar no solo monomios si no también polinomios
 
 \begin{definition}
 Sean $f, g ∈  K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
-\begin{enumerate}[label = (\alph*)]
+\begin{enumerate}
 \item $f = 0 ∧ g ≠ 0$
 \item $\lm_≤(f) < \lm_≤(g)$
 \item $\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)$
@@ -352,7 +354,7 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Por definición de las reducciones tenemos que (a) $⇒$ (b) $⇒$ (c), por lo cual alcanza con probar (a). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$
+Por definición de las reducciones tenemos que (1) $⇒$ (2) $⇒$ (3), por lo cual alcanza con probar (1). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$
 
 Esto implica por definición de reducciones:
 \begin{enumerate}
