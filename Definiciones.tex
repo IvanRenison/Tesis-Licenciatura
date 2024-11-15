@@ -37,7 +37,7 @@
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{lemma}{Lema:}[section]
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
-\renewenvironment{proof}[1][\proofname]{{\bfseries #1: }} % Estilo del título de la demostración
+\renewenvironment{proof}[1][\proofname]{{\bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
 
 \newtheoremstyle{factstyle} % <name>
 {} % <Space above>
@@ -160,8 +160,7 @@ Y en el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
 \begin{definition}
-Sea $≤$ un orden total sobre $⟨X⟩$: % TODO: Preguntar como hacer esto
-\[ ≤ \text{es un buen orden monomial si y solo si:} \] % ¿Se podrá hacer mejor esto?
+Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
 \begin{enumerate}[label = (\alph*)]
 \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
 
@@ -191,9 +190,7 @@ La relación $≤$ no tiene cadenas estrictamente decrecientes infinitas
 Ahora pasamos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
 
 \begin{definition}[Álgebra libre (asociativa)]
-Sea $R$ un anillo conmutativo
-
-Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
+Sea $R$ un anillo conmutativo. Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
 \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\} \]
 
 La suma en $R⟨X⟩$ se define de la manera esperable.
@@ -242,9 +239,7 @@ Esto significa que aplican todas las definiciones y teoremas de anillo.
 En particular vale la definición de ideal y algunas definiciones y teoremas relacionados, que como son muy importantes para este trabajo las repasaremos a continuación.
 
 \begin{definition}\label{def:ideal}
-Sean $R$ un anillo e $I, B ⊆ R$
-
-\[ I\text{ es un ideal de }R\text{ si y solo si:} \]
+Sean $R$ un anillo e $I, B ⊆ R$, definimos que $I$ es un ideal de $R$ si y solo si:
 \begin{enumerate}[label = (\alph*)]
 \item $I ≠ Ø$
 
@@ -279,9 +274,7 @@ Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
 \[ a ∈ I ⇔ a ≡_I 0 \]
 \end{theorem}
 
-Ahora volvemos al álgebra libre.
-
-A partir de ahora fijamos un cuerpo $K$.
+Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
 Una pregunta que surge es dado un conjunto finito $F ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, ¿se puede calcular si $f ∈ (F)$?
 
@@ -290,14 +283,13 @@ La respuesta a esa pregunta es que no, porque el problema es indecible. Sin emba
 Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
-Sean $f, g ∈  K⟨X⟩$:
-
-\[f < g\text{ si y solo si vale alguna de las siguientes:}\]
+Sean $f, g ∈  K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
 \begin{enumerate}[label = (\alph*)]
 \item $f = 0 ∧ g ≠ 0$
 \item $\lm_≤(f) < \lm_≤(g)$
 \item $\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)$
 \end{enumerate}
+Y $f ≤ g$ si y solo si $f < g ∨ f = g$.
 \end{definition}
 
 Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes ordenada de mayor a menor.
@@ -313,7 +305,7 @@ Ahora algunos teoremas sobre el orden de los polinomios.
 \end{theorem}
 
 \begin{theorem}\label{thm:≤ en KX no cadenas dec inf}
-La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas
+La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas.
 \end{theorem}
 \begin{proof}
 Supongamos que existen cadenas estrictamente decreciente infinita. Tomemos una $P$ que minimize $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no cadenas dec inf}
@@ -351,7 +343,7 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 
 \begin{theorem}[Las reducciones achican]\label{thm:→ achican}
 Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$, entonces:
-\begin{enumerate}[leftmargin=*,label=(\alph*),topsep=4pt,itemsep=2pt,partopsep=2pt, parsep=2pt] % Hacer global
+\begin{enumerate}
 \item $f →_{≤, a, g, b} f' ⇒ f' < f$
 
 \item $f →_{≤, g} f' ⇒ f' < f$
@@ -360,26 +352,24 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Por la definición de las reducciones (a) $⇒$ (b) $⇒$ (c), por lo cual alcanza con probar (a).
-
-Supongamos $f →_{≤, a, g, b} f'$
+Por definición de las reducciones tenemos que (a) $⇒$ (b) $⇒$ (c), por lo cual alcanza con probar (a). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$
 
 Esto implica por definición de reducciones:
-
-  $\lm_≤(agb) ∈ \sop(f)$ (1)
-
-  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ (2)
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item $\lm_≤(agb) ∈ \sop(f)$
+\item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+\end{enumerate}
 
 Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$
 
-Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (1).
+Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (4).
+
 \begin{fact}\label{fact:→ achican:3}
 Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ porque es multiplicar por un escalar adentro del $\lm$ en la condición de $i$.
 \end{fact}
 \begin{description}
-\item[Si $i ≠ 0$]\
-
-La \cref{fact:→ achican:3} significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (2)).
+\item[Si $i ≠ 0$] La \cref{fact:→ achican:3} significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (5)).
 
 Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
 
@@ -393,9 +383,9 @@ Sean $F ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
 \[ f_0 →_{≤, F} f_1 ⇒ f_0 + f ↓_{≤, F} f_1 + f \]
 \end{theorem}
 \begin{proof}
-Supongamos el antecedente $f_0 →_{≤, F} f_1$
+Supongamos el antecedente $f_0 →_{≤, F} f_1$.
 
-Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por el antecedente y por definición de $→_{≤, F}$
+Sean $g ∈ F, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por el antecedente y por definición de $→_{≤, F}$.
 
 Dividamos en casos según si $\lm_≤(agb) ∈ \sop(f)$:
 
@@ -408,7 +398,7 @@ En este caso tenemos $f_0 + f →_{≤, F} f_1 + f$ por tomar $g$, $a$ y $b$, y 
 \begin{description}
 \item[Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$]
 
-Como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
+Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$. Y como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
 
 \begin{DispWithArrows*}
 &f_1 + f →_{≤, F} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Subcaso} \\
@@ -417,11 +407,7 @@ Como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
 & ⇒ f_1 + f ↓_{≤, F} f_0 + f
 \end{DispWithArrows*}
 
-\item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$]\
-
-Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$
-
-En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
+\item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$] En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, F}$:
 \begin{DispWithArrows*}
 &f_0 + f →_{≤, F} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
 & ⇒ f_0 + f →_{≤, F} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
@@ -454,15 +440,10 @@ Sea $F ⊆ K⟨X⟩$, entonces:
 Lo vamos a probar por doble inclusión
 \begin{description}
 
-\item[Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$]\
+\item[Prueba de $↔^*_{≤, F} ⊆ ≡_{(F)}$] Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$. Para eso supongamos $f →_{≤, F} f'$ y probemos $f ≡_{(F)} f'$.
 
-Como tanto $↔^*_{≤, F}$ como $≡_{(F)}$ son relaciones de equivalencia y además $↔^*_{≤, F}$ es la mínima relación de equivalencia que contiene a $→_{≤, F}$, alcanza con probar $→_{≤, F} ⊆ ≡_{(F)}$
+Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por lo que estamos suponiendo y por la definición de $→_{≤, F}$. Tenemos:
 
-Supongamos $f →_{≤, F} f'$ y probemos $f ≡_{(F)} f'$
-
-Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por lo que estamos suponiendo y por la definición de $→_{≤, F}$
-
-Tenemos:
 \begin{DispWithArrows*}
 &f ≡_{(F)} f' \\
 & ⇔ f - f' ∈ (F) \\
@@ -471,7 +452,7 @@ Tenemos:
 \end{DispWithArrows*}
 Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
 
-% Falta probar la vuelta
+% Falta probar la otra inclusión
 \end{description}
 \end{proof}
 
@@ -497,7 +478,7 @@ Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante po
 
 $∀i ∈ ℕ : P_i →_{≤, F} P_{i+1}$
 
-Por el \cref{thm:→ achican} esto implica que:
+Por el \cref{thm:→ achican} tenemos que:
 
 $∀i ∈ ℕ : P_i > P_{i+1}$
 
@@ -510,7 +491,7 @@ Sea $F ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone
 \[ f\text{ está en forma normal con respecto a} →_{≤, F} ⇔ ∄g ∈ F, m ∈ \sop(f) : \lm(g) | m \]
 \end{theorem}
 \begin{proof}
-Por contradicción, supongamos que tenemos $g ∈ F, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$
+Por contradicción, supongamos que tenemos $g ∈ F, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$.
 
 Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
 
@@ -612,42 +593,36 @@ Supongamos (2), o sea $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$. Te
 Probemos cada termino del $∧$ por separado:
 
 \begin{description}
-\item[Prueba de $(G) = I$]\
-
-Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
+\item[Prueba de $(G) = I$] Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
 
 \begin{description}
-\item[Ida ($⇒$)]\
+\item[Ida ($⇒$)] Supongamos antecedente $f ∈ (G)$.
 
-Supongamos $f ∈ (G)$
+Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$.
 
-Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$
+Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$.
 
-Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$
+Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$.
 
-Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$
+Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) vale $f ∈ I$.
 
-Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) $f ∈ I$
-
-\item[Vuelta ($⇐$)]
-
-Supongamos $f ∈ I$
+\item[Vuelta ($⇐$)] Supongamos el antecedente $f ∈ I$.
 
 Por (2) tenemos que $f →^*_{≤, G} 0$
 
-Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$
+Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$.
 
-Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$
+Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$.
 
-Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$
+Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$.
 
 \end{description}
 
-\item[Prueba de $→_{≤, G}$ es confluente]\
+\item[Prueba de $→_{≤, G}\text{ es confluente}$]\
 
-Por definición de confluencia tenemos que $→_{≤, G}$ es confluente $⇔ ∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$
+Por definición de confluencia alcanza que probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$.
 
-Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro
+Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro.
 \begin{DispWithArrows*}
 &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
 & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{thm:→^* = ≡}} \\
@@ -661,33 +636,27 @@ Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un la
 
 \item[(2) $⇔$ (3)] La ida es claramente cierta y la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es cierta por el \cref{thm:→^* = ≡}.
 
-\item[(2) $⇒$ (4)] lo probamos suponiendo (2)
+\item[(2) $⇒$ (4)] Supongamos (2).
 
 La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
 
-Para la parte de $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ ∃g ∈ G : \lm(g) | \lm(f))$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
+Para la parte de $∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
 
-Por (2) tenemos $f →^*_{≤, G} 0$
+Por (2) tenemos $f →^*_{≤, G} 0$, esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
 
-Esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
+\item[(4) $⇒$ (3)] Lo probamos por contradicción, o sea, supongamos que vale (4) y que no vale (3). En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
-\item[(4) $⇒$ (3)] Lo probamos por contradicción, o sea, supongamos que vale (4) y que no vale (3). En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$
+Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
+\begin{itemize}
+\item $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
+\item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+\end{itemize}
 
-Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$
+Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$.
 
-Sean también:
+Además por \cref{thm:→ achican} $f' < f$.
 
-  $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
-
-  $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
-
-Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$
-
-Además por \cref{thm:→ achican} $f' < f$
-
-Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$
-
-Sin embargo esto contradice que $f$ sea mínimo
+Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$, sin embargo esto contradice que $f$ sea mínimo.
 
 \item Los casos (2) $⇒$ (5) y (5) $⇒$ (4) son muy fáciles y quedan como ejercicio. % Pongo esto hasta que la haga
 
@@ -807,22 +776,20 @@ Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso in
 
 Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
 
-Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$
+Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$.
 
-El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva.
+El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva. Para el otro caso tomemos ese $α$.
 
-Para el otro caso tomemos ese $α$:
+Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
 
-  Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
-
-  Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+Esto implica por el \cref{thm:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:4}
 $∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
 \end{lemma}
 \begin{proof}
-Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$
+Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:5}
@@ -836,17 +803,11 @@ Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F
 $∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
 \end{lemma}
 \begin{proof}
-Tomemos $α ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$
+Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$.
 
-Sea $(a, b, c, d, f, g) = α$
+Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$ y $k = \max(i, j)$.
 
-Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$
-
-Sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$ y $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$
-
-Tomemos $k = \max(i, j)$
-
-Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$
+Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$.
 
 Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probada la afirmación.
 \end{proof}
@@ -854,32 +815,33 @@ Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
 Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner del \cref{thm:equivalencias de base de Gröbner (con ambs)}, así que (1) queda probado.
 
-Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$
+Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$.
 
 Para cada $i ∈ \{1, …, n\}$ sean:
+\begin{itemize}
+\item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(F), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$
 
-  $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(F), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$ (7)
+Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}.
 
-    Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}
+\item $F' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$
 
-  $F' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$
+\item $k ∈ ℕ$ el mínimo tal que $F' ⊆ \B_{e_≤}^k(F)$
 
-  $k ∈ ℕ$ el mínimo tal que $F' ⊆ \B_{e_≤}^k(F)$
+Notar que $k$ está bien definido porque $F'$ es finito.
+\end{itemize}
 
-    Notar que $k$ está bien definido porque $F'$ es finito
-
-Ahora vamos a probar que $\B_{e_≤}^k(F)$ es una base de Gröbner de $(F)$
+Ahora vamos a probar que $\B_{e_≤}^k(F)$ es una base de Gröbner de $(F)$.
 
 Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
 
-$∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i$
+\[ ∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \]
 
 Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
 
 Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$
 
 \begin{DispWithArrows*}
-&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Definición de $g_{i_i}$} \\
+&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
 & = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
 & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
 \end{DispWithArrows*}
