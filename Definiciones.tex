@@ -454,7 +454,18 @@ Sean $g ∈ F, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc
 \end{DispWithArrows*}
 Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
 
-% Falta probar la otra inclusión
+\item[Prueba de $≡_{(F)} ⊆ ↔^*_{≤, F}$] Supongamos $f ≡_{(F)} f'$ y probemos $f ↔^*_{≤, F} f'$.
+
+Sean:
+\begin{itemize}
+\item $g = f - f'$.
+\item $g = ∑_{i = 1}^n c_i g_i c_i'$ con $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ F$ los cuales existen porque por definición de $≡_·$ tenemos $g ∈ (F)$ y por definición de $(\ ·\ )$.
+\item $f_0 = f$
+\item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - c_i g_i c_i'$.
+\end{itemize}
+
+Es claro que $∀i ∈ \{1, …, n\} : f_{i - 1} →_{≤, F} f_i$ y que $f_n = f - g = f'$, por lo cual queda probado que $f →^*_{≤, F} f'$ y por ende $f ↔^*_{≤, F} f'$.
+
 \end{description}
 \end{proof}
 
