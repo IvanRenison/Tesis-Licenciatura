@@ -158,7 +158,7 @@ Y cuando $v | w$ se dice que $v$ divide a $w$.
 
 Y en el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
+Mas adelante será necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
 
 \begin{definition}
 Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
@@ -172,13 +172,13 @@ Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden m
 Ahora un ejemplo de orden que cumple con esta definición:
 
 \begin{definition}
-Fijemos $X = \{x_1, …, x_n\}$ y un orden total entre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
+Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
 \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \]
 \end{definition}
 
-O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico, por ejemplo tenemos $bbc ≤_{deglex} ab$, $aabbc ≤_{deglex} abbcc$, $ab ≤_{deglex} abc$ y $ε ≤_{deglex} a$.
+O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también, y desempatar por orden lexicográfico, por ejemplo tenemos $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
 
-Este orden se puede probar fácilmente que es un bueno orden monomial.
+Se puede probar fácilmente que este orden es un bueno orden monomial.
 
 A partir de ahora fijamos un buen orden monomial $≤$, y usaremos $<$, $≥$ y $>$ como se usan habitualmente.
 
@@ -200,7 +200,7 @@ El producto por escalares de define como:
 \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \]
 
 El producto entre elementos de $R⟨X⟩$ se define como:
-\[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w_j \]
+\[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \]
 
 A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
 % Esta definición creo que hay que mejorarla, pero no se como
@@ -213,7 +213,7 @@ Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son 
 
 Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
-Sobre los polinomios no conmutativos se hacen las siguientes definiciones, que serán de utilidad:
+Sobre los polinomios no conmutativos se hacen las siguientes definiciones:
 
 \begin{definition}
 Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
@@ -281,7 +281,7 @@ Una pregunta que surge es dado un conjunto finito $F ⊆ K⟨X⟩$ y un elemento
 
 La respuesta a esa pregunta es que no, porque el problema es indecible. Sin embargo, si existen algoritmos que cuando $f ∈ (F)$ termina y devuelve una prueba, pero que cuando $f ∉ (F)$ puede no terminar. Sobre esos algoritmos se trata este trabajo.
 
-Mas adelante va a hacer falta comprar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
+Mas adelante va a ser necesario comparar no solo monomios si no también polinomios, así que $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
 Sean $f, g ∈  K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
@@ -297,7 +297,7 @@ Es decir, el orden en los polinomios es orden lexicográfico con el polinomio vi
 
 Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
 \[ a < ab \]
-\[ bcc + aab < bcc + c \]
+\[ bcc + c < bcc + abb \]
 \[ ac < ac + aa \]
 
 Ahora algunos teoremas sobre el orden de los polinomios.
@@ -316,7 +316,7 @@ Notar que:
 \begin{fact}\label{fact:≤ en KX no cadenas dec inf:1} % Nombres de labels provisorios
 $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$
 \end{fact}
-En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$.
+En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$ y no puede ser $\lm(P_i) > \lm(P_1)$ porque $P$ es una cadena estrictamente decreciente.
 
 \begin{fact}\label{fact:≤ en KX no cadenas dec inf:2}
 $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
@@ -338,7 +338,7 @@ Sean $F ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈
 \begin{itemize}
 \item $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 \item $→_{≤, g} = ⋃_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$
-\item $→_{≤, F} = ⋃_{g ∈ K⟨X⟩ - \{0\}} →_{≤, g}$
+\item $→_{≤, F} = ⋃_{g ∈ F} →_{≤, g}$
 \end{itemize}
 \end{definition}
 
@@ -458,7 +458,7 @@ Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal
 Sean:
 \begin{itemize}
 \item $g = f - f'$.
-\item $g = ∑_{i = 1}^n c_i g_i c_i'$ con $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ F$ los cuales existen porque por definición de $≡_·$ tenemos $g ∈ (F)$ y por definición de $(\ ·\ )$.
+\item $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ F$ tales que $g = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen porque por definición de $≡_·$ tenemos $g ∈ (F)$ y por definición de $(\ ·\ )$.
 \item $f_0 = f$
 \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - c_i g_i c_i'$.
 \end{itemize}
@@ -479,14 +479,10 @@ Si asumimos $f →^*_{≤, F} f'$ tenemos por el \cref{thm:→^* = ≡} $f ≡_{
 \begin{theorem}
 Sea $F ⊆ K⟨X⟩$, entonces:
 \begin{itemize}
-\item $→_{≤, F}$ es normalizante
 \item $→_{≤, F}$ es terminante
 \end{itemize}
 \end{theorem}
-\begin{proof}
-Por el \cref{thm:terminante ⇒ normalizante} que sea terminante implica que es normalizante, por lo cual con probar que es terminante alcanza.
-
-Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
+\begin{proof} Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, F}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
 $∀i ∈ ℕ : P_i →_{≤, F} P_{i+1}$
 
@@ -503,7 +499,7 @@ Sea $F ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone
 \[ f\text{ está en forma normal con respecto a} →_{≤, F} ⇔ ∄g ∈ F, m ∈ \sop(f) : \lm(g) | m \]
 \end{theorem}
 \begin{proof}
-Por contradicción, supongamos que tenemos $g ∈ F, m ∈ \sop(f)$ tal que $\lm(g) ∈ \sop(f)$.
+Por contradicción, supongamos que tenemos $g ∈ F, m ∈ \sop(f)$ tales que $\lm(g) ∈ \sop(f)$.
 
 Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
 
