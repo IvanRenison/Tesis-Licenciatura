@@ -463,7 +463,16 @@ Sean:
 \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - c_i g_i c_i'$.
 \end{itemize}
 
-Es claro que $∀i ∈ \{1, …, n\} : f_{i - 1} →_{≤, F} f_i$ y que $f_n = f - g = f'$, por lo cual queda probado que $f →^*_{≤, F} f'$ y por ende $f ↔^*_{≤, F} f'$.
+Tenemos entonces:
+
+\begin{DispWithArrows*}
+&∀i ∈ \{1, …, n\} : g_i →_{≤, F} 0 \\
+& ⇒ ∀i ∈ \{1, …, n\} : - c_i g_i c_i' →_{≤, F} 0 \Arrow{\cref{thm:suma →↓}} \\
+& ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, F} f_i \\
+& ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↔^*_{≤, F} f_i \\
+& ⇒ f_0 ↔^*_{≤, F} f_n \Arrow{$f_n = f - g = f'$}\\
+& ⇒ f ↔^*_{≤, F} f_n
+\end{DispWithArrows*}
 
 \end{description}
 \end{proof}
