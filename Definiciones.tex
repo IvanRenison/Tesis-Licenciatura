@@ -19,6 +19,8 @@
 
 \usepackage{float}
 \usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\SetKw{Break}{break}
+\SetKwFor{Loop}{loop}{}{end loop}
 
 \usepackage[capitalise]{cleveref}
 
@@ -869,5 +871,34 @@ Con esto queda completada la prueba.
 
 \end{proof}
 
+La definición de esos conjuntos nos da de forma directa un algoritmo para calcular bases de Gröbner:
+
+\begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \caption{Algoritmo de Buchberger}\label{alg:Buchberger}
+  \KwData{$F ⊆ K⟨X⟩$, $e_≤$ una estrategia de reducción}
+  \KwResult{$G ⊆ K⟨X⟩$ una base de Gröbner de $(F)$ si es que termina}
+  $G ← F$
+
+  \Loop{} {
+    $ambs ← \amb(G)$
+
+    $new\_G ← G$
+
+    \For{$α ∈ ambs$} {
+      $f ← e_≤(G)(\S(α))$
+
+      \If{$f ≠ 0$} {
+        $new\_G ← new\_G ∪ \{f\}$
+      }
+    }
+
+    \If{$new\_G = G$} {
+      \Break
+    }
+
+    $G ← new\_G$
+  }
+  \Return{$G$}
+\end{algorithm}
 
 \end{document}
