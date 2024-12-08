@@ -37,9 +37,9 @@
 {} % <Theorem head spec (can be left empty, meaning `normal`)
 
 \theoremstyle{customstyle}
-\newtheorem{definition}{Definición}[section]
-\newtheorem{theorem}{Teorema}[section]
-\newtheorem{lemma}{Lema:}[section]
+\newtheorem{definition}{Definición}[chapter]
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}{Lema:}[chapter]
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
 \renewenvironment{proof}[1][\proofname]{{\bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
 
@@ -71,7 +71,7 @@
 \begin{document}
 \fontsize{16pt}{19pt}\selectfont % Increase the font size
 
-\section{Introducción informal}
+\chapter{Introducción informal}
 
 En esta sección se explica informalmente mas o menos de que se trata el tema de la tesis.
 
@@ -89,12 +89,12 @@ Esta tesis es sobre los algoritmos para hacer esto último.
 
 % Acá habría que también explicar mas concretamente lo que ya había de Hof y explicar que hice yo.
 
-\section{Definiciones preliminares}
+\chapter{Definiciones preliminares}
 
 En esta sección se explican los conceptos matemáticos necesarios para entender el resto del trabajo.
 En particular se explica …. % Completar
 
-\subsection{Sistemas de re-escritura}
+\section{Sistemas de re-escritura}
 
 En esta sub-sección se explican algunas definiciones y teoremas básicos de sistemas de re-escritura.
 
@@ -141,7 +141,7 @@ $→$ es terminante $⇒ →$ es normalizante
 $→$ es confluente $⇔ →$ es Church-Rosser
 \end{theorem}
 
-\subsection{Álgebra libre}
+\section{Álgebra libre}
 
 Ahora si empezamos con el tema de la tesis en si.
 
@@ -703,7 +703,7 @@ Con esto se termina la prueba.
 \end{proof}
 
 
-\subsection{Algoritmo de Buchberger}
+\section{Algoritmo de Buchberger}
 
 \begin{definition}
 Sean $p, q, a, b, c, d ∈ ⟨X⟩$
