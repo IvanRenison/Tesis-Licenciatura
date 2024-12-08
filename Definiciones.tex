@@ -920,4 +920,35 @@ La definición de esos conjuntos nos da de forma directa un algoritmo para calcu
   \Return{$G$}
 \end{algorithm}
 
+El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lenta y necesita un cambio para que pase a andar bien.
+
+Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_G$ en lugar de con $G$. Esto lo podemos implementar así:
+
+\begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \caption{Primera optimización de Buchberger}\label{alg:Buchberger optimización 1}
+  \KwData{$F ⊆ K⟨X⟩$, $e_≤$ una estrategia de reducción}
+  \KwResult{$G ⊆ K⟨X⟩$ una base de Gröbner de $(F)$ si es que termina}
+  $G ← F$
+
+  $ambs ← \amb(G)$
+
+  \While{$ambs ≠ ∅$} {
+    elegir $α ∈ ambs$
+
+    $ambs ← ambs - \{α\}$
+
+    $f ← e_≤(G)(\S(α))$
+
+    \If{$f ≠ 0$} {
+      $G ← G ∪ \{f\}$
+    }
+  }
+
+  \Return{$G$}
+\end{algorithm}
+
+Ese cambio hace que pase de no andar rápido casi nunca a andar rápido en un montón de casos.
+
+En ese seudocódigo no está aclarado como se elige una ambigüedad, pero las dos formas que mejor andan son elegir la de menor S-polinomio y elegir la que hace mas tiempo está en el conjunto de ambigüedades (first in first out).
+
 \end{document}
