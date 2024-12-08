@@ -22,6 +22,9 @@
 \SetKw{Break}{break}
 \SetKwFor{Loop}{loop}{}{end loop}
 
+\usepackage{listings} % Me gustaría hacer que use un syntax highlighting bonito (el por defecto es solo normal/negrita)
+\lstset{basicstyle=\ttfamily} % Cambia la fuente a monospace y ajusta el tamaño de la fuente
+
 \usepackage[capitalise]{cleveref}
 
 \setlist[enumerate,1]{label={\em{(\arabic*)}}}
@@ -955,5 +958,74 @@ Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar ta
 Ese cambio hace que pase de no andar rápido casi nunca a andar rápido en un montón de casos.
 
 En ese seudocódigo no está aclarado como se elige una ambigüedad, pero las dos formas que mejor andan son elegir la de menor S-polinomio y elegir la que hace mas tiempo está en el conjunto de ambigüedades (first in first out).
+
+\chapter{Implementación}
+
+En este capitulo se explican los detalles de como está hecha la implementación.
+
+\section{Monomios}
+
+Para los monomios, o sea los elementos de $⟨X⟩$, la base de la implementación es así:
+
+\begin{lstlisting}[language=C++]
+  struct Monomial {
+    typedef __uint8_t X;
+    vector<X> vals;
+  };
+\end{lstlisting}
+
+El tipo \texttt{Monomial::X} es el tipo en el que se guardan las variables, con el código así como está son números de 8 bits, por lo cual puede haber hasta 256 variables, si fuera necesario usar mas variables hay que cambiarlo por un tipo mas grande como \texttt{\_\_uint16\_t}. Se podría haber usado un argument de template para que se pueda cambiar sin tener que cambiar el código, pero no está hecho para simplificar el código, ya que para los polinomios ya hay dos argumentos de template.
+
+Este struct tiene implementada las operaciones básicas con monomios incluyendo el producto, métodos para saber divisibilidad de monomios y dividir monomios tanto obteniendo todas las respuestas como obteniendo una respuesta y métodos para leer e imprimir monomios tanto de forma bonita como se los suele escribir (para monomios que tienen variables menores a 26) como en un formato fácil de leer desde otro código.
+
+El formato fácil de leer desde código consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
+
+\begin{lstlisting}[escapechar=+]
+  +$n$+ +$x_1$+ … +$x_n$+
+\end{lstlisting}
+
+\section{Orden monomial}
+
+El único orden monomial que está implementado es el orden lexicográfico por grado y está implementado así:
+
+\begin{lstlisting}[language=C++]
+  struct DegLexOrd {
+    bool operator()(const Monomial& a, const Monomial& b) const {
+      size_t n = a.vals.size(), m = b.vals.size();
+      return n < m || (n == m && a.vals < b.vals);
+    }
+  };
+\end{lstlisting}
+
+Esto está definido a parte y no como definir el operador \texttt{<=} para \texttt{Monomial} por si se quiere usar otro orden monomial.
+
+\section{Polinomios}
+
+Para los polinomios, o sea los elementos de $K⟨X⟩$, la base de la implementación es así:
+
+\begin{lstlisting}[language=C++]
+  template<typename K, class ord = DegLexOrd>
+  struct Poly {
+    vector<pair<Monomial, K>> terms;
+  };
+\end{lstlisting}
+
+El parámetro de template \texttt{K} es el cuerpo de los coeficientes, por lo general los racionales o la aritmética módulo algún primo y el parámetro de template \texttt{ord} es el orden monomial que se va a usar, por defecto es el orden lexicográfico por grado.
+
+\texttt{K} tiene que tener implementada todas las operaciones de cuerpo y un constructor que pueda tomar un \texttt{int} o algo a lo que \texttt{int} se castee automáticamente
+
+El vector \texttt{terms} tiene los términos del polinomio con cada monomio con coeficiente distinto de cero apareciendo exactamente una vez y se mantiene siempre ordenado por el orden monomial.
+
+Este struct tiene implementada las operaciones básicas con polinomios incluyendo la suma y el producto, métodos para leer e imprimir polinomios tanto de forma bonita como se los suele escribir como en un formato fácil de leer desde otro código y el orden polinomial correspondiente al orden monomial.
+
+El formato fácil de leer desde código consiste en, primero un número entero no negativo $m$, la cantidad de términos, seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. El coeficiente tiene se lee haciendo \texttt{>> c} donde \texttt{c} es una variable de tipo \texttt{K}, así que \texttt{K} tiene que tener \texttt{>>} implementado para que se pueda leer polinomios. Se puede representar así el formato:
+
+\begin{lstlisting}[escapechar=+]
+  +$m$+
+  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ … +$x_{1, n_1}$+
+  ፧
+  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ … +$x_{m, n_m}$+
+\end{lstlisting} % Los tres puntitos verticales por algún motivo no se muestran ni con ese caracter ni con ⋮
+
 
 \end{document}
