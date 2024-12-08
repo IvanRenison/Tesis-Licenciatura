@@ -85,9 +85,14 @@ Una problema de decisión que existe sobre los polinomios no conmutativos es, da
 
 Este problema en el caso general no es computable, pero si se puede hacer un algoritmo que si es verdadero termina y si no puede no terminar, o hacer un algoritmo que intenta determinarlo y puede devolver que si, que no, o que no sabe pero podría llegar a averiguarlo si sigue computando (así como podría no averiguarlo nunca).
 
-Esta tesis es sobre los algoritmos para hacer esto último.
+Para se considera el conjunto $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable y son estos últimos casos los que hacen que el problema no sea computable.
 
-% Acá habría que también explicar mas concretamente lo que ya había de Hof y explicar que hice yo.
+Para calcular esas bases de Gröbner hay dos algoritmos principales, llamados algoritmo de Buchberger y F4.
+
+Antes de ahora ya hubo varias implementaciones de esos algoritmos, siendo la mas importante \texttt{operator\_gb} hecha por Clemens Hofstadler en python usando \texttt{sagemath} y que está explicada en … % Citar a Hof
+junto con una explicación de toda la teoría (mucho mas en detalle que en esta tesis).
+
+Como esa implementación está hecha en python y no corre en paralelo, el objetivo de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
 
 \chapter{Definiciones preliminares}
 
