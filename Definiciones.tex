@@ -22,8 +22,9 @@
 \SetKw{Break}{break}
 \SetKwFor{Loop}{loop}{}{end loop}
 
-\usepackage{listings} % Me gustaría hacer que use un syntax highlighting bonito (el por defecto es solo normal/negrita)
-\lstset{basicstyle=\ttfamily} % Cambia la fuente a monospace y ajusta el tamaño de la fuente
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily} % Cambia la fuente a monospace
+\usepackage{minted}
 
 \usepackage[capitalise]{cleveref}
 
@@ -967,12 +968,12 @@ En este capitulo se explican los detalles de como está hecha la implementación
 
 Para los monomios, o sea los elementos de $⟨X⟩$, la base de la implementación es así:
 
-\begin{lstlisting}[language=C++]
+\begin{minted}{C++}
   struct Monomial {
     typedef __uint8_t X;
     vector<X> vals;
   };
-\end{lstlisting}
+\end{minted}
 
 El tipo \texttt{Monomial::X} es el tipo en el que se guardan las variables, con el código así como está son números de 8 bits, por lo cual puede haber hasta 256 variables, si fuera necesario usar mas variables hay que cambiarlo por un tipo mas grande como \texttt{\_\_uint16\_t}. Se podría haber usado un argument de template para que se pueda cambiar sin tener que cambiar el código, pero no está hecho para simplificar el código, ya que para los polinomios ya hay dos argumentos de template.
 
@@ -988,14 +989,14 @@ El formato fácil de leer desde código consiste en un número entero no negativ
 
 El único orden monomial que está implementado es el orden lexicográfico por grado y está implementado así:
 
-\begin{lstlisting}[language=C++]
+\begin{minted}{C++}
   struct DegLexOrd {
     bool operator()(const Monomial& a, const Monomial& b) const {
       size_t n = a.vals.size(), m = b.vals.size();
       return n < m || (n == m && a.vals < b.vals);
     }
   };
-\end{lstlisting}
+\end{minted}
 
 Esto está definido a parte y no como definir el operador \texttt{<=} para \texttt{Monomial} por si se quiere usar otro orden monomial.
 
@@ -1003,12 +1004,12 @@ Esto está definido a parte y no como definir el operador \texttt{<=} para \text
 
 Para los polinomios, o sea los elementos de $K⟨X⟩$, la base de la implementación es así:
 
-\begin{lstlisting}[language=C++]
+\begin{minted}{C++}
   template<typename K, class ord = DegLexOrd>
   struct Poly {
     vector<pair<Monomial, K>> terms;
   };
-\end{lstlisting}
+\end{minted}
 
 El parámetro de template \texttt{K} es el cuerpo de los coeficientes, por lo general los racionales o la aritmética módulo algún primo y el parámetro de template \texttt{ord} es el orden monomial que se va a usar, por defecto es el orden lexicográfico por grado.
 
