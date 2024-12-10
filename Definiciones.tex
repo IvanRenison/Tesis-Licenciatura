@@ -70,6 +70,10 @@
 \DeclareMathOperator{\amb}{amb}
 \renewcommand{\S}{\text{S}}
 \DeclareMathOperator{\B}{B}
+\DeclareMathOperator{\spn}{spn} % span está ocupado y re rompe todo si lo re-declaro
+\DeclareMathOperator{\mat}{mat}
+\DeclareMathOperator{\poli}{poli}
+\DeclareMathOperator{\filas}{filas}
 
 
 \begin{document}
@@ -394,7 +398,7 @@ Esto implica por definición de reducciones:
 \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
 \end{enumerate}
 
-Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > … > m_n$
+Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > ⋯ > m_n$
 
 Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (4).
 
@@ -933,34 +937,160 @@ La definición de esos conjuntos nos da de forma directa un algoritmo para calcu
 
 El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lenta y necesita un cambio para que pase a andar bien.
 
-Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_G$ en lugar de con $G$. Esto lo podemos implementar así:
+Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_G$ en lugar de con $G$ en la linea 6. % Se podrá hacer con un label esto?
+
+Ese cambio hace que pase de no andar rápido casi nunca a andar rápido en un montón de casos.
+
+Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. Ambos optimizaciones están explicadas en …, % Citar a Hof
+y no se van a explicar acá.
+
+\section{Algoritmo F4}
+
+En esta sección se explica el algoritmo F4, que es otro algoritmo para calcular Bases de Gröbner.
+
+La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, tanto reduciendo por los elementos que ya están en la base como reduciendo entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz codificando cada monomio como una columna y cada polinomio como una columna.
+
+Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones:
+
+\begin{definition}
+Sea $P ⊆ K⟨X⟩$:
+
+\begin{itemize}
+  \item $\spn_K(P) = \{∑_{i = 1}^n c_i p_i : n ∈ ℕ, c_i ∈ K, p_i ∈ P\}$
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}
+Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ tales que $m_1 > ⋯ > m_n$:
+
+\begin{itemize}
+  \item $\poli_T : K^n → \spn_K(M)$
+  \item $\poli_T(v) = ∑_{i = 1}^n v_i m_i$
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}
+Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ tales que $m_1 > ⋯ > m_n$. $\mat_T$ aplicado a un polinomio se define como la inversa de $\poli_T$:
+
+\begin{itemize}
+  \item $\mat_T : \spn_K(M) → K^n$
+  \item $\mat_T(p) = \poli_T^{-1}(p)$
+\end{itemize}
+
+$\mat_T$ aplicado a una lista de polinomios da una matriz:
+
+\begin{itemize}
+  \item $\mat_T(p_1, …, p_m) = \begin{pmatrix} \mat_T(p_1) \\ ⋮ \\ \mat_T(p_m) \end{pmatrix}$
+\end{itemize}
+
+\end{definition}
+
+Estas definiciones nos permiten hablar de pasar de polinomios a matrices y viceversa.
+
+Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que vamos a tener que empezar ya teniendo en la matriz los polinomios que vamos a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $P$ calcula todos los polinomios que van a ser necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
-  \caption{Primera optimización de Buchberger}\label{alg:Buchberger optimización 1}
+  \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
+  \KwData{$G, P ⊆ K⟨X⟩$ conjuntos finitos}
+  \KwResult{$G' ⊆ \{agb : a, b ∈ ⟨X⟩, g ∈ G\}$}
+  $G' ← ∅$
+
+  $conciderados ← \{\lm(g) : g ∈ G\}$
+
+  $T ← ⋃_{g ∈ G} \sop(\tail(g))$
+
+  \While{$T ≠ ∅$} {
+    elegir $m ∈ T$
+
+    $T ← T - \{m\}$
+
+    \For{$g ∈ G$} {
+      \If{$\lm(g) | m$} {
+        calcular $a$ y $b$ tales que $m = a \lm(g) b$
+
+        $G' ← G' ∪ {agb}$
+
+        $nuevos ← \{m' ∈ \sop(\tail(agb)) : m' ∉ conciderados\}$
+
+        $T ← T ∪ nuevos$
+
+        $conciderados ← conciderados ∪ nuevos$
+      }
+    }
+  }
+
+  \Return{$G'$}
+\end{algorithm}
+
+Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base.
+
+Para detectar esos polinomios lo que se hace es guardarse cuales son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+
+Eso se puede entender mejor viene este seudocódigo:
+
+\begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \caption{Multireducción}\label{alg:Multireducción}
+  \KwData{$G, P ⊆ K⟨X⟩$ conjuntos finitos}
+  \KwResult{$P' ⊆ K⟨X⟩$}
+  $G' ←$ Preprocesamiento simbólico$(G, P)$
+
+  $monomios ← \{\lm(g) : g ∈ G'\}$
+
+  $M ← \{m : m ∈ \sop(g), g ∈ G' ∪ P\}$
+
+  $mat ← \mat_M(G' ∪ P)$
+
+  hacer reducción por filas de $mat$
+
+  $P' ← \{\poli_M(v) : v ∈ \filas(mat) : v ≠ 0 ∧ \lm(\poli_M(v)) ∉ monomios\}$
+
+  \Return{$P'$}
+\end{algorithm}
+
+Y con esto se puede escribir el algoritmo F4:
+
+\begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
+  \caption{F4}\label{alg:F4}
   \KwData{$F ⊆ K⟨X⟩$, $e_≤$ una estrategia de reducción}
   \KwResult{$G ⊆ K⟨X⟩$ una base de Gröbner de $(F)$ si es que termina}
   $G ← F$
 
-  $ambs ← \amb(G)$
+  \Loop{} {
+    $ambs ← \amb(G)$
 
-  \While{$ambs ≠ ∅$} {
-    elegir $α ∈ ambs$
+    $new\_G ← G$
 
-    $ambs ← ambs - \{α\}$
+    \While{$ambs ≠ ∅$} {
+      elegir $Α ⊆ ambs$
 
-    $f ← e_≤(G)(\S(α))$
+      $ambs ← ambs - Α$
 
-    \If{$f ≠ 0$} {
-      $G ← G ∪ \{f\}$
+      $P ← \{\S(α) : α ∈ Α\}$
+
+      $P ←$ Multireducción$(new\_G, P)$
+
+      $new\_G ← new\_G ∪ P$
     }
+
+    \If{$new\_G = G$} {
+      \Break
+    }
+
+    $G ← new\_G$
   }
 
   \Return{$G$}
 \end{algorithm}
 
-Ese cambio hace que pase de no andar rápido casi nunca a andar rápido en un montón de casos.
+Este algoritmo no especifica cuales ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes más rápido.
 
-En ese seudocódigo no está aclarado como se elige una ambigüedad, pero las dos formas que mejor andan son elegir la de menor S-polinomio y elegir la que hace mas tiempo está en el conjunto de ambigüedades (first in first out).
+En … % Citar a Hof
+se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto. Eso acá no está porque es muy tedioso.
+
+Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular,  que se llama eliminación Faugère-Lachartre y que también está explicada en …. % Citar a Hof
+
 
 \chapter{Implementación}
 
