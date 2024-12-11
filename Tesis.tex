@@ -323,6 +323,13 @@ Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
 \[ a ∈ I ⇔ a ≡_I 0 \]
 \end{theorem}
 
+Por último, con respecto al ideal generado por un conjunto tenemos el siguiente teorema.
+
+\begin{theorem}\label{thm:gen B = gen B U a con a ∈ gen B}
+  Sean $R$ un anillo, $B ⊆ R$ y $a ∈ (B)$, entonces:
+  \[ (B) = (B ∪ {a}) \]
+\end{theorem}
+
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
 Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como dado un conjunto finito $F ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (F)$. Ahora nos vamos a poner con el tema de esa pregunta.
@@ -743,192 +750,217 @@ Las bases de Gröbner se definieron por la propiedad mas importante que queremos
 
 \section{Algoritmo de Buchberger}
 
+En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger.
+
+Este algoritmo se llama así porque es similar a un algoritmo en los polinomios conmutativos que fue inventado por alguien llamado Buchberger, pero no porque lo haya inventado Buchberger.
+
+Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias de \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos.
+
+Para eso vamos a definir algo llamado S-polinomio de dos polinomios que lo que hace es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
+
+Para eso antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
+
 \begin{definition}
-Sean $p, q, a, b, c, d ∈ ⟨X⟩$
-\[ (a, b, c, d, p, q)\text{ es una ambigüedad} ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p| \]
+  Sean $p, q, a, b, c, d ∈ ⟨X⟩$
+  \[ (a, b, c, d, p, q)\text{ es una ambigüedad} ⇔ apb = cqd ∧ |a|, |b| < |q| ∧ |c|, |d| < |p| \]
 
-La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
-\begin{itemize}
-\item De superposición $⇔ a = ε = d ∨ b = ε = c$
-\item De inclusión $⇔ a = ε = b ∨ c = ε = d$
-\item Relevante $⇔$ es de superposición o de inclusión
-\end{itemize}
+  La ambigüedad $(a, b, c, d, p, q)$ se dice que es:
+  \begin{itemize}
+    \item De superposición $⇔ a = ε = d ∨ b = ε = c$
+    \item De inclusión $⇔ a = ε = b ∨ c = ε = d$
+    \item Relevante $⇔$ es de superposición o de inclusión
+  \end{itemize}
 
-Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+  Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
-Sea además $F ⊆ K⟨X⟩$:
-\begin{itemize}
-\item $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
-\item $\amb(F) = ⋃_{f, g ∈ F - \{0\}}{\amb(f, g)}$
-\end{itemize}
+  Sea además $F ⊆ K⟨X⟩$:
+  \begin{itemize}
+    \item $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$
+    \item $\amb(F) = ⋃_{f, g ∈ F - \{0\}}{\amb(f, g)}$
+  \end{itemize}
 
 \end{definition}
 
-\begin{theorem}
-Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
-\[ \lm_≤{(afb)} = \lm_≤{(cgd)} \]
+\begin{definition}
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
+  \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \]
+\end{definition}
 
+Ahora vamos a probar que los S-polinomios hacen eso que dijimos que hacen y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
+
+\begin{theorem}\label{thm:lm ambs}
+  Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
+  \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \]
 \end{theorem}
 \begin{proof}\
-\begin{DispWithArrows*}
-&\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\
-& = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
-& = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
-& = \lm_≤{(cgd)}
-\end{DispWithArrows*}
+  \begin{DispWithArrows*}
+    &\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\
+    & = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
+    & = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
+    & = \lm_≤{(cgd)}
+  \end{DispWithArrows*}
 \end{proof}
 
-Eso motiva la siguiente definición.
+Eso nos permite definir el monomio principal de una ambigüedad.
 
-\begin{definition}[Monomios principales de ambigüedades]
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
-\[ \lm_≤{(α)} = \lm_≤{(afb)} \]
+\begin{definition}
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad:
+  \[ \lm_≤{(α)} = \lm_≤{(afb)} \]
 \end{definition}
 
-Notar que también $\lm_≤{(α)} = \lm_≤{(cgb)}$
+Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤{(α)} = \lm_≤{(cgb)}$.
 
-\begin{definition}[S-polinomios]
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
-\[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \]
-\end{definition}
+Lo de que los monomios principales se cancelen se enuncia en el siguiente teorema.
 
 \begin{theorem}
-Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
-\[ \lm_≤{(\S(α))} < \lm_≤{(α)} \]
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+  \[ \lm_≤{(\S(α))} < \lm_≤{(α)} \]
 \end{theorem}
 \begin{proof}
-Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan.
+  Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan.
 \end{proof}
+
+Otra cosa importante es que estos S-polinomios son cerraros en el ideal, es decir que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
 
 \begin{theorem}\label{thm:S es cerrado en ideal}
-Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
-\[ \S(α) ∈ I \]
+  Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+  \[ \S(α) ∈ I \]
 \end{theorem}
-\begin{proof}
-En la definición de $\S$ se ve claramente que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$ (en particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$)
+  \begin{proof}
+  En la definición de $\S$ se ve claramente que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$ (en particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$)
 \end{proof}
 
-\begin{theorem}\label{thm:equivalencias de base de Gröbner (con ambs)}
-Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
+Ahora si damos el anunciado teorema para computar si un conjunto es una base de Gröbner.
 
-Son equivalentes:
-\begin{enumerate}
-\item $G$ es una base de Gröbner de $I$
+\begin{theorem}[Condición de Buchberger]\label{thm:condición de Buchberger)}
+  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
 
-\item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$
-
-\end{enumerate}
+  Son equivalentes:
+  \begin{enumerate}
+    \item $G$ es una base de Gröbner de $I$
+    \item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$
+  \end{enumerate}
 \end{theorem}
 % TODO: Agregar prueba. De cualquier manera, Hof no lo prueba a esto
 
-% Agregar algunos teoremas sobre S polinomios, ambigüedades, y bases de Gröbner
+Con esto ya se puede explicar la idea del algoritmo de Buchberger.
 
-\begin{definition}[Conjuntos del algoritmo de Buchberger]
-Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
-\begin{itemize}
-\item $\B_{e_≤}^0(F) = F$
-\item $\B_{e_≤}^{i + 1}(F) = \B_{e_≤}^i(F) ∪ \{e_≤(\B_{e_≤}^i(F))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(F))\}$
-\item $\B_{e_≤}(F) = ⋃_{i = 0}^∞ \B_{e_≤}^i(F)$
-\end{itemize}
+Cuando estamos chequeando si un conjunto es una base de Gröbner usando el \cref{thm:condición de Buchberger)} si nos encontramos con un S-polinomio $p$ que se reduce a un polinomio $q$ que es distinto de $0$ lo que podemos hacer es agregar $q$ al conjunto y con eso $p$ si se va a reducir a $0$.
+
+Se podría pensar que agregar $q$ por ahí cambia el ideal generado, pero por el teorema \cref{thm:S es cerrado en ideal} sabemos que $q$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $p$ también está en el ideal y por ende por el \cref{thm:gen B = gen B U a con a ∈ gen B} se puede agregar al conjunto y que el ideal generado siga siendo el mismo.
+
+El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (ya habíamos dicho que el problema de pertenencia a un ideal no es decidible, así que si o si va a haber alguna cosa así inusual en cualquier algoritmo que hagamos).
+
+Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente con la siguiente definición.
+
+\begin{definition}
+  Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
+  \begin{itemize}
+    \item $\B_{e_≤}^0(F) = F$
+    \item $\B_{e_≤}^{i + 1}(F) = \B_{e_≤}^i(F) ∪ \{e_≤(\B_{e_≤}^i(F))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(F))\}$
+    \item $\B_{e_≤}(F) = ⋃_{i = 0}^∞ \B_{e_≤}^i(F)$
+  \end{itemize}
 \end{definition}
 
-Estos conjuntos forman esencialmente el algoritmo de Buchberger. Para probar la correctitud vamos a querer probar esto:
+Y a esos conjuntos los llamamos bases de Buchberger (este nombre es un nombre inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos).
+
+Podemos enunciar que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega, con el siguiente teorema.
 
 \begin{theorem}\label{thm:Buchberger correctitud}
-Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
-\begin{enumerate}
-\item $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$
-\item $(F)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F))$ es una base de Gröbner
-\end{enumerate}
+  Sean $F ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
+  \begin{enumerate}
+    \item $\B_{e_≤}(F)$ es una base de Gröbner de $(F)$
+    \item $(F)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(F))$ es una base de Gröbner
+  \end{enumerate}
 \end{theorem}
 
-Pero para probar eso primero vamos a probar algunos lemas en el contexto de este teorema.
+Con lo que dijimos antes tiene sentido que (q) sea cierto, pero que (2) sea cierto no es para nada obvio. Para probar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $F$ y $e_≤$ fijados).
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
-$∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
+  $∀i ∈ ℕ : \B_{e_≤}^{i}(F) ⊆ (F)$
 \end{lemma}
 \begin{proof}
-Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
+  Por inducción en $i$ el caso base es valido porque $F ⊆ (F)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
 
-Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
+  Tomemos $f ∈ \B_{e_≤}^{i + 1}(F)$ y probemos que $f ∈ (F)$.
 
-Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$.
+  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(F) ∨ ∃α ∈ \amb(\B_{e_≤}^i(F)) : f = e_≤(\B_{e_≤}^i(F))(\S(α))$.
 
-El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva. Para el otro caso tomemos ese $α$.
+  El caso $f ∈ \B_{e_≤}^i(F)$ es valido por hipótesis inductiva. Para el otro caso tomemos ese $α$.
 
-Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
+  Por el \cref{thm:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $\S(α) ∈ (F)$.
 
-Esto implica por el \cref{lemma:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
+  Esto implica por el \cref{lemma:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ \B_{e_≤}^i(F)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(F))(\S(α)) ∈ (F)$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:4}
-$∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
+  $∀i ∈ ℕ : \B_{e_≤}(F) ⊆ (F)$
 \end{lemma}
 \begin{proof}
-Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
+  Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:5}
-$(\B_{e_≤}(F)) = (F)$
+  $(\B_{e_≤}(F)) = (F)$
 \end{lemma}
 \begin{proof}
-Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por la \cref{lemma:Buchberger correctitud:4}.
+  Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $F ⊆ \B_{e_≤}$ y por la \cref{lemma:Buchberger correctitud:4}.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:6}
-$∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
+  $∀α ∈ \amb(\B_{e_≤}(F)) : \S(α) →^*_{≤, \B_{e_≤}(F)} 0$
 \end{lemma}
 \begin{proof}
-Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$.
+  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(F))$ y probemos el $∀$.
 
-Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$ y $k = \max(i, j)$.
+  Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(F)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(F)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(F)$ y $k = \max(i, j)$.
 
-Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$.
+  Notar que $α ∈ \amb(\B_{e_≤}^k(F))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(F)$.
 
-Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probada la afirmación.
+  Por definición de $→^*_{≤, F}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(F)} 0$, así que queda probada la afirmación.
 \end{proof}
 
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
-Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner del \cref{thm:equivalencias de base de Gröbner (con ambs)}, así que (1) queda probado.
+  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner del \cref{thm:condición de Buchberger)}, así que (1) queda probado.
 
-Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$.
+  Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(F)$.
 
-Para cada $i ∈ \{1, …, n\}$ sean:
-\begin{itemize}
-\item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(F), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$
+  Para cada $i ∈ \{1, …, n\}$ sean:
+  \begin{itemize}
+    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(F), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$
 
-Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}.
+    Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}.
 
-\item $F' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$
+    \item $F' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$
 
-\item $k ∈ ℕ$ el mínimo tal que $F' ⊆ \B_{e_≤}^k(F)$
+    \item $k ∈ ℕ$ el mínimo tal que $F' ⊆ \B_{e_≤}^k(F)$
 
-Notar que $k$ está bien definido porque $F'$ es finito.
-\end{itemize}
+    Notar que $k$ está bien definido porque $F'$ es finito.
+  \end{itemize}
 
-Ahora vamos a probar que $\B_{e_≤}^k(F)$ es una base de Gröbner de $(F)$.
+  Ahora vamos a probar que $\B_{e_≤}^k(F)$ es una base de Gröbner de $(F)$.
 
-Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
+  Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
 
-\[ ∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \]
+  \[ ∀f ∈ (F) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(F), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \]
 
-Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
+  Tomemos $f' ∈ (F) - \{0\}$ y escribamoslo de esa forma:
 
-Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$
+  Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$
 
-\begin{DispWithArrows*}
-&f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
-& = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
-& = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
-\end{DispWithArrows*}
+  \begin{DispWithArrows*}
+    &f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
+    & = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
+    & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
+  \end{DispWithArrows*}
 
-Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
+  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(F)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
 
-Con esto queda completada la prueba.
+  Con esto queda completada la prueba.
 
 \end{proof}
 
-La definición de esos conjuntos nos da de forma directa un algoritmo para calcular bases de Gröbner:
+Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Algoritmo de Buchberger}\label{alg:Buchberger}
@@ -962,7 +994,9 @@ El algoritmo así, si bien es una implementación tal cual de la definición de 
 
 Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_G$ en lugar de con $G$ en la linea 6. % Se podrá hacer con un label esto?
 
-Ese cambio hace que pase de no andar rápido casi nunca a andar rápido en un montón de casos.
+Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}.
+
+En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. De forma teórica porque es algo que hace tanta diferencia es algo que no se ni puede encontrar en la literatura.
 
 Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. Ambos optimizaciones están explicadas en …, % Citar a Hof
 y no se van a explicar acá.
