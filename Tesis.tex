@@ -102,58 +102,66 @@ junto con una explicación de toda la teoría (mucho mas en detalle que en esta 
 
 Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
 
-La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización.
+La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
 \chapter{Definiciones preliminares}
 
-En este capitulo se explican los conceptos matemáticos necesarios para entender el resto del trabajo.
-En particular se explica …. % Completar
+En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de …. % Citar a Hof
+En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
+
+Muchos de los conceptos y definiciones tienen un análogo en el caso conmutativo, pero eso no se cubre acá. Para una explicación de eso se puede leer …. % Citar al libro de Ideals, Varieties, and Algorithms
 
 \section{Sistemas de re-escritura}
 
-En esta sub-sección se explican algunas definiciones y teoremas básicos de sistemas de re-escritura.
+En esta sección se explican algunas definiciones y teoremas básicos de sistemas de re-escritura. En esta parte es muy probable que a cualquiera que haya estudiado computación muchas cosas ya las conozca o le suenen, pero están acá para que se puede entender mejor sin tener que buscar nada en otro lado.
 
-Para toda está sección fijemos un conjunto $A$.
+Sistemas de re-escritura se trata básicamente del estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto a otro. Vamos a en general usar relaciones denotados con algún símbolo con forma de flecha porque está la idea de que se ``usa'' la relación para convertir el objeto de la izquierda en el objeto de la derecha.
+
+Para toda está sección fijemos un conjunto $A$. Primero definimos algunas operaciones muy comunes sobre relaciones.
 
 \begin{definition} Sean $→, ⟿ ⊆ A^2$ relaciones sobre $A$:
-\begin{itemize}
-\item $→ ∘ ⟿ = \{(x, z) ∈ A^2 : ∃y ∈ A : x → y ∧ y ⟿ z\}$
-\item $→^0 = \{(x, x) : x ∈ A\}$
-\item $→^{n + 1} = →^n ∘ →$
-\item $→^* = ⋃_{n = 0}^∞ →^n$
-\item $← = \{(y, x) ∈ A^2 : (x, y) ∈ →\}$
-\item $↔ = → ∪ ←$
-\end{itemize}
+  \begin{itemize}
+    \item $→ ∘ ⟿ = \{(x, z) ∈ A^2 : ∃y ∈ A : x → y ∧ y ⟿ z\}$
+    \item $→^0 = \{(x, x) : x ∈ A\}$
+    \item $→^{n + 1} = →^n ∘ →$
+    \item $→^* = ⋃_{n = 0}^∞ →^n$
+    \item $← = \{(y, x) ∈ A^2 : (x, y) ∈ →\}$
+    \item $↔ = → ∪ ←$
+  \end{itemize}
 \end{definition}
 
 Para el resto de la sección fijemos $→$ una relación sobre $A$.
 
-\begin{definition}\
-
-\begin{itemize}
-\item $a$ está en forma normal $⇔ ∄x ∈ A : a → x$
-\item $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal
-\item $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
-\item $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$
-\end{itemize}
-\end{definition}
+Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definiciones que nos permiten haber de la forma normal de un objeto como el elemento un que se llega aplicando $→$ hasta que no se puede mas.
 
 \begin{definition}\
-
-\begin{itemize}
-\item $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
-\item $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔️^* y ⇔ x ↓ y$
-\item $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
-\item $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
-\end{itemize}
+  \begin{itemize}
+    \item $a$ está en forma normal $⇔ ∄x ∈ A : a → x$
+    \item $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal
+    \item $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$
+    \item $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$
+  \end{itemize}
 \end{definition}
+
+Y también vamos a necesitar definir algunas propiedades sobre las relaciones:
+
+\begin{definition}\
+  \begin{itemize}
+    \item $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$
+    \item $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔️^* y ⇔ x ↓ y$
+    \item $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal
+    \item $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$
+  \end{itemize}
+\end{definition}
+
+Sobre estas propiedades tenemos estos teoremas:
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
-$→$ es terminante $⇒ →$ es normalizante
+  $→$ es terminante $⇒ →$ es normalizante
 \end{theorem}
 
 \begin{theorem}\label{thm:confluente ⇔ Church-Rosser}
-$→$ es confluente $⇔ →$ es Church-Rosser
+  $→$ es confluente $⇔ →$ es Church-Rosser
 \end{theorem}
 
 \section{Álgebra libre}
