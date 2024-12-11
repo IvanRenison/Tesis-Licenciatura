@@ -1114,7 +1114,7 @@ Este struct tiene implementada las operaciones básicas con monomios incluyendo 
 El formato fácil de leer desde código consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
 
 \begin{lstlisting}[escapechar=+]
-  +$n$+ +$x_1$+ … +$x_n$+
+  +$n$+ +$x_1$+ ⋯ +$x_n$+
 \end{lstlisting}
 
 \section{Orden monomial}
@@ -1155,9 +1155,9 @@ El formato fácil de leer desde código consiste en, primero un número entero n
 
 \begin{lstlisting}[escapechar=+]
   +$m$+
-  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ +$…$+ +$x_{1, n_1}$+
+  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ +$⋯$+ +$x_{1, n_1}$+
   +$⋮$+
-  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ +$…$+ +$x_{m, n_m}$+
+  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ +$⋯$+ +$x_{m, n_m}$+
 \end{lstlisting}
 
 El orden de los polinomios está definido como \texttt{template<typename K, class ord = DegLexOrd> struct PolyOrd}.
