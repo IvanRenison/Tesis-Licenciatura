@@ -263,7 +263,7 @@ Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho:
 
-\begin{definition}
+\begin{definition}\label{def:cosas de polinomios}
   Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
   \begin{itemize}
     \item $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$
@@ -1148,6 +1148,128 @@ se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuest
 
 Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular,  que se llama eliminación Faugère-Lachartre y que también está explicada en …. % Citar a Hof
 
+\chapter{Librería}
+
+Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en C++ junto con estructuras para manejar polinomios no conmutativos. En este capítulo se explica como usar esa librería en su versión actual. % Quizás habría que aclarar que febrero de 2025 o algo así
+Esa librería se está en GitHub en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. % Está bien poner esto así?
+
+\section{Estructura de las carpetas}
+
+El repositorio está estructurado en las siguientes carpetas:
+
+\begin{itemize}
+  \item \texttt{ncgb}: Esta es la carpeta mas importante, tiene archivos \texttt{.hpp} con todas las implementaciones para incluir en otros códigos y usar las implementaciones, en la siguiente sección se explica como usar estos códigos.
+  \item \texttt{mains}: En este carpeta hay varios archivos \texttt{.cpp} con función \texttt{main} que hacen distintas cosas. Cada archivo al comienzo tiene una pequeña explicación de que hace.
+  \item \texttt{tests}: En esta carpeta están los tests, tanto los tests internos solo de código de la librería como un test que compara con la implementación de \texttt{operator\_gb}. % Quizás citar?
+  \item \texttt{extras}: Esta carpeta lo único que tiene es un struct de aritmética modular para usar en los mains.
+  \item \texttt{.github/workflows}: En esta carpeta está la configuración para que los tests se corran automáticamente al subir los cambios a GitHub.
+\end{itemize}
+
+En las siguientes secciones se explica como usar los archivos de la carpeta \texttt{ncgb}.
+
+\section{Estructura general de los códigos}
+
+En la carpeta \texttt{ncgb} hay varios archivos con implementaciones de las distintas cosas. Todo esos archivos tienen el código adentro del namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}.
+
+Como los polinomios son asociados a un cuerpo y además muchas cosas dependen de un orden monomial todo lo que usa polinomios tiene parámetros de template para ambas cosas, poniendo el orden lexicográfico por grado como parámetro por defecto para esto último. Por ejemplo, la definición de polinomio empieza así:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct Poly {
+    ⋮
+  };
+\end{minted}
+% El ⋮ no se ve
+
+El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo, incluyendo cosas como \texttt{+=}. En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener. Para los números racionales el tipo \texttt{mpq\_class} de la librería \texttt{gmp} también tiene todo lo que \texttt{K} tiene que tener. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
+
+\texttt{DegLexOrd} es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo un struct que tenga definido un operador \texttt{()} que sea el orden. Algo así sería la estructura:
+
+\begin{minted}{C++}
+  struct Orden {
+    bool operator()(const Monomial& a, const Monomial& b) const {
+      ⋮
+    }
+  };
+\end{minted}
+% El ⋮ no se ve
+
+Esto es así porque es una de las formas mas comunes de tomar un orden como template en C++.
+
+\section{Monomios}
+
+Los monomios están definidos como un tipo \texttt{Monomial} en el archivo \texttt{nc\_monomial.hpp}. Dentro del tipo las variables de representan con el tipo \texttt{Monomial::X} que está puesto en que sea \texttt{\_\_uint8\_t}. Para construir un elemento del tipo se puede usar el constructor vacío que crea el monomio vacío o el constructor que toma un vector de \texttt{Monomial::X} con las variables que tiene el monomio.
+
+El tipo \texttt{Monomial} tiene implementada la multiplicación con \texttt{operator*} (y \texttt{operator*=}), la igualdad con \texttt{operator==}, un método \texttt{size} que devuelve el grado, un método \texttt{empty} que devuelve \texttt{true} si y solo si el monomio es el monomio vacío y varios relacionados a la división y a la representación de los monomios como strings.
+
+Relacionado a la división el método mas importante es \texttt{divide\_indexes} que se llama como \texttt{m0.divide\_indexes(m1)} y devuelve un vector se \texttt{size\_t} que dice en que posiciones de \texttt{m1} empieza una sub-palabra igual a \texttt{m0}.
+
+En cuanto a la representación como strings, hay dos pares de métodos, están \texttt{operator>>} y \texttt{operator<<} que leen y escriben en un formato de todo números que es cómodo para usar en código y \texttt{nice\_print} y \texttt{nice\_read} que son para leer y escribir en el formato en el que se suelen escribir a mano los monomios.
+
+El formato fácil de leer desde código consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
+
+\begin{lstlisting}[escapechar=+]
+  +$n$+ +$x_1$+ ⋯ +$x_n$+
+\end{lstlisting}
+
+Por ejemplo, acá hay un monomio en el formato como se suelen escribir a mano:
+
+\begin{lstlisting}
+  adbda
+\end{lstlisting}
+
+Y acá está el mismo monomio en el formato fácil de leer desde código:
+
+\begin{lstlisting}[escapechar=+]
+  5 0 3 1 3 0
+\end{lstlisting}
+
+\section{Polinomios}
+
+Los polinomios están definidos en el archivo \texttt{nc\_polynomial.hpp}. Como ya se mostró antes, el tipo de los polinomios, \texttt{Poly}, tiene el cuerpo y un orden monomial como parámetros de template:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct Poly …
+\end{minted}
+
+Para construir un polinomio hay tres constructores, el constructor vacío que produce el polinomio $0$, un constructor que toma un monomio $m$ y un elemento del cuerpo $c$ y produce el polinomio $cm$ y un constructor que toma un vector de pares monomio coeficiente y produce el polinomio que es la suma de cada coeficiente multiplicado con su monomio.
+
+El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=} por ejemplo), métodos para lo definido en la \cref{def:cosas de polinomios} y métodos relacionados a la representación de los polinomios como strings.
+
+Al igual que con los monomios, para la representación como strings, hay dos pares de métodos, \texttt{operator>>} y \texttt{operator<<} para formato de todo números y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
+
+El formato de solo números consiste en, primero un número entero no negativo $m$, la cantidad de términos, seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. El coeficiente tiene se lee haciendo \texttt{>> c} donde \texttt{c} es una variable de tipo \texttt{K}, así que \texttt{K} tiene que tener \texttt{>>} implementado para que se pueda leer polinomios. Se puede representar así el formato:
+
+\begin{lstlisting}[escapechar=+]
+  +$m$+
+  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ +$⋯$+ +$x_{1, n_1}$+
+  +$⋮$+
+  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ +$⋯$+ +$x_{m, n_m}$+
+\end{lstlisting}
+
+Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
+
+\begin{lstlisting}
+  3 aaa - 5 bcc + adbda
+\end{lstlisting}
+
+Y acá está el mismo monomio en el formato fácil de leer desde código:
+
+\begin{lstlisting}[escapechar=+]
+  3
+  3 3 0 0 0
+  -5 3 1 2 2
+  1 5 0 3 1 3 0
+\end{lstlisting}
+
+\section{Buchberger y F4}
+
+Los algoritmos de Buchberger y F4 están ambos hechos de una forma que se usan similar, así que por eso están explicados juntos.
+
+Como ambos algoritmos tienen el problema de que puede no terminar no se puede hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar.
+
+Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que si se quiere después hacer mas pasos de la ejecución habría que volver a empezar, llamando a la función con un número mas grande.
 
 \chapter{Implementación}
 
