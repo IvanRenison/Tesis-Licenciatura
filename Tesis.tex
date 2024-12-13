@@ -223,7 +223,7 @@ Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$,
   \end{enumerate}
 \end{definition}
 
-En ejemplo de orden que cumple con esta definición es el siguente:
+En ejemplo de orden que cumple con esta definición es el siguiente:
 
 \begin{definition}
   Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
@@ -597,7 +597,7 @@ Sin embargo en algunas casos $→_{≤, F}$ si es confluente. Esos casos en lo q
   \end{itemize}
 \end{definition}
 
-Como en algunos casos $→_{≤, F}$ no es confluente vamos la siguiente definición nos perimite hablar mas comodamente de una forma normal de un elemento (tanto en las definiciones teoremas como en los algoritmos).
+Como en algunos casos $→_{≤, F}$ no es confluente vamos la siguiente definición nos permite hablar mas cómodamente de una forma normal de un elemento (tanto en las definiciones teoremas como en los algoritmos).
 
 \begin{definition}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
@@ -1414,7 +1414,7 @@ Los campos de esta estructura guardan los siguiente:
 
 \begin{itemize}
   \item \texttt{G} es la base de Gröbner que se está construyendo. Al principio se inicializa con los polinomios con los que se llama al constructor.
-  \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una queue para procesar siempre la que hace mas tiempo está esparando.
+  \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una queue para procesar siempre la que hace mas tiempo está esperando.
   \item La variable \texttt{t} está porque como la base de Gröbner incluye a los polinomios originales las primeras llamadas a \texttt{next} tienen que devolver esos polinomios y \texttt{t} lo que hace es indicar cuantos de esos ya se devolvieron. Cuando \texttt{t} es igual al tamaño de \texttt{G} es porque ya se devolvieron todos esos.
 \end{itemize}
 
