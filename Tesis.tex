@@ -110,8 +110,7 @@ La parte de implementar en C++ esos algoritmos se logró, pero hay una optimizac
 
 \chapter{Definiciones preliminares}\label{cap:Definiciones preliminares}
 
-En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de …. % Citar a Hof
-En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
+En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de \cite{thesis:Hof20}. En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
 Muchos de los conceptos y definiciones tienen un análogo en el caso conmutativo, pero eso no se cubre acá. Para una explicación de eso se puede leer en \cite{book:ideals-varieties-algorithms}.
 
@@ -1006,8 +1005,7 @@ Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la p
 
 En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. De forma teórica porque es algo que hace tanta diferencia es algo que no se ni puede encontrar en la literatura.
 
-Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. Ambos optimizaciones están explicadas en …, % Citar a Hof
-y no se van a explicar acá.
+Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. Ambas optimizaciones están explicadas en \cite{thesis:Hof20} y no se van a explicar acá.
 
 \section{Algoritmo F4}
 
@@ -1151,10 +1149,9 @@ Y con esto se puede escribir el algoritmo F4:
 
 Este algoritmo no especifica cuales ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes más rápido.
 
-En … % Citar a Hof
-se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto. Eso acá no está porque es muy tedioso.
+En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto. Eso acá no está porque es muy tedioso.
 
-Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular,  que se llama eliminación Faugère-Lachartre y que también está explicada en …. % Citar a Hof
+Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular,  que se llama eliminación Faugère-Lachartre y que también está explicada en \cite{thesis:Hof20}.
 
 \chapter{Librería}
 
@@ -1334,8 +1331,7 @@ Con esto, como \texttt{\_\_uint8\_t} tiene 8 bits se pueden tener hasta 256 vari
 
 Está estructura tiene implementadas las operaciones y métodos que se describieron en el capitulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
 
-Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} % Citar a cp-algorithms: https://cp-algorithms.com/string/z-function.html
-se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
+Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
 Junto con la implementación de los monomios, en el archivo \texttt{nc\_monomial.hpp} está la implementación del orden lexicográfico por grado.
@@ -1414,11 +1410,33 @@ Los campos de esta estructura guardan los siguiente:
 
 \begin{itemize}
   \item \texttt{G} es la base de Gröbner que se está construyendo. Al principio se inicializa con los polinomios con los que se llama al constructor.
-  \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una queue para procesar siempre la que hace mas tiempo está esperando.
+  \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una cola para procesar siempre la que hace mas tiempo está esperando.
   \item La variable \texttt{t} está porque como la base de Gröbner incluye a los polinomios originales las primeras llamadas a \texttt{next} tienen que devolver esos polinomios y \texttt{t} lo que hace es indicar cuantos de esos ya se devolvieron. Cuando \texttt{t} es igual al tamaño de \texttt{G} es porque ya se devolvieron todos esos.
 \end{itemize}
 
-% La estructura además de tener los métodos \texttt{next} y
+La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} tiene varios métodos que se usan internamente. Entre todos los métodos son los siguientes:
+
+\begin{itemize}
+  \item \texttt{add\_amb}: Esté método simplemente toma una ambigüedad y dos índices y los agrega a la cola de ambigüedades. Siempre que hay que agregar una ambigüedad se hace con este método. El motivo por el cual esto está en un método propio es para después al implementar la optimización de descartar ambigüedades poder hacerlo solo en este método.
+  \item \texttt{add\_poly}: Este método agrega un polinomios a \texttt{G} agregando además todas las nuevas ambigüedad que aparecen a la cola de ambigüedades. Cada vez que hay que agregar un nuevo polinomio se usa este método, tanto al comienzo cuando se agregan los polinomios iniciales como cuando se agrega un S-polinomio reducido.
+  \item \texttt{next}: Este es el método que corre el algoritmo. Lo principal que hace (después de usar la variable \texttt{t} para ver si tiene que devolver un elemento de \texttt{G}) es sacar ambigüedades de la cola hasta encontrar una que no se reduzca a $0$ y cuando la encuentra la agrega a la base (con \texttt{add\_poly}) y la devuelve. Si se acaban las ambigüedades devuelve vacío (recordar que devuelve \texttt{std::optional<Poly<K, ord>>}).
+  \item \texttt{fullBase}: Simplemente lo que hace es llamar a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
+\end{itemize}
+
+Lo de las optimizaciones se explica mas adelante en la sección …. % Agregar referencia cuando esté
+
+
+\section{F4}
+
+F4 tiene bastantes similitudes con Buchberger pero también diferencias obviamente.
+
+La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso lo que se hizo es que las ambigüedades estén guardadas por grado en un vector, así:
+
+\begin{minted}{C++}
+  std::vector<std::vector<std::tuple<Amb, size_t, size_t>>> ambs_per_deg;
+\end{minted}
+
+El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}
 
 \chapter{Bibliografía}
 
