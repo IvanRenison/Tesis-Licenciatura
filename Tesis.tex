@@ -30,6 +30,9 @@
 
 \usepackage[capitalise]{cleveref}
 
+\usepackage[backend=biber, autolang=hyphen, bibencoding=inputenc, isbn=false, uniquename=false]{biblatex-chicago}
+\addbibresource{biblio.bib}
+
 \setlist[enumerate,1]{label={\em{(\arabic*)}}}
 
 \newtheoremstyle{customstyle} % <name>
@@ -99,8 +102,7 @@ Para eso se considera el conjunto $(G)$ de todos los polinomios no conmutativos 
 
 Para calcular esas bases de Gröbner hay dos algoritmos principales, llamados algoritmo de Buchberger y F4.
 
-Antes de ahora ya hubo varias implementaciones de esos algoritmos, siendo la mas importante \texttt{operator\_gb} hecha por Clemens Hofstadler en python usando \texttt{sagemath} y que está explicada en … % Citar a Hof
-junto con una explicación de toda la teoría (mucho mas en detalle que en esta tesis).
+Antes de ahora ya hubo varias implementaciones de esos algoritmos, siendo la mas importante \texttt{operator\_gb} hecha por Clemens Hofstadler en python usando \texttt{sagemath} y que está explicada en \cite{thesis:Hof20} junto con una explicación de toda la teoría (mucho mas en detalle que en esta tesis).
 
 Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
 
@@ -111,7 +113,7 @@ La parte de implementar en C++ esos algoritmos se logró, pero hay una optimizac
 En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de …. % Citar a Hof
 En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-Muchos de los conceptos y definiciones tienen un análogo en el caso conmutativo, pero eso no se cubre acá. Para una explicación de eso se puede leer …. % Citar al libro de Ideals, Varieties, and Algorithms
+Muchos de los conceptos y definiciones tienen un análogo en el caso conmutativo, pero eso no se cubre acá. Para una explicación de eso se puede leer en \cite{book:ideals-varieties-algorithms}.
 
 Los algoritmos de Buchberger y F4 de hecho son originalmente algoritmos para el caso conmutativo que después se adaptaron al caso no conmutativo. El de Buchberger se llama así porque para el caso conmutativo fue inventado por Bruno Buchberger.
 
@@ -1332,7 +1334,7 @@ Con esto, como \texttt{\_\_uint8\_t} tiene 8 bits se pueden tener hasta 256 vari
 
 Está estructura tiene implementadas las operaciones y métodos que se describieron en el capitulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
 
-Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En … % Citar a cp-algorithms: https://cp-algorithms.com/string/z-function.html
+Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} % Citar a cp-algorithms: https://cp-algorithms.com/string/z-function.html
 se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
@@ -1418,5 +1420,8 @@ Los campos de esta estructura guardan los siguiente:
 
 % La estructura además de tener los métodos \texttt{next} y
 
+\chapter{Bibliografía}
+
+\printbibliography[heading=none]
 
 \end{document}
