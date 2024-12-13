@@ -439,7 +439,7 @@ A continuación la prueba de que efectivamente achica.
   \begin{description}
     \item[Si $i ≠ 0$] la \cref{fact:→ achican:3} significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada mas en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (5)).
 
-    Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
+    Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'\_m_i\} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
 
     \item[Si $i = 0$] aplica lo mismo pero directamente a $m_0$ solo que sin tener en cuenta los $m$ anteriores.
   \end{description}
@@ -1052,7 +1052,7 @@ $\mat_T$ aplicado a una lista de polinomios da una matriz:
 
 Estas definiciones nos permiten hablar de pasar de polinomios a matrices y viceversa.
 
-Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que vamos a tener que empezar ya teniendo en la matriz los polinomios que vamos a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $P$ calcula todos los polinomios que van a ser necesarios:
+Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que hay a tener que empezar ya teniendo en la matriz los polinomios que a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $P$ calcula todos los polinomios que van a ser necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
@@ -1174,6 +1174,8 @@ En las siguientes secciones se explica como usar los archivos de la carpeta \tex
 
 \section{Estructura general de los códigos}
 
+En los códigos todos los nombres de cosas y comentarios están en inglés porque en general el código se suele hacer en inglés.
+
 En la carpeta \texttt{ncgb} hay varios archivos con implementaciones de las distintas cosas. Todo esos archivos tienen el código adentro del namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}.
 
 Como los polinomios son asociados a un cuerpo y además muchas cosas dependen de un orden monomial todo lo que usa polinomios tiene parámetros de template para ambas cosas, poniendo el orden lexicográfico por grado como parámetro por defecto para esto último. Por ejemplo, la definición de polinomio empieza así:
@@ -1186,7 +1188,7 @@ Como los polinomios son asociados a un cuerpo y además muchas cosas dependen de
 \end{minted}
 % El ⋮ no se ve
 
-El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo, incluyendo cosas como \texttt{+=}. En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener. Para los números racionales el tipo \texttt{mpq\_class} de la librería \texttt{gmp} también tiene todo lo que \texttt{K} tiene que tener. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
+El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo, incluyendo cosas como \texttt{+=}. En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener. Para los números racionales el tipo \texttt{mpq\_class} de la librería GMP también tiene todo lo que \texttt{K} tiene que tener \cite{lib:gmp}. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
 
 \texttt{DegLexOrd} es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo una estructura que tenga definido un operador \texttt{()} que sea el orden. Algo así sería el código:
 
@@ -1200,6 +1202,8 @@ El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo
 % El ⋮ no se ve
 
 Esto es así porque es una de las formas mas comunes de tomar un orden como template en C++.
+
+En los seudocódigo por lo general se usan conjuntos para las cosas como el conjunto generador, en el código en cambio, para casi todo se usan vectores en lugar de conjuntos, porque son mas eficientes.
 
 \section{Monomios}
 
@@ -1428,15 +1432,32 @@ Lo de las optimizaciones se explica mas adelante en la sección …. % Agregar r
 
 \section{F4}
 
-F4 tiene bastantes similitudes con Buchberger pero también diferencias obviamente.
+F4 tiene es un poco mas complejo que F4 y tiene mas partes, así que esta sección está dividida en varias subseciones para las distintas partes.
 
-La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso lo que se hizo es que las ambigüedades estén guardadas por grado en un vector, así:
+\subsection{Reducción por filas de matrices}
 
-\begin{minted}{C++}
-  std::vector<std::vector<std::tuple<Amb, size_t, size_t>>> ambs_per_deg;
-\end{minted}
+Para F4 hace falta hacer lo de reducir una matriz por filas. Para esto en el archivo \texttt{matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que anda para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho mas rápido.
 
-El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}
+Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}. % Quizas habría que poner una nota al pie de página explicando que es una especialización en C++?
+
+Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y después copiar el resultado de vuelta a la matriz original.
+
+El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}.
+% Quizas se podría decir que el motivo por el cual lo de FLINT es como es probablemente sea porque es una librería de C?
+
+\section{Preprocesamiento simbólico}
+
+El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \texttt{F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
+
+\section{Reducción}
+
+Como en F4 se reducen varios polinomios al mismo tiempo, en el código se implementó una función \texttt{multiReduction} que toma dos vectores de polinomios, la base actual y los polinomios a reducir y hace lo de reducirlos todos a la vez con la matriz.
+
+En el \cref{alg:F4} esto se hizo dentro del propio algoritmo de F4 pero en la implementación se hizo aparte porque son bastantes cosas las que tiene que hacer el código.
+
+La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), después llamar a una función \texttt{rref} que reduce la matriz (mas abajo se explica esta función), después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su uno coeficiente principal (el primero no nula de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
+
+\section{El propio F4}
 
 \chapter{Bibliografía}
 
