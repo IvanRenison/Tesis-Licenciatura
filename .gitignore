@@ -5,6 +5,7 @@
 *.fls
 *.log
 *.synctex.gz
+*.synctex(busy)
 *.xdv
 *.out
 _minted-*
