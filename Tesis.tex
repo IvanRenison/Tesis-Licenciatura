@@ -13,6 +13,8 @@
 \usepackage{witharrows}
 \WithArrowsOptions{fleqn,displaystyle,i,tikz={font={\small\normalfont}},ygap=0.5em,wrap-lines}
 
+\DeclareEmphSequence{\bfseries}
+
 \hfuzz=50pt % Elimina warnings de "Overfull \hbox"
 
 \usepackage[margin=5mm]{geometry} % Adjust the margin values as desired
@@ -104,7 +106,7 @@ Como esa implementación está hecha en python y no corre en paralelo, el objeti
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
-\chapter{Definiciones preliminares}
+\chapter{Definiciones preliminares}\label{cap:Definiciones preliminares}
 
 En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de …. % Citar a Hof
 En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
@@ -786,6 +788,8 @@ Para eso antes definimos las ambigüedades que representan los polinomios para l
   \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \]
 \end{definition}
 
+Notar que por como es la definición de ambigüedad, siempre es como que hay una parte de $p$ y una parte de $q$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$.
+
 Ahora vamos a probar que los S-polinomios hacen eso que dijimos que hacen y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
 
 \begin{theorem}\label{thm:lm ambs}
@@ -1161,7 +1165,7 @@ El repositorio está estructurado en las siguientes carpetas:
   \item \texttt{ncgb}: Esta es la carpeta mas importante, tiene archivos \texttt{.hpp} con todas las implementaciones para incluir en otros códigos y usar las implementaciones, en la siguiente sección se explica como usar estos códigos.
   \item \texttt{mains}: En este carpeta hay varios archivos \texttt{.cpp} con función \texttt{main} que hacen distintas cosas. Cada archivo al comienzo tiene una pequeña explicación de que hace.
   \item \texttt{tests}: En esta carpeta están los tests, tanto los tests internos solo de código de la librería como un test que compara con la implementación de \texttt{operator\_gb}. % Quizás citar?
-  \item \texttt{extras}: Esta carpeta lo único que tiene es un struct de aritmética modular para usar en los mains.
+  \item \texttt{extras}: Esta carpeta lo único que tiene es una estructura de aritmética modular para usar en los mains.
   \item \texttt{.github/workflows}: En esta carpeta está la configuración para que los tests se corran automáticamente al subir los cambios a GitHub.
 \end{itemize}
 
@@ -1183,7 +1187,7 @@ Como los polinomios son asociados a un cuerpo y además muchas cosas dependen de
 
 El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo, incluyendo cosas como \texttt{+=}. En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener. Para los números racionales el tipo \texttt{mpq\_class} de la librería \texttt{gmp} también tiene todo lo que \texttt{K} tiene que tener. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
 
-\texttt{DegLexOrd} es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo un struct que tenga definido un operador \texttt{()} que sea el orden. Algo así sería la estructura:
+\texttt{DegLexOrd} es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo una estructura que tenga definido un operador \texttt{()} que sea el orden. Algo así sería el código:
 
 \begin{minted}{C++}
   struct Orden {
@@ -1271,13 +1275,49 @@ Como ambos algoritmos tienen el problema de que puede no terminar no se puede ha
 
 Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que si se quiere después hacer mas pasos de la ejecución habría que volver a empezar, llamando a la función con un número mas grande.
 
+Para evitar ese problema lo que se hizo es definir una estructura que el constructor tome a los polinomios y tenga un método \texttt{next} que calcula un paso mas del calculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \textt{next} hasta que termina y devuelve la base.
+
+Para Buchberger la estructura está en el archivo \texttt{Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \texttt{F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
+
+Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conjunto generador, un polinomio y una cantidad pasos y trata de decir si el polinomio está en el ideal generado por el conjunto generador haciendo esa cantidad de llamada a \texttt{next}. Esa función devuelve un elemento de el siguiente tipo (con los significados que están comentados comentados):
+
+\begin{minted}{C++}
+  enum IdealMembershipStatus {
+    InIdeal,    // The element is definitely in the ideal
+    NotInIdeal, // The element is definitely not in the ideal
+    Unknown     // More steps are needed to determine if the element is in the ideal
+  };
+\end{minted}
+
+Esa función sería básicamente la que trata de responder a la pregunta que plantemos al comienzo de si un polinomio está en el ideal generado por un conjunto generador.
+
+\section{Construcción de la respuesta}
+
+La función \texttt{inIdeal} hace lo de intentar responder a la pregunta de si un polinomio está en el ideal generado por un conjunto generador, pero en el caso de que la respuesta es que si está no nos da la forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
+
+Con las bases de Gröbner pasa lo mismo, los algoritmos nos dan la base pero no nos dan como se escriben los elementos de la base usando los elementos del conjunto generador.
+
+Así como están todo en la explicación del algoritmo de Buchberger no nos da una forma directa de construir esa escritura. Pero, en todos los pasos en los que se manejan polinomios siempre se hace sumando o restando polinomios del conjunto generador o que ya están en la base, así que se puede para cada polinomio ir guardando siempre que sea hace con el y usar eso para obtener la escritura usando los elementos del conjunto generador.
+
+Para el caso de F4 no es tan directo, pero si cuando se hace la reducción por filas de la matriz se guarda que operaciones por filas se hicieron también se puede.
+
+Para Buchberger esto está implementado en el mismo archivo \texttt{Buchberger.hpp} en unas funciones y structs que terminan en \texttt{Reconstruct} (esta terminación es porque van guardando la información que permite \emph{reconstruir} la respuesta).
+
+Estas funciones lo que hacen es devolver elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polyonomial\_inIdeal.hpp}. Este tipo lo que hace es representar un polinomio como una combinación lineal de elementos del conjunto generador, en particular guarda un vector de elementos $m$, $j$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
+
+Para F4 esto no está implementado (en el siguiente capitulo se dice porque).
+
 \chapter{Implementación}
 
 En este capitulo se explican los detalles de como está hecha la implementación.
 
+\section{Comparación de bases}
+
+Por último para esta sección, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
+
 \section{Monomios}
 
-Para los monomios, o sea los elementos de $⟨X⟩$, la base de la implementación es así:
+Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementaron usando vectores para de números sin signo. La base de la implementación es así:
 
 \begin{minted}{C++}
   struct Monomial {
@@ -1286,34 +1326,19 @@ Para los monomios, o sea los elementos de $⟨X⟩$, la base de la implementaci�
   };
 \end{minted}
 
-El tipo \texttt{Monomial::X} es el tipo en el que se guardan las variables, con el código así como está son números de 8 bits, por lo cual puede haber hasta 256 variables, si fuera necesario usar mas variables hay que cambiarlo por un tipo mas grande como \texttt{\_\_uint16\_t}. Se podría haber usado un argument de template para que se pueda cambiar sin tener que cambiar el código, pero no está hecho para simplificar el código, ya que para los polinomios ya hay dos argumentos de template.
+Con esto, como \texttt{\_\_uint8\_t} tiene 8 bits se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
-Este struct tiene implementada las operaciones básicas con monomios incluyendo el producto, métodos para saber divisibilidad de monomios y dividir monomios tanto obteniendo todas las respuestas como obteniendo una respuesta y métodos para leer e imprimir monomios tanto de forma bonita como se los suele escribir (para monomios que tienen variables menores a 26) como en un formato fácil de leer desde otro código.
+Está estructura tiene implementadas las operaciones y métodos que se describieron en el capitulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
 
-El formato fácil de leer desde código consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
+Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En … % Citar a cp-algorithms: https://cp-algorithms.com/string/z-function.html
+se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
+% También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
-\begin{lstlisting}[escapechar=+]
-  +$n$+ +$x_1$+ ⋯ +$x_n$+
-\end{lstlisting}
-
-\section{Orden monomial}
-
-El único orden monomial que está implementado es el orden lexicográfico por grado y está implementado así:
-
-\begin{minted}{C++}
-  struct DegLexOrd {
-    bool operator()(const Monomial& a, const Monomial& b) const {
-      size_t n = a.vals.size(), m = b.vals.size();
-      return n < m || (n == m && a.vals < b.vals);
-    }
-  };
-\end{minted}
-
-Esto está definido a parte y no como definir el operador \texttt{<=} para \texttt{Monomial} por si se quiere usar otro orden monomial.
+Junto con la implementación de los monomios, en el archivo \texttt{nc\_monomial.hpp} está la implementación del orden lexicográfico por grado.
 
 \section{Polinomios}
 
-Para los polinomios, o sea los elementos de $K⟨X⟩$, la base de la implementación es así:
+Los polinomios, o sea los elementos de $K⟨X⟩$ están implementados usando un vector de pares monomio coeficiente que siempre se mantiene ordenado por el orden monomial. La base de la implementación es así:
 
 \begin{minted}{C++}
   template<typename K, class ord = DegLexOrd>
@@ -1322,24 +1347,74 @@ Para los polinomios, o sea los elementos de $K⟨X⟩$, la base de la implementa
   };
 \end{minted}
 
-El parámetro de template \texttt{K} es el cuerpo de los coeficientes, por lo general los racionales o la aritmética módulo algún primo y el parámetro de template \texttt{ord} es el orden monomial que se va a usar, por defecto es el orden lexicográfico por grado.
-
-\texttt{K} tiene que tener implementada todas las operaciones de cuerpo y un constructor que pueda tomar un \texttt{int} o algo a lo que \texttt{int} se castee automáticamente
-
-El vector \texttt{terms} tiene los términos del polinomio con cada monomio con coeficiente distinto de cero apareciendo exactamente una vez y se mantiene siempre ordenado por el orden monomial.
-
-Este struct tiene implementada las operaciones básicas con polinomios incluyendo la suma y el producto, métodos para leer e imprimir polinomios tanto de forma bonita como se los suele escribir como en un formato fácil de leer desde otro código y el orden polinomial correspondiente al orden monomial.
-
-El formato fácil de leer desde código consiste en, primero un número entero no negativo $m$, la cantidad de términos, seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. El coeficiente tiene se lee haciendo \texttt{>> c} donde \texttt{c} es una variable de tipo \texttt{K}, así que \texttt{K} tiene que tener \texttt{>>} implementado para que se pueda leer polinomios. Se puede representar así el formato:
-
-\begin{lstlisting}[escapechar=+]
-  +$m$+
-  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ +$⋯$+ +$x_{1, n_1}$+
-  +$⋮$+
-  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ +$⋯$+ +$x_{m, n_m}$+
-\end{lstlisting}
+Con esta estructura para los polinomios todas las operaciones se hace de forma directa.
 
 El orden de los polinomios está definido como \texttt{template<typename K, class ord = DegLexOrd> struct PolyOrd}.
+
+\section{Reducciones}
+
+La reducción están implementadas en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de una estrategia de reducción concreta.
+
+Esa reducción concreta lo que hace es siempre tratar de reducir por los primeros elementos del vector primero y tratar de reducir primero los monomios mas grandes del polinomio.
+
+En el archivo también hay una función \texttt{reduce} que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{true} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
+
+\section{Ambigüedades}
+
+Las ambigüedades, que son necesarias para el algoritmo de Buchberger están implementadas en el archivo \texttt{ambiguities.hpp} y conciten en una estructura así:
+
+\begin{minted}{C++}
+  struct Amb {
+    const Monomial& p, q;
+    enum Type { Inclusion, Overlap };
+    Type type;
+    size_t pos; // position where q starts in p
+    Monomial a, b;
+  };
+\end{minted}
+
+Y los métodos \texttt{size} y \texttt{lm}.
+
+Los campos de la ambigüedad son:
+
+\begin{itemize}
+  \item \texttt{p} y \texttt{q} son referencias a los monomios sobre los cuales es la ambigüedad. El motivo por el cual se guardan en la estructura es para poder implementar una de las optimizaciones.
+  \item \texttt{type} es si la ambigüedad es de inclusión o de sobreposición.
+  \item \texttt{pos} es en que posición de \texttt{p} empieza el pedazo que es en común con \texttt{q} y por el cual existe la ambigüedad.
+  \item \texttt{a} y \texttt{b} son los monomios que hacen que en el caso de las de inclusión \texttt{p} sea igual a \texttt{aqb} y en el caso de las de sobreposición \texttt{ap} sea igual a \texttt{qb}.
+\end{itemize}
+
+En el archivo también está \texttt{ambiguities} que toma dos monomios y devuelve un vector de \texttt{Amb} con todas las ambigüedades entre sos dos monomios. En esta función al igual que en la divisibilidad de monomios se usa la función Z para evitar tener que hacer algo cuadrático en los largos de los monomios.
+
+Después en el archivo está la función \texttt{S\_poly}que toma una ambigüedad y dos polinomios que deberían ser pos polinomios correspondientes y desvuelve el S-polinomio correspondiente.
+
+Y por último está la función \texttt{checkDeletionCriteria} que implementa la optimización que permite descartar algunas ambigüedades sin tener que reducirlas.
+
+
+\section{Buchberger}
+
+Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se hace lo de usar una estructura con una método \texttt{next}. En esa estructura ya está implementada las optimizaciones antes mencionadas, pero en esta sección primero se explica como sería la estructura sin esas optimizaciones y después algo de como se agregan.
+
+La base de esa estructura es así:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct BuchbergerIncremental {
+    std::vector<Poly<K, ord>> G;
+    std::queue<std::tuple<Amb, size_t, size_t>> ambs;
+    size_t t = 0;
+  };
+\end{minted}
+
+Los campos de esta estructura guardan los siguiente:
+
+\begin{itemize}
+  \item \texttt{G} es la base de Gröbner que se está construyendo. Al principio se inicializa con los polinomios con los que se llama al constructor.
+  \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una queue para procesar siempre la que hace mas tiempo está esparando.
+  \item La variable \texttt{t} está porque como la base de Gröbner incluye a los polinomios originales las primeras llamadas a \texttt{next} tienen que devolver esos polinomios y \texttt{t} lo que hace es indicar cuantos de esos ya se devolvieron. Cuando \texttt{t} es igual al tamaño de \texttt{G} es porque ya se devolvieron todos esos.
+\end{itemize}
+
+% La estructura además de tener los métodos \texttt{next} y
 
 
 \end{document}
