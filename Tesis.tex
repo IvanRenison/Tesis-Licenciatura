@@ -29,6 +29,7 @@
 \usepackage{minted}
 
 \usepackage[capitalise]{cleveref}
+\crefname{section}{Sección}{Secciones} % Para que use "Sección" en vez de "Apartado"
 
 \usepackage[backend=biber, autolang=hyphen, bibencoding=inputenc, isbn=false, uniquename=false, style=alphabetic]{biblatex}
 \addbibresource{biblio.bib}
@@ -1005,7 +1006,7 @@ Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la p
 
 En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. De forma teórica porque es algo que hace tanta diferencia es algo que no se ni puede encontrar en la literatura.
 
-Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. Ambas optimizaciones están explicadas en \cite{thesis:Hof20} y no se van a explicar acá.
+Hay otras dos optimizaciones mas que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base, en la \cref{secton:optimizaciones} se aborda este tema.
 
 \section{Algoritmo F4}
 
@@ -1151,7 +1152,7 @@ Este algoritmo no especifica cuales ambigüedades elegir, pero una buena estrate
 
 En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto. Eso acá no está porque es muy tedioso.
 
-Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular,  que se llama eliminación Faugère-Lachartre y que también está explicada en \cite{thesis:Hof20}.
+Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda mas rápido en las matrices de este problema en particular, que se llama eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
 
 \chapter{Librería}
 
@@ -1296,7 +1297,7 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
 
 Esa función sería básicamente la que trata de responder a la pregunta que plantemos al comienzo de si un polinomio está en el ideal generado por un conjunto generador.
 
-\section{Construcción de la respuesta}
+\section{Construcción de la respuesta}\label{section:construcción de la respuesta (librería)}
 
 La función \texttt{inIdeal} hace lo de intentar responder a la pregunta de si un polinomio está en el ideal generado por un conjunto generador, pero en el caso de que la respuesta es que si está no nos da la forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
 
@@ -1310,7 +1311,7 @@ Para Buchberger esto está implementado en el mismo archivo \texttt{Buchberger.h
 
 Estas funciones lo que hacen es devolver elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polyonomial\_inIdeal.hpp}. Este tipo lo que hace es representar un polinomio como una combinación lineal de elementos del conjunto generador, en particular guarda un vector de elementos $m$, $j$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
-Para F4 esto no está implementado (en el siguiente capitulo se dice porque).
+Para F4 esto no está implementado (en el siguiente capitulo se explica mas del porque).
 
 \chapter{Implementación}
 
@@ -1427,7 +1428,7 @@ La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} ti
   \item \texttt{fullBase}: Simplemente lo que hace es llamar a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
 \end{itemize}
 
-Lo de las optimizaciones se explica mas adelante en la sección …. % Agregar referencia cuando esté
+Lo de las optimizaciones se explica mas adelante en la \cref{secton:optimizaciones}.
 
 
 \section{F4}
@@ -1449,7 +1450,7 @@ El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una f
 
 El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \texttt{F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
 
-\section{Reducción}
+\subsection{Reducción}
 
 Como en F4 se reducen varios polinomios al mismo tiempo, en el código se implementó una función \texttt{multiReduction} que toma dos vectores de polinomios, la base actual y los polinomios a reducir y hace lo de reducirlos todos a la vez con la matriz.
 
@@ -1457,7 +1458,98 @@ En el \cref{alg:F4} esto se hizo dentro del propio algoritmo de F4 pero en la im
 
 La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), después llamar a una función \texttt{rref} que reduce la matriz (mas abajo se explica esta función), después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su uno coeficiente principal (el primero no nula de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
 
-\section{El propio F4}
+\subsection{El propio F4}
+
+La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso lo que se hizo es que las ambigüedades estén guardadas por grado en un vector, así:
+
+\begin{minted}{C++}
+  std::vector<std::vector<std::tuple<Amb, size_t, size_t>>> ambs_per_deg;
+\end{minted}
+
+El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}. En F4 este método lo que hace es, agarrar todas las ambigüedades de menor grado, poner todos los S-polinomios correspondientes en un vector, hacer la reducción de esos polinomios con la función \texttt{multiReduction} y, si hay alguno que queda no nulo, agregar los polinomios reducidos a la base, agregando también las nuevas ambigüedades que aparecen y devolver esos nuevos polinomios, y si quedan todos nulos pasar a las ambigüedades de grado siguiente. Si no quedan mas grados de ambigüedades se devuelve vacío.
+
+\section{Optimizaciones}\label{secton:optimizaciones}
+
+Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en los algoritmos de Buchberger y F4, que están explicadas en la Sección 4.5 de \cite{thesis:Hof20}. Acá solo se van a explicar por arriba las optimizaciones y se va a explicar como están implementadas.
+
+\subsection{Descartar ambigüedades}
+
+La primer optimización consiste en que se pueden descartar algunas ambigüedades, sin tener que reducir su S-polinomio, según si pasan ciertas cosas con otros polinomios que ya están en la base.
+
+En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una función con la siguiente signatura:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  bool checkDeletionCriteria(std::vector<Poly<K, ord>>& G, Amb& amb, size_t i, size_t j);
+\end{minted}
+
+Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
+
+Con eso lo que se hizo en el código es en el método \texttt{add\_amb} tanto de Buchberger como de F4, antes de agregar la ambigüedad, se llama a \texttt{checkDeletionCriteria} y solo se agrega la ambigüedad si da \texttt{false}.
+
+\subsection{Eliminación de polinomios}
+
+La segunda optimización consiste en que cuando se procesa una ambigüedad de inclusión se puede borrar de la base al polinomio grande de la ambigüedad.
+
+Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm(f) = a \lm(g) b$ con $a, b ∈ ⟨X⟩$, lo que esta optimización permite es en esas ambigüedades borrar $f$ de la base.
+
+Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo F4 andaba mas lento con esta optimización. No se investigó porque pasaba eso.
+
+Para implementar esta optimización en Buchberger lo que si hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que lo que se está haciendo es mas bien marcar como borrados los polinomios.
+
+Las funciones que se habían explicado que toman a \texttt{G} como parámetro y se usan en Buchberger lo que se hizo es agregarles un parámetro extra que sea el vector de booleanos y que solo trabaje con los polinomios de posiciones que están con \texttt{true}.
+
+\subsection{Reducción mas eficiente en F4}
+
+Como ya se dijo antes, para F4 también hay otra optimización que consiste en hacer la reducción por filas de la matriz de forma mas eficiente aprovechando la estructura particular que tienen las matrices de F4. Esta reducción está explicada en \cite{thesis:Hof20}.
+
+Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación especifica de ℚ, que hay en C++.
+
+\section{Construcción de la respuesta}
+
+Como se dijo en el capitulo anterior, la construcción de la respuesta se implementó solo para Buchberger, y para F4 no. El motivo de esto es que como para F4 de cualquier manera no está implementada la optimización de hacer la reducción mas eficiente se va a tener que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión mas eficiente es el momento de implementar la construcción de la respuesta.
+
+Como se explico en la \cref{section:construcción de la respuesta (librería)}, para la construcción de la respuesta se usa el tipo \texttt{InIdealPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
+
+La base de la implementación de este tipo es así:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct InIdealPoly {
+    std::vector<std::tuple<Monomial, size_t, Monomial, K>> terms;
+  };
+\end{minted}
+
+Y tiene definidas las operaciones de suma resta y producto entre polinomios, al igual que con los polinomios normales. Además tiene un método \texttt{add} para agregar una tupla monomio, índice, monomio, coeficiente al polinomio.
+
+A diferencia de con los polinomios comunes, acá \texttt{terms} no se mantiene ordenado de ninguna manera.
+
+Con \texttt{InIdealPoly} se hizo la estructura \texttt{BuchbergerIncrementalReconstruct}, que es muy parecida a \texttt{BuchbergerIncremental} pero con algunos agregados y se hicieron versiones \texttt{Reconstruct} de las funciones que se usan.
+
+Para las reducciones se hizo una función con esta signatura:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  InIdealPoly<K, ord>
+  reduceReconstruct(Poly<K, ord>& f, const std::vector<Poly<K, ord>>& G, const std::vector<InIdealPoly<K, ord>>& g_rec);
+\end{minted}
+
+La cual modifica a \texttt{f} y devuelve que habría que restarle a la \texttt{f} original para obtener la \texttt{f} reducida.
+
+También se hizo una versión de la función de los S-polinomios:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  std::tuple<Poly<K, ord>, std::tuple<Monomial, Monomial, K>, std::tuple<Monomial, Monomial, K>>
+  S_polyReconstruct(const Amb& amb, const Poly<K, ord>& f, const Poly<K, ord>& g);
+\end{minted}
+
+Que devuelve además de el S-polinomio, que hay que multiplicarle a \texttt{f} y a \texttt{g}.
+
+Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio.
+
+A los elementos iniciales simplemente se agregan como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los que vienen de un S-polinomio se construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que formas la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con los de la reducción.
+
 
 \chapter{Bibliografía}
 
