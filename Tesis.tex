@@ -1155,67 +1155,102 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}
 
-Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en C++ junto con estructuras para manejar polinomios no conmutativos. En este capítulo se explica como usar esa librería en su versión actual. % Quizás habría que aclarar que febrero de 2025 o algo así
-Esa librería se está en GitHub en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. % Está bien poner esto así?
+Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en C++ junto con estructuras para manejar polinomios no conmutativos en una librería \texttt{ncgb}. En este capítulo se explica como usar esa librería en su versión actual. % Quizás habría que aclarar que febrero de 2025 o algo así
+
+Esa librería está en GitHub en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}.
 
 \section{Estructura de las carpetas}
 
-El repositorio está estructurado en las siguientes carpetas:
+El repositorio tiene varias carpetas, pero hay dos que son las mas relevantes para el o la usuaria.
 
-\begin{itemize}
-  \item \texttt{ncgb}: Esta es la carpeta mas importante, tiene archivos \texttt{.hpp} con todas las implementaciones para incluir en otros códigos y usar las implementaciones, en la siguiente sección se explica como usar estos códigos.
-  \item \texttt{mains}: En este carpeta hay varios archivos \texttt{.cpp} con función \texttt{main} que hacen distintas cosas. Cada archivo al comienzo tiene una pequeña explicación de que hace.
-  \item \texttt{tests}: En esta carpeta están los tests, tanto los tests internos solo de código de la librería como un test que compara con la implementación de \texttt{operator\_gb}. % Quizás citar?
-  \item \texttt{extras}: Esta carpeta lo único que tiene es una estructura de aritmética modular para usar en los mains.
-  \item \texttt{.github/workflows}: En esta carpeta está la configuración para que los tests se corran automáticamente al subir los cambios a GitHub.
-\end{itemize}
+La primera es la carpeta \texttt{ncgb}, que es en donde está alojada la librería en sí. Tiene muchos archivos \texttt{.hpp} que son los que hay que incluir para usar la librería y que tienen la implementación ahí mismo.
 
-En las siguientes secciones se explica como usar los archivos de la carpeta \texttt{ncgb}.
+En algunas librerías a veces hay archivos \texttt{.h} con las declaraciones y archivos \texttt{.cpp} con las implementaciones, pero acá eso no es así por el uso de templates.
 
-\section{Estructura general de los códigos}
+La otra carpeta relevante es la carpeta \texttt{mains}, que tiene varios archivos \texttt{.cpp} con funciones \texttt{main} que hacen distintas cosas usando la librería, cada con una pequeña explicación de que hace. Estos archivos son útiles para ver ejemplos de como se usa la librería.
 
-En los códigos todos los nombres de cosas y comentarios están en inglés porque en general el código se suele hacer en inglés.
+\section{Estructura general de los códigos} % Capás este no es el mejor nombre para este sección, pero
 
-En la carpeta \texttt{ncgb} hay varios archivos con implementaciones de las distintas cosas. Todo esos archivos tienen el código adentro del namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}.
+Todo el código de la librería está en el namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}. Para las explicaciones vamos a ver todo como con el namespace abierto.
 
-Como los polinomios son asociados a un cuerpo y además muchas cosas dependen de un orden monomial todo lo que usa polinomios tiene parámetros de template para ambas cosas, poniendo el orden lexicográfico por grado como parámetro por defecto para esto último. Por ejemplo, la definición de polinomio empieza así:
+Los polinomios como los definimos en el \cref{cap:Definiciones preliminares} están asociados a un cuerpo y un conjunto de variables, y además muchas cosas de los polinomios (y de otras definiciones) dependen de un orden monomial.
+
+Para que al usar el código también se puedan variar esas tres cosas todas las funciones y estructuras están hechas como templates con esas tres cosas como argumentos. Por ejemplo, la definición de polinomio es así:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
+  template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
   struct Poly {
-    ⋮
+    // … Implementación
   };
 \end{minted}
-% El ⋮ no se ve
 
-El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo, incluyendo cosas como \texttt{+=}. En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener. Para los números racionales el tipo \texttt{mpq\_class} de la librería GMP también tiene todo lo que \texttt{K} tiene que tener \cite{lib:gmp}. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
+El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo. En particular, se asume que pueden usar las siguientes cosas:
 
-\texttt{DegLexOrd} es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo una estructura que tenga definido un operador \texttt{()} que sea el orden. Algo así sería el código:
+\begin{itemize}
+ \item \texttt{+}, \texttt{-} (tanto unario como binario), \texttt{*} y \texttt{/} junto con sus versiones de asignación \texttt{+=}, \texttt{-=}, \texttt{*=} y \texttt{/=} (pero no se usa el resultado de estos operadores, solo el que modifican el operando izquierdo).
+ \item \texttt{==} (y también \texttt{!=}, pero ese a partir de C++20 está automáticamente con \texttt{==}).
+ \item Se asume que se puede construir un \texttt{K} con \texttt{0} y con \texttt{1}, o sea, que se puede hacer \texttt{K(0)} y \texttt{K(1)}.
+ \item Para imprimir los polinomios se asume \texttt{<<} y para leerlos \texttt{>>}.
+\end{itemize}
+
+En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener (y algunas cosas mas). Para los números racionales el tipo \texttt{mpq\_class} de la librería GMP también tiene todo lo que \texttt{K} tiene que tener \cite{lib:gmp}. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
+
+El tipo \texttt{X} es lo que se usa para representar las variables como números y la idea es que se use algún tipo de números sin signo. Usar otras cosas podría andar pero no está probado. Por defecto se usa \texttt{\_\_uint8\_t} que permite poder tener 256 variables alcanza y para usar mas variables hay que cambiarlo a un entero sin signo mas grande como \texttt{\_\_uint32\_t}.
+
+\texttt{ord} es el orden monomial que se usa y está puesto por defecto \texttt{DegLexOrd} que es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo una estructura que tenga definido un operador \texttt{()} que sea el orden. Algo así sería el código:
 
 \begin{minted}{C++}
   struct Orden {
     bool operator()(const Monomial& a, const Monomial& b) const {
-      ⋮
+      // … Implementación
     }
   };
 \end{minted}
-% El ⋮ no se ve
 
-Esto es así porque es una de las formas mas comunes de tomar un orden como template en C++.
-
-En los seudocódigo por lo general se usan conjuntos para las cosas como el conjunto generador, en el código en cambio, para casi todo se usan vectores en lugar de conjuntos, porque son mas eficientes.
+Esta es la forma estándar de definir ordenes para ser parámetros de template en C++.
 
 \section{Monomios}
 
-Los monomios están definidos como un tipo \texttt{Monomial} en el archivo \texttt{nc\_monomial.hpp}. Dentro del tipo las variables de representan con el tipo \texttt{Monomial::X} que está puesto en que sea \texttt{\_\_uint8\_t}. Para construir un elemento del tipo se puede usar el constructor vacío que crea el monomio vacío o el constructor que toma un vector de \texttt{Monomial::X} con las variables que tiene el monomio.
+Los monomios están definidos en el archivo \texttt{nc\_monomial.hpp} y lo mas importante de su funcionalidad se puede resumir así:
 
-El tipo \texttt{Monomial} tiene implementada la multiplicación con \texttt{operator*} (y \texttt{operator*=}), la igualdad con \texttt{operator==}, un método \texttt{size} que devuelve el grado, un método \texttt{empty} que devuelve \texttt{true} si y solo si el monomio es el monomio vacío y varios relacionados a la división y a la representación de los monomios como strings.
+\begin{minted}{C++}
+  template<typename X = __uint8_t>
+  struct Monomial {
+    Monomial();
+    Monomial(const std::vector<X>& vals);
 
-Relacionado a la división el método mas importante es \texttt{divide\_indexes} que se llama como \texttt{m0.divide\_indexes(m1)} y devuelve un vector se \texttt{size\_t} que dice en que posiciones de \texttt{m1} empieza una sub-palabra igual a \texttt{m0}.
+    bool operator==(const Monomial& m) const;
+    Monomial operator*(const Monomial& m) const;
+    void operator*=(const Monomial& m);
+    size_t size() const;
+    bool empty() const;
 
-En cuanto a la representación como strings, hay dos pares de métodos, están \texttt{operator>>} y \texttt{operator<<} que leen y escriben en un formato de todo números que es cómodo para usar en código y \texttt{nice\_print} y \texttt{nice\_read} que son para leer y escribir en el formato en el que se suelen escribir a mano los monomios.
+    // Returns the positions of m.vals where this monomial divides m
+    std::vector<size_t> divide_indexes(const Monomial& m) const;
 
-El formato fácil de leer desde código consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
+    // Does this monomial divides m?
+    bool divides(const Monomial& m) const;
+
+    // Make all possible divisions of m by this monomial
+    std::vector<std::pair<Monomial, Monomial>> divide(const Monomial& m) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Monomial& m);
+    friend std::istream& operator>>(std::istream& is, Monomial& m);
+
+    void nice_print(std::ostream& os = std::cout) const;
+    static Monomial nice_read(std::istream& is = std::cin);
+  };
+\end{minted}
+
+Acá el único argumento del template es \texttt{X}, porque no hace falta nada del cuerpo ni tampoco un orden monomial (de hecho no tendría sentido que haga falta un orden monomial para definir monomios).
+
+El tipo \texttt{Monomial<X>} tiene implementada la multiplicación con \texttt{operator*} (y \texttt{operator*=}), la igualdad con \texttt{operator==}, un método \texttt{size} que devuelve el grado, un método \texttt{empty} que devuelve \texttt{true} si y solo si el monomio es el monomio vacío y varios métodos relacionados a la división y a la representación de los monomios como strings.
+
+Relacionado a la división el método más importante es \texttt{divide\_indexes} que se llama como \texttt{m0.divide\_indexes(m1)} y devuelve un vector de \texttt{size\_t} que indica en que posiciones de \texttt{m1} empieza una sub-palabra igual a \texttt{m0}.
+
+En cuanto a la representación como strings, hay dos pares de métodos. Están \texttt{operator>>} y \texttt{operator<<} que leen y escriben en un formato numérico que es cómodo para usar en código. Por otro lado \texttt{nice\_read} y \texttt{nice\_print} leen y escriben en el formato en el que se suelen escribir a mano los monomios.
+
+El formato numérico consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
 
 \begin{lstlisting}[escapechar=+]
   +$n$+ +$x_1$+ ⋯ +$x_n$+
@@ -1227,28 +1262,69 @@ Por ejemplo, acá hay un monomio en el formato como se suelen escribir a mano:
   adbda
 \end{lstlisting}
 
-Y acá está el mismo monomio en el formato fácil de leer desde código:
+\noindent Y acá está el mismo monomio en el formato numérico:
 
-\begin{lstlisting}[escapechar=+]
+\begin{lstlisting}
   5 0 3 1 3 0
 \end{lstlisting}
 
-\section{Polinomios}
-
-Los polinomios están definidos en el archivo \texttt{nc\_polynomial.hpp}. Como ya se mostró antes, el tipo de los polinomios, \texttt{Poly}, tiene el cuerpo y un orden monomial como parámetros de template:
+Por ejemplo, para declarar un monomio con \texttt{X = \_\_uint8\_t}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
-  struct Poly …
+  Monomial m;
+  std::cin >> m;
+  m.nice_print();
+\end{minted}
+
+\section{Polinomios}
+
+Los polinomios están definidos en el archivo \texttt{nc\_polynomial.hpp} y lo mas importante de su funcionalidad se puede resumir así:
+
+\begin{minted}{C++}
+  template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
+  struct Poly {
+    Poly();
+    Poly(const Monomial<X>& m, K c = K(1));
+    Poly(std::vector<std::pair<Monomial<X>, K>> p);
+
+    bool operator==(const Poly& p) const;
+
+    Poly operator+(const Poly& p) const;
+    Poly operator-(const Poly& p) const;
+    Poly operator*(const Poly& p) const;
+    Poly operator*(Monomial<X> m) const;
+    Poly operator*(K c) const;
+    Poly operator/(K c) const;
+    Poly operator-() const;
+    void operator+=(const Poly& p);
+    void operator-=(const Poly& p);
+    void operator*=(const Poly& p);
+    void operator*=(Monomial<X> m);
+    void operator*=(K c);
+
+    K coeff(const Monomial<X>& m) const;
+
+    const Monomial<X>& lm() const;
+    K lc() const;
+    Poly lt() const;
+    bool monic() const;
+    bool isZero() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Poly& p);
+    friend std::istream& operator>>(std::istream& is, Poly& p);
+
+    void nice_print(std::ostream& os = std::cout) const;
+    static Poly nice_read(std::istream& is = std::cin);
+  };
 \end{minted}
 
 Para construir un polinomio hay tres constructores, el constructor vacío que produce el polinomio $0$, un constructor que toma un monomio $m$ y un elemento del cuerpo $c$ y produce el polinomio $cm$ y un constructor que toma un vector de pares monomio coeficiente y produce el polinomio que es la suma de cada coeficiente multiplicado con su monomio.
 
 El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=} por ejemplo), métodos para lo definido en la \cref{def:cosas de polinomios} y métodos relacionados a la representación de los polinomios como strings.
 
-Al igual que con los monomios, para la representación como strings, hay dos pares de métodos, \texttt{operator>>} y \texttt{operator<<} para formato de todo números y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
+Al igual que con los monomios, para la representación como strings, hay dos pares de métodos, \texttt{operator>>} y \texttt{operator<<} para formato de numérico y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
 
-El formato de solo números consiste en, primero un número entero no negativo $m$, la cantidad de términos, seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. El coeficiente tiene se lee haciendo \texttt{>> c} donde \texttt{c} es una variable de tipo \texttt{K}, así que \texttt{K} tiene que tener \texttt{>>} implementado para que se pueda leer polinomios. Se puede representar así el formato:
+El formato numérico consiste en, primero un número entero no negativo $m$, la cantidad de términos, seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. Se puede representar así el formato:
 
 \begin{lstlisting}[escapechar=+]
   +$m$+
@@ -1263,20 +1339,28 @@ Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
   3 aaa - 5 bcc + adbda
 \end{lstlisting}
 
-Y acá está el mismo monomio en el formato fácil de leer desde código:
+Y acá está el mismo polinomio en el formato numérico:
 
-\begin{lstlisting}[escapechar=+]
+\begin{lstlisting}
   3
   3 3 0 0 0
   -5 3 1 2 2
   1 5 0 3 1 3 0
 \end{lstlisting}
 
+Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
+
+\begin{minted}{C++}
+  Poly<mpq_class> p;
+  std::cin >> p;
+  p.nice_print();
+\end{minted}
+
 \section{Buchberger y F4}
 
 Los algoritmos de Buchberger y F4 están ambos hechos de una forma que se usan similar, así que por eso están explicados juntos.
 
-Como ambos algoritmos tienen el problema de que puede no terminar no se puede hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar.
+Como ambos algoritmos tienen el problema de que pueden no terminar no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar (o por lo menos no que sea la única forma de usar los algoritmos).
 
 Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que si se quiere después hacer mas pasos de la ejecución habría que volver a empezar, llamando a la función con un número mas grande.
 
@@ -1284,7 +1368,29 @@ Para evitar ese problema lo que se hizo es definir una estructura que el constru
 
 Para Buchberger la estructura está en el archivo \texttt{Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \texttt{F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
 
-Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conjunto generador, un polinomio y una cantidad pasos y trata de decir si el polinomio está en el ideal generado por el conjunto generador haciendo esa cantidad de llamada a \texttt{next}. Esa función devuelve un elemento de el siguiente tipo (con los significados que están comentados comentados):
+La estructura de Buchberger podría describirse así:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct BuchbergerIncremental {
+    BuchbergerIncremental(const std::vector<Poly<K, ord>>& G);
+    std::optional<Poly<K, ord>> next();
+    std::vector<Poly<K, ord>> fullBase();
+  };
+\end{minted}
+
+Y para el caso de F4 así:
+
+\begin{minted}{C++}
+  template<typename K, class ord = DegLexOrd>
+  struct F4Incremental {
+    F4Incremental(const std::vector<Poly<K, ord>>& G);
+    std::vector<Poly<K, ord>> next();
+    std::vector<Poly<K, ord>> fullBase();
+  };
+\end{minted}
+
+Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conjunto generador, un polinomio y una cantidad de pasos y trata de decir si el polinomio está en el ideal generado por el conjunto generador haciendo esa cantidad de llamada a \texttt{next}. Esa función devuelve un elemento del siguiente tipo (con los significados que están comentados comentados):
 
 \begin{minted}{C++}
   enum IdealMembershipStatus {
@@ -1294,60 +1400,98 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
   };
 \end{minted}
 
+\noindent Y está declarada así:
+
+\begin{minted}{C++}
+  template<typename K, typename X, class ord = DegLexOrd<X>>
+  IdealMembershipStatus
+  inIdeal(const std::vector<Poly<K, X, ord>>& G, Poly<K, X, ord> f, size_t st = 20);
+\end{minted}
+
 Esa función sería básicamente la que trata de responder a la pregunta que plantemos al comienzo de si un polinomio está en el ideal generado por un conjunto generador.
 
 \section{Construcción de la respuesta}\label{section:construcción de la respuesta (librería)}
 
-La función \texttt{inIdeal} hace lo de intentar responder a la pregunta de si un polinomio está en el ideal generado por un conjunto generador, pero en el caso de que la respuesta es que si está no nos da la forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
+La función \texttt{inIdeal} sólo decide la pertenencia al ideal generado, pero en caso afirmativo no nos da la forma de escribirlo cómo combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
 
-Con las bases de Gröbner pasa lo mismo, los algoritmos nos dan la base pero no nos dan como se escriben los elementos de la base usando los elementos del conjunto generador.
+Con las bases de Gröbner pasa lo mismo, los algoritmos nos dan la base pero no nos dan cómo se escriben los elementos de la base usando los elementos del conjunto generador.
 
-Así como están todo en la explicación del algoritmo de Buchberger no nos da una forma directa de construir esa escritura. Pero, en todos los pasos en los que se manejan polinomios siempre se hace sumando o restando polinomios del conjunto generador o que ya están en la base, así que se puede para cada polinomio ir guardando siempre que sea hace con el y usar eso para obtener la escritura usando los elementos del conjunto generador.
+Sin embargo esa información se puede calcular y está implementado.
 
-Para el caso de F4 no es tan directo, pero si cuando se hace la reducción por filas de la matriz se guarda que operaciones por filas se hicieron también se puede.
+Para Buchberger esto está implementado en el mismo archivo \texttt{Buchberger.hpp} en unas funciones y estructuras con nombres que terminan en \texttt{Reconstruct} (esta terminación es porque van guardando la información que permite \emph{reconstruir} la respuesta).
 
-Para Buchberger esto está implementado en el mismo archivo \texttt{Buchberger.hpp} en unas funciones y structs que terminan en \texttt{Reconstruct} (esta terminación es porque van guardando la información que permite \emph{reconstruir} la respuesta).
-
-Estas funciones lo que hacen es devolver elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polyonomial\_inIdeal.hpp}. Este tipo lo que hace es representar un polinomio como una combinación lineal de elementos del conjunto generador, en particular guarda un vector de elementos $m$, $j$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
+Estas funciones devuelven elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polyonomial\_inIdeal.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador, en particular guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
 Para F4 esto no está implementado (en el siguiente capitulo se explica mas del porque).
 
-\chapter{Implementación}
+\section{Ejemplo}
 
-En este capitulo se explican los detalles de como está hecha la implementación.
+Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del archivo \texttt{mains/base\_Buchberger.cpp}:
+
+\begin{minted}{C++}
+  #include <bits/stdc++.h>
+  #include <gmpxx.h>
+  #include "ncgb/Buchberger.hpp"
+  using namespace std;
+  using namespace ncgb;
+
+  typedef Poly<mpq_class> P;
+
+  int main() {
+    size_t n;
+    cin >> n;
+    vector<P> G(n);
+    for (size_t i = 0; i < n; ++i) cin >> G[i];
+
+    BuchbergerIncremental<R> bi(G);
+    vector<P> base = bi.fullBase();
+
+    cout << base.size() << endl;
+    for (P& f : base) f.nice_print();
+  }
+\end{minted}
+
+El código de este ejemplo lo que hace es, trabajando sobre los racionales, leer un conjunto generador de forma numérica, calcularle una base de Gröbner asumiendo que tiene una base de finita e imprime la base de forma bonita.
 
 \section{Comparación de bases}
 
 Por último para esta sección, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
 
+\chapter{Implementación}
+
+En este capitulo se explican los detalles de como está hecha la implementación.
+
+
 \section{Monomios}
 
-Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementaron usando vectores para de números sin signo. La base de la implementación es así:
+Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementaron usando vectores de \texttt{X}. La base de la implementación es así:
 
 \begin{minted}{C++}
+  template<typename X = __uint8_t>
   struct Monomial {
-    typedef __uint8_t X;
-    vector<X> vals;
+    std::vector<X> vals;
+    // … Métodos
   };
 \end{minted}
 
-Con esto, como \texttt{\_\_uint8\_t} tiene 8 bits se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
+Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
 Está estructura tiene implementadas las operaciones y métodos que se describieron en el capitulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
 
 Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
-Junto con la implementación de los monomios, en el archivo \texttt{nc\_monomial.hpp} está la implementación del orden lexicográfico por grado.
+Junto con la implementación de los monomios, en el archivo \texttt{nc\_monomial.hpp} está la implementación del orden lexicográfico por grado, que también es directa.
 
 \section{Polinomios}
 
 Los polinomios, o sea los elementos de $K⟨X⟩$ están implementados usando un vector de pares monomio coeficiente que siempre se mantiene ordenado por el orden monomial. La base de la implementación es así:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
+  template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
   struct Poly {
-    vector<pair<Monomial, K>> terms;
+    std::vector<std::pair<Monomial<X>, K>> terms;
+    // … Métodos
   };
 \end{minted}
 
@@ -1368,12 +1512,13 @@ En el archivo también hay una función \texttt{reduce} que además toma un vect
 Las ambigüedades, que son necesarias para el algoritmo de Buchberger están implementadas en el archivo \texttt{ambiguities.hpp} y conciten en una estructura así:
 
 \begin{minted}{C++}
+  template<typename X>
   struct Amb {
-    const Monomial& p, q;
+    const Monomial<X>& p, q;
     enum Type { Inclusion, Overlap };
     Type type;
     size_t pos; // position where q starts in p
-    Monomial a, b;
+    Monomial<X> a, b;
   };
 \end{minted}
 
@@ -1388,7 +1533,7 @@ Los campos de la ambigüedad son:
   \item \texttt{a} y \texttt{b} son los monomios que hacen que en el caso de las de inclusión \texttt{p} sea igual a \texttt{aqb} y en el caso de las de sobreposición \texttt{ap} sea igual a \texttt{qb}.
 \end{itemize}
 
-En el archivo también está \texttt{ambiguities} que toma dos monomios y devuelve un vector de \texttt{Amb} con todas las ambigüedades entre sos dos monomios. En esta función al igual que en la divisibilidad de monomios se usa la función Z para evitar tener que hacer algo cuadrático en los largos de los monomios.
+En el archivo también está la función \texttt{ambiguities} que toma dos monomios y devuelve un vector de \texttt{Amb} con todas las ambigüedades entre sos dos monomios. En esta función al igual que en la divisibilidad de monomios se usa la función Z para evitar tener que hacer algo cuadrático en los largos de los monomios.
 
 Después en el archivo está la función \texttt{S\_poly}que toma una ambigüedad y dos polinomios que deberían ser pos polinomios correspondientes y desvuelve el S-polinomio correspondiente.
 
@@ -1397,15 +1542,16 @@ Y por último está la función \texttt{checkDeletionCriteria} que implementa la
 
 \section{Buchberger}
 
-Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se hace lo de usar una estructura con una método \texttt{next}. En esa estructura ya está implementada las optimizaciones antes mencionadas, pero en esta sección primero se explica como sería la estructura sin esas optimizaciones y después algo de como se agregan.
+Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se hace lo de usar una estructura con una método \texttt{next}. En esa estructura ya está implementada las optimizaciones antes mencionadas, pero en esta sección primero se explica como sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} algo de como se agregan.
 
 La base de esa estructura es así:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
+  template<typename K, typename X, class ord = DegLexOrd<X>>
   struct BuchbergerIncremental {
-    std::vector<Poly<K, ord>> G;
-    std::queue<std::tuple<Amb, size_t, size_t>> ambs;
+    std::vector<Poly<K, X, ord>> G;
+    std::vector<bool> removed;
+    std::queue<std::tuple<Amb<X>, size_t, size_t>> ambs;
     size_t t = 0;
   };
 \end{minted}
@@ -1438,12 +1584,12 @@ F4 tiene es un poco mas complejo que F4 y tiene mas partes, así que esta secci�
 
 Para F4 hace falta hacer lo de reducir una matriz por filas. Para esto en el archivo \texttt{matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que anda para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho mas rápido.
 
-Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}. % Quizas habría que poner una nota al pie de página explicando que es una especialización en C++?
+Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}. % Quizás habría que explicar que es una especialización en C++?
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y después copiar el resultado de vuelta a la matriz original.
 
 El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}.
-% Quizas se podría decir que el motivo por el cual lo de FLINT es como es probablemente sea porque es una librería de C?
+% Quizás se podría decir que el motivo por el cual lo de FLINT es como es probablemente sea porque es una librería de C?
 
 \section{Preprocesamiento simbólico}
 
@@ -1462,7 +1608,7 @@ La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), d
 La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso lo que se hizo es que las ambigüedades estén guardadas por grado en un vector, así:
 
 \begin{minted}{C++}
-  std::vector<std::vector<std::tuple<Amb, size_t, size_t>>> ambs_per_deg;
+  std::vector<std::vector<std::tuple<Amb<X>, size_t, size_t>>> ambs_per_deg;
 \end{minted}
 
 El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}. En F4 este método lo que hace es, agarrar todas las ambigüedades de menor grado, poner todos los S-polinomios correspondientes en un vector, hacer la reducción de esos polinomios con la función \texttt{multiReduction} y, si hay alguno que queda no nulo, agregar los polinomios reducidos a la base, agregando también las nuevas ambigüedades que aparecen y devolver esos nuevos polinomios, y si quedan todos nulos pasar a las ambigüedades de grado siguiente. Si no quedan mas grados de ambigüedades se devuelve vacío.
@@ -1478,8 +1624,8 @@ La primer optimización consiste en que se pueden descartar algunas ambigüedade
 En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una función con la siguiente signatura:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
-  bool checkDeletionCriteria(std::vector<Poly<K, ord>>& G, Amb& amb, size_t i, size_t j);
+  template<typename K, typename X, class ord = DegLexOrd<X>>
+  bool checkDeletionCriteria(std::vector<Poly<K, X, ord>>& G, Amb<X>& amb, size_t i, size_t j)
 \end{minted}
 
 Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
@@ -1502,7 +1648,7 @@ Las funciones que se habían explicado que toman a \texttt{G} como parámetro y 
 
 Como ya se dijo antes, para F4 también hay otra optimización que consiste en hacer la reducción por filas de la matriz de forma mas eficiente aprovechando la estructura particular que tienen las matrices de F4. Esta reducción está explicada en \cite{thesis:Hof20}.
 
-Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación especifica de $ℚ$, que hay en C++.
+Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación especifica de $ℚ$, que hay en C++. % Agregar referencia a capitulo de trabajas futuros
 
 \section{Construcción de la respuesta}
 
@@ -1510,12 +1656,13 @@ Como se dijo en el capitulo anterior, la construcción de la respuesta se implem
 
 Como se explico en la \cref{section:construcción de la respuesta (librería)}, para la construcción de la respuesta se usa el tipo \texttt{InIdealPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
 
-La base de la implementación de este tipo es así:
+La estructura de la implementación de este tipo es así:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
+  template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
   struct InIdealPoly {
-    std::vector<std::tuple<Monomial, size_t, Monomial, K>> terms;
+    std::vector<std::tuple<Monomial<X>, size_t, Monomial<X>, K>> terms;
+    // … Métodos
   };
 \end{minted}
 
@@ -1528,9 +1675,9 @@ Con \texttt{InIdealPoly} se hizo la estructura \texttt{BuchbergerIncrementalReco
 Para las reducciones se hizo una función con esta signatura:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
-  InIdealPoly<K, ord>
-  reduceReconstruct(Poly<K, ord>& f, const std::vector<Poly<K, ord>>& G, const std::vector<InIdealPoly<K, ord>>& g_rec);
+  template<typename K, typename X, class ord = DegLexOrd<X>>
+  InIdealPoly<K, X, ord>
+  reduceReconstruct(Poly<K, X, ord>& f, const std::vector<Poly<K, X, ord>>& G, const std::vector<InIdealPoly<K, X, ord>>& g_rec);
 \end{minted}
 
 La cual modifica a \texttt{f} y devuelve que habría que restarle a la \texttt{f} original para obtener la \texttt{f} reducida.
@@ -1538,12 +1685,12 @@ La cual modifica a \texttt{f} y devuelve que habría que restarle a la \texttt{f
 También se hizo una versión de la función de los S-polinomios:
 
 \begin{minted}{C++}
-  template<typename K, class ord = DegLexOrd>
-  std::tuple<Poly<K, ord>, std::tuple<Monomial, Monomial, K>, std::tuple<Monomial, Monomial, K>>
-  S_polyReconstruct(const Amb& amb, const Poly<K, ord>& f, const Poly<K, ord>& g);
+  template<typename K, typename X, class ord = DegLexOrd<X>>
+  std::tuple<Poly<K, X, ord>, std::tuple<Monomial<X>, Monomial<X>, K>, std::tuple<Monomial<X>, Monomial<X>, K>>
+  S_polyReconstruct(const Amb<X>& amb, const Poly<K, X, ord>& f, const Poly<K, X, ord>& g);
 \end{minted}
 
-Que devuelve además de el S-polinomio, que hay que multiplicarle a \texttt{f} y a \texttt{g}.
+Que devuelve además de el S-polinomio que hay que multiplicarle a \texttt{f} y a \texttt{g}.
 
 Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio.
 
