@@ -1184,6 +1184,8 @@ Para que al usar el código también se puedan variar esas tres cosas todas las 
   };
 \end{minted}
 
+¿Que qué son los templates en C++? Recordatorio para quienes no lo recuerdan bien: los templates en C++ permiten escribir código genérico que funciona para diferentes tipos, configuraciones o comportamientos sin necesidad de duplicar el código a mano. Escribir código con templates es equivalente a escribir una copia del código por cada combinación de parámetros de los templates.
+
 El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo. En particular, se asume que pueden usar las siguientes cosas:
 
 \begin{itemize}
@@ -1390,6 +1392,8 @@ Y para el caso de F4 así:
   };
 \end{minted}
 
+En ambos casos el conjunto generador se toma como un vector porque usar un set de C++ sería mas costoso innecesariamente.
+
 Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conjunto generador, un polinomio y una cantidad de pasos y trata de decir si el polinomio está en el ideal generado por el conjunto generador haciendo esa cantidad de llamada a \texttt{next}. Esa función devuelve un elemento del siguiente tipo (con los significados que están comentados comentados):
 
 \begin{minted}{C++}
@@ -1584,7 +1588,9 @@ F4 tiene es un poco mas complejo que F4 y tiene mas partes, así que esta secci�
 
 Para F4 hace falta hacer lo de reducir una matriz por filas. Para esto en el archivo \texttt{matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que anda para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho mas rápido.
 
-Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}. % Quizás habría que explicar que es una especialización en C++?
+Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}.
+
+¿Qué que es una especialización en C++? Recordatorio para quienes no lo recuerdan bien: Es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template.
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y después copiar el resultado de vuelta a la matriz original.
 
