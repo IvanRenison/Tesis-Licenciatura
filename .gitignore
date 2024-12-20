@@ -9,7 +9,7 @@
 *.xdv
 *.out
 _minted-*
-*.bbl
-*.bcf
+*.bbl*
+*.bcf*
 *.blg
 *.run.xml
