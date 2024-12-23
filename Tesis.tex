@@ -1595,10 +1595,12 @@ Una librería que hace la reducción por filas es FLINT, que lo hace para el tip
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y después copiar el resultado de vuelta a la matriz original.
 
-El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}.
+El motivo por el cual primero se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}.
 % Quizás se podría decir que el motivo por el cual lo de FLINT es como es probablemente sea porque es una librería de C?
 
-\section{Preprocesamiento simbólico}
+Se probó también hacer una estructura propia para la matriz que normalmente sea algo genérico pero para \texttt{mpq\_class} sea una matriz de flint, pero por algún motivo andaba mas lento.
+
+\subsection{Preprocesamiento simbólico}
 
 El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \texttt{F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
 
@@ -1608,7 +1610,7 @@ Como en F4 se reducen varios polinomios al mismo tiempo, en el código se implem
 
 En el \cref{alg:F4} esto se hizo dentro del propio algoritmo de F4 pero en la implementación se hizo aparte porque son bastantes cosas las que tiene que hacer el código.
 
-La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), después llamar a una función \texttt{rref} que reduce la matriz (más abajo se explica esta función), después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su uno coeficiente principal (el primero no nula de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
+La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), después llamar a la función \texttt{rref} (que ya se explicó), después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su uno coeficiente principal (el primero no nula de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
 
 \subsection{El propio F4}
 
