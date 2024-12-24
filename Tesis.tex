@@ -86,42 +86,35 @@
 
 \chapter{Introducción}
 
-En este capitulo se explica informalmente de que se trata el tema de la tesis.
+En este capítulo se explica informalmente de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$, (pero que el producto de las variables con los coeficientes si conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
-En esos polinomios es producto entre las variables conmuta, así que es lo mismo el polinomio $x y$ que el polinomio $y x$. Se puede considerar que eso no pasa, que el producto de las variables no conmuta, así que $x y ≠ y x$, (pero que el producto de las variables con los coeficientes si conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denota como $K⟨x, y⟩$ y en general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
-
-Una problema de decisión que existe sobre los polinomios no conmutativos es, dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$ es decidir si $f$ se pude escribir como combinación lineal lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente determinar si:
-
+Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $F$ de polinomios no conmutativos y un polinomio no conmutativo $f$ decidir si $f$ se pude escribir como combinación lineal de elementos de $F$ con coeficientes en $K⟨X⟩$, o escrito formalmente determinar si vale la siguiente expresión.
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ F, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \]
 
-Este problema en el caso general no es computable, % Estaría bueno agregar una cita acá, pero no se a que
-pero si se puede hacer un algoritmo que si es verdadero termina y si no puede no terminar, o hacer un algoritmo que intenta determinarlo y puede devolver que si, que no, o que no sabe pero podría llegar a averiguarlo si sigue computando (así como podría no averiguarlo nunca).
+Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
+pero si es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero si hay un algoritmo que en caso de que si valga termina diciendo que si y en caso de que no vale puede no terminar.
 
-Para eso se considera el conjunto $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable y son estos últimos casos los que hacen que el problema no sea computable.
+Para trabajar en algoritmos para ese problema lo que se hace es considerar el conjunto $(F)$ de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(F)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable.
 
-Para calcular esas bases de Gröbner hay dos algoritmos principales, llamados algoritmo de Buchberger y F4.
+Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos, de hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Así, por ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativos. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-Antes de ahora ya hubo varias implementaciones de esos algoritmos, siendo la más importante \texttt{operator\_gb} hecha por Clemens Hofstadler en python usando \texttt{sagemath} y que está explicada en \cite{thesis:Hof20} junto con una explicación de toda la teoría (mucho más en detalle que en esta tesis).
-
-Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS}, % Está también NCAlgebra, pero no encontré como citarlo
+y sólo una % Creo (Cristian puso un ? cuando lo dijo)
+del algoritmo F4. Esta última fue desarrollada por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} en python usando sagemath. Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
-\chapter{Definiciones preliminares}\label{cap:Definiciones preliminares}
+\chapter{Preliminares}\label{cap:Preliminares}
 
-En este capitulo se explica toda la parte matemática, basada principalmente en la explicación de \cite{thesis:Hof20}. En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
-
-Muchos de los conceptos y definiciones tienen un análogo en el caso conmutativo, pero eso no se cubre acá. Para una explicación de eso se puede leer en \cite{book:ideals-varieties-algorithms}.
-
-Los algoritmos de Buchberger y F4 de hecho son originalmente algoritmos para el caso conmutativo que después se adaptaron al caso no conmutativo. El de Buchberger se llama así porque para el caso conmutativo fue inventado por Bruno Buchberger.
+En este capítulo se explica toda la parte matemática, basada principalmente en la explicación de \cite{thesis:Hof20}. En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
 \section{Sistemas de re-escritura}
 
-En esta sección se explican algunas definiciones y teoremas básicos de sistemas de re-escritura. En esta parte es muy probable que a cualquiera que haya estudiado computación muchas cosas ya las conozca o le suenen, pero están acá para que se puede entender mejor sin tener que buscar nada en otro lado.
+En esta sección se dan algunas definiciones y teoremas básicos de sistemas de re-escritura. En esta parte es muy probable que a cualquiera que haya estudiado computación muchos conceptos les resulten familiares, pero están acá para que se puede entender mejor sin tener que buscar nada en otro lado.
 
-Sistemas de re-escritura se trata básicamente del estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto a otro. Vamos a en general usar relaciones denotados con algún símbolo con forma de flecha porque está la idea de que se ``usa'' la relación para convertir el objeto de la izquierda en el objeto de la derecha.
+Sistemas de re-escritura se trata básicamente del estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque está la idea de que se \textsl{usa} la relación para convertir el objeto de la izquierda en el objeto de la derecha.
 
 Para toda está sección fijemos un conjunto $A$. Primero definimos algunas operaciones muy comunes sobre relaciones.
 
@@ -138,7 +131,7 @@ Para toda está sección fijemos un conjunto $A$. Primero definimos algunas oper
 
 Para el resto de la sección fijemos $→$ una relación sobre $A$.
 
-Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definiciones que nos permiten haber de la forma normal de un objeto como el elemento un que se llega aplicando $→$ hasta que no se puede más.
+Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que nos permite hablar de la forma normal de un objeto como el elemento un que se llega aplicando $→$ hasta que no se puede más.
 
 \begin{definition}\
   \begin{itemize}
@@ -149,7 +142,7 @@ Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil l
   \end{itemize}
 \end{definition}
 
-Y también vamos a necesitar definir algunas propiedades sobre las relaciones:
+También necesitamos definir las siguientes propiedades de las relaciones.
 
 \begin{definition}\
   \begin{itemize}
@@ -172,9 +165,9 @@ Sobre estas propiedades tenemos estos teoremas:
 
 \section{Álgebra libre}
 
-El álgebra libre es básicamente el conjunto de los polinomios no conmutativo con sus operaciones. En esta sección está toda la parte de la tesis de el álgebra libre.
+El álgebra libre es básicamente el conjunto de los polinomios no conmutativo con sus operaciones.
 
-En los polinomios no conmutativos los monomios son básicamente palabras y lo único que se puede hacer con los monomios entre si es multiplicarlos que equivale a concatenar la palabras. En la proxima definición se define eso.
+En los polinomios no conmutativos los monomios son básicamente palabras y la única operación interna de los monomios (entre monomios y que devuelve monomios) es la multiplicación, que equivale a la concatenación de palabras.
 
 \begin{definition}
   Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
@@ -199,7 +192,7 @@ El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el product
 
 A partir de ahora para todo el resto de la tesis fijamos $X$ un alfabeto finito.
 
-En estos monomios al igual que no los conmutativos se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que un un monomio sea sub-palabra de otro.
+En estos monomios al igual que en los conmutativos se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
 
 \begin{definition}
   Sean $v, w ∈ ⟨X⟩$:
@@ -209,13 +202,13 @@ En estos monomios al igual que no los conmutativos se puede hablar de que un mon
   Y cuando $v | w$ se dice que $v$ divide a $w$.
 \end{definition}
 
-En el ejemplo de antes tenemos por ejemplo $m_1 | m_0$ ya que $m_0 = a m_1 b$.
+En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
-De lo que es un poco más complicado hablar acá es de el resultado de la división porque es como que tendría que haber dos resultados, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
+De lo que es un poco más complicado hablar acá es de el resultado de la división porque es como que tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, así que lo que vamos a hacer es definir las propiedades que tienen que tener un orden para servir y trabajar con un orden cualquiera que las cumpla.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, por que con que satisfaga la \cref{def:buen orden monomial} alcanza.
 
-\begin{definition}
+\begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
   \begin{enumerate}
     \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$
@@ -223,20 +216,22 @@ Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$,
   \end{enumerate}
 \end{definition}
 
-En ejemplo de orden que cumple con esta definición es el siguiente:
+Definir esto así en general va a permitir que todo el trabajo sea sobre cualquier orden con las propiedades mínimas necesarios.
+
+Un ejemplo de orden que cumple con esta definición es el siguiente.
 
 \begin{definition}
   Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
   \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \]
 \end{definition}
 
-O sea, el orden lexicográfico por grado es orden primero por cardinalidad, que se llama grado también y desempatar por orden lexicográfico, por ejemplo tenemos $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
+O sea, el orden lexicográfico por grado ordena primero por cardinalidad, que se llama grado también, y desempatar con el orden lexicográfico, Por ejemplo, tenemos  que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
 
 Se puede probar fácilmente que este orden es un bueno orden monomial.
 
 A partir de ahora fijamos un buen orden monomial $≤$ y vamos a usar $<$, $≥$ y $>$ como se usan habitualmente.
 
-Una propiedad sobre el orden monomial que es consecuencia directa de la definición es la siguiente:
+La siguiente propiedad es consecuencia directa de la definición de buen orden monomial.
 
 \begin{theorem}\label{thm:≤ no cadenas dec inf}
   La relación $≤$ no tiene cadenas estrictamente decrecientes infinitas
@@ -267,7 +262,7 @@ Esta definición puede ser medio difícil de entender exactamente que está haci
 
 Notar que $p_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
-Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho:
+Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho.
 
 \begin{definition}\label{def:cosas de polinomios}
   Sean $R$ un anillo conmutativo, $p ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
@@ -606,7 +601,7 @@ Como en algunos casos $→_{≤, F}$ no es confluente vamos la siguiente definic
   \end{itemize}
 \end{definition}
 
-Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo:
+Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo.
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reducción}
@@ -635,7 +630,7 @@ Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudo
 
 Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el que reducir, y parar cuando ya no hay ninguno.
 
-Una propiedad sobre las estrategias de reducción que vamos a necesitar es la siguiente:
+Una propiedad sobre las estrategias de reducción que vamos a necesitar es la siguiente.
 
 \begin{lemma}[Las estrategias de reducción mantienen la pertenencia a ideales]\label{lemma:e mantiene pertenencia a ideal}
   Sean $e_≤$ una estrategia de reducción, $F ⊆ K⟨X⟩$ y $f ∈ (F)$, entonces:
@@ -1174,7 +1169,7 @@ La otra carpeta relevante es la carpeta \texttt{mains}, que tiene varios archivo
 
 Todo el código de la librería está en el namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}. Para las explicaciones vamos a ver todo como con el namespace abierto.
 
-Los polinomios como los definimos en el \cref{cap:Definiciones preliminares} están asociados a un cuerpo y un conjunto de variables, y además muchas cosas de los polinomios (y de otras definiciones) dependen de un orden monomial.
+Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables, y además muchas cosas de los polinomios (y de otras definiciones) dependen de un orden monomial.
 
 Para que al usar el código también se puedan variar esas tres cosas todas las funciones y estructuras están hechas como templates con esas tres cosas como argumentos. Por ejemplo, la definición de polinomio es así:
 
@@ -1430,7 +1425,7 @@ Para Buchberger esto está implementado en el mismo archivo \texttt{Buchberger.h
 
 Estas funciones devuelven elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polyonomial\_inIdeal.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador, en particular guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
-Para F4 esto no está implementado (en el siguiente capitulo se explica más del porque).
+Para F4 esto no está implementado (en el siguiente capítulo se explica más del porque).
 
 
 \section{Comparación de bases}
@@ -1468,7 +1463,7 @@ El código de este ejemplo lo que hace es, trabajando sobre los racionales, leer
 
 \chapter{Implementación}
 
-En este capitulo se explican los detalles de como está hecha la implementación.
+En este capítulo se explican los detalles de como está hecha la implementación.
 
 
 \section{Monomios}
@@ -1485,7 +1480,7 @@ Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementar
 
 Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
-Está estructura tiene implementadas las operaciones y métodos que se describieron en el capitulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
+Está estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la division, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrática (en el largo de la palabras), pero se puede hacer en tiempo lineal.
 
 Hay muchas formas de hacerlo en tiempo lineal, la que se usó es usar la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y como usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
@@ -1518,7 +1513,7 @@ En el archivo también hay una función \texttt{reduce} que además toma un vect
 
 \section{Ambigüedades}
 
-Las ambigüedades, que son necesarias para el algoritmo de Buchberger están implementadas en el archivo \texttt{ambiguities.hpp} y conciten en una estructura así:
+Las ambigüedades, que son necesarias para el algoritmo de Buchberger están implementadas en el archivo \texttt{ambiguities.hpp} y consisten en una estructura así:
 
 \begin{minted}{C++}
   template<typename X>
@@ -1665,7 +1660,7 @@ Esta optimización no se implementó principalmente por el poco soporte para tra
 
 \section{Construcción de la respuesta}
 
-Como se dijo en el capitulo anterior, la construcción de la respuesta se implementó solo para Buchberger, y para F4 no. El motivo de esto es que como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente se va a tener que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la construcción de la respuesta.
+Como se dijo en el capítulo anterior, la construcción de la respuesta se implementó solo para Buchberger, y para F4 no. El motivo de esto es que como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente se va a tener que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la construcción de la respuesta.
 
 Como se explico en la \cref{section:construcción de la respuesta (librería)}, para la construcción de la respuesta se usa el tipo \texttt{InIdealPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
 
