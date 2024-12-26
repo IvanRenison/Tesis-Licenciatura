@@ -173,10 +173,12 @@ Sobre estas propiedades tenemos estos teoremas:
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
   $→$ es terminante $⇒ →$ es normalizante
+  \qed
 \end{theorem}
 
 \begin{theorem}\label{thm:confluente ⇔ Church-Rosser}
   $→$ es confluente $⇔ →$ es Church-Rosser
+  \qed
 \end{theorem}
 
 \section{Álgebra libre}
@@ -251,6 +253,7 @@ La siguiente propiedad es consecuencia directa de la definición de buen orden m
 
 \begin{theorem}\label{thm:≤ no cadenas dec inf}
   La relación $≤$ no tiene cadenas estrictamente decrecientes infinitas
+  \qed
 \end{theorem}
 
 Ahora pasemos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
@@ -300,6 +303,7 @@ La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil po
 \begin{theorem}
   Sea $R$ un anillo conmutativo, entonces:
   \[ (R⟨X⟩, +, ·)\text{ es un anillo} \]
+  \qed
 \end{theorem}
 
 Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a continuación para no tener que estar buscándolos en otro lado.
@@ -321,6 +325,7 @@ Los ideales son básicamente conjuntos cerrados por suma producto por elementos 
 \begin{theorem}
   Sean $R$ un anillo y $G ⊆ R$, entonces:
   \[ (G)\text{ es un ideal de }R \]
+  \qed
 \end{theorem}
 
 Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia modulo el ideal.
@@ -333,13 +338,15 @@ Cada ideal define una clase de equivalencia en el anillo, la cual se llama congr
 \begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
   Sean $R$ un anillo y $I ⊆ R$ un ideal, entonces:
   \[ ≡_I \text{es una relación de equivalencia} \]
+  \qed
 \end{theorem}
 
 Esta congruencia es parecida a la de los números modulo otro número (de hecho la congruencia de los números modulo otro número es un subcaso de esta tomando como ideal a todos los múltiplos del modulo) y vale que la clase de equivalencia del $0$ es el propio ideal:
 
 \begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
-Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
-\[ a ∈ I ⇔ a ≡_I 0 \]
+  Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
+  \[ a ∈ I ⇔ a ≡_I 0 \]
+  \qed
 \end{lemma}
 
 Por último, con respecto al ideal generado por un conjunto tenemos el siguiente teorema.
@@ -347,6 +354,7 @@ Por último, con respecto al ideal generado por un conjunto tenemos el siguiente
 \begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
   Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$, entonces:
   \[ (G) = (G ∪ {a}) \]
+  \qed
 \end{lemma}
 
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
@@ -376,6 +384,7 @@ Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden en r
 
 \begin{theorem}
   La relación $<$ en $K⟨X⟩$ es un pre-orden parcial.
+  \qed
 \end{theorem}
 
 Sobre este orden hay varias propiedades que vamos a necesitar y que están enunciadas y probadas a continuación.
@@ -433,7 +442,7 @@ A continuación la prueba de que efectivamente achica.
     \item $f →_{≤, G} f' ⇒ f' < f$
   \end{enumerate}
 \end{theorem}
-  \begin{proof}
+\begin{proof}
   Por definición de las reducciones tenemos que (1) $⇒$ (2) $⇒$ (3), por lo cual alcanza con probar (1). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$
 
   Esto implica por definición de reducciones:
@@ -861,6 +870,7 @@ Ahora si damos el anunciado teorema para computar si un conjunto es una base de 
     \item $G$ es una base de Gröbner de $I$
     \item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$
   \end{enumerate}
+  \qed
 \end{theorem}
 % TODO: Agregar prueba. De cualquier manera, Hof no lo prueba a esto
 
