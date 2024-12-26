@@ -1672,7 +1672,7 @@ Las funciones que se habían explicado que toman a \texttt{G} como parámetro y 
 
 \subsection{Reducción más eficiente en F4}
 
-Como ya se dijo antes, para F4 también hay otra optimización que consiste en hacer la reducción por filas de la matriz de forma más eficiente aprovechando la estructura particular que tienen las matrices de F4. Esta reducción está explicada en \cite{thesis:Hof20}.
+Como ya se dijo antes, para F4 también hay otra optimización que consiste en hacer la reducción por filas de la matriz de forma más eficiente aprovechando la estructura particular que tienen las matrices de F4. Esta reducción se llama reducción Faugère-Lachartre y está explicada en \cite{thesis:Hof20}.
 
 Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación especifica de $ℚ$, que hay en C++, pero queda como trabajo futuro en el \cref{cap:trabajos futuros}.
 
@@ -1722,9 +1722,82 @@ Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó 
 
 A los elementos iniciales simplemente se agregan como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los que vienen de un S-polinomio se construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que formas la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con los de la reducción.
 
-\chapter{Comparación}
+\chapter{Paralelismo}
 
-% Agregar datos de que tal anda comparado con lo de Hof
+Como ya se dijo, uno de los objetivos fue tratar de paralelizar el calculo de bases de Gröbner no conmutativas para que sea mas rápido.
+
+Cuando se va a paralelizar algo siempre es importante primero tratar de optimizar la versión no paralela lo mas posible. En este caso lo mejor no paralelo es el algoritmo F4, pero como no está implementada la optimización de la reducción eficiente, no está todavía optimizada al máximo la versión no paralela. De cualquier manera, como la reducción de matrices es solo una parte de algoritmo se puede pensar como se podría paralelizar el resto.
+
+El método \texttt{add\_poly} que ya se explicó que lo que hace es agregar un polinomio a la base y agregar las nuevas ambigüedades correspondientes, sin paralelizar se implementó así:
+
+\begin{minted}{C++}
+  void add_poly(const Poly<K, X, ord>& f) {
+    G.push_back(f);
+    for (size_t k = 0; k < G.size() - 1; k++) {
+      for (auto& amb : ambiguities(G[k].lm(), f.lm())) {
+        add_amb(amb, k, G.size() - 1);
+      }
+      for (auto& amb : ambiguities(f.lm(), G[k].lm())) {
+        add_amb(amb, G.size() - 1, k);
+      }
+    }
+  }
+\end{minted}
+
+Y el método \texttt{add\_amb} se implementó así:
+
+\begin{minted}{C++}
+  void add_amb(Amb<X>& amb, size_t i, size_t j) {
+    if (checkDeletionCriteria(G, amb, i, j)) {
+      return;
+    }
+    ambs.push({amb i, j});
+  }
+\end{minted}
+
+El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar, lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si llega a ejecutar al mismo tiempo por mas de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
+
+\begin{minted}{C++}
+  void add_poly(Poly<K, X, ord>& f) {
+    G.push_back(f);
+    size_t lim = G.size() - 1;
+    std::vector<std::vector<std::tuple<Amb<X>, size_t, size_t>>> to_add(lim);
+
+    for (size_t k = 0; k < lim; k++) {
+      for (auto& amb : ambiguities(G[k].lm(), G.back().lm())) {
+        if (!checkDeletionCriteria(G, amb, k, lim)) {
+          to_add[k].push_back({amb, k, lim});
+        }
+      }
+      for (auto& amb : ambiguities(G.back().lm(), G[k].lm())) {
+        if (!checkDeletionCriteria(G, amb, lim, k)) {
+          to_add[k].push_back({amb, lim, k});
+        }
+      }
+    }
+
+    for (size_t k = 0; k < lim; k++) {
+      for (auto& [amb, i, j] : to_add[k]) {
+        size_t d = amb.size();
+        while (ambs_per_deg.size() <= d) {
+          ambs_per_deg.push_back({});
+        }
+        ambs_per_deg[d].push_back({amb, i, j});
+      }
+    }
+  }
+\end{minted}
+
+Con esto el primer \texttt{for} se puede paralelizar directamente.
+
+\section{Uso de OpenMP para paralelizar}
+
+Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la linea anterior \texttt{\#pragma omp parallel for}, así que eso fue lo que se hizo. En el siguiente capítulo se dan los datos de que tal anda.
+
+
+\chapter{Benchmarks}
+
+% Agregar datos de que tal anda la paralización y comparado con lo de Hof
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
 
