@@ -105,7 +105,7 @@ En este capítulo se explica informalmente de qué se trata la tesis.
 Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$, (pero que el producto de las variables con los coeficientes si conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$ decidir si $f$ se pude escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente determinar si vale la siguiente expresión.
-\[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \]
+\[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
 pero si es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero si hay un algoritmo que en caso de que si valga termina diciendo que si y en caso de que no vale puede no terminar.
@@ -240,7 +240,7 @@ Un ejemplo de orden que cumple con esta definición es el siguiente.
 
 \begin{definition}
   Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
-  \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \]
+  \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \text{.}\]
 \end{definition}
 
 O sea, el orden lexicográfico por grado ordena primero por cardinalidad, que se llama grado también, y desempatar con el orden lexicográfico, Por ejemplo, tenemos  que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
@@ -260,24 +260,24 @@ Ahora pasemos a hablar de sumar monomios entre si para tener polinomios no conmu
 
 \begin{definition}[Álgebra libre (asociativa)]
   Sea $R$ un anillo conmutativo. Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
-  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\} \]
+  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\} \text{.}\]
 
   La suma en $R⟨X⟩$ se define de la manera esperable.
 
   El producto por escalares de define como:
-  \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \]
+  \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{.}\]
 
   El producto entre elementos de $R⟨X⟩$ se define como:
-  \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \]
+  \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \text{.}\]
 
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
   % Esta definición creo que hay que mejorarla, pero no se como
 \end{definition}
 
 Esta definición puede ser medio difícil de entender exactamente que está haciendo, pero es lo que se espera que sean los polinomios no conmutativos y sus operaciones. Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
-\[ f_0 = a \]
-\[ f_1 = ab + cb \]
-\[ f_2 = 3 abb + 4 bcca - 2 acab \]
+\[ f_0 = a \text{,}\]
+\[ f_1 = ab + cb \text{,}\]
+\[ f_2 = 3 abb + 4 bcca - 2 acab \text{.}\]
 
 Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
@@ -302,7 +302,7 @@ La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil po
 
 \begin{theorem}
   Sea $R$ un anillo conmutativo, entonces:
-  \[ (R⟨X⟩, +, ·)\text{ es un anillo} \]
+  \[ (R⟨X⟩, +, ·)\text{ es un anillo} \text{.}\]
   \qed
 \end{theorem}
 
@@ -317,14 +317,14 @@ Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a
   \end{enumerate}
 
   Sea $G ⊆ R$, definimos el ideal generado por $G$ así:
-  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \]
+  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
 \end{definition}
 
 Los ideales son básicamente conjuntos cerrados por suma producto por elementos cualquiera y $(G)$ es el ideal generado por $G$.
 
 \begin{theorem}
   Sean $R$ un anillo y $G ⊆ R$, entonces:
-  \[ (G)\text{ es un ideal de }R \]
+  \[ (G)\text{ es un ideal de }R \text{.}\]
   \qed
 \end{theorem}
 
@@ -332,12 +332,12 @@ Cada ideal define una clase de equivalencia en el anillo, la cual se llama congr
 
 \begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
   Sean $R$ un anillo e $I ⊆ R$, se define $≡_I$ como relación en $R$ así:
-  \[ a ≡_I b ⇔ a - b ∈ I \]
+  \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
 \end{definition}
 
 \begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
   Sean $R$ un anillo y $I ⊆ R$ un ideal, entonces:
-  \[ ≡_I \text{es una relación de equivalencia} \]
+  \[ ≡_I \text{es una relación de equivalencia} \text{.}\]
   \qed
 \end{theorem}
 
@@ -345,7 +345,7 @@ Esta congruencia es parecida a la de los números modulo otro número (de hecho 
 
 \begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
   Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
-  \[ a ∈ I ⇔ a ≡_I 0 \]
+  \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
   \qed
 \end{lemma}
 
@@ -353,7 +353,7 @@ Por último, con respecto al ideal generado por un conjunto tenemos el siguiente
 
 \begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
   Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$, entonces:
-  \[ (G) = (G ∪ {a}) \]
+  \[ (G) = (G ∪ {a}) \text{.}\]
   \qed
 \end{lemma}
 
@@ -376,9 +376,9 @@ Para varias cosas va a ser necesario comparar no solo monomios si no también po
 Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor.
 
 Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
-\[ a < ab \]
-\[ bcc + c < bcc + abb \]
-\[ ac < ac + aa \]
+\[ a < ab \text{,}\]
+\[ bcc + c < bcc + abb \text{,}\]
+\[ ac < ac + aa \text{.}\]
 
 Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden en realidad no es un orden si no un pre-orden porque cuando solo cambian los coeficientes entre un polinomio y otro ninguno de los polinomios es menor que el otro.
 
@@ -473,7 +473,7 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
 
 \begin{lemma}\label{lemma:suma →↓}
   Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
-  \[ f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f \]
+  \[ f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}\]
 \end{lemma}
 \begin{proof}
   Supongamos el antecedente $f_0 →_{≤, G} f_1$.
@@ -525,7 +525,7 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
 
 \begin{lemma}[Clausura reflexo transitiva de las reducciones]\label{lemma:→^* = ≡}
   Sea $G ⊆ K⟨X⟩$, entonces:
-  \[ ↔^*_{≤, G} = ≡_{(G)} \]
+  \[ ↔^*_{≤, G} = ≡_{(G)} \text{.}\]
 
   (Donde $≡_{(G)}$ es la congruencia modulo un ideal definida en la \cref{def:congruencia mod ideal})
 \end{lemma}
@@ -570,7 +570,7 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
 
 \begin{lemma}[Las reducciones se mantienen en ideal]\label{thm:→ mantiene pertenencia a ideal}
   Sean $G ⊆ K⟨X⟩, f, f' ∈ (G)$, entonces:
-  \[ f →^*_{≤, G} f' ⇒ (f ∈ (G) ⇔ f' ∈ (G)) \]
+  \[ f →^*_{≤, G} f' ⇒ (f ∈ (G) ⇔ f' ∈ (G)) \text{.}\]
 \end{lemma}
 \begin{proof}
   Si asumimos $f →^*_{≤, G} f'$ tenemos por el \cref{lemma:→^* = ≡} $f ≡_{(G)} f'$ y entonces por el \cref{lemma:en ideal ⇔ congruente 0} tenemos $f ∈ (G) ⇔ f' ∈ (G)$.
@@ -597,7 +597,7 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
 
 \begin{theorem}[Caracterización de las formas normales de $→$]
   Sea $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone solo un salto de linea extra
-  \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \]
+  \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
 \end{theorem}
 \begin{proof}
   Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) ∈ \sop(f)$.
@@ -661,7 +661,7 @@ Una propiedad sobre las estrategias de reducción que vamos a necesitar es la si
 
 \begin{lemma}[Las estrategias de reducción mantienen la pertenencia a ideales]\label{lemma:e mantiene pertenencia a ideal}
   Sean $e_≤$ una estrategia de reducción, $G ⊆ K⟨X⟩$ y $f ∈ (G)$, entonces:
-  \[ e_≤(G)(f) ∈ (G) \]
+  \[ e_≤(G)(f) ∈ (G) \text{.}\]
 \end{lemma}
 \begin{proof}
   Es consecuencia directa de la definición y del \cref{thm:→ mantiene pertenencia a ideal}.
@@ -790,7 +790,7 @@ Para eso antes definimos las ambigüedades que representan los polinomios para l
 
 \begin{definition}
   Sean $m, m', a, b, c, d ∈ ⟨X⟩$.
-  \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \]
+  \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
 
   La ambigüedad $(a, b, c, d, m, m')$ se dice que es:
   \begin{itemize}
@@ -811,7 +811,7 @@ Para eso antes definimos las ambigüedades que representan los polinomios para l
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
-  \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \]
+  \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \text{.}\]
 \end{definition}
 
 Notar que por como es la definición de ambigüedad, siempre es como que hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$.
@@ -820,7 +820,7 @@ Ahora vamos a probar que los S-polinomios hacen eso que dijimos que hacen y desp
 
 \begin{theorem}\label{thm:lm ambs}
   Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
-  \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \]
+  \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \text{.}\]
 \end{theorem}
 \begin{proof}\
   \begin{DispWithArrows*}
@@ -835,7 +835,7 @@ Eso nos permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad:
-  \[ \lm_≤{(α)} = \lm_≤{(afb)} \]
+  \[ \lm_≤{(α)} = \lm_≤{(afb)} \text{.}\]
 \end{definition}
 
 Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤{(α)} = \lm_≤{(cgb)}$.
@@ -844,7 +844,7 @@ Lo de que los monomios principales se cancelen se enuncia en el siguiente teorem
 
 \begin{theorem}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
-  \[ \lm_≤{(\S(α))} < \lm_≤{(α)} \]
+  \[ \lm_≤{(\S(α))} < \lm_≤{(α)} \text{.}\]
 \end{theorem}
 \begin{proof}
   Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan.
@@ -854,7 +854,7 @@ Otra cosa importante es que estos S-polinomios son cerraros en el ideal, es deci
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
   Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
-  \[ \S(α) ∈ I \]
+  \[ \S(α) ∈ I \text{.}\]
 \end{lemma}
   \begin{proof}
   En la definición de $\S$ se ve claramente que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$ (en particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$).
@@ -971,7 +971,7 @@ Con lo que dijimos antes tiene sentido que (q) sea cierto, pero que (2) sea cier
   Ahora vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$.
 
   Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
-  \[ ∀f ∈ (G) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \]
+  \[ ∀f ∈ (G) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \text{.}\]
 
   Tomemos $f' ∈ (G) - \{0\}$ y escribamoslo de esa forma:
 
