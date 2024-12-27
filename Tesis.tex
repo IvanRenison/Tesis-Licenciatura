@@ -199,11 +199,11 @@ En los polinomios no conmutativos los monomios son básicamente palabras y la ú
 Por ejemplo, si $X = \{a, b, c\}$ algunos monomios son:
 
 \begin{align*}
-  m_0 &= abbcb \\
-  m_1 &= bbc \\
-  m_2 &= bcb \\
-  m_3 &= ε \\
-  m_1 · m_2 &= bccbcb
+  m_0 &= abbcb \text{,} \\
+  m_1 &= bbc \text{,} \\
+  m_2 &= bcb \text{,} \\
+  m_3 &= ε \text{,} \\
+  m_1 · m_2 &= bccbcb \text{.}
 \end{align*}
 
 El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no es conmutativo.
@@ -275,9 +275,11 @@ Ahora pasemos a hablar de sumar monomios entre si para tener polinomios no conmu
 \end{definition}
 
 Esta definición puede ser medio difícil de entender exactamente que está haciendo, pero es lo que se espera que sean los polinomios no conmutativos y sus operaciones. Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
-\[ f_0 = a \text{,}\]
-\[ f_1 = ab + cb \text{,}\]
-\[ f_2 = 3 abb + 4 bcca - 2 acab \text{.}\]
+\begin{align*}
+f_0 &= a \text{,} \\
+f_1 &= ab + cb \text{,} \\
+f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
+\end{align*}
 
 Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
@@ -376,9 +378,11 @@ Para varias cosas va a ser necesario comparar no solo monomios si no también po
 Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor.
 
 Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
-\[ a < ab \text{,}\]
-\[ bcc + c < bcc + abb \text{,}\]
-\[ ac < ac + aa \text{.}\]
+\begin{align*}
+  a &< ab \text{,} \\
+  bcc + c &< bcc + abb \text{,} \\
+  ac &< ac + aa \text{.}
+\end{align*}
 
 Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden en realidad no es un orden si no un pre-orden porque cuando solo cambian los coeficientes entre un polinomio y otro ninguno de los polinomios es menor que el otro.
 
