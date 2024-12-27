@@ -682,13 +682,13 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ f →^*_{≤, G} 0)$.
 
-    \item $(G) = I ∧ ∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$.
+    \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$.
 
     \item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i$.
   \end{enumerate}
 
 \end{theorem}
-\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (2) $⇒$ (4), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
+\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
   \begin{description}
 
     \item[(1) $⇒$ (2):] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
@@ -751,13 +751,13 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item[(2) $⇔$ (3):] La ida es claramente cierta y la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es cierta por el \cref{lemma:→^* = ≡}.
 
-    \item[(2) $⇒$ (4):] Supongamos (2).
+    % \item[(2) $⇒$ (4):] Supongamos (2).
 
-    La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
+    % La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
 
-    Para la parte de $∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
+    % Para la parte de $∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
 
-    Por (2) tenemos $f →^*_{≤, G} 0$, esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
+    % Por (2) tenemos $f →^*_{≤, G} 0$, esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
 
     \item[(4) $⇒$ (3):] Lo probamos por contradicción, o sea, supongamos que vale (4) y que no vale (3). En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
@@ -773,7 +773,37 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$, sin embargo esto contradice que $f$ sea mínimo.
 
-    \item Los casos (2) $⇒$ (5) y (5) $⇒$ (4) son fáciles y quedan como ejercicio. % Son fáciles pero es un viaje
+    \item[(2) $⇒$ (5):] Supongamos (2) y tomemos $f ∈ I - \{0\}$.
+
+    Por (2) tenemos que $f →^*_{≤, G} 0$.
+
+    Sean:
+    \begin{itemize}
+      \item $n ∈ ℕ, f_0, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $f_0 →_{≤, G} f_1 →_{≤, G} … →_{≤, G} f_n$, los cuales existen porque $f →^*_{≤, G} 0$.
+      \item Para cada $i ∈ {1, …, n}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
+    \end{itemize}
+
+    Vamos a probar que $g_1, …, g_n, …, a_1, …, a_n, b_1, …, b_n$ satisfacen el $∃$ de (5), es decir, vamos a probar $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$ y $f = ∑_{i = 1}^n a_i g_i b_i$.
+
+    \begin{description}
+      \item[Prueba de $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm(a_i g_i b_i) ≤ \lm(f)$.
+      \item[Prueba de $f = ∑_{i = 1}^n a_i g_i b_i$:] Es consecuencia directa de como se eligieron los $g_i, a_i, b_i$.
+    \end{description}
+
+    \item[(5) $⇒$ (4):] Supongamos (5) y probemos (4). Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm(g) | \lm(f)$.
+
+    \begin{description}
+      \item[Prueba de $(G) = I$:] Tomemos $f ∈ I$ y probemos $f ∈ (G)$.
+
+      Por (5) tenemos que $f = ∑_{i = 1}^n a_i g_i b_i$ con $g_i ∈ G$.
+
+      Esto encaja exactamente con la definición de $(G)$, así que queda probado $f ∈ (G)$.
+      \item[Prueba de $∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$:] Fijemos $f ∈ I - \{0\}$.
+
+      Por (5) tenemos que $f = ∑_{i = 1}^n a_i g_i b_i$ con $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
+
+      Como $\lm(a_i g_i b_i) ≤ \lm(f)$ si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
+    \end{description}
 
   \end{description}
   Con esto se termina la prueba.
@@ -963,7 +993,7 @@ Con lo que dijimos antes tiene sentido que (q) sea cierto, pero que (2) sea cier
   \begin{itemize}
     \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$.
 
-    Los cuales existen por (1) y por (5) del \cref{thm:equivalencias de base de Gröbner}.
+    Los cuales existen por por (5) del \cref{thm:equivalencias de base de Gröbner}.
 
     \item $G' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$.
 
