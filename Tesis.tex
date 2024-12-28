@@ -102,21 +102,21 @@
 
 En este capítulo se explica informalmente de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$, (pero que el producto de las variables con los coeficientes si conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$, (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
-Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$ decidir si $f$ se pude escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente determinar si vale la siguiente expresión.
+Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale la siguiente expresión:
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
-pero si es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero si hay un algoritmo que en caso de que si valga termina diciendo que si y en caso de que no vale puede no terminar.
+pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en caso de que sí valga termina diciendo que sí y en caso de que no vale puede no terminar.
 
 Para trabajar en algoritmos para ese problema lo que se hace es considerar el conjunto $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable.
 
-Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos, de hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Así, por ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativos. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
+Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Así, por ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
 De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS}, % Está también NCAlgebra, pero no encontré como citarlo
 y sólo una % Creo (Cristian puso un ? cuando lo dijo)
-del algoritmo F4. Esta última fue desarrollada por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} en python usando sagemath. Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
+del algoritmo F4. Esta última fue desarrollada por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} en Python usando SageMath. Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
@@ -124,7 +124,7 @@ La parte de implementar en C++ esos algoritmos se logró, pero hay una optimizac
 
 En este capítulo se explica toda la parte matemática, basada principalmente en la explicación de \cite{thesis:Hof20}. En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capitulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capitulo se puede leer por encima.
+El capítulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capitulo se puede leer por encima.
 
 \section{Sistemas de re-escritura}
 
@@ -132,7 +132,7 @@ En esta sección se dan algunas definiciones y teoremas básicos de sistemas de 
 
 Sistemas de re-escritura se trata básicamente del estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque está la idea de que se \textsl{usa} la relación para convertir el objeto de la izquierda en el objeto de la derecha.
 
-Para toda está sección fijemos un conjunto $A$. Primero definimos algunas operaciones muy comunes sobre relaciones.
+Para toda esta sección fijemos un conjunto $A$. Primero definimos algunas operaciones muy comunes sobre relaciones.
 
 \begin{definition} Sean $→, ⟿ ⊆ A^2$ relaciones sobre $A$:
   \begin{itemize}
@@ -147,7 +147,7 @@ Para toda está sección fijemos un conjunto $A$. Primero definimos algunas oper
 
 Para el resto de la sección fijemos $→$ una relación sobre $A$.
 
-Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que nos permite hablar de la forma normal de un objeto como el elemento un que se llega aplicando $→$ hasta que no se puede más.
+Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que nos permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se puede más.
 
 \begin{definition}\
   \begin{itemize}
@@ -162,8 +162,8 @@ También necesitamos definir las siguientes propiedades de las relaciones.
 
 \begin{definition}\
   \begin{itemize}
-    \item $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^*z ⇒ y ↓ z$.
-    \item $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔️^* y ⇔ x ↓ y$.
+    \item $→$ es confluente $⇔ ∀x, y, z ∈ A : x →^* y ∧ x →^* z ⇒ y ↓ z$.
+    \item $→$ es Church-Rosser $⇔ ∀x, y ∈ A : x ↔^* y ⇔ x ↓ y$.
     \item $→$ es normalizante $⇔ ∀x ∈ A : x$ tiene forma normal.
     \item $→$ es terminante $⇔ ∄X ∈ A^ℕ : ∀i ∈ ℕ : X_i → X_{i + 1}$.
   \end{itemize}
@@ -183,9 +183,9 @@ Sobre estas propiedades tenemos estos teoremas:
 
 \section{Álgebra libre}
 
-El álgebra libre es básicamente el conjunto de los polinomios no conmutativo con sus operaciones.
+El álgebra libre es básicamente el conjunto de los polinomios no conmutativos con sus operaciones.
 
-En los polinomios no conmutativos los monomios son básicamente palabras y la única operación interna de los monomios (entre monomios y que devuelve monomios) es la multiplicación, que equivale a la concatenación de palabras.
+En los polinomios no conmutativos los monomios son palabras y la única operación interna de los monomios (entre monomios y que devuelve monomios) es la multiplicación, que equivale a la concatenación de palabras.
 
 \begin{definition}
   Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
@@ -196,7 +196,7 @@ En los polinomios no conmutativos los monomios son básicamente palabras y la ú
   A los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$, a $·$ el producto de $⟨X⟩$ y a $(⟨X⟩, ·)$ el monoide libre sobre $X$.
 \end{definition}
 
-Por ejemplo, si $X = \{a, b, c\}$ algunos monomios son:
+Por ejemplo, si $X = \{a, b, c\}$, algunos monomios son:
 
 \begin{align*}
   m_0 &= abbcb \text{,} \\
@@ -206,11 +206,11 @@ Por ejemplo, si $X = \{a, b, c\}$ algunos monomios son:
   m_1 · m_2 &= bccbcb \text{.}
 \end{align*}
 
-El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no es conmutativo.
+El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no conmutativo.
 
 A partir de ahora para todo el resto de la tesis fijamos $X$ un alfabeto finito.
 
-En estos monomios al igual que en los conmutativos se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
+En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
 
 \begin{definition}
   Sean $v, w ∈ ⟨X⟩$:
@@ -224,7 +224,7 @@ En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 De lo que es un poco más complicado hablar acá es de el resultado de la división porque es como que tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, por que con que satisfaga la \cref{def:buen orden monomial} alcanza.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, porque con que satisfaga la \cref{def:buen orden monomial} alcanza.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
@@ -234,7 +234,7 @@ Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$,
   \end{enumerate}
 \end{definition}
 
-Definir esto así en general va a permitir que todo el trabajo sea sobre cualquier orden con las propiedades mínimas necesarios.
+Definir esto así en general va a permitir que todo el trabajo sea sobre cualquier orden con las propiedades mínimas necesarias.
 
 Un ejemplo de orden que cumple con esta definición es el siguiente.
 
@@ -243,9 +243,9 @@ Un ejemplo de orden que cumple con esta definición es el siguiente.
   \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \text{.}\]
 \end{definition}
 
-O sea, el orden lexicográfico por grado ordena primero por cardinalidad, que se llama grado también, y desempatar con el orden lexicográfico, Por ejemplo, tenemos  que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
+O sea, el orden lexicográfico por grado ordena primero por cardinalidad, que se llama grado también, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
 
-Se puede probar fácilmente que este orden es un bueno orden monomial.
+Se puede probar fácilmente que este orden es un buen orden monomial.
 
 A partir de ahora fijamos un buen orden monomial $≤$ y vamos a usar $<$, $≥$ y $>$ como se usan habitualmente.
 
@@ -256,7 +256,7 @@ La siguiente propiedad es consecuencia directa de la definición de buen orden m
   \qed
 \end{theorem}
 
-Ahora pasemos a hablar de sumar monomios entre si para tener polinomios no conmutativos.
+Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conmutativos.
 
 \begin{definition}[Álgebra libre (asociativa)]
   Sea $R$ un anillo conmutativo. Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
@@ -322,7 +322,7 @@ Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a
   \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
 \end{definition}
 
-Los ideales son básicamente conjuntos cerrados por suma producto por elementos cualquiera y $(G)$ es el ideal generado por $G$.
+Los ideales son básicamente conjuntos cerrados por suma y producto por elementos cualquiera, y $(G)$ es el ideal generado por $G$.
 
 \begin{theorem}
   Sean $R$ un anillo y $G ⊆ R$, entonces:
@@ -330,9 +330,9 @@ Los ideales son básicamente conjuntos cerrados por suma producto por elementos 
   \qed
 \end{theorem}
 
-Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia modulo el ideal.
+Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
 
-\begin{definition}[Congruencia modulo un ideal]\label{def:congruencia mod ideal}
+\begin{definition}[Congruencia módulo un ideal]\label{def:congruencia mod ideal}
   Sean $R$ un anillo e $I ⊆ R$, se define $≡_I$ como relación en $R$ así:
   \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
 \end{definition}
@@ -343,7 +343,7 @@ Cada ideal define una clase de equivalencia en el anillo, la cual se llama congr
   \qed
 \end{theorem}
 
-Esta congruencia es parecida a la de los números modulo otro número (de hecho la congruencia de los números modulo otro número es un subcaso de esta tomando como ideal a todos los múltiplos del modulo) y vale que la clase de equivalencia del $0$ es el propio ideal:
+Esta congruencia es parecida a la de los números módulo otro número (de hecho, la congruencia de los números módulo otro número es un subcaso de esta tomando como ideal a todos los múltiplos del módulo) y vale que la clase de equivalencia del $0$ es el propio ideal:
 
 \begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
   Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
@@ -351,22 +351,22 @@ Esta congruencia es parecida a la de los números modulo otro número (de hecho 
   \qed
 \end{lemma}
 
-Por último, con respecto al ideal generado por un conjunto tenemos el siguiente teorema.
+Por último, con respecto al ideal generado por un conjunto, tenemos el siguiente teorema.
 
 \begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
   Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$, entonces:
-  \[ (G) = (G ∪ {a}) \text{.}\]
+  \[ (G) = (G ∪ \{a\}) \text{.}\]
   \qed
 \end{lemma}
 
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
-Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$. Ahora nos vamos a poner con el tema de esa pregunta.
+Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$. Ahora nos vamos a poner con el tema de esa pregunta.
 
-Para varias cosas va a ser necesario comparar no solo monomios si no también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
+Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
-  Sean $f, g ∈  K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
+  Sean $f, g ∈ K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
     \item $\lm_≤(f) < \lm_≤(g)$.
@@ -384,22 +384,22 @@ Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
   ac &< ac + aa \text{.}
 \end{align*}
 
-Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden en realidad no es un orden si no un pre-orden porque cuando solo cambian los coeficientes entre un polinomio y otro ninguno de los polinomios es menor que el otro.
+Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden, en realidad no es un orden sino un preorden porque cuando solo cambian los coeficientes entre un polinomio y otro, ninguno de los polinomios es menor que el otro.
 
 \begin{theorem}
-  La relación $<$ en $K⟨X⟩$ es un pre-orden parcial.
+  La relación $<$ en $K⟨X⟩$ es un preorden parcial.
   \qed
 \end{theorem}
 
-Sobre este orden hay varias propiedades que vamos a necesitar y que están enunciadas y probadas a continuación.
+En este orden, al igual que para los monomios, vale que no hay cadenas estrictamente decrecientes infinitas.
 
 \begin{lemma}\label{lemma:≤ en KX no cadenas dec inf}
   La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas.
 \end{lemma}
 \begin{proof}
-  Supongamos que existen cadenas estrictamente decreciente infinita. Tomemos una $P$ que minimize $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no cadenas dec inf}
+  Supongamos que existen cadenas estrictamente decreciente infinita. Tomemos una $P$ que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no cadenas dec inf}.
 
-  Notar que:
+  Notemos que:
 
   \begin{fact}\label{fact:≤ en KX no cadenas dec inf:1}
     $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$.
@@ -421,11 +421,11 @@ Sobre este orden hay varias propiedades que vamos a necesitar y que están enunc
 
 \end{proof}
 
-Ahora vamos a definir una relación de reducción en los polinomios no conmutativos (y acá es donde entre lo de sistemas de re-escritura).
+Ahora vamos a definir una relación de reducción en los polinomios no conmutativos (y acá es donde entra lo de sistemas de re-escritura).
 
 La relación que vamos a definir va a ser dependiente de el orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llega a quedar lo menor posible con respecto al orden polinomial.
 
-Para definirla además de definirla para un conjunto de la define para un solo polinomio y un polinomio y dos monomios de forma auxiliar.
+Para definirla, además de definirla para un conjunto, la definimos para un solo polinomio y un polinomio y dos monomios de forma auxiliar.
 
 \begin{definition}
   Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
@@ -473,7 +473,7 @@ A continuación la prueba de que efectivamente achica.
 
 \end{proof}
 
-Está relación tiene un montón de propiedades que van a hacer falta y que se prueban a continuación.
+Esta relación tiene un montón de propiedades que van a hacer falta y que se prueban a continuación.
 
 \begin{lemma}\label{lemma:suma →↓}
   Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
@@ -531,7 +531,7 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
   Sea $G ⊆ K⟨X⟩$, entonces:
   \[ ↔^*_{≤, G} = ≡_{(G)} \text{.}\]
 
-  (Donde $≡_{(G)}$ es la congruencia modulo un ideal definida en la \cref{def:congruencia mod ideal})
+  (Donde $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref{def:congruencia mod ideal})
 \end{lemma}
 \begin{proof}
   Lo vamos a probar por doble inclusión.
@@ -577,30 +577,27 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
   \[ f →^*_{≤, G} f' ⇒ (f ∈ (G) ⇔ f' ∈ (G)) \text{.}\]
 \end{lemma}
 \begin{proof}
-  Si asumimos $f →^*_{≤, G} f'$ tenemos por el \cref{lemma:→^* = ≡} $f ≡_{(G)} f'$ y entonces por el \cref{lemma:en ideal ⇔ congruente 0} tenemos $f ∈ (G) ⇔ f' ∈ (G)$.
+  Si asumimos $f →^*_{≤, G} f'$, tenemos por el \cref{lemma:→^* = ≡} que $f ≡_{(G)} f'$ y entonces por el \cref{lemma:en ideal ⇔ congruente 0} tenemos $f ∈ (G) ⇔ f' ∈ (G)$.
 \end{proof}
 
 \begin{theorem}
   Sea $G ⊆ K⟨X⟩$, entonces:
-  \begin{itemize}
-    \item $→_{≤, G}$ es terminante.
-  \end{itemize}
+  \[ →_{≤, G} \text{ es terminante.} \]
 \end{theorem}
 \begin{proof}
-  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante, por definición de terminante podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
+  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante. Por definición de terminante, podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
 
-  $∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}$.
+  \[ ∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}. \]
 
   Por el \cref{thm:→ achican} tenemos que:
 
-  $∀i ∈ ℕ : P_i > P_{i+1}$.
+  \[ ∀i ∈ ℕ : P_i > P_{i+1}. \]
 
-  Pero esto contradice el \cref{lemma:≤ en KX no cadenas dec inf} que dice que no hoy cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
-
+  Pero esto contradice el \cref{lemma:≤ en KX no cadenas dec inf} que dice que no hay cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
 \end{proof}
 
 \begin{theorem}[Caracterización de las formas normales de $→$]
-  Sea $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone solo un salto de linea extra
+  Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone solo un salto de linea extra
   \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
 \end{theorem}
 \begin{proof}
@@ -612,9 +609,9 @@ Está relación tiene un montón de propiedades que van a hacer falta y que se p
 
 \end{proof}
 
-Probamos que $→_{≤, G}$ es terminante, pero, no necesariamente es confluente. Que fuera confluente sería muy util porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes (y en particular por poder determinar si un elemento está en el idea viendo si se llega a $0$ como la forma normal).
+Probamos que $→_{≤, G}$ es terminante, pero no necesariamente es confluente. Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes (y en particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal).
 
-Sin embargo en algunas casos $→_{≤, G}$ si es confluente. Esos casos en lo que si es terminante se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Sin embargo, en algunos casos $→_{≤, G}$ sí es confluente. Esos casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}[Bases de Gröbner]\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$:
@@ -623,7 +620,7 @@ Sin embargo en algunas casos $→_{≤, G}$ si es confluente. Esos casos en lo q
   \end{itemize}
 \end{definition}
 
-Como en algunos casos $→_{≤, G}$ no es confluente vamos la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones teoremas como en los algoritmos).
+Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
 \begin{definition}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
@@ -705,7 +702,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \item[(2) $⇒$ (1):]
     Supongamos (2), o sea $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente.
 
-    Probemos cada termino del $∧$ por separado:
+    Probemos cada término del $∧$ por separado:
 
     \begin{description}
       \item[Prueba de $(G) = I$:] Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
@@ -769,9 +766,9 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$.
 
-    Además por \cref{thm:→ achican} $f' < f$.
+    Además, por \cref{thm:→ achican}, $f' < f$.
 
-    Y como no vale $f →^*_{≤, G} 0$ tampoco puede valer $f' →^*_{≤, G} 0$, sin embargo esto contradice que $f$ sea mínimo.
+    Y como no vale $f →^*_{≤, G} 0$, tampoco puede valer $f' →^*_{≤, G} 0$. Sin embargo, esto contradice que $f$ sea mínimo.
 
     \item[(2) $⇒$ (5):] Supongamos (2) y tomemos $f ∈ I - \{0\}$.
 
@@ -802,7 +799,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
       Por (5) tenemos que $f = ∑_{i = 1}^n a_i g_i b_i$ con $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
 
-      Como $\lm(a_i g_i b_i) ≤ \lm(f)$ si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
+      Como $\lm(a_i g_i b_i) ≤ \lm(f)$, si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
     \end{description}
 
   \end{description}
@@ -818,9 +815,11 @@ Este algoritmo se llama así porque es similar a un algoritmo en los polinomios 
 
 Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias de \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos.
 
-Para eso vamos a definir algo llamado S-polinomio de dos polinomios que lo que hace es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
+Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner.
 
-Para eso antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
+Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
+
+Antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
 
 \begin{definition}
   Sean $m, m', a, b, c, d ∈ ⟨X⟩$.
@@ -850,7 +849,7 @@ Para eso antes definimos las ambigüedades que representan los polinomios para l
 
 Notar que por como es la definición de ambigüedad, siempre es como que hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$.
 
-Ahora vamos a probar que los S-polinomios hacen eso que dijimos que hacen y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
+Ahora vamos a probar que efectivamente los monomios principales se cancelan y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
 
 \begin{theorem}\label{thm:lm ambs}
   Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
@@ -869,19 +868,19 @@ Eso nos permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad:
-  \[ \lm_≤{(α)} = \lm_≤{(afb)} \text{.}\]
+  \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
-Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤{(α)} = \lm_≤{(cgb)}$.
+Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤(α) = \lm_≤(cgd)$.
 
 Lo de que los monomios principales se cancelen se enuncia en el siguiente teorema.
 
 \begin{theorem}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
-  \[ \lm_≤{(\S(α))} < \lm_≤{(α)} \text{.}\]
+  \[ \lm_≤(\S(α)) < \lm_≤(α) \text{.}\]
 \end{theorem}
 \begin{proof}
-  Esto es porque en la resta $\frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}}$ los monomios principales se cancelan.
+  Esto es porque en la resta $\frac{afb}{\lc_≤(f)} - \frac{cgd}{\lc_≤(g)}$ los monomios principales se cancelan.
 \end{proof}
 
 Otra cosa importante es que estos S-polinomios son cerraros en el ideal, es decir que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
