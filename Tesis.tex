@@ -701,7 +701,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       & ⇔ f ≡_I 0 \Arrow{\cref{lemma:→^* = ≡}} \\
       & ⇔ f ↔^*_{≤, G} 0 \Arrow{Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser} \\
       & ⇔ f ↓_{≤, G} 0 \Arrow{Definición de $↓$} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican el segundo término del $∧$ ocurre solo para $f' = 0$} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican, el segundo término del $∧$ ocurre solo para $f' = 0$} \\
       & ⇔ f →^*_{≤, G} 0
     \end{DispWithArrows*}
 
