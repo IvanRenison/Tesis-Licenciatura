@@ -76,7 +76,7 @@
 \DeclareMathOperator{\amb}{amb}
 \renewcommand{\S}{\text{S}}
 \DeclareMathOperator{\B}{B}
-\DeclareMathOperator{\spn}{spn} % span está ocupado y re rompe todo si lo re-declaro
+\DeclareMathOperator{\spn}{span} % span está ocupado y re rompe todo si lo re-declaro
 \DeclareMathOperator{\mat}{mat}
 \DeclareMathOperator{\poli}{poli}
 \DeclareMathOperator{\filas}{filas}
@@ -1041,28 +1041,28 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
   \Loop{} {
     $ambs ← \amb(B)$
 
-    $new\_B ← B$
+    $B' ← B$
 
     \For{$α ∈ ambs$} {
       $f ← e_≤(B)(\S(α))$
 
       \If{$f ≠ 0$} {
-        $new\_B ← new\_B ∪ \{f\}$
+        $B' ← B' ∪ \{f\}$
       }
     }
 
-    \If{$new\_B = B$} {
+    \If{$B' = B$} {
       \Break
     }
 
-    $B ← new\_B$
+    $B ← B'$
   }
   \Return{$B$}
 \end{algorithm}
 
 El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lenta y necesita un cambio para que pase a andar bien.
 
-Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_B$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
+Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
 
 Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}.
 
@@ -1183,7 +1183,7 @@ Y con esto se puede escribir el algoritmo F4:
   \Loop{} {
     $ambs ← \amb(B)$
 
-    $new\_B ← B$
+    $B' ← B$
 
     \While{$ambs ≠ ∅$} {
       elegir $Α ⊆ ambs$
@@ -1192,16 +1192,16 @@ Y con esto se puede escribir el algoritmo F4:
 
       $P ← \{\S(α) : α ∈ Α\}$
 
-      $P ←$ Multireducción$(new\_B, P)$
+      $P ←$ Multireducción$(B', P)$
 
-      $new\_B ← new\_B ∪ P$
+      $B' ← B' ∪ P$
     }
 
-    \If{$new\_B = B$} {
+    \If{$B' = B$} {
       \Break
     }
 
-    $B ← new\_B$
+    $B ← B'$
   }
 
   \Return{$B$}
@@ -1249,7 +1249,7 @@ Para que al usar el código también se puedan variar esas tres cosas todas las 
 El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo. En particular, se asume que se pueden usar las siguientes cosas:
 
 \begin{itemize}
- \item \texttt{+}, \texttt{-} (tanto unario como binario), \texttt{*} y \texttt{/} junto con sus versiones de asignación \texttt{+=}, \texttt{-=}, \texttt{*=} y \texttt{/=} (pero no se usa el resultado de estos operadores, solo el que modifican el operando izquierdo).
+ \item \texttt{+}, \texttt{-} (tanto unario como binario), \texttt{*} y \texttt{/} junto con sus versiones de asignación \texttt{+=}, \texttt{-=}, \texttt{*=} y \texttt{/=}, pero no se usa el resultado de estos operadores, solo el que modifican el operando izquierdo, así que pueden devolver \texttt{void}.
  \item \texttt{==} (y también \texttt{!=}, pero ese a partir de C++20 está automáticamente con \texttt{==}).
  \item Se asume que se puede construir un \texttt{K} con \texttt{0} y con \texttt{1}, o sea, que se puede hacer \texttt{K(0)} y \texttt{K(1)}.
  \item Para imprimir los polinomios se asume \texttt{<<} y para leerlos \texttt{>>}.
@@ -1385,7 +1385,7 @@ Los polinomios están definidos en el archivo \texttt{nc\_polynomial.hpp} y lo m
 
 Para construir un polinomio hay tres constructores: el constructor vacío que produce el polinomio $0$, un constructor que toma un monomio $m$ y un elemento del cuerpo $c$ y produce el polinomio $cm$, y un constructor que toma un vector de pares monomio-coeficiente y produce el polinomio que es la suma de cada coeficiente multiplicado con su monomio.
 
-El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=}, por ejemplo), métodos para lo definido en la \cref{def:cosas de polinomios} y métodos relacionados a la representación de los polinomios como strings.
+El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=}, por ejemplo), métodos algunas de las cosas definidas en la \cref{def:cosas de polinomios} (\texttt{coeff}, \texttt{lm}, \texttt{lc} y \texttt{lt}) y métodos relacionados a la representación de los polinomios como strings.
 
 Al igual que con los monomios, para la representación como strings, hay dos pares de métodos: \texttt{operator>>} y \texttt{operator<<} para formato numérico, y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
 
