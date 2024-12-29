@@ -351,11 +351,17 @@ Esta congruencia es parecida a la de los números módulo otro número (de hecho
   \qed
 \end{lemma}
 
-Por último, con respecto al ideal generado por un conjunto, tenemos el siguiente teorema.
+Por último, con respecto al ideal generado por un conjunto, tenemos los siguientes dos lemas.
 
 \begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
   Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$, entonces:
   \[ (G) = (G ∪ \{a\}) \text{.}\]
+  \qed
+\end{lemma}
+
+\begin{lemma}\label{lemma:sub gen y sub gen ⇒ eq}
+  Sean $R$ un anillo y $G, G' ⊆ R$, entonces:
+  \[ G ⊆ (G') ∧ G' ⊆ (G) ⇒ (G) = (G') \text{.}\]
   \qed
 \end{lemma}
 
@@ -622,7 +628,7 @@ Sin embargo, en algunos casos $→_{≤, G}$ sí es confluente. Esos casos en lo
 
 Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
-\begin{definition}
+\begin{definition}\label{def:estrategia de reducción}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
   \begin{itemize}
     \item $e_≤$ es una estrategia de reducción $⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$.
@@ -883,36 +889,35 @@ Lo de que los monomios principales se cancelen se enuncia en el siguiente teorem
   Esto es porque en la resta $\frac{afb}{\lc_≤(f)} - \frac{cgd}{\lc_≤(g)}$ los monomios principales se cancelan.
 \end{proof}
 
-Otra cosa importante es que estos S-polinomios son cerraros en el ideal, es decir que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
+Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
   Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
   \[ \S(α) ∈ I \text{.}\]
 \end{lemma}
   \begin{proof}
-  En la definición de $\S$ se ve claramente que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$ (en particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$).
+  En la definición de $\S$ se ve que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$. En particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$. Como $f, g ∈ I$ y $I$ es un ideal, esa combinación pertenece a $I$.
 \end{proof}
 
 Ahora si damos el anunciado teorema para computar si un conjunto es una base de Gröbner.
 
-\begin{theorem}[Condición de Buchberger]\label{thm:condición de Buchberger)}
-  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$.
-
-  Son equivalentes:
+\begin{theorem}[Condición de Buchberger]\label{thm:condición de Buchberger}
+  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Son equivalentes:
   \begin{enumerate}
     \item $G$ es una base de Gröbner de $I$.
     \item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$.
   \end{enumerate}
+  \qed
 \end{theorem}
 % TODO: Agregar prueba. De cualquier manera, Hof no lo prueba a esto
 
 Con esto ya se puede explicar la idea del algoritmo de Buchberger.
 
-Cuando estamos chequeando si un conjunto es una base de Gröbner usando el \cref{thm:condición de Buchberger)} si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ que es distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ si se va a reducir a $0$.
+Cuando estamos chequeando si un conjunto es una base de Gröbner usando el \cref{thm:condición de Buchberger}, si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$.
 
-Se podría pensar que agregar $g$ por ahí cambia el ideal generado, pero por el teorema \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también está en el ideal y por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo.
+Se podría pensar que agregar $g$ por ahí cambia el ideal generado, pero por el teorema \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal, por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal y por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo.
 
-El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (ya habíamos dicho que el problema de pertenencia a un ideal no es decidible, así que si o si va a haber alguna cosa así inusual en cualquier algoritmo que hagamos).
+El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (lo que refleja la no decidibilidad del problema de pertenencia a un ideal).
 
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente con la siguiente definición.
 
@@ -927,7 +932,7 @@ Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente co
 
 Y a esos conjuntos los llamamos bases de Buchberger (este nombre es un nombre inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos).
 
-Podemos enunciar que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega, con el siguiente teorema.
+Con el siguiente teorema se enuncia que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega.
 
 \begin{theorem}\label{thm:Buchberger correctitud}
   Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
@@ -937,56 +942,59 @@ Podemos enunciar que esos conjuntos realmente hacen lo que dijimos arriba y adem
   \end{enumerate}
 \end{theorem}
 
-Con lo que dijimos antes tiene sentido que (q) sea cierto, pero que (2) sea cierto no es para nada obvio. Para probar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
+Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cierto no es para nada obvio. Para probar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ : \B_{e_≤}^{i}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Por inducción en $i$ el caso base es valido porque $G ⊆ (G)$, para el caso inductivo supongamos que vale para $i$ y probemos que vale para $i + 1$:
+  Procedemos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$:
 
   Tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
 
-  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ tenemos $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
+  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
 
-  El caso $f ∈ \B_{e_≤}^i(G)$ es valido por hipótesis inductiva. Para el otro caso tomemos ese $α$.
+  Dividimos en casos según ese $∨$:
 
-  Por el \cref{lemma:S es cerrado en ideal} tenemos que $\S(α) ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $\S(α) ∈ (G)$.
+  \begin{description}
+    \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
+    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] Tomemos $α$ que satisface el $∃$.
+    Por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
+  \end{description}
 
-  Esto implica por el \cref{lemma:e mantiene pertenencia a ideal} que $e_≤(\B_{e_≤}^i(G))(\S(α)) ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $e_≤(\B_{e_≤}^i(G))(\S(α)) ∈ (G)$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:4}
   $∀i ∈ ℕ : \B_{e_≤}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Esto es consecuencia directa de la \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
+  Esto es consecuencia directa de el \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:5}
   $(\B_{e_≤}(G)) = (G)$.
 \end{lemma}
 \begin{proof}
-  Esto vale porque por el caso base de la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}$ y por la \cref{lemma:Buchberger correctitud:4}.
+  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$ y con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos lo que queremos probar.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:6}
   $∀α ∈ \amb(\B_{e_≤}(G)) : \S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{lemma}
 \begin{proof}
-  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$ y probemos el $∀$.
+  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$. Por definición de $\amb$, se cumple que $f, g ∈ \B_{e_≤}(G)$. Sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
 
   Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(G)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
 
-  Notar que $α ∈ \amb(\B_{e_≤}^k(G))$ por la definición de $\amb$ y por ende $\S(α) ∈ \B_{e_≤}(G)$.
+  Por definición de $\amb$ vale que $α ∈ \amb(\B_{e_≤}^k(G))$, por ende por definición de $\B_{e_≤}^i$ vale que $e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G)$. Esto implica que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0$ y por ende que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0$.
 
-  Por definición de $→^*_{≤, G}$ esto significa que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, así que queda probada la afirmación.
+  Combinando eso con que por definición de estrategia de reducción vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{proof}
 
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
-  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner del \cref{thm:condición de Buchberger)}, así que (1) queda probado.
+  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que (1) queda probado.
 
-  Ahora para probar (2) supongamos el antecedente y tomemos $G = \{g_1, …, g_n\}$ una base de Gröbner finita de $(G)$.
+  Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ : (\B_{e_≤}^i(G))$ es una base de Gröbner.
 
   Para cada $i ∈ \{1, …, n\}$ sean:
   \begin{itemize}
@@ -1006,17 +1014,17 @@ Con lo que dijimos antes tiene sentido que (q) sea cierto, pero que (2) sea cier
   Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \text{.}\]
 
-  Tomemos $f' ∈ (G) - \{0\}$ y escribamoslo de esa forma:
+  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma:
 
-  Por (5) del \cref{thm:equivalencias de base de Gröbner} sean $i'_1, …, i'_{n'} ∈ G, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f')$ y $f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$
+  Por (5) del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
 
   \begin{DispWithArrows*}
-    &f' = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
+    &f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
     & = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
     & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
   \end{DispWithArrows*}
 
-  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f'$.
+  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$.
 
   Con esto queda completada la prueba.
 
@@ -1054,21 +1062,21 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
 
 El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lenta y necesita un cambio para que pase a andar bien.
 
-Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_B$ en lugar de con $B$ en la linea 6. % Se podrá hacer con un label esto?
+Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $new\_B$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
 
 Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}.
 
-En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. De forma teórica porque es algo que hace tanta diferencia es algo que no se ni puede encontrar en la literatura.
+En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. El motivo teórico detrás de que hacer eso haga que pase a ser tanto mas rápido el autor no lo sabe ni lo pudo encontrar en la literatura.
 
-Hay otras dos optimizaciones que se pueden hacer a este algoritmo, una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base, en la \cref{secton:optimizaciones} se aborda este tema.
+Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. En la \cref{secton:optimizaciones} se aborda este tema.
 
 \section{Algoritmo F4}
 
 En esta sección se explica el algoritmo F4, que es otro algoritmo para calcular Bases de Gröbner.
 
-La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, tanto reduciendo por los elementos que ya están en la base como reduciendo entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz codificando cada monomio como una columna y cada polinomio como una columna.
+La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, tanto reduciendo con los elementos que ya están en la base como reduciendo entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila.
 
-Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones:
+Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
 
 \begin{definition}
 Sea $F ⊆ K⟨X⟩$:
@@ -1076,38 +1084,35 @@ Sea $F ⊆ K⟨X⟩$:
 \begin{itemize}
   \item $\spn_K(F) = \{∑_{i = 1}^n c_i f_i : n ∈ ℕ, c_i ∈ K, f_i ∈ F\}$.
 \end{itemize}
-
 \end{definition}
 
 \begin{definition}
-Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ tales que $m_1 > ⋯ > m_n$:
+Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$:
 
 \begin{itemize}
   \item $\poli_T : K^n → \spn_K(M)$.
   \item $\poli_T(v) = ∑_{i = 1}^n v_i m_i$.
 \end{itemize}
-
 \end{definition}
 
 \begin{definition}
-Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ tales que $m_1 > ⋯ > m_n$. $\mat_T$ aplicado a un polinomio se define como la inversa de $\poli_T$:
+Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. $\mat_T$ aplicado a un polinomio se define como la inversa de $\poli_T$:
 
 \begin{itemize}
   \item $\mat_T : \spn_K(M) → K^n$.
   \item $\mat_T(f) = \poli_T^{-1}(f)$.
 \end{itemize}
 
-$\mat_T$ aplicado a una lista de polinomios da una matriz:
+Para una lista de polinomios la función $\mat_T$ produce una matriz:
 
 \begin{itemize}
   \item $\mat_T(f_1, …, f_m) = \begin{pmatrix} \mat_T(f_1) \\ ⋮ \\ \mat_T(f_m) \end{pmatrix}$.
 \end{itemize}
-
 \end{definition}
 
 Estas definiciones nos permiten hablar de pasar de polinomios a matrices y viceversa.
 
-Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que hay a tener que empezar ya teniendo en la matriz los polinomios que a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$ calcula todos los polinomios que van a ser necesarios:
+Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que hay a tener que empezar ya teniendo en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$ calcula todos los polinomios que van a ser necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
@@ -1142,11 +1147,11 @@ Lo que antes en la reducción era restar un polinomio multiplicado por un escala
   \Return{$G'$}
 \end{algorithm}
 
-Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base.
+Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar que filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base.
 
-Para detectar esos polinomios lo que se hace es guardarse cuales son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+Para detectar esas filas lo que se hace es guardarse cuales son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
 
-Eso se puede entender mejor viene este seudocódigo:
+El siguiente seudocódigo hace eso:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Multireducción}\label{alg:Multireducción}
@@ -1202,11 +1207,11 @@ Y con esto se puede escribir el algoritmo F4:
   \Return{$B$}
 \end{algorithm}
 
-Este algoritmo no especifica cuales ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes más rápido.
+Este algoritmo no especifica cuáles ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes más rápido.
 
-En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto. Eso acá no está porque es muy tedioso.
+En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto.
 
-Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá y otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda más rápido en las matrices de este problema en particular, que se llama eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
+Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá. Otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda más rápido en las matrices de este problema en particular, llamado eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
 
 \chapter{Librería}
 
