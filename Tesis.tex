@@ -49,9 +49,9 @@
 \theoremstyle{customstyle}
 \newtheorem{definition}{Definición}[chapter]
 \newtheorem{theorem}{Teorema}[chapter]
-\newtheorem{lemma}{Lema:}[chapter]
+\newtheorem{lemma}{Lema}[chapter]
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
-\renewenvironment{proof}[1][\proofname]{{\bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
+\renewenvironment{proof}[1][\proofname]{{\noindent \bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
 
 \newtheoremstyle{factstyle} % <name>
 {} % <Space above>
@@ -102,17 +102,17 @@
 
 En este capítulo se explica informalmente de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$ y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$, (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
-Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale la siguiente expresión:
+Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale que:
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
-pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en caso de que sí valga termina diciendo que sí y en caso de que no vale puede no terminar.
+pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-Para trabajar en algoritmos para ese problema lo que se hace es considerar el conjunto $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable.
+Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable.
 
-Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Así, por ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
+Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
 De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS}, % Está también NCAlgebra, pero no encontré como citarlo
 y sólo una % Creo (Cristian puso un ? cuando lo dijo)
@@ -120,21 +120,24 @@ del algoritmo F4. Esta última fue desarrollada por Clemens Hofstalder en su tes
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
+Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, si no que son necesarias para los temas de la tesis.
+
 \chapter{Preliminares}\label{cap:Preliminares}
 
-En este capítulo se explica toda la parte matemática, basada principalmente en la explicación de \cite{thesis:Hof20}. En particular, primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
+En este capítulo se desarrolla toda la parte matemática, basándonos principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
 El capítulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capitulo se puede leer por encima.
 
 \section{Sistemas de re-escritura}
 
-En esta sección se dan algunas definiciones y teoremas básicos de sistemas de re-escritura. En esta parte es muy probable que a cualquiera que haya estudiado computación muchos conceptos les resulten familiares, pero están acá para que se puede entender mejor sin tener que buscar nada en otro lado.
+En esta sección se dan algunas definiciones y teoremas básicos de sistemas de re-escritura.
 
-Sistemas de re-escritura se trata básicamente del estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque está la idea de que se \textsl{usa} la relación para convertir el objeto de la izquierda en el objeto de la derecha.
+Sistemas de re-escritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque está la idea de que se \textsl{usa} la relación para convertir el objeto de la izquierda en el objeto de la derecha. Como recordatorio: una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ un subconjunto de $A^2$.
 
-Para toda esta sección fijemos un conjunto $A$. Primero definimos algunas operaciones muy comunes sobre relaciones.
+Para toda esta sección fijemos un conjunto $A$. Primero algunas operaciones muy comunes sobre relaciones.
 
-\begin{definition} Sean $→, ⟿ ⊆ A^2$ relaciones sobre $A$:
+\begin{definition}\label{def:operaciones relaciones}
+  Dadas relaciones $→$ y $⟿$ sobre $A$ se define:
   \begin{itemize}
     \item $→ ∘ ⟿ = \{(x, z) ∈ A^2 : ∃y ∈ A : x → y ∧ y ⟿ z\}$.
     \item $→^0 = \{(x, x) : x ∈ A\}$.
@@ -143,19 +146,24 @@ Para toda esta sección fijemos un conjunto $A$. Primero definimos algunas opera
     \item $← = \{(y, x) ∈ A^2 : (x, y) ∈ →\}$.
     \item $↔ = → ∪ ←$.
   \end{itemize}
+
+  Con $←$ y $↔$ podría haber problema para usarlas con una relación denotada por un símbolo que no tenga forma de flecha, pero en esta tesis las relaciones que se usan siempre se denotan con un símbolo con forma de flecha.
 \end{definition}
 
-Para el resto de la sección fijemos $→$ una relación sobre $A$.
+Para el resto de la sección fijemos una relación $→$ sobre $A$.
 
-Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que nos permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se puede más.
+Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se puede más.
 
-\begin{definition}\
+\begin{definition}\label{def:forma normal}
+  Dados $a, b ∈ A$ se define:
   \begin{itemize}
     \item $a$ está en forma normal $⇔ ∄x ∈ A : a → x$.
     \item $b$ es forma normal de $a ⇔ a →^* b ∧ b$ está en forma normal.
     \item $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$.
     \item $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$.
   \end{itemize}
+
+  Con $↓$ pasa lo mismo que con $←$ y $↔$ de que podría ser problemático usarla para una relación denotada con un símbolo que no tenga forma de flecha, pero en esta tesis eso no pasa.
 \end{definition}
 
 También necesitamos definir las siguientes propiedades de las relaciones.
@@ -169,7 +177,7 @@ También necesitamos definir las siguientes propiedades de las relaciones.
   \end{itemize}
 \end{definition}
 
-Sobre estas propiedades tenemos estos teoremas:
+Sobre estas propiedades los siguientes teoremas y lemas:
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
   $→$ es terminante $⇒ →$ es normalizante.
@@ -181,19 +189,22 @@ Sobre estas propiedades tenemos estos teoremas:
   \qed
 \end{theorem}
 
+\begin{lemma}\label{lemma:↔* min equiv que contiene a →}
+  $↔^*$ es la mínima relación de equivalencia que contiene a $→$.
+  \qed
+\end{lemma}
+
 \section{Álgebra libre}
 
-El álgebra libre es básicamente el conjunto de los polinomios no conmutativos con sus operaciones.
-
-En los polinomios no conmutativos los monomios son palabras y la única operación interna de los monomios (entre monomios y que devuelve monomios) es la multiplicación, que equivale a la concatenación de palabras.
+El álgebra libre es básicamente el conjunto de los polinomios no conmutativos con sus operaciones. En los polinomios no conmutativos los monomios son palabras y la única operación interna de los monomios (entre monomios y que devuelve monomios) es la multiplicación, que equivale a la concatenación de palabras.
 
 \begin{definition}
   Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
   \begin{itemize}
-    \item $⟨X⟩$ son las palabras finitas sobre $X$.
+    \item $⟨X⟩$ es el conjunto palabras finitas sobre $X$.
     \item $· : ⟨X⟩^2 → ⟨X⟩$ es la concatenación.
   \end{itemize}
-  A los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$, a $·$ el producto de $⟨X⟩$ y a $(⟨X⟩, ·)$ el monoide libre sobre $X$.
+  A $(⟨X⟩, ·)$ se lo llama el monoide libre sobre $X$, a los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$ y a $·$ el producto de $⟨X⟩$.
 \end{definition}
 
 Por ejemplo, si $X = \{a, b, c\}$, algunos monomios son:
@@ -208,12 +219,12 @@ Por ejemplo, si $X = \{a, b, c\}$, algunos monomios son:
 
 El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no conmutativo.
 
-A partir de ahora para todo el resto de la tesis fijamos $X$ un alfabeto finito.
+\
 
-En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
+Para todo el resto de la tesis fijemos $X$ un alfabeto finito. En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
 
 \begin{definition}
-  Sean $v, w ∈ ⟨X⟩$:
+  Sean $v, w ∈ ⟨X⟩$, se define:
   \begin{itemize}
     \item $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$.
   \end{itemize}
@@ -222,12 +233,12 @@ En estos monomios, al igual que en los conmutativos, se puede hablar de que un m
 
 En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
-De lo que es un poco más complicado hablar acá es de el resultado de la división porque es como que tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
+De lo que es un poco más complicado hablar acá es de el resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no es necesario fijar uno concreto, porque con que satisfaga la \cref{def:buen orden monomial} alcanza.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, sino que con que satisfaga la siguiente definición alcanza.
 
 \begin{definition}\label{def:buen orden monomial}
-  Sea $≤$ un orden total sobre $⟨X⟩$, definimos que $≤$ es un buen orden monomial si y solo si:
+  Sea $≤$ un orden total sobre $⟨X⟩$, se define que $≤$ es un buen orden monomial si y solo si:
   \begin{enumerate}
     \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$.
     \item $∀S ⊆ ⟨X⟩ : S ≠ ∅ ⇒ S$ tiene mínimo elemento con respecto a $≤$.
@@ -243,61 +254,61 @@ Un ejemplo de orden que cumple con esta definición es el siguiente.
   \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \text{.}\]
 \end{definition}
 
-O sea, el orden lexicográfico por grado ordena primero por cardinalidad, que se llama grado también, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$.
+O sea, el orden lexicográfico por grado ordena primero por cardinalidad, también llamado grado, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$. Se puede probar fácilmente que este orden es un buen orden monomial.
 
-Se puede probar fácilmente que este orden es un buen orden monomial.
+\
 
 A partir de ahora fijamos un buen orden monomial $≤$ y vamos a usar $<$, $≥$ y $>$ como se usan habitualmente.
 
 La siguiente propiedad es consecuencia directa de la definición de buen orden monomial.
 
-\begin{theorem}\label{thm:≤ no cadenas dec inf}
-  La relación $≤$ no tiene cadenas estrictamente decrecientes infinitas.
+\begin{theorem}\label{thm:≤ no sucesiones dec inf}
+  La relación $≤$ no tiene sucesiones estrictamente decrecientes infinitas.
   \qed
 \end{theorem}
 
 Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conmutativos.
 
-\begin{definition}[Álgebra libre (asociativa)]
-  Sea $R$ un anillo conmutativo. Se define $R⟨X⟩$ la $R$-álgebra libre sobre $X$ como:
-  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\} \text{.}\]
+\begin{definition}
+  Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto:
+  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}\]
 
-  La suma en $R⟨X⟩$ se define de la manera esperable.
+  \noindent con las siguientes operaciones.
 
-  El producto por escalares de define como:
+  La suma en $R⟨X⟩$ se define de la manera esperable. El producto por escalares de define como:
   \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{.}\]
 
-  El producto entre elementos de $R⟨X⟩$ se define como:
+  \noindent El producto entre elementos de $R⟨X⟩$ se define como:
   \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \text{.}\]
 
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
   % Esta definición creo que hay que mejorarla, pero no se como
 \end{definition}
 
-Esta definición puede ser medio difícil de entender exactamente que está haciendo, pero es lo que se espera que sean los polinomios no conmutativos y sus operaciones. Algunos ejemplos de polinomios no conmutativos sobre $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
+Algunos ejemplos de polinomios no conmutativos en $ℚ⟨\{a, b, c\}⟩$ son los siguientes:
 \begin{align*}
 f_0 &= a \text{,} \\
 f_1 &= ab + cb \text{,} \\
 f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
 \end{align*}
 
-Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
+\noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho.
 
 \begin{definition}\label{def:cosas de polinomios}
-  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial.
+  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial, se definen:
   \begin{itemize}
-    \item $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$.
-    \item $\sop(f) = \{w_1, …, w_n\}$.
-    \item $\lm_≤(f) = \min_≤(\sop(f))$.
-    \item $\lc_≤(f) = f_{\lm(f)}$.
-    \item $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
+    \item el coeficiente de $w$ en $f$ como $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$.
+    \item el soporte de $f$ como el conjunto $\sop(f) = \{w_1, …, w_n\}$.
+    \item el monomio principal de $f$ como $\lm_≤(f) = \max_≤(\sop(f))$.
+    \item el coeficiente principal de $f$ como $\lc_≤(f) = f_{\lm(f)}$.
+    \item el término principal de $f$ como $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
     \item $\tail_≤(f) = f - \lt_≤(f)$.
     \item $f$ es mónico $⇔ \lc_≤(f) = 1$.
   \end{itemize}
 
-  A $\sop(f)$ se lo llama soporte de $f$, a $\lm_≤(f)$ se lo llama monomio principal de $f$, a $\lc_≤(f)$ se lo llama coeficiente principal de $f$ y a $\lt_≤(f)$ se lo llama término principal de $f$. Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
+  Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 \end{definition}
 
 La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil por muchas definiciones y teoremas que ya existen sobre los anillos.
@@ -311,18 +322,20 @@ La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil po
 Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a continuación para no tener que estar buscándolos en otro lado.
 
 \begin{definition}\label{def:ideal}
-  Sean $R$ un anillo e $I ⊆ R$, definimos que $I$ es un ideal de $R$ si y solo si:
+  Sean $R$ un anillo e $I ⊆ R$, se define que $I$ es un ideal de $R$ si y solo si:
   \begin{enumerate}
     \item $I ≠ ∅$.
     \item $∀a, b ∈ I : a + b ∈ I$.
     \item $∀a ∈ I, r, r' ∈ R : r a r' ∈ I$.
   \end{enumerate}
+\end{definition}
 
-  Sea $G ⊆ R$, definimos el ideal generado por $G$ así:
+\begin{definition}\label{def:ideal gen}
+  Sean $R$ un anillo y $G ⊆ R$, se define la notación $(G)$ como:
   \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
 \end{definition}
 
-Los ideales son básicamente conjuntos cerrados por suma y producto por elementos cualquiera, y $(G)$ es el ideal generado por $G$.
+Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. A $(G)$ se lo llama el ideal generado por $G$, ya que como dice el siguiente teorema, es un ideal..
 
 \begin{theorem}
   Sean $R$ un anillo y $G ⊆ R$, entonces:
@@ -343,7 +356,7 @@ Cada ideal define una clase de equivalencia en el anillo, la cual se llama congr
   \qed
 \end{theorem}
 
-Esta congruencia es parecida a la de los números módulo otro número (de hecho, la congruencia de los números módulo otro número es un subcaso de esta tomando como ideal a todos los múltiplos del módulo) y vale que la clase de equivalencia del $0$ es el propio ideal:
+Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
 
 \begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
   Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
@@ -372,18 +385,16 @@ Con las definiciones que tenemos ahora la pregunta que planteábamos en la intro
 Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
-  Sean $f, g ∈ K⟨X⟩$, definimos que $f < g$ si y solo si vale alguna de las siguientes:
+  Sean $f, g ∈ K⟨X⟩$, se define que $f < g$ si y solo si vale alguna de las siguientes:
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
     \item $\lm_≤(f) < \lm_≤(g)$.
     \item $\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)$.
   \end{enumerate}
-  Y $f ≤ g$ si y solo si $f < g ∨ f = g$.
+  Y como es usual definimos $f ≤ g$ si y solo si $f < g ∨ f = g$.
 \end{definition}
 
-Es decir, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor.
-
-Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
+Dicho en palabras, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor. Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
 \begin{align*}
   a &< ab \text{,} \\
   bcc + c &< bcc + abb \text{,} \\
@@ -397,50 +408,51 @@ Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden, en 
   \qed
 \end{theorem}
 
-En este orden, al igual que para los monomios, vale que no hay cadenas estrictamente decrecientes infinitas.
+En este orden, al igual que para los monomios, vale que no hay sucesiones estrictamente decrecientes infinitas.
 
-\begin{lemma}\label{lemma:≤ en KX no cadenas dec inf}
-  La relación $≤$ en $K⟨X⟩$ no tiene cadenas estrictamente decrecientes infinitas.
+\begin{lemma}\label{lemma:≤ en KX no sucesiones dec inf}
+  La relación $≤$ en $K⟨X⟩$ no tiene sucesiones estrictamente decrecientes infinitas.
 \end{lemma}
 \begin{proof}
-  Supongamos que existen cadenas estrictamente decreciente infinita. Tomemos una $P$ que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no cadenas dec inf}.
+  Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$ que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
 
   Notemos que:
 
-  \begin{fact}\label{fact:≤ en KX no cadenas dec inf:1}
+  \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:1}
     $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$.
   \end{fact}
-  En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una cadena estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$ y no puede ser $\lm(P_i) > \lm(P_1)$ porque $P$ es una cadena estrictamente decreciente.
+  En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una sucesión estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$ y no puede ser $\lm(P_i) > \lm(P_1)$ porque eso implicaría $P_i > P_1$ y eso contradice que $P$ sea decreciente.
 
-  \begin{fact}\label{fact:≤ en KX no cadenas dec inf:2}
-    $\tail(P_1), \tail(P_2), …$ es una cadena estrictamente decreciente infinita.
+  \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:2}
+    $\tail(P_1), \tail(P_2), …$ es una sucesión estrictamente decreciente infinita.
   \end{fact}
-  Esto vale por aplicar la definición del orden polinomial, por la \cref{fact:≤ en KX no cadenas dec inf:1} y por lo que estamos suponiendo sobre $P$.
+  Esto vale porque al aplicar la definición del orden polinomial sobre $P_1 > P_2 > P_3 > …$ y usar la \cref{fact:≤ en KX no sucesiones dec inf:1} queda $\tail(P_1) > \tail(P_2) > \tail(P_3) > …$
 
   Como claramente $0$ es un mínimo:
 
-  \begin{fact}\label{fact:≤ en KX no cadenas dec inf:3}
+  \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:3}
     $P_1 ≠ 0$.
   \end{fact}
 
-  Sin embargo, la \cref{fact:≤ en KX no cadenas dec inf:2} contradice la minimalidad de $\lm(P_1)$ ya que por la \cref{fact:≤ en KX no cadenas dec inf:3} vale que $\lm(\tail(P_1)) < \lm(P_1)$.
+  Sin embargo, la \cref{fact:≤ en KX no sucesiones dec inf:2} contradice la minimalidad de $\lm(P_1)$ ya que por la \cref{fact:≤ en KX no sucesiones dec inf:3} vale que $\lm(\tail(P_1)) < \lm(P_1)$.
 
 \end{proof}
 
-Ahora vamos a definir una relación de reducción en los polinomios no conmutativos (y acá es donde entra lo de sistemas de re-escritura).
+Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
-La relación que vamos a definir va a ser dependiente de el orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llega a quedar lo menor posible con respecto al orden polinomial.
-
-Para definirla, además de definirla para un conjunto, la definimos para un solo polinomio y un polinomio y dos monomios de forma auxiliar.
+Para definirla, además de definirse para un conjunto, se define de forma auxiliar para: un solo polinomio y para un polinomio y dos monomios.
 
 \begin{definition}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$:
+  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se definen las relaciones $→_{≤, a, g, b}$, $→_{≤, g}$ y $→_{≤, G}$ del siguiente modo:
   \begin{itemize}
     \item $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
     \item $→_{≤, g} = ⋃_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$.
     \item $→_{≤, G} = ⋃_{g ∈ G} →_{≤, g}$.
   \end{itemize}
+  Y cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ con $G$.
 \end{definition}
+
+Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, …}$, $←_{≤, …}$, $↓_{≤, …}$, etc.
 
 A continuación la prueba de que efectivamente achica.
 
@@ -456,46 +468,53 @@ A continuación la prueba de que efectivamente achica.
   Por definición de las reducciones tenemos que (1) $⇒$ (2) $⇒$ (3), por lo cual alcanza con probar (1). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$.
 
   Esto implica por definición de reducciones:
-  \begin{enumerate}
-    \setcounter{enumi}{3}
+  \begin{enumerate}[label=(\roman*)]
     \item $\lm_≤(agb) ∈ \sop(f)$.
     \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
   \end{enumerate}
 
-  Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > ⋯ > m_n$.
+  \noindent Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > ⋯ > m_n$.
 
-  Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (4).
+  Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
 
-  \begin{fact}\label{fact:→ achican:3}
-    Notar también que $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ porque es multiplicar por un escalar adentro del $\lm$ en la condición de $i$.
-  \end{fact}
-  \begin{description}
-    \item[Si $i ≠ 0$] la \cref{fact:→ achican:3} significa que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (5)).
+  Notar también que:
 
-    Además, como $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$, tenemos que $f'\_m_i\} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$ y por ende menor que $f$.
+  \begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{2}
+    \item $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$.
+  \end{enumerate}
 
-    \item[Si $i = 0$] aplica lo mismo pero directamente a $m_0$ solo que sin tener en cuenta los $m$ anteriores.
-  \end{description}
+  (iii) implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (ii)).
+
+  Además, por (iii) y (ii) vale que $f'_{m_i}\} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$.
+
+  Combinando que los primeros $i - 1$ términos son iguales y el $i$ es menor en $f'$ que en $f$, por la definición de $<$ para polinomios vale que $f' < f$.
 
 \end{proof}
 
-Esta relación tiene un montón de propiedades que van a hacer falta y que se prueban a continuación.
+La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que se prueban a continuación.
 
 \begin{lemma}\label{lemma:suma →↓}
-  Sean $G ⊆ K⟨X⟩, f, f_0, f_1 ∈ K⟨X⟩$, entonces:
+  Sean $G ⊆ K⟨X⟩$ y $f, f_0, f_1 ∈ K⟨X⟩$, entonces:
   \[ f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}\]
 \end{lemma}
 \begin{proof}
   Supongamos el antecedente $f_0 →_{≤, G} f_1$.
 
-  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por el antecedente y por definición de $→_{≤, G}$.
+  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f_0$ y $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por aplicar la definición de $→_{≤, G}$ en lo que estamos suponiendo.
 
-  Dividamos en casos según si $\lm_≤(agb) ∈ \sop(f)$:
+  Dividamos en casos según la pertenencia $\lm_≤(agb)$ a $\sop(f)$:
 
   \begin{description}
-    \item[Caso $\lm_≤(agb) ∉ \sop(f)$:]\
+    \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
 
-    En este caso tenemos $f_0 + f →_{≤, G} f_1 + f$ por tomar $g$, $a$ y $b$, y por ende tenemos $f_0 + f ↓_{≤, G} f_1 + f$.
+    \begin{DispWithArrows*}
+      &f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} \\
+      & ⇒ f_1 + f = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f \Arrow{Definición de $→_{≤, a, g, b}$}\\
+      & ⇒ f_0 + f →_{≤, a, g, b} f_1 + f \\
+      & ⇒ f_0 + f →_{≤, G} f_1 + f \Arrow{Definición de $↓$, ambos se reducen a $f_1 + f$}\\
+      & ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}
+    \end{DispWithArrows*}
 
     \item[Caso $\lm_≤(agb) ∈ \sop(f)$:]\
     \begin{description}
@@ -515,48 +534,46 @@ Esta relación tiene un montón de propiedades que van a hacer falta y que se pr
         &f_0 + f →_{≤, G} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
         & ⇒ f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
         & ⇒ f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$}\\
-        & ⇒ f_0 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
+        & ⇒ f_0 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb  \text{.}
       \end{DispWithArrows*}
-        Llamemos (1) a este último resultado.
+        Llamemos (i) a este último resultado.
 
-      Además por el caso y por subcaso también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, así que tenemos:
+      Además por el caso y el hecho de que $lm_≤(agb) ∉ \sop(f_1)$ también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, entonces:
       \begin{DispWithArrows*}
         &f_1 + f →_{≤, G} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
         & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{$\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, G} f_1$ y definición de $→_{≤, G}$}\\
         & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-        & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb
+        & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \text{.}
       \end{DispWithArrows*}
-        Llamemos (2) a este último resultado.
+        Llamemos (ii) a este último resultado.
 
-      Por (1) y (2) tenemos $f_0 + f ↓_{≤, G} f_1 + f$.
+      Por (i) e (ii) tenemos $f_0 + f ↓_{≤, G} f_1 + f$.
     \end{description}
   \end{description}
 \end{proof}
 
 \begin{lemma}[Clausura reflexo transitiva de las reducciones]\label{lemma:→^* = ≡}
   Sea $G ⊆ K⟨X⟩$, entonces:
-  \[ ↔^*_{≤, G} = ≡_{(G)} \text{.}\]
+  \[ ↔^*_{≤, G}\ =\ ≡_{(G)} \text{.}\]
 
   (Donde $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref{def:congruencia mod ideal})
 \end{lemma}
 \begin{proof}
   Lo vamos a probar por doble inclusión.
   \begin{description}
-    \item[Prueba de $↔^*_{≤, G} ⊆ ≡_{(G)}$:] Como tanto $↔^*_{≤, G}$ como $≡_{(G)}$ son relaciones de equivalencia y además $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, alcanza con probar $→_{≤, G} ⊆ ≡_{(G)}$. Para eso supongamos $f →_{≤, G} f'$ y probemos $f ≡_{(G)} f'$.
+    \item[Prueba de $↔^*_{≤, G}\ ⊆\ ≡_{(G)}$:] Como $↔^*_{≤, G}$ y $≡_{(G)}$ son relaciones de equivalencia y además por el \cref{lemma:↔* min equiv que contiene a →} $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, alcanza con probar $→_{≤, G}\ ⊆\ ≡_{(G)}$. Para eso supongamos $f →_{≤, G} f'$ y probemos $f ≡_{(G)} f'$.
 
-    Sean $g ∈ G, a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por lo que estamos suponiendo y por la definición de $→_{≤, G}$. Tenemos:
+    Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f$ y $f' = f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por aplicar la definición de $→_{≤, G}$ en lo que estamos suponiendo. Tenemos:
 
     \begin{DispWithArrows*}
       &f ≡_{(G)} f' \\
       & ⇔ f - f' ∈ (G) \\
       & ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (G) \\
-      & ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (G)
+      & ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (G) \text{.}
     \end{DispWithArrows*}
-    Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal})
+    Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal}).
 
-    \item[Prueba de $≡_{(G)} ⊆ ↔^*_{≤, G}$:] Supongamos $f ≡_{(G)} f'$ y probemos $f ↔^*_{≤, G} f'$.
-
-    Sean:
+    \item[Prueba de $≡_{(G)}\ ⊆\ ↔^*_{≤, G}$:] Supongamos $f ≡_{(G)} f'$ y probemos $f ↔^*_{≤, G} f'$. Sean:
     \begin{itemize}
       \item $g = f - f'$.
       \item $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $g = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen porque por definición de $≡_·$ tenemos $g ∈ (G)$ y por definición de $(\ ·\ )$.
@@ -591,7 +608,7 @@ Esta relación tiene un montón de propiedades que van a hacer falta y que se pr
   \[ →_{≤, G} \text{ es terminante.} \]
 \end{theorem}
 \begin{proof}
-  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante. Por definición de terminante, podemos tomar una cadena $P ∈ K⟨X⟩^ℕ$ tal que:
+  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante. Por definición de terminante, podemos tomar una sucesión $P ∈ K⟨X⟩^ℕ$ tal que:
 
   \[ ∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}. \]
 
@@ -599,7 +616,7 @@ Esta relación tiene un montón de propiedades que van a hacer falta y que se pr
 
   \[ ∀i ∈ ℕ : P_i > P_{i+1}. \]
 
-  Pero esto contradice el \cref{lemma:≤ en KX no cadenas dec inf} que dice que no hay cadenas estrictamente decrecientes infinitas en $K⟨X⟩$.
+  Pero esto contradice el \cref{lemma:≤ en KX no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en $K⟨X⟩$.
 \end{proof}
 
 \begin{theorem}[Caracterización de las formas normales de $→$]
@@ -629,7 +646,7 @@ Sin embargo, en algunos casos $→_{≤, G}$ sí es confluente. Esos casos en lo
 Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
 \begin{definition}\label{def:estrategia de reducción}
-  Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$:
+  Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$, se define:
   \begin{itemize}
     \item $e_≤$ es una estrategia de reducción $⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$.
   \end{itemize}
@@ -828,17 +845,17 @@ Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar 
 Antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
 
 \begin{definition}
-  Sean $m, m', a, b, c, d ∈ ⟨X⟩$.
+  Sean $m, m', a, b, c, d ∈ ⟨X⟩$, se define:
   \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
 
-  La ambigüedad $(a, b, c, d, m, m')$ se dice que es:
+  La ambigüedad $(a, b, c, d, m, m')$ se define como:
   \begin{itemize}
     \item De superposición $⇔ a = ε = d ∨ b = ε = c$.
     \item De inclusión $⇔ a = ε = b ∨ c = ε = d$.
     \item Relevante $⇔$ es de superposición o de inclusión.
   \end{itemize}
 
-  Además, si $f, g ∈ K⟨X⟩$ se dice que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+  Además, si $f, g ∈ K⟨X⟩$ se se define que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
   Sea además $F ⊆ K⟨X⟩$.
   \begin{itemize}
@@ -849,7 +866,7 @@ Antes definimos las ambigüedades que representan los polinomios para los cuales
 \end{definition}
 
 \begin{definition}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad.
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, se define el S-polinomio de $α$:
   \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \text{.}\]
 \end{definition}
 
@@ -873,7 +890,7 @@ Ahora vamos a probar que efectivamente los monomios principales se cancelan y de
 Eso nos permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad:
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, se define el monomio principal de $α$ como:
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
@@ -922,7 +939,7 @@ El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polin
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente con la siguiente definición.
 
 \begin{definition}
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción:
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, se definen las bases de Buchberger como:
   \begin{itemize}
     \item $\B_{e_≤}^0(G) = G$.
     \item $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$.
@@ -930,7 +947,7 @@ Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente co
   \end{itemize}
 \end{definition}
 
-Y a esos conjuntos los llamamos bases de Buchberger (este nombre es un nombre inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos).
+El nombre bases de Buchberger es inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos.
 
 Con el siguiente teorema se enuncia que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega.
 
@@ -1079,7 +1096,7 @@ La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios a
 Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
 
 \begin{definition}
-Sea $F ⊆ K⟨X⟩$:
+Sea $F ⊆ K⟨X⟩$, se define:
 
 \begin{itemize}
   \item $\spn_K(F) = \{∑_{i = 1}^n c_i f_i : n ∈ ℕ, c_i ∈ K, f_i ∈ F\}$.
@@ -1087,7 +1104,7 @@ Sea $F ⊆ K⟨X⟩$:
 \end{definition}
 
 \begin{definition}
-Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$:
+Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$, se definen:
 
 \begin{itemize}
   \item $\poli_T : K^n → \spn_K(M)$.
