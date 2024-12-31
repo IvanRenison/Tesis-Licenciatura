@@ -150,6 +150,8 @@ Para toda esta sección fijemos un conjunto $A$. Primero algunas operaciones muy
   Con $←$ y $↔$ podría haber problema para usarlas con una relación denotada por un símbolo que no tenga forma de flecha, pero en esta tesis las relaciones que se usan siempre se denotan con un símbolo con forma de flecha.
 \end{definition}
 
+Con está definición se define automáticamente también $↔^*$ que se llama la clausura reflexiva y transitiva de $→$.
+
 Para el resto de la sección fijemos una relación $→$ sobre $A$.
 
 Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se puede más.
@@ -177,7 +179,18 @@ También necesitamos definir las siguientes propiedades de las relaciones.
   \end{itemize}
 \end{definition}
 
-Sobre estas propiedades los siguientes teoremas y lemas:
+Sobre estas definiciones y propiedades los siguientes teoremas y lemas:
+
+\begin{lemma}\label{lemma:→ como ∃}
+  Sean $a, b ∈ A$ Entonces
+  \[ a →^* b ⇔ ∃n ∈ ℕ ∪ \{0\}, x_0, …, x_n A : x_0 = a ∧ x_n = b ∧ ∀i ∈ {1, …, n} : x_{i-1} → x_i \text{.}\]
+  \qed
+\end{lemma}
+
+\begin{lemma}\label{lemma:↔* min equiv que contiene a →}
+  $↔^*$ es la mínima relación de equivalencia que contiene a $→$.
+  \qed
+\end{lemma}
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
   $→$ es terminante $⇒ →$ es normalizante.
@@ -188,11 +201,6 @@ Sobre estas propiedades los siguientes teoremas y lemas:
   $→$ es confluente $⇔ →$ es Church-Rosser.
   \qed
 \end{theorem}
-
-\begin{lemma}\label{lemma:↔* min equiv que contiene a →}
-  $↔^*$ es la mínima relación de equivalencia que contiene a $→$.
-  \qed
-\end{lemma}
 
 \section{Álgebra libre}
 
@@ -224,7 +232,7 @@ El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el product
 Para todo el resto de la tesis fijemos $X$ un alfabeto finito. En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
 
 \begin{definition}
-  Sean $v, w ∈ ⟨X⟩$, se define:
+  Sean $v, w ∈ ⟨X⟩$. Se define
   \begin{itemize}
     \item $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$.
   \end{itemize}
@@ -238,7 +246,7 @@ De lo que es un poco más complicado hablar acá es de el resultado de la divisi
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, sino que con que satisfaga la siguiente definición alcanza.
 
 \begin{definition}\label{def:buen orden monomial}
-  Sea $≤$ un orden total sobre $⟨X⟩$, se define que $≤$ es un buen orden monomial si y solo si:
+  Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
   \begin{enumerate}
     \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$.
     \item $∀S ⊆ ⟨X⟩ : S ≠ ∅ ⇒ S$ tiene mínimo elemento con respecto a $≤$.
@@ -270,18 +278,18 @@ La siguiente propiedad es consecuencia directa de la definición de buen orden m
 Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conmutativos.
 
 \begin{definition}
-  Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto:
+  Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto
   \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}\]
 
   \noindent con las siguientes operaciones.
 
-  La suma en $R⟨X⟩$ se define de la manera esperable. El producto por escalares de define como:
+  \noindent La suma en $R⟨X⟩$ se define de la manera esperable. El producto por escalares de define como
   \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{.}\]
 
-  \noindent El producto entre elementos de $R⟨X⟩$ se define como:
+  \noindent El producto entre elementos de $R⟨X⟩$ se define como
   \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \text{.}\]
 
-  A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
+  Y a los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
   % Esta definición creo que hay que mejorarla, pero no se como
 \end{definition}
 
@@ -297,7 +305,7 @@ f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho.
 
 \begin{definition}\label{def:cosas de polinomios}
-  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial, se definen:
+  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial. Se definen:
   \begin{itemize}
     \item el coeficiente de $w$ en $f$ como $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$.
     \item el soporte de $f$ como el conjunto $\sop(f) = \{w_1, …, w_n\}$.
@@ -311,81 +319,12 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
   Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 \end{definition}
 
-La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil por muchas definiciones y teoremas que ya existen sobre los anillos.
-
-\begin{theorem}
-  Sea $R$ un anillo conmutativo, entonces:
-  \[ (R⟨X⟩, +, ·)\text{ es un anillo} \text{.}\]
-  \qed
-\end{theorem}
-
-Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a continuación para no tener que estar buscándolos en otro lado.
-
-\begin{definition}\label{def:ideal}
-  Sean $R$ un anillo e $I ⊆ R$, se define que $I$ es un ideal de $R$ si y solo si:
-  \begin{enumerate}
-    \item $I ≠ ∅$.
-    \item $∀a, b ∈ I : a + b ∈ I$.
-    \item $∀a ∈ I, r, r' ∈ R : r a r' ∈ I$.
-  \end{enumerate}
-\end{definition}
-
-\begin{definition}\label{def:ideal gen}
-  Sean $R$ un anillo y $G ⊆ R$, se define la notación $(G)$ como:
-  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
-\end{definition}
-
-Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. A $(G)$ se lo llama el ideal generado por $G$, ya que como dice el siguiente teorema, es un ideal..
-
-\begin{theorem}
-  Sean $R$ un anillo y $G ⊆ R$, entonces:
-  \[ (G)\text{ es un ideal de }R \text{.}\]
-  \qed
-\end{theorem}
-
-Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
-
-\begin{definition}[Congruencia módulo un ideal]\label{def:congruencia mod ideal}
-  Sean $R$ un anillo e $I ⊆ R$, se define $≡_I$ como relación en $R$ así:
-  \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
-\end{definition}
-
-\begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
-  Sean $R$ un anillo y $I ⊆ R$ un ideal, entonces:
-  \[ ≡_I \text{es una relación de equivalencia} \text{.}\]
-  \qed
-\end{theorem}
-
-Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
-
-\begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
-  Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$, entonces:
-  \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
-  \qed
-\end{lemma}
-
-Por último, con respecto al ideal generado por un conjunto, tenemos los siguientes dos lemas.
-
-\begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
-  Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$, entonces:
-  \[ (G) = (G ∪ \{a\}) \text{.}\]
-  \qed
-\end{lemma}
-
-\begin{lemma}\label{lemma:sub gen y sub gen ⇒ eq}
-  Sean $R$ un anillo y $G, G' ⊆ R$, entonces:
-  \[ G ⊆ (G') ∧ G' ⊆ (G) ⇒ (G) = (G') \text{.}\]
-  \qed
-\end{lemma}
-
-Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
-
-Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$. Ahora nos vamos a poner con el tema de esa pregunta.
+Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar porque es tedioso y aburrido.
 
 Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
-  Sean $f, g ∈ K⟨X⟩$, se define que $f < g$ si y solo si vale alguna de las siguientes:
+  Sean $f, g ∈ K⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
     \item $\lm_≤(f) < \lm_≤(g)$.
@@ -407,6 +346,13 @@ Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden, en 
   La relación $<$ en $K⟨X⟩$ es un preorden parcial.
   \qed
 \end{theorem}
+
+Y además, el polinomio $0$ es el mínimo.
+
+\begin{lemma}\label{lemma:0 es mínimo}
+  $0$ es el mínimo de $<$.
+  \qed
+\end{lemma}
 
 En este orden, al igual que para los monomios, vale que no hay sucesiones estrictamente decrecientes infinitas.
 
@@ -438,36 +384,138 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
 
 \end{proof}
 
+La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil por muchas definiciones y teoremas que ya existen sobre los anillos.
+
+\begin{theorem}
+  Sea $R$ un anillo conmutativo. Entonces
+  \[ (R⟨X⟩, +, ·)\text{ es un anillo} \text{.}\]
+  \qed
+\end{theorem}
+
+Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a continuación para no tener que estar buscándolos en otro lado.
+
+\begin{definition}\label{def:ideal}
+  Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal de $R$ si y solo si
+  \begin{enumerate}
+    \item $I ≠ ∅$.
+    \item $∀a, b ∈ I : a + b ∈ I$.
+    \item $∀a ∈ I, r, r' ∈ R : r a r' ∈ I$.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}\label{def:ideal gen}
+  Sean $R$ un anillo y $G ⊆ R$. Se define la notación $(G)$ como
+  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ ∪ \{0\}, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
+\end{definition}
+
+Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. A $(G)$ se lo llama el ideal generado por $G$, ya que como dice el siguiente teorema, es un ideal..
+
+\begin{theorem}
+  Sean $R$ un anillo y $G ⊆ R$. Entonces
+  \[ (G)\text{ es un ideal de }R \text{.}\]
+  \qed
+\end{theorem}
+
+Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
+
+\begin{definition}[Congruencia módulo un ideal]\label{def:congruencia mod ideal}
+  Sean $R$ un anillo e $I ⊆ R$. Se define $≡_I$ como relación en $R$ así:
+  \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
+\end{definition}
+
+\begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
+  Sean $R$ un anillo y $I ⊆ R$ un ideal. Entonces
+  \[ ≡_I \text{es una relación de equivalencia} \text{.}\]
+  \qed
+\end{theorem}
+
+Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
+
+\begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
+  Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$. Entonces
+  \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
+  \qed
+\end{lemma}
+
+Por último, con respecto al ideal generado por un conjunto, tenemos los siguientes dos lemas.
+
+\begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
+  Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$. Entonces
+  \[ (G) = (G ∪ \{a\}) \text{.}\]
+  \qed
+\end{lemma}
+
+\begin{lemma}\label{lemma:sub gen y sub gen ⇒ eq}
+  Sean $R$ un anillo y $G, G' ⊆ R$. Entonces
+  \[ G ⊆ (G') ∧ G' ⊆ (G) ⇒ (G) = (G') \text{.}\]
+  \qed
+\end{lemma}
+
+Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
+
+Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$.
+
+Si bien $(G)$ para un anillo general está definido usando combinaciones lineales con coeficientes en el anillo, para el álgebra libre va a ser útil la siguiente equivalencia.
+
+\begin{lemma}\label{lemma:(G) equiv}
+  Sea $G ⊆ K⟨X⟩$. Entonces
+  \[ (G) = \{∑_{i = 0}^n c_i m_i g_i m'_i : n ∈ ℕ ∪ \{0\}, c_1, …, c_n ∈ K, m_1, …, m_n, m'_1, …, m'_n ∈ ⟨X⟩, g_1, …, g_n ∈ G\} \text{.}\]
+\end{lemma}
+\begin{proof} Lo probamos probando que $f$ esta en uno si y solo si está en el otro.
+  \begin{description}
+    \item[Ida ($⇒$):] Supongamos $f ∈ (G)$. Sean:
+
+    \begin{itemize}
+      \item $g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por lo que estamos suponiendo y la definición de $(G)$.
+      \item Para cada $i ∈\{1, …, n\}$:
+      \begin{itemize}
+        \item $k_{i, 1}, …, k_{i, n_i} ∈ K, m_{i, 1}, …, m_{i, n_i} ∈ ⟨X⟩$ tales que $c_i = ∑_{j = 1}^{n_i} k_{i, j} m_{i, j}$.
+        \item $k'_{i, 1}, …, k'_{i, n'_i} ∈ K, m'_{i, 1}, …, m'_{i, n'_i} ∈ ⟨X⟩$ tales que $c'_i = ∑_{j = 1}^{n'_i} k'_{i, j} m'_{i, j}$.
+      \end{itemize}
+    \end{itemize}
+
+    Con esto tenemos:
+
+    \begin{DispWithArrows*}
+      f &= ∑_{i = 1}^n c_i g_i c_i' \\
+        &= ∑_{i = 1}^n (∑_{j = 1}^{n_i} k_{i, j} m_{i, j}) g_i (∑_{j = 1}^{n'_i} k'_{i, j} m'_{i, j}) \\
+        &= ∑_{i = 1}^n ∑_{j = 1}^{n_i} ∑_{j' = 1}^{n'_i} k_{i, j} k'_{i, j'} m_{i, j} g_i m'_{i, j'} \text{.}
+    \end{DispWithArrows*}
+
+    Esto último es una expresión que se transforma a la forma que queremos.
+
+    \item[Vuelta ($⇐$):] La vuelta es cierto porque como $c_i m_i, m'_i ∈ K⟨X⟩$ es un caso particular de la definición.
+  \end{description}
+\end{proof}
+
+\section{Reducción de polinomios}
+
 Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
 Para definirla, además de definirse para un conjunto, se define de forma auxiliar para: un solo polinomio y para un polinomio y dos monomios.
 
-\begin{definition}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se definen las relaciones $→_{≤, a, g, b}$, $→_{≤, g}$ y $→_{≤, G}$ del siguiente modo:
-  \begin{itemize}
-    \item $f →_{≤, a, g, b} f' ⇔ \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
-    \item $→_{≤, g} = ⋃_{a, b ∈ ⟨X⟩} →_{≤, a, g, b}$.
-    \item $→_{≤, G} = ⋃_{g ∈ G} →_{≤, g}$.
-  \end{itemize}
-  Y cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ con $G$.
+\begin{definition}\label{def:reducciones}
+  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacione $→_{≤, G}$ del siguiente modo:
+  \[ f →_{≤, G} f' ⇔ ∃a, b ∈ ⟨X⟩, g ∈ G : \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \text{.} \]
+  Y cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
 \end{definition}
 
-Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, …}$, $←_{≤, …}$, $↓_{≤, …}$, etc.
+Por ejemplo, si tenemos $f = 2 cba + 3 abcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ tenemos:
 
-A continuación la prueba de que efectivamente achica.
+\[f →_{≤, G} f + 3a g_0 a = 3 aaa + 2 cba \text{.}\]
 
-\begin{theorem}[Las reducciones achican]\label{thm:→ achican}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$, entonces:
-  \begin{enumerate}
-    \item $f →_{≤, a, g, b} f' ⇒ f' < f$.
-    \item $f →_{≤, g} f' ⇒ f' < f$.
-    \item $f →_{≤, G} f' ⇒ f' < f$.
-  \end{enumerate}
+\
+
+Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, G}$, $←_{≤, G}$, $↓_{≤, G}$, etc.
+
+A continuación la prueba de que esta relación efectivamente achica.
+
+\begin{theorem}\label{thm:→ achican}
+  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Entonces
+  \[ f →_{≤, G} f' ⇒ f' < f \text{.} \]
 \end{theorem}
 \begin{proof}
-  Por definición de las reducciones tenemos que (1) $⇒$ (2) $⇒$ (3), por lo cual alcanza con probar (1). Para ello supongamos el antecedente $f →_{≤, a, g, b} f'$.
-
-  Esto implica por definición de reducciones:
+  Supongamos el antecedente. Por definición de reducciones vale que:
   \begin{enumerate}[label=(\roman*)]
     \item $\lm_≤(agb) ∈ \sop(f)$.
     \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
@@ -495,76 +543,93 @@ A continuación la prueba de que efectivamente achica.
 La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que se prueban a continuación.
 
 \begin{lemma}\label{lemma:suma →↓}
-  Sean $G ⊆ K⟨X⟩$ y $f, f_0, f_1 ∈ K⟨X⟩$, entonces:
-  \[ f_0 →_{≤, G} f_1 ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}\]
+  Sean $G ⊆ K⟨X⟩$ y $f, f', f'' ∈ K⟨X⟩$. Entonces
+  \[ f →_{≤, G} f' ⇒ f + f'' ↓_{≤, G} f' + f'' \text{.}\]
 \end{lemma}
 \begin{proof}
-  Supongamos el antecedente $f_0 →_{≤, G} f_1$.
+  Supongamos el antecedente $f →_{≤, G} f'$.
 
-  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f_0$ y $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por aplicar la definición de $→_{≤, G}$ en lo que estamos suponiendo.
+  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f' = f - \frac{{f}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$.
 
-  Dividamos en casos según la pertenencia $\lm_≤(agb)$ a $\sop(f)$:
+  Dividamos en casos según la pertenencia $\lm_≤(agb)$ a $\sop(f'')$:
 
   \begin{description}
-    \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
+    \item[Caso $\lm_≤(agb) ∉ \sop(f'')$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
 
     \begin{DispWithArrows*}
-      &f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} \\
-      & ⇒ f_1 + f = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f \Arrow{Definición de $→_{≤, a, g, b}$}\\
-      & ⇒ f_0 + f →_{≤, a, g, b} f_1 + f \\
-      & ⇒ f_0 + f →_{≤, G} f_1 + f \Arrow{Definición de $↓$, ambos se reducen a $f_1 + f$}\\
-      & ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}
+      &f' = f - \frac{{f}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} \\
+      & ⇒ f' + f'' = f - \frac{{f}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f'' \Arrow{Definición de $→_{≤, a, g, b}$}\\
+      & ⇒ f + f'' →_{≤, a, g, b} f' + f'' \\
+      & ⇒ f + f'' →_{≤, G} f' + f'' \Arrow{Definición de $↓$, ambos se reducen a $f' + f''$}\\
+      & ⇒ f + f'' ↓_{≤, G} f' + f'' \text{.}
     \end{DispWithArrows*}
 
-    \item[Caso $\lm_≤(agb) ∈ \sop(f)$:]\
+    \item[Caso $\lm_≤(agb) ∈ \sop(f'')$:]\
     \begin{description}
-      \item[Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$]
+      \item[Subcaso $f_{\lm_≤(agb)} = -{f}_{\lm_≤(agb)}$]
 
-      Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$. Y como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
+      Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f + f''$. Y como además $\lm_≤(agb) ∉ \sop(f')$ por el antecedente, tenemos:
 
       \begin{DispWithArrows*}
-        &f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Subcaso} \\
-        & ⇒ f_1 + f →_{≤, G} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$} \\
-        & ⇒ f_1 + f →_{≤, G} f_0 + f \\
-        & ⇒ f_1 + f ↓_{≤, G} f_0 + f
+        &f' + f'' →_{≤, G} f' + f'' - \frac{f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Subcaso} \\
+        & ⇒ f' + f'' →_{≤, G} f' + f'' + \frac{{f}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$} \\
+        & ⇒ f' + f'' →_{≤, G} f + f'' \\
+        & ⇒ f' + f'' ↓_{≤, G} f + f'' \text{.}
       \end{DispWithArrows*}
 
-      \item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:] En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, G}$:
+      \item[Subcaso $f''_{\lm_≤(agb)} ≠ -{f}_{\lm_≤(agb)}$:] En este caso $\lm_≤(agb)$ no se cancela en la suma $f + f''$, así que podemos aplicar $→_{≤, G}$:
       \begin{DispWithArrows*}
-        &f_0 + f →_{≤, G} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-        & ⇒ f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-        & ⇒ f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$}\\
-        & ⇒ f_0 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb  \text{.}
+        &f + f'' →_{≤, G} f + f'' - \frac{(f + f'')_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+        & ⇒ f + f'' →_{≤, G} f + f'' - \frac{{f}_{\lm_≤(agb)} + f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+        & ⇒ f + f'' →_{≤, G} f + f'' - \frac{{f}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb - \frac{f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$}\\
+        & ⇒ f + f'' →_{≤, G} f' + f'' - \frac{f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb  \text{.}
       \end{DispWithArrows*}
         Llamemos (i) a este último resultado.
 
-      Además por el caso y el hecho de que $lm_≤(agb) ∉ \sop(f_1)$ también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, entonces:
+      Además por el caso y el hecho de que $lm_≤(agb) ∉ \sop(f')$ también tenemos $\lm_≤(agb) ∈ \sop(f' + f'')$, entonces:
       \begin{DispWithArrows*}
-        &f_1 + f →_{≤, G} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-        & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{$\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, G} f_1$ y definición de $→_{≤, G}$}\\
-        & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{0 + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
-        & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \text{.}
+        &f' + f'' →_{≤, G} f' + f'' - \frac{(f' + f'')_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+        & ⇒ f' + f'' →_{≤, G} f' + f'' - \frac{{f'}_{\lm_≤(agb)} + f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{$\lm_≤(agb) ∉ \sop(f')$ porque $f →_{≤, G} f'$ y definición de $→_{≤, G}$}\\
+        & ⇒ f' + f'' →_{≤, G} f' + f'' - \frac{0 + f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
+        & ⇒ f' + f'' →_{≤, G} f' + f'' - \frac{f''_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \text{.}
       \end{DispWithArrows*}
         Llamemos (ii) a este último resultado.
 
-      Por (i) e (ii) tenemos $f_0 + f ↓_{≤, G} f_1 + f$.
+      Por (i) e (ii) tenemos $f + f'' ↓_{≤, G} f' + f''$.
     \end{description}
   \end{description}
 \end{proof}
 
-\begin{lemma}[Clausura reflexo transitiva de las reducciones]\label{lemma:→^* = ≡}
-  Sea $G ⊆ K⟨X⟩$, entonces:
-  \[ ↔^*_{≤, G}\ =\ ≡_{(G)} \text{.}\]
-
-  (Donde $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref{def:congruencia mod ideal})
+\begin{lemma}\label{lemma:prod mon →}
+  Sean $G ⊆ K⟨X⟩$, $f, f' ∈ K⟨X⟩$, $c ∈ K$ y $m, m' ∈ ⟨X⟩$. Entonces
+  \[ f →_{≤, G} f' ⇒ c m f m' →_{≤, G} c m f' m' \text{.}\]
 \end{lemma}
-\begin{proof}
-  Lo vamos a probar por doble inclusión.
+\begin{proof} Supongamos el antecedente.
+
+  Sean $g ∈ G$ y $a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por definición de $→_{≤, G}$.
+
+  Tenemos ahora:
+  \begin{DispWithArrows*}
+    &f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \\
+    & ⇒ c m f' m' = c m (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) m \\
+    & ⇒ c m f' m' = c m f m' - \frac{{(c m f m')}_{\lm_≤(c ma g bm')}}{\lc_≤(g)}c ma g bm' \Arrow{Definición $→_{≤, ma, g, bm'}$} \\
+    & ⇒ c m f m' →_{≤, ma, g, bm'} c m f' m' \Arrow{Definición $→_{≤, G}$} \\
+    & ⇒ c m f' m' →_{≤, G} c m f m' \text{.}
+  \end{DispWithArrows*}
+
+\end{proof}
+
+Recordar que $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref{def:congruencia mod ideal}. Un lema importante es que la clausura reflexo transitiva de $→_{≤, G}$ es una congruencia.
+
+\begin{lemma}\label{lemma:→^* = ≡}
+  Sea $G ⊆ K⟨X⟩$. Entonces
+  \[ ↔^*_{≤, G}\ =\ ≡_{(G)} \text{.}\]
+\end{lemma}
+\begin{proof} Probemos las dos inclusiones.
   \begin{description}
     \item[Prueba de $↔^*_{≤, G}\ ⊆\ ≡_{(G)}$:] Como $↔^*_{≤, G}$ y $≡_{(G)}$ son relaciones de equivalencia y además por el \cref{lemma:↔* min equiv que contiene a →} $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, alcanza con probar $→_{≤, G}\ ⊆\ ≡_{(G)}$. Para eso supongamos $f →_{≤, G} f'$ y probemos $f ≡_{(G)} f'$.
 
-    Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f$ y $f' = f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por aplicar la definición de $→_{≤, G}$ en lo que estamos suponiendo. Tenemos:
-
+    Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f$ y $f' = f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$. Tenemos:
     \begin{DispWithArrows*}
       &f ≡_{(G)} f' \\
       & ⇔ f - f' ∈ (G) \\
@@ -576,51 +641,53 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
     \item[Prueba de $≡_{(G)}\ ⊆\ ↔^*_{≤, G}$:] Supongamos $f ≡_{(G)} f'$ y probemos $f ↔^*_{≤, G} f'$. Sean:
     \begin{itemize}
       \item $g = f - f'$.
-      \item $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $g = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen porque por definición de $≡_·$ tenemos $g ∈ (G)$ y por definición de $(\ ·\ )$.
+      \item $m_1, …, m_n, m_1', …, m_n' ∈ ⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $g = ∑_{i = 1}^n m_i g_i m_i'$, los cuales existen porque por definición de $≡_G$ tenemos $g ∈ (G)$ y por el \cref{lemma:(G) equiv}.
       \item $f_0 = f$.
-      \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - c_i g_i c_i'$.
+      \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - m_i g_i m_i'$.
     \end{itemize}
 
     Tenemos entonces:
-
     \begin{DispWithArrows*}
-      &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \\
-      & ⇒ ∀i ∈ \{1, …, n\} : - c_i g_i c_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \Arrow{\cref{lemma:prod mon →}} \\
+      & ⇒ ∀i ∈ \{1, …, n\} : m_i g_i m_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      & ⇒ ∀i ∈ \{1, …, n\} : m_i g_i m_i' + f_i ↓_{≤, G} 0 + f_i \Arrow{Definición de los $f_i$}\\
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↔^*_{≤, G} f_i \\
-      & ⇒ f_0 ↔^*_{≤, G} f_n \Arrow{$f_n = f - g = f'$}\\
-      & ⇒ f ↔^*_{≤, G} f_n
+      & ⇒ f_0 ↔^*_{≤, G} f_n \Arrow{$f_n = f - g = f'$} \\
+      & ⇒ f ↔^*_{≤, G} f_n \text{.}
     \end{DispWithArrows*}
 
   \end{description}
 \end{proof}
 
-\begin{lemma}[Las reducciones se mantienen en ideal]\label{thm:→ mantiene pertenencia a ideal}
-  Sean $G ⊆ K⟨X⟩, f, f' ∈ (G)$, entonces:
+\begin{lemma}\label{thm:→ mantiene pertenencia a ideal}
+  Sean $G ⊆ K⟨X⟩, f, f' ∈ K⟨X⟩$. Entonces
   \[ f →^*_{≤, G} f' ⇒ (f ∈ (G) ⇔ f' ∈ (G)) \text{.}\]
 \end{lemma}
 \begin{proof}
-  Si asumimos $f →^*_{≤, G} f'$, tenemos por el \cref{lemma:→^* = ≡} que $f ≡_{(G)} f'$ y entonces por el \cref{lemma:en ideal ⇔ congruente 0} tenemos $f ∈ (G) ⇔ f' ∈ (G)$.
+  Si asumimos $f →^*_{≤, G} f'$, tenemos por el \cref{lemma:→^* = ≡} que $f ≡_{(G)} f'$ y entonces por el \cref{lemma:en ideal ⇔ congruente 0} vale que $f ∈ (G) ⇔ f' ∈ (G)$.
 \end{proof}
 
 \begin{theorem}
-  Sea $G ⊆ K⟨X⟩$, entonces:
+  Sea $G ⊆ K⟨X⟩$. Entonces
   \[ →_{≤, G} \text{ es terminante.} \]
 \end{theorem}
 \begin{proof}
-  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante. Por definición de terminante, podemos tomar una sucesión $P ∈ K⟨X⟩^ℕ$ tal que:
+  Lo vamos a demostrar por contradicción. Supongamos que $→_{≤, G}$ no es terminante. Por definición podemos tomar una sucesión $P ∈ K⟨X⟩^ℕ$ tal que:
 
   \[ ∀i ∈ ℕ : P_i →_{≤, G} P_{i+1}. \]
 
-  Por el \cref{thm:→ achican} tenemos que:
+  \noindent Por el \cref{thm:→ achican} tenemos que:
 
   \[ ∀i ∈ ℕ : P_i > P_{i+1}. \]
 
-  Pero esto contradice el \cref{lemma:≤ en KX no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en $K⟨X⟩$.
+  \noindent Pero esto contradice el \cref{lemma:≤ en KX no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en $K⟨X⟩$.
 \end{proof}
 
-\begin{theorem}[Caracterización de las formas normales de $→$]
-  Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$, entonces: % Por algún motivo acá se pone solo un salto de linea extra
+El siguiente teorema caracteriza las formas normales de $→$.
+
+\begin{theorem}
+  Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$. Entonces
   \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
 \end{theorem}
 \begin{proof}
@@ -632,30 +699,47 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
 
 \end{proof}
 
-Probamos que $→_{≤, G}$ es terminante, pero no necesariamente es confluente. Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes (y en particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal).
+Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 abcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cdb$ y $G = \{g_0, g_1\}$ tenemos, como antes:
 
-Sin embargo, en algunos casos $→_{≤, G}$ sí es confluente. Esos casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+\[f →_{≤, G} f + 3a g_0 a = 3 aaa + 2 cba \text{.}\]
 
-\begin{definition}[Bases de Gröbner]\label{def:base de Gröbner}
-  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$:
-  \begin{itemize}
-    \item $G$ es una base de Gröbner de $I ⇔ (G) = I ∧ →_{≤, G}$ es confluente.
-  \end{itemize}
+\noindent Y también:
+
+\[f →_{≤, G} f - 3ab g_1 = 3 abb + 2 cba = f'' \text{.}\]
+
+\noindent Pero ninguno monomio principal de $G$ divide a ninguno monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir mas.
+
+Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes (y en particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal).
+
+Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+
+\begin{definition}\label{def:base de Gröbner}
+  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
+  \[G\text{ es una base de Gröbner de }I ⇔ (G) = I ∧ →_{≤, G}\text{ es confluente} \text{.} \]
+  Además se dice que ``$G$ es una base de Gröbner'' si lo es de algún ideal.
 \end{definition}
+
+Una consecuencia directa de la definición es el siguiente lema.
+
+\begin{lemma}\label{lemma:→ gröbner es Church-Rosser}
+  Sea $G$ una base de Gröbner. Entonces
+  \[→_{≤, G}\text{ es Church-Rosser.}\]
+\end{lemma}
+\begin{proof}
+  Es una aplicación directa del \cref{thm:confluente ⇔ Church-Rosser}.
+\end{proof}
 
 Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
-\begin{definition}\label{def:estrategia de reducción}
-  Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$, se define:
-  \begin{itemize}
-    \item $e_≤$ es una estrategia de reducción $⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)$ es forma normal de $f$ con respecto a $→_{≤, G}$.
-  \end{itemize}
+\begin{definition}\label{def:reductor}
+  Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$. Se define que
+  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \]
 \end{definition}
 
-Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudocódigo.
+Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
-  \caption{Ejemplo de estrategia de reducción}\label{alg:estrategia de reducción}
+  \caption{Ejemplo de reductor}\label{alg:reductor}
   \KwData{$G = \{f_1, …, f_n\} ⊆ K⟨X⟩, g ∈ K⟨X⟩$}
   \KwResult{$g' ∈ K⟨X⟩$}
   $g' ← g$
@@ -679,36 +763,36 @@ Un ejemplo de estrategia de reducción podría calcularse con el siguiente seudo
   \Return{$g'$}
 \end{algorithm}
 
-Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el que reducir, y parar cuando ya no hay ninguno.
+Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el cual reducir, y parar cuando ya no hay ninguno.
 
-Una propiedad sobre las estrategias de reducción que vamos a necesitar es la siguiente.
+Una propiedad sobre los reductores que vamos a necesitar es que mantienen la pertenencia a ideales (lo cual tiene mucho sentido por la definición).
 
-\begin{lemma}[Las estrategias de reducción mantienen la pertenencia a ideales]\label{lemma:e mantiene pertenencia a ideal}
-  Sean $e_≤$ una estrategia de reducción, $G ⊆ K⟨X⟩$ y $f ∈ (G)$, entonces:
+\begin{lemma}\label{lemma:e mantiene pertenencia a ideal}
+  Sean $e_≤$ un reductor, $G ⊆ K⟨X⟩$ y $f ∈ (G)$. Entonces
   \[ e_≤(G)(f) ∈ (G) \text{.}\]
 \end{lemma}
 \begin{proof}
   Es consecuencia directa de la definición y del \cref{thm:→ mantiene pertenencia a ideal}.
 \end{proof}
 
-Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero para poder usarlas van a hacer falta las siguientes equivalencias.
+Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero van a ser mucho mas cómodas de trabajar usando las siguientes equivalencias.
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Las siguientes afirmaciones son equivalentes:
   \begin{enumerate}
     \item $G$ es una base de Gröbner de $I$.
 
-    \item $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$.
+    \item $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$.
 
-    \item $∀f ∈ K⟨X⟩ : (f ∈ I ⇒ f →^*_{≤, G} 0)$.
+    \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$.
 
     \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$.
 
-    \item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i$.
+    \item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n a_i g_i b_i$.
   \end{enumerate}
 
 \end{theorem}
-\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (1), (2) $⇔$ (3), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
+\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (3), (3) $⇒$ (1), (3) $⇒$ (2), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
   \begin{description}
 
     \item[(1) $⇒$ (2):] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
@@ -716,60 +800,80 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \begin{DispWithArrows*}
       &f ∈ I \Arrow{\cref{lemma:en ideal ⇔ congruente 0}} \\
       & ⇔ f ≡_I 0 \Arrow{\cref{lemma:→^* = ≡}} \\
-      & ⇔ f ↔^*_{≤, G} 0 \Arrow{Al ser $G$ una base de Gröbner $→_{≤, G}$ es confluente y por ende por el \cref{thm:confluente ⇔ Church-Rosser} es Church-Rosser, así que aplico el sii de Church-Rosser} \\
+      & ⇔ f ↔^*_{≤, G} 0 \Arrow{Por el \cref{lemma:→ gröbner es Church-Rosser}, $→_{≤, G}$ es Church-Rosser, definición de Church-Rosser} \\
       & ⇔ f ↓_{≤, G} 0 \Arrow{Definición de $↓$} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{Como $0$ es el mínimo elemento y el \cref{thm:→ achican} dice que las reducciones achican, el segundo término del $∧$ ocurre solo para $f' = 0$} \\
-      & ⇔ f →^*_{≤, G} 0
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{\cref{thm:→ achican}} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' ≤ 0 \Arrow{\cref{lemma:0 es mínimo}} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' = 0 \\
+      & ⇔ f →^*_{≤, G} 0 \text{.}
     \end{DispWithArrows*}
 
-    \item[(2) $⇒$ (1):]
-    Supongamos (2), o sea $∀f ∈ K⟨X⟩ : (f ∈ I ⇔ f →^*_{≤, G} 0)$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente.
+    % \item[(2) $⇒$ (1):]
+    % Supongamos (2), o sea $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente.
 
-    Probemos cada término del $∧$ por separado:
+    % Probemos cada término del $∧$ por separado:
+
+    % \begin{description}
+    %   \item[Prueba de $(G) = I$:] Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
+
+    %   \begin{description}
+    %     \item[Ida ($⇒$):] Supongamos antecedente $f ∈ (G)$.
+
+    %     Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$.
+
+    %     Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$.
+
+    %     Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$.
+
+    %     Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) vale $f ∈ I$.
+
+    %     \item[Vuelta ($⇐$):] Supongamos el antecedente $f ∈ I$.
+
+    %     Por (2) tenemos que $f →^*_{≤, G} 0$.
+
+    %     Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$.
+
+    %     Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$.
+
+    %     Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$.
+
+    %   \end{description}
+
+    %   \item[Prueba de $→_{≤, G}\text{ es confluente}$:]\
+
+    %   Por definición de confluencia alcanza que probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$. En tal caso, vale por lo siguiente:
+
+    %   \begin{DispWithArrows*}
+    %     &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
+    %     & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{lemma:→^* = ≡}} \\
+    %     & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
+    %     & ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
+    %     & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+    %     & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
+    %     & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
+    %   \end{DispWithArrows*}
+    % \end{description}
+
+    \item[(2) $⇒$ (3):] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada termino del $∧$ por separado:
 
     \begin{description}
-      \item[Prueba de $(G) = I$:] Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
-
-      \begin{description}
-        \item[Ida ($⇒$):] Supongamos antecedente $f ∈ (G)$.
-
-        Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$.
-
-        Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$.
-
-        Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$.
-
-        Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) vale $f ∈ I$.
-
-        \item[Vuelta ($⇐$):] Supongamos el antecedente $f ∈ I$.
-
-        Por (2) tenemos que $f →^*_{≤, G} 0$.
-
-        Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$.
-
-        Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$.
-
-        Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$.
-
-      \end{description}
-
-      \item[Prueba de $→_{≤, G}\text{ es confluente}$:]\
-
-      Por definición de confluencia alcanza que probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$.
-
-      Así que tomemos $f, f_0, f_1 ∈ K⟨X⟩$ y probemos el implica yendo de un lado para el otro.
-      \begin{DispWithArrows*}
-        &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
-        & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{lemma:→^* = ≡}} \\
-        & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
-        & ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
-        & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
-        & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
-        & ⇒ f_0 ↓_{≤, G} f_1
-      \end{DispWithArrows*}
+      \item[Prueba de $(G) = I$:] Es cierto porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
+      \item[Prueba de $∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$:] Es cierto por (2).
     \end{description}
 
-    \item[(2) $⇔$ (3):] La ida es claramente cierta y la vuelta $f ∈ I ⇐ f →^*_{≤, G} 0$ es cierta por el \cref{lemma:→^* = ≡}.
+    \item[(3) $⇒$ (1):] Supongamos el antecedente $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente. La parte de $(G) = I$ es valida porque es parte de (3).
+
+    Para lo otro, por definición de confluente, alcanza con probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$. En tal caso, vale por lo siguiente
+
+    \begin{DispWithArrows*}
+      &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
+      & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{lemma:→^* = ≡}} \\
+      & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
+      & ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
+      & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
+      & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
+    \end{DispWithArrows*}
 
     % \item[(2) $⇒$ (4):] Supongamos (2).
 
@@ -779,7 +883,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     % Por (2) tenemos $f →^*_{≤, G} 0$, esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
 
-    \item[(4) $⇒$ (3):] Lo probamos por contradicción, o sea, supongamos que vale (4) y que no vale (3). En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
+    \item[(4) $⇒$ (3):] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es valida porque es parte de (4). Para la otra parte probemoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
     Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
     \begin{itemize}
@@ -845,7 +949,7 @@ Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar 
 Antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
 
 \begin{definition}
-  Sean $m, m', a, b, c, d ∈ ⟨X⟩$, se define:
+  Sean $m, m', a, b, c, d ∈ ⟨X⟩$. Se define
   \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
 
   La ambigüedad $(a, b, c, d, m, m')$ se define como:
@@ -855,9 +959,9 @@ Antes definimos las ambigüedades que representan los polinomios para los cuales
     \item Relevante $⇔$ es de superposición o de inclusión.
   \end{itemize}
 
-  Además, si $f, g ∈ K⟨X⟩$ se se define que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+  Además, si $f, g ∈ K⟨X⟩$ se define que $(a, b, c, d, f, g)$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(g)})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
-  Sea además $F ⊆ K⟨X⟩$.
+  Si además $F ⊆ K⟨X⟩$ se definen:
   \begin{itemize}
     \item $\amb(f, g) = \{(a, b, c, d, f, g) : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, g)\text{ es una ambigüedad}\}$.
     \item $\amb(F) = ⋃_{f, g ∈ F - \{0\}}{\amb(f, g)}$.
@@ -866,7 +970,7 @@ Antes definimos las ambigüedades que representan los polinomios para los cuales
 \end{definition}
 
 \begin{definition}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, se define el S-polinomio de $α$:
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el S-polinomio de $α$ como
   \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(g)}} \text{.}\]
 \end{definition}
 
@@ -875,7 +979,7 @@ Notar que por como es la definición de ambigüedad, siempre es como que hay una
 Ahora vamos a probar que efectivamente los monomios principales se cancelan y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
 
 \begin{theorem}\label{thm:lm ambs}
-  Sean $a, b, c, d ∈ ⟨X⟩$ y $f, g ∈ K⟨X⟩$ entonces si $α = (a, b, c, d, f, g)$ es una ambigüedad tenemos que:
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
   \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \text{.}\]
 \end{theorem}
 \begin{proof}\
@@ -890,7 +994,7 @@ Ahora vamos a probar que efectivamente los monomios principales se cancelan y de
 Eso nos permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, se define el monomio principal de $α$ como:
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
@@ -899,7 +1003,7 @@ Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤(α) = \lm_≤(cgd
 Lo de que los monomios principales se cancelen se enuncia en el siguiente teorema.
 
 \begin{theorem}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \lm_≤(\S(α)) < \lm_≤(α) \text{.}\]
 \end{theorem}
 \begin{proof}
@@ -909,17 +1013,17 @@ Lo de que los monomios principales se cancelen se enuncia en el siguiente teorem
 Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
-  Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad, entonces:
+  Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \S(α) ∈ I \text{.}\]
 \end{lemma}
-  \begin{proof}
+\begin{proof}
   En la definición de $\S$ se ve que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$. En particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$. Como $f, g ∈ I$ y $I$ es un ideal, esa combinación pertenece a $I$.
 \end{proof}
 
 Ahora si damos el anunciado teorema para computar si un conjunto es una base de Gröbner.
 
 \begin{theorem}[Condición de Buchberger]\label{thm:condición de Buchberger}
-  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Son equivalentes:
+  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Entonces son equivalentes:
   \begin{enumerate}
     \item $G$ es una base de Gröbner de $I$.
     \item $∀α ∈ \amb(G) : \S(α) →^*_{≤, G} 0$.
@@ -939,7 +1043,7 @@ El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polin
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente con la siguiente definición.
 
 \begin{definition}
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, se definen las bases de Buchberger como:
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Se definen las bases de Buchberger como:
   \begin{itemize}
     \item $\B_{e_≤}^0(G) = G$.
     \item $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$.
@@ -952,7 +1056,7 @@ El nombre bases de Buchberger es inventado para esta tesis, otros autores no le 
 Con el siguiente teorema se enuncia que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega.
 
 \begin{theorem}\label{thm:Buchberger correctitud}
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ una estrategia de reducción, entonces:
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Entonces
   \begin{enumerate}
     \item $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$.
     \item $(G)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ : (\B_{e_≤}^i(G))$ es una base de Gröbner.
@@ -965,18 +1069,17 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
   $∀i ∈ ℕ : \B_{e_≤}^{i}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Procedemos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$:
+  Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$:
 
   Tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
 
   Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
 
-  Dividimos en casos según ese $∨$:
+  Dividamos en casos según ese $∨$
 
   \begin{description}
     \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
-    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] Tomemos $α$ que satisface el $∃$.
-    Por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
+    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
   \end{description}
 
 \end{proof}
@@ -1005,11 +1108,11 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
 
   Por definición de $\amb$ vale que $α ∈ \amb(\B_{e_≤}^k(G))$, por ende por definición de $\B_{e_≤}^i$ vale que $e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G)$. Esto implica que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0$ y por ende que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0$.
 
-  Combinando eso con que por definición de estrategia de reducción vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
+  Combinando eso con que por definición de reductor vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{proof}
 
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
-  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que (1) queda probado.
+  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que (1), o sea, que $G$ es una base de Gröbner queda probado.
 
   Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ : (\B_{e_≤}^i(G))$ es una base de Gröbner.
 
@@ -1031,7 +1134,7 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
   Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \text{.}\]
 
-  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma:
+  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma.
 
   Por (5) del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
 
@@ -1051,7 +1154,7 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Algoritmo de Buchberger}\label{alg:Buchberger}
-  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ una estrategia de reducción}
+  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ un reductor}
   \KwResult{$B ⊆ K⟨X⟩$ una base de Gröbner de $(G)$ si es que termina}
   $B ← G$
 
@@ -1096,35 +1199,32 @@ La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios a
 Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
 
 \begin{definition}
-Sea $F ⊆ K⟨X⟩$, se define:
-
-\begin{itemize}
-  \item $\spn_K(F) = \{∑_{i = 1}^n c_i f_i : n ∈ ℕ, c_i ∈ K, f_i ∈ F\}$.
-\end{itemize}
+  Sea $F ⊆ K⟨X⟩$. Se define
+  \[ \spn_K(F) = \{∑_{i = 1}^n c_i f_i : n ∈ ℕ, c_i ∈ K, f_i ∈ F\} \text{.} \]
 \end{definition}
 
 \begin{definition}
-Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$, se definen:
+  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se definen:
 
-\begin{itemize}
-  \item $\poli_T : K^n → \spn_K(M)$.
-  \item $\poli_T(v) = ∑_{i = 1}^n v_i m_i$.
-\end{itemize}
+  \begin{itemize}
+    \item $\poli_T : K^n → \spn_K(M)$.
+    \item $\poli_T(v) = ∑_{i = 1}^n v_i m_i$.
+  \end{itemize}
 \end{definition}
 
 \begin{definition}
-Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. $\mat_T$ aplicado a un polinomio se define como la inversa de $\poli_T$:
+  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define $\mat_T$ aplicado a un polinomio como la inversa de $\poli_T$:
 
-\begin{itemize}
-  \item $\mat_T : \spn_K(M) → K^n$.
-  \item $\mat_T(f) = \poli_T^{-1}(f)$.
-\end{itemize}
+  \begin{itemize}
+    \item $\mat_T : \spn_K(M) → K^n$.
+    \item $\mat_T(f) = \poli_T^{-1}(f)$.
+  \end{itemize}
 
-Para una lista de polinomios la función $\mat_T$ produce una matriz:
+  Para una lista de polinomios la función $\mat_T$ produce una matriz:
 
-\begin{itemize}
-  \item $\mat_T(f_1, …, f_m) = \begin{pmatrix} \mat_T(f_1) \\ ⋮ \\ \mat_T(f_m) \end{pmatrix}$.
-\end{itemize}
+  \begin{itemize}
+    \item $\mat_T(f_1, …, f_m) = \begin{pmatrix} \mat_T(f_1) \\ ⋮ \\ \mat_T(f_m) \end{pmatrix}$.
+  \end{itemize}
 \end{definition}
 
 Estas definiciones nos permiten hablar de pasar de polinomios a matrices y viceversa.
@@ -1193,7 +1293,7 @@ Y con esto se puede escribir el algoritmo F4:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{F4}\label{alg:F4}
-  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ una estrategia de reducción}
+  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ un reductor}
   \KwResult{$B ⊆ K⟨X⟩$ una base de Gröbner de $(G)$ si es que termina}
   $B ← G$
 
@@ -1584,7 +1684,7 @@ El orden de los polinomios está definido como \texttt{template<typename K, type
 
 \section{Reducción}
 
-La reducción están implementadas en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de una estrategia de reducción concreta.
+La reducción están implementadas en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto.
 
 Esa reducción concreta lo que hace es siempre tratar de reducir por los primeros elementos del vector primero y tratar de reducir primero los monomios más grandes del polinomio.
 
