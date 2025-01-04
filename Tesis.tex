@@ -47,9 +47,9 @@
 {} % <Theorem head spec (can be left empty, meaning `normal`)
 
 \theoremstyle{customstyle}
-\newtheorem{definition}{Definición}[chapter]
 \newtheorem{theorem}{Teorema}[chapter]
-\newtheorem{lemma}{Lema}[chapter]
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{lemma}[theorem]{Lema}
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
 \renewenvironment{proof}[1][\proofname]{{\noindent \bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
 
