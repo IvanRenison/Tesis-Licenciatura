@@ -114,9 +114,8 @@ Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (qu
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS}, % Está también NCAlgebra, pero no encontré como citarlo
-y sólo una % Creo (Cristian puso un ? cuando lo dijo)
-del algoritmo F4. Esta última fue desarrollada por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} en Python usando SageMath. Como esa implementación está hecha en python y no corre en paralelo, el objetivo original de esta tesis fue implementar en C++ esos algoritmos y hacerlos correr en paralelo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS}. % Está también NCAlgebra, pero no encontré como citarlo
+El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en MAGMA. Luego, Clemens Hofstalder hizo en \cite{thesis:Hof20} su propia implementación en SAGEMATH (su elección de sage la justifica en 6.2). De acuerdo a nuestro conocimiento estas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
@@ -1968,10 +1967,24 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso fue lo que se hizo. En el siguiente capítulo se dan los datos de qué tal anda.
 
+\chapter{ }
 
-\chapter{Benchmarks}
+Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código.
 
-% Agregar datos de que tal anda la paralización y comparado con lo de Hof
+Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en github se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
+
+De los tests hay algunos que corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath} y comparan los resultados, y otros que corren solo código de la librería.
+
+También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testen directamente.
+
+Algunos de los tests al mismo tiempo que testen miden los tiempos para tener benchmarks.
+
+A continuación una descripción de los tests  y benchmarks de cada una de las carpetas de la carpeta \texttt{tests}.
+
+\begin{itemize}
+  \item \texttt{internal\_tests}: Es en donde están todos los tests que son internos, o sea, no comparan con \texttt{operator\_gb} si no que hacen solo cosas de dentro de la librería. En particular, incluye tests de operaciones básicas de monomios, polinomios, reducciones y ambigüedades, y testeos de que el resultado de llamar a las funciones que guardan la construcción de la respuestas sea el mismo que las que no. En esta carpeta no hay nada de benchmarks.
+  \item \texttt{base\_tests}: Es esta carpeta lo que se hace es comprar el resultado de \texttt{./mains/base\_Buchberger.cpp} y \texttt{./mains/base\_F4.cpp}, que toman un conjunto de polinomios y calculan una base de Gröbner del ideal generado por ese conjunto, y se lo compara el resultado con hacer lo mismo usando \texttt{operator\_gb}. La comparación se hace con
+\end{itemize}
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
 
