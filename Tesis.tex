@@ -27,6 +27,7 @@
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily} % Cambia la fuente a monospace
 \usepackage{minted}
+\setminted{autogobble}
 
 \usepackage[capitalise]{cleveref}
 \crefname{section}{Sección}{Secciones} % Para que use "Sección" en vez de "Apartado"
@@ -2010,7 +2011,7 @@ En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
 El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas mide los tiempos que se demora cada uno y los imprime, dando los siguientes tiempos: % No se bien como decir que lo que estoy poniendo es literalmente el output del test
 
-\begin{lstlisting}
+\begin{minted}{text}
   Test Case                      Buch       | F4         | GB
   ----------------------------------------------------------------------
   Nichols2.in                    0.00s      | 0.01s      | 0.82s
@@ -2028,7 +2029,7 @@ El tests que usa los distintos algoritmos para calcular bases de Gröbner de con
   tri7.in                        33.36s     | 1.85s      | 1.48s
   tri8.in                        0.09s      | 0.06s      | 0.94s
   tri9.in                        0.00s      | 0.01s      | 0.84s
-\end{lstlisting}
+\end{minted}
 
 En donde \texttt{Test Case} es el nombre del conjunto generador inicial, \texttt{Buch} es el tiempo con Buchberger, \texttt{F4} es el tiempo con F4 y \texttt{GB} es el tiempo con \texttt{operator\_gb}. A los algoritmos ese es el nombre que le vamos a dar para en resto de la sección, y en las salidas de todos los benchmarks.
 
@@ -2044,7 +2045,7 @@ Este benchmark imprime los tiempos promedios sobre todos los conjuntos generador
 
 Estos son los resultados para los racionales:
 
-\begin{lstlisting}
+\begin{minted}{text}
   Average times:
   Buch: 0.0041429424s
   F4: 0.0105502963s
@@ -2053,18 +2054,18 @@ Estos son los resultados para los racionales:
   Buch: 0.1320753098s
   F4: 0.0925185680s
   GB: 4.6477575302s
-\end{lstlisting}
+\end{minted}
 
 Y estos para los enteros módulo un primo:
 
-\begin{lstlisting}
+\begin{minted}{text}
   Average times:
   Buch_Zp: 0.0028817248s
   F4_Zp: 0.0072190428s
   Max times:
   Buch_Zp: 0.0779249668s
   F4_Zp: 0.0799708366s
-\end{lstlisting}
+\end{minted}
 
 Estos datos igualmente mucho no sirven, porque como lo que hacen es buscar por una cierta cantidad de pasos, los pasos son cosas distintas en los distintos algoritmos, entonces no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
 
@@ -2074,25 +2075,25 @@ Este benchmark se usó principalmente para tenerlo como comparación cuando se h
 
 El tests que prueba que de lo mismo correr con varios hilos que con uno solo lo que hace es correr F4 para conjuntos que se sabe que tienen una base de Gröbner finita con distintas cantidades de hilos, ver que siempre de igual, e imprime los tiempos. Estos son los resultados:
 
-\begin{lstlisting}
-Test Case   1 threads 2 threads 4 threads 6 threads 8 threads 12 threads 16 threads
------------------------------------------------------------------------------------
-Nichols2.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-Nichols3.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-tri1.in     0.09s     0.08s     0.07s     0.07s     0.07s     0.06s      0.06s
-tri10.in    0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
-tri11.in    0.02s     0.02s     0.02s     0.01s     0.01s     0.01s      0.01s
-tri12.in    0.32s     0.27s     0.22s     0.22s     0.20s     0.21s      0.20s
-tri13.in    0.00s     0.00s     0.01s     0.00s     0.00s     0.01s      0.01s
-tri2.in     0.54s     0.43s     0.35s     0.32s     0.31s     0.30s      0.29s
-tri3.in     0.03s     0.03s     0.03s     0.03s     0.03s     0.03s      0.03s
-tri4.in     0.07s     0.06s     0.06s     0.06s     0.06s     0.06s      0.06s
-tri5.in     0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
-tri6.in     2.22s     2.02s     1.84s     1.85s     1.87s     1.76s      1.81s
-tri7.in     2.22s     2.07s     1.90s     1.85s     1.85s     1.83s      1.83s
-tri8.in     0.07s     0.06s     0.06s     0.05s     0.05s     0.05s      0.05s
-tri9.in     0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-\end{lstlisting}
+\begin{minted}{text}
+  Test Case   1 threads 2 threads 4 threads 6 threads 8 threads 12 threads 16 threads
+  -----------------------------------------------------------------------------------
+  Nichols2.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
+  Nichols3.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
+  tri1.in     0.09s     0.08s     0.07s     0.07s     0.07s     0.06s      0.06s
+  tri10.in    0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
+  tri11.in    0.02s     0.02s     0.02s     0.01s     0.01s     0.01s      0.01s
+  tri12.in    0.32s     0.27s     0.22s     0.22s     0.20s     0.21s      0.20s
+  tri13.in    0.00s     0.00s     0.01s     0.00s     0.00s     0.01s      0.01s
+  tri2.in     0.54s     0.43s     0.35s     0.32s     0.31s     0.30s      0.29s
+  tri3.in     0.03s     0.03s     0.03s     0.03s     0.03s     0.03s      0.03s
+  tri4.in     0.07s     0.06s     0.06s     0.06s     0.06s     0.06s      0.06s
+  tri5.in     0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
+  tri6.in     2.22s     2.02s     1.84s     1.85s     1.87s     1.76s      1.81s
+  tri7.in     2.22s     2.07s     1.90s     1.85s     1.85s     1.83s      1.83s
+  tri8.in     0.07s     0.06s     0.06s     0.05s     0.05s     0.05s      0.05s
+  tri9.in     0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
+\end{minted}
 % Esta tabla no está tal cual el output si no que está achicada para que entre, ¿que debería hacer?
 
 Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que es solo la parte de agregar ambigüedades lo que está paralelizado.
@@ -2101,7 +2102,7 @@ Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero
 
 Como ya se mencionó en la \cref{subsection:Reducción más eficiente en F4}, falta hacer usar la reducción por filas de Faugère-Lachartre. Hacer eso sería un trabajo futuro posible. Es medio molesto el poco soporte para las matrices de C++, así que mejorar eso en general podría ser un trabajo futuro posible.
 
-Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay algunas implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que un trabajo futuro muy bueno sería analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que un trabajo futuro muy bueno sería analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
 
 \chapter{Bibliografía}
 
