@@ -1706,11 +1706,11 @@ El orden de los polinomios está definido como \texttt{template<typename K, type
 
 \section{Reducción}
 
-La reducción están implementadas en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto.
+La reducción está implementada en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$.
 
 Esa reducción concreta lo que hace es siempre tratar de reducir por los primeros elementos del vector primero y tratar de reducir primero los monomios más grandes del polinomio.
 
-En el archivo también hay una función \texttt{reduce} que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{true} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
+En el archivo también hay una función \texttt{reduce} (recordar que en C++ se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{true} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
 \section{Ambigüedades}
 
@@ -1771,7 +1771,7 @@ Los campos de esta estructura guardan lo siguiente:
 La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} tiene varios métodos que se usan internamente. Entre todos los métodos son los siguientes:
 
 \begin{itemize}
-  \item \texttt{add\_amb}: Este método simplemente toma una ambigüedad y dos índices y los agrega a la cola de ambigüedades. Siempre que hay que agregar una ambigüedad se hace con este método. El motivo por el cual esto está en un método propio es para después, al implementar la optimización de descartar ambigüedades, poder hacerlo solo en este método.
+  \item \texttt{add\_amb}: Este método simplemente toma una ambigüedad y dos índices, que son los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad, y los agrega a la cola de ambigüedades. Siempre que hay que agregar una ambigüedad se hace con este método. El motivo por el cual esto está en un método propio es para después, al implementar la optimización de descartar ambigüedades, poder hacerlo solo en este método.
   \item \texttt{add\_poly}: Este método agrega un polinomio a \texttt{G} agregando además todas las nuevas ambigüedades que aparecen a la cola de ambigüedades. Cada vez que hay que agregar un nuevo polinomio se usa este método, tanto al comienzo cuando se agregan los polinomios iniciales como cuando se agrega un S-polinomio reducido.
   \item \texttt{next}: Este es el método que corre el algoritmo. Lo principal que hace (después de usar la variable \texttt{t} para ver si tiene que devolver un elemento de \texttt{G}) es sacar ambigüedades de la cola hasta encontrar una que no se reduzca a $0$ y cuando la encuentra la agrega a la base (con \texttt{add\_poly}) y la devuelve. Si se acaban las ambigüedades devuelve vacío (recordar que devuelve \texttt{std::optional<Poly<K, ord>>}).
   \item \texttt{fullBase}: Simplemente lo que hace es llamar a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
@@ -1859,7 +1859,7 @@ Esta optimización no se implementó principalmente por el poco soporte para tra
 
 \section{Construcción de la respuesta}
 
-Como se dijo en el capítulo anterior, la construcción de la respuesta se implementó solo para Buchberger, y no para F4. El motivo de esto es que, como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente, se va a tener que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la construcción de la respuesta.
+Como se dijo en el capítulo anterior, la construcción de la respuesta se implementó solo para Buchberger, y no para F4. El motivo es que, como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente, se va a tener que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la construcción de la respuesta.
 
 Como se explicó en la \cref{section:construcción de la respuesta (librería)}, para la construcción de la respuesta se usa el tipo \texttt{InIdealPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
 
@@ -1879,7 +1879,7 @@ A diferencia de los polinomios comunes, acá \texttt{terms} no se mantiene orden
 
 Con \texttt{InIdealPoly} se hizo la estructura \texttt{BuchbergerIncrementalReconstruct}, que es muy parecida a \texttt{BuchbergerIncremental} pero con algunos agregados, y se hicieron versiones \texttt{Reconstruct} de las funciones que se usan.
 
-Para las reducciones se hizo una función con esta signatura:
+Para las reducciones se implementó una función que toma, por referencia, un polinomio $f$, reduce in place a su forma normal $f^*$ y devuelve la diferencia $f - f^*$ como un \texttt{InIdealPoly}. La signatura es:
 
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
@@ -1887,9 +1887,7 @@ Para las reducciones se hizo una función con esta signatura:
   reduceReconstruct(Poly<K, X, ord>& f, const std::vector<Poly<K, X, ord>>& G, const std::vector<InIdealPoly<K, X, ord>>& g_rec);
 \end{minted}
 
-La cual modifica a \texttt{f} y devuelve qué habría que restarle a la \texttt{f} original para obtener la \texttt{f} reducida.
-
-También se hizo una versión de la función de los S-polinomios:
+También se hizo una versión de la función de los S-polinomios, que toma la ambigüedad y los polinomios correspondientes $f$ y $g$ y devuelve, además del S-polinomio $p$, los los monomios $a$, $b$, $a'$ y $b'$ y los elementos del cuerpo $c$ y $c'$, que hacen que $p = c a f b + c' a' f b'$.
 
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
@@ -1897,11 +1895,9 @@ También se hizo una versión de la función de los S-polinomios:
   S_polyReconstruct(const Amb<X>& amb, const Poly<K, X, ord>& f, const Poly<K, X, ord>& g);
 \end{minted}
 
-Que devuelve, además del S-polinomio, qué hay que multiplicarle a \texttt{f} y a \texttt{g}.
+Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio de \texttt{G}.
 
-Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio.
-
-A los elementos iniciales simplemente se agregan como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los que vienen de un S-polinomio se construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que forman la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con los de la reducción.
+En este campo \texttt{G\_rec}, a los elementos iniciales simplemente se los agrega como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los elementos que vienen de un S-polinomio se les construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que forman la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con el \texttt{InIdealPoly} de la reducción que devuelve la función \texttt{reduceReconstruct}.
 
 \section{Paralelismo}
 
