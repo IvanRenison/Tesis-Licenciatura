@@ -2099,9 +2099,11 @@ Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
 
-Como ya se mencionó en la \cref{subsection:Reducción más eficiente en F4}, falta hacer hacer lo de usar la reducción por filas de Faugère-Lachartre. Eso sería un trabajo futuro posible. Es medio molesto el poco soporte para las matrices de C++, así que mejorar eso en general podría ser un trabajo futuro posible.
+Como ya se mencionó en la \cref{subsection:Reducción más eficiente en F4}, falta hacer hacer lo de usar la reducción por filas de Faugère-Lachartre. Eso sería un trabajo futuro posible. Es medio molesto el poco soporte para las matrices de C++, así que mejorar eso en general podría ser trabajo futuro posible.
 
-Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que un trabajo futuro muy bueno sería analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que como trabajo futuro muy bueno se podría analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+
+También, algo que se podría hacer, es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
 
 \chapter{Bibliografía}
 
