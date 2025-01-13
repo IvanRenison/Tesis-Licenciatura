@@ -244,7 +244,7 @@ En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 De lo que es un poco más complicado hablar acá es de el resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, sino que con que satisfaga la siguiente definición alcanza.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no hace falta fijar uno concreto, sino que con que satisfaga la siguiente definición alcanza.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
@@ -421,7 +421,7 @@ Los ideales son básicamente conjuntos cerrados por la suma y por el producto po
 Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
 
 \begin{definition}\label{def:congruencia mod ideal}
-  Sean $R$ un anillo e $I ⊆ R$. Se define $≡_I$ como relación en $R$ así:
+  Sean $R$ un anillo e $I ⊆ R$. Se define la relación $≡_I$ en $R$ así:
   \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
 \end{definition}
 
@@ -494,7 +494,7 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
 Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
 \begin{definition}\label{def:reducciones}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacione $→_{≤, G}$ del siguiente modo:
+  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacion $→_{≤, G}$ del siguiente modo:
   \[ f →_{≤, G} f' ⇔ ∃a, b ∈ ⟨X⟩, g ∈ G : \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \text{.} \]
   Y cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
 \end{definition}
@@ -866,7 +866,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
       & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{lemma:→^* = ≡}} \\
       & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
-      & ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
+      & ⇒ f_0 - f_1 ∈ (G) \Arrow{Antecedente} \\
       & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
       & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
       & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
@@ -1000,7 +1000,7 @@ Ahora vamos a probar que efectivamente los monomios principales se cancelan y de
     &\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\
     & = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
     & = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
-    & = \lm_≤{(cgd)}
+    & = \lm_≤{(cgd)} \text{.}
   \end{DispWithArrows*}
 \end{proof}
 
@@ -1156,7 +1156,7 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
   \begin{DispWithArrows*}
     &f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
     & = ∑_{i = 1}^{n'} a'_i (∑_{j = 1}^{k_{i'_i}} a_{i', j} g_{i, j} b_{i', j}) b'_i \\
-    & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i
+    & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i \text{.}
   \end{DispWithArrows*}
 
   Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$.
