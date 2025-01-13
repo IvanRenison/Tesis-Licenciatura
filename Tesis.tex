@@ -115,7 +115,7 @@ Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (qu
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en MAGMA. Luego, Clemens Hofstalder hizo en \cite{thesis:Hof20} su propia implementación en SAGEMATH (su elección de sage la justifica en 6.2). De acuerdo a nuestro conocimiento estas son las únicas dos implementaciones de F4 para el caso no conmutativo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en MAGMA. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SAGEMATH (su elección de sage la justifica en 6.2). De acuerdo a nuestro conocimiento estas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
 
@@ -308,7 +308,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
 \begin{definition}\label{def:cosas de polinomios}
   Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial. Se definen:
   \begin{itemize}
-    \item el coeficiente de $w$ en $f$ como $f_w = \left\{\begin{array}{ll} w = w_i → c_i \\ \text{si no} → 0  \end{array} \right.$.
+    \item el coeficiente de $w$ en $f$ como $f_w = \begin{cases} w = w_i → c_i \\ \text{si no} → 0  \end{cases} $.
     \item el soporte de $f$ como el conjunto $\sop(f) = \{w_1, …, w_n\}$.
     \item el monomio principal de $f$ como $\lm_≤(f) = \max_≤(\sop(f))$.
     \item el coeficiente principal de $f$ como $\lc_≤(f) = f_{\lm(f)}$.
@@ -1449,9 +1449,7 @@ Respecto a la representación como strings, hay dos pares de métodos. Por un la
 
 El formato numérico consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
 
-\begin{lstlisting}[escapechar=+]
-  +$n$+ +$x_1$+ +$⋯$+ +$x_n$+
-\end{lstlisting}
+$\begin{array}{llll} n & x_1 & ⋯ & x_n \end{array}$
 
 Por ejemplo, acá hay un monomio en el formato como se suelen escribir a mano:
 
@@ -1523,12 +1521,12 @@ Al igual que con los monomios, para la representación como strings, hay dos par
 
 El formato numérico consiste en, primero, un número entero no negativo $m$ (la cantidad de términos), seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. Se puede representar así el formato:
 
-\begin{lstlisting}[escapechar=+]
-  +$m$+
-  +$c_1$+ +$n_1$+ +$x_{1, 1}$+ +$⋯$+ +$x_{1, n_1}$+
-  +$⋮$+
-  +$c_m$+ +$n_m$+ +$x_{m, 1}$+ +$⋯$+ +$x_{m, n_m}$+
-\end{lstlisting}
+$\begin{array}{llllll}
+  m &&&& \\
+  c_1 & n_1 & x_{1, 1} & ⋯ & x_{1, n_1} \\
+  ⋮ &&&& \\
+  c_m & n_m & x_{m, 1} & ⋯ & x_{m, n_m}
+\end{array}$
 
 Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
 
@@ -1976,7 +1974,7 @@ Siempre que se programa, para que salga bien hay que testear todo, y este trabaj
 
 Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en github se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
 
-De los tests hay algunos que corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstalder en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath} y comparan los resultados, y otros que corren solo código de la librería.
+De los tests hay algunos que corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath} y comparan los resultados, y otros que corren solo código de la librería.
 
 También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testen directamente.
 
