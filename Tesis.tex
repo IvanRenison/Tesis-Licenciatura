@@ -125,7 +125,7 @@ Toda esta exposición es autocontenida para facilitar su lectura, así que se in
 
 En este capítulo se desarrolla toda la parte matemática, basándonos principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capítulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capitulo se puede leer por encima.
+El capítulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capítulo se puede leer por encima.
 
 \section{Sistemas de re-escritura}
 
@@ -1624,6 +1624,15 @@ Para F4 esto no está implementado (en el siguiente capítulo se explica más de
 
 Por último, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
 
+\section{Paralelismo} % O paralelización?
+
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer el el código corra en paralelo.
+
+La paralelización está hechoa con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para hacer cosas en paralelo, así que para que corra en paralelo es igual que en cualquier otra cosa paralelizada con OpenMP.
+
+Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag esté puesto en la configuración del makefile para cuando se compilan los ejemplos y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
+
+
 \section{Ejemplo}
 
 Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del archivo \texttt{mains/base\_Buchberger.cpp}:
@@ -1894,9 +1903,7 @@ Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó 
 
 A los elementos iniciales simplemente se agregan como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los que vienen de un S-polinomio se construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que forman la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con los de la reducción.
 
-\chapter{Paralelismo}
-
-Como ya se dijo, uno de los objetivos fue tratar de paralelizar el cálculo de bases de Gröbner no conmutativas para que sea más rápido.
+\section{Paralelismo}
 
 Cuando se va a paralelizar algo siempre es importante primero tratar de optimizar la versión no paralela lo más posible. En este caso lo mejor no paralelo es el algoritmo F4, pero como no está implementada la optimización de la reducción eficiente, no está todavía optimizada al máximo la versión no paralela. De cualquier manera, como la reducción de matrices es solo una parte del algoritmo, se puede pensar cómo se podría paralelizar el resto.
 
@@ -1962,15 +1969,13 @@ El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría
 
 Con esto el primer \texttt{for} se puede paralelizar directamente.
 
-\section{Uso de OpenMP para paralelizar}
+\subsection{Uso de OpenMP para paralelizar}
 
 Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso fue lo que se hizo. En el siguiente capítulo se dan los datos de qué tal anda.
 
-\chapter{Tests y benchmarks}
-
-Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En este capítulo se explican los tests y benchmarks que se hicieron.
-
 \section{Tests}
+
+Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en github se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
 
@@ -1985,14 +1990,14 @@ A continuación una lista de algunas de las cosas (las mas importantes) que est�
 \begin{itemize}
   \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \texttt{test/internal\_tests}.
   \item Para algunos conjuntos generadores que se sabe que tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y compara los resultados usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no. Esto test está en la carpeta \texttt{test/base\_tests}.
-  \item Para algunos conjuntos generadores generados al azar se genera otro polinomio al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del calculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno de los tres da que si está en el ideal y otros no se ejecutan los que no con muchísimos mas pasos, cosa de que tenga que terminar si o si (porque supuestamente si está porque alguno dio que si está). Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Para algunos conjuntos generadores generados al azar se genera otro polinomio al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno de los tres da que si está en el ideal y otros no se ejecutan los que no con muchísimos mas pasos, cosa de que tenga que terminar si o si (porque supuestamente si está porque alguno dio que si está). Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
   \item Con lo de la reconstrucción de la respuesta y la representación de un polinomio en un ideal, hay un test que corre los algoritmos con y sin reconstrucción de la respuesta y se fija que el resultado de con reconstrucción después de convertirlo en un polinomio normal sea igual al resultado sin reconstrucción. Este test está en la carpeta \texttt{test/reconstruction\_tests}.
   \item Por último hay un tests que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de igual. Esto está en la carpeta \texttt{test/parallelism\_tests}.
 \end{itemize}
 
-\section{Benchmarks}
+\chapter{Benchmarks}
 
-Cuando se corren los tests, los que tienen además benchmarks imprimen los resultados de los benchmarks. En está sección se presentan esos resultados.
+Cuando se corren los tests, los que tienen además benchmarks imprimen los resultados de los benchmarks. En este capítulo se presentan esos resultados.
 
 Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguientes características:
 
@@ -2005,7 +2010,7 @@ De cualquier manera esos datos no son muy importantes porque lo que importa es l
 
 En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
-\subsection{Conjuntos con bases de Gröbner finitas}
+\section{Conjuntos con bases de Gröbner finitas}
 
 El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas mide los tiempos que se demora cada uno y los imprime, dando los siguientes tiempos: % No se bien como decir que lo que estoy poniendo es literalmente el output del test
 
@@ -2035,7 +2040,7 @@ Lo que se puede ver es que para los tests en los que más rápido andan, Buch y 
 
 Estos benchmarks son solo para los racionales porque los conjuntos que se sabe que tienen base finita que se encontraron eran para el cuerpo de los racionales.
 
-\subsection{Pertenencia a ideales}
+\section{Pertenencia a ideales}
 
 Los tests que hacen lo de para conjuntos generadores generados al azar y polinomios generados al azar ver con los distintos algoritmos si el polinomio está en el ideal generado o no también miden los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con GB y para los enteros módulo un primo no, porque GB es solo para racionales.
 
@@ -2069,7 +2074,7 @@ Estos datos igualmente mucho no sirven, porque como lo que hacen es buscar por u
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
-\subsection{Paralelismo}
+\section{Paralelismo}
 
 El tests que prueba que de lo mismo correr con varios hilos que con uno solo lo que hace es correr F4 para conjuntos que se sabe que tienen una base de Gröbner finita con distintas cantidades de hilos, ver que siempre de igual, e imprime los tiempos. Estos son los resultados:
 
