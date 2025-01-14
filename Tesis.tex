@@ -1593,9 +1593,9 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
 
 \begin{minted}{C++}
   enum IdealMembershipStatus {
-    InIdeal,    // The element is definitely in the ideal
-    NotInIdeal, // The element is definitely not in the ideal
-    Unknown     // More steps are needed to determine if the element is in the ideal
+    InIdeal,   // The element is definitely in the ideal
+    NotInIdeal,// The element is definitely not in the ideal
+    Unknown    // More steps are needed to determine if the element is in the ideal
   };
 \end{minted}
 
@@ -1834,7 +1834,9 @@ En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una funci
 
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
-  bool checkDeletionCriteria(std::vector<Poly<K, X, ord>>& G, Amb<X>& amb, size_t i, size_t j)
+  bool
+  checkDeletionCriteria(
+    std::vector<Poly<K, X, ord>>& G, Amb<X>& amb, size_t i, size_t j);
 \end{minted}
 
 Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
@@ -1886,15 +1888,21 @@ Para las reducciones se implementó una función que toma, por referencia, un po
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
   InIdealPoly<K, X, ord>
-  reduceReconstruct(Poly<K, X, ord>& f, const std::vector<Poly<K, X, ord>>& G, const std::vector<InIdealPoly<K, X, ord>>& g_rec);
+  reduceReconstruct(
+    Poly<K, X, ord>& f, const std::vector<Poly<K, X, ord>>& G,
+    const std::vector<InIdealPoly<K, X, ord>>& g_rec);
 \end{minted}
 
 También se hizo una versión de la función de los S-polinomios, que toma la ambigüedad y los polinomios correspondientes $f$ y $g$ y devuelve, además del S-polinomio $p$, los los monomios $a$, $b$, $a'$ y $b'$ y los elementos del cuerpo $c$ y $c'$, que hacen que $p = c a f b + c' a' f b'$.
 
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
-  std::tuple<Poly<K, X, ord>, std::tuple<Monomial<X>, Monomial<X>, K>, std::tuple<Monomial<X>, Monomial<X>, K>>
-  S_polyReconstruct(const Amb<X>& amb, const Poly<K, X, ord>& f, const Poly<K, X, ord>& g);
+  std::tuple<
+    Poly<K, X, ord>,
+    std::tuple<Monomial<X>, Monomial<X>, K>,
+    std::tuple<Monomial<X>, Monomial<X>, K>>
+  S_polyReconstruct(
+    const Amb<X>& amb, const Poly<K, X, ord>& f, const Poly<K, X, ord>& g);
 \end{minted}
 
 Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio de \texttt{G}.
