@@ -17,7 +17,7 @@
 
 \hfuzz=50pt % Elimina warnings de "Overfull \hbox"
 
-\usepackage[margin=2cm]{geometry} % Adjust the margin values as desired
+\usepackage[margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
 \usepackage[ruled, vlined, linesnumbered]{algorithm2e}
@@ -36,6 +36,8 @@
 \addbibresource{biblio.bib}
 
 \setlist[enumerate,1]{label={\em{(\arabic*)}}}
+
+\pagenumbering{gobble} % Eliminar los números de página, porque con margen inferior de un centímetro el número queda medio afuera, y además todos los lectores de PDF te dicen en que número de página estás
 
 \newtheoremstyle{customstyle} % <name>
 {} % <Space above>
