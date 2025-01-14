@@ -13,6 +13,14 @@
 \usepackage{witharrows}
 \WithArrowsOptions{displaystyle,i,tikz={font={\small\normalfont}},ygap=0.5em,wrap-lines} % Agregar fleqn para que se ponga a la izquierda
 
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}  % Estilo del título
+  {Capítulo \thechapter}                 % Número del capítulo
+  {20pt}                        % Espacio entre el número y el título
+  {}                            % Formato del título
+\titlespacing*{\chapter}{0pt}{-15pt}{25pt}  % Ajusta los márgenes
+
 \DeclareEmphSequence{\bfseries}
 
 \hfuzz=50pt % Elimina warnings de "Overfull \hbox"
