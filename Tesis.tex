@@ -39,6 +39,10 @@
 
 \pagenumbering{gobble} % Eliminar los números de página, porque con margen inferior de un centímetro el número queda medio afuera, y además todos los lectores de PDF te dicen en que número de página estás
 
+\usepackage{pgfplots} % Para los gráficos
+%\pgfplotsset{compat=1.18}
+%\usepackage{pgfplotstable}
+
 \newtheoremstyle{customstyle} % <name>
 {} % <Space above>
 {} % <Space below>
@@ -2014,33 +2018,40 @@ Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguien
 
 De cualquier manera esos datos no son muy importantes porque lo que importa es la relación entre los tiempos de las distintas cosas.
 
+Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de python. Para medir los tiempos lo que se hace es medirlos desde el programa de python, por lo cual incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de que imprime la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+
 En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
-\section{Conjuntos con bases de Gröbner finitas}
+\section{Conjuntos con bases de Gröbner finitas}\label{section:Conjuntos con bases de Gröbner finitas}
 
-El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas mide los tiempos que se demora cada uno y los imprime, dando los siguientes tiempos: % No se bien como decir que lo que estoy poniendo es literalmente el output del test
+El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos familias, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa y los \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
 
-\begin{minted}{text}
-  Test Case                      Buch       | F4         | GB
-  ----------------------------------------------------------------------
-  Nichols2.in                    0.00s      | 0.01s      | 0.82s
-  Nichols3.in                    0.00s      | 0.01s      | 0.81s
-  tri1.in                        0.26s      | 0.08s      | 0.98s
-  tri10.in                       0.01s      | 0.01s      | 0.86s
-  tri11.in                       0.03s      | 0.02s      | 0.90s
-  tri12.in                       3.27s      | 0.21s      | 1.04s
-  tri13.in                       0.01s      | 0.01s      | 0.85s
-  tri2.in                        6.00s      | 0.30s      | 1.19s
-  tri3.in                        0.02s      | 0.26s      | 0.92s
-  tri4.in                        0.04s      | 0.07s      | 0.96s
-  tri5.in                        0.01s      | 0.02s      | 0.89s
-  tri6.in                        6.54s      | 1.79s      | 1.30s
-  tri7.in                        33.36s     | 1.85s      | 1.48s
-  tri8.in                        0.09s      | 0.06s      | 0.94s
-  tri9.in                        0.00s      | 0.01s      | 0.84s
-\end{minted}
+En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
 
-En donde \texttt{Test Case} es el nombre del conjunto generador inicial, \texttt{Buch} es el tiempo con Buchberger, \texttt{F4} es el tiempo con F4 y \texttt{GB} es el tiempo con \texttt{operator\_gb}. A los algoritmos ese es el nombre que le vamos a dar para en resto de la sección, y en las salidas de todos los benchmarks.
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar, % Tipo de gráfico: barras verticales
+      width=\textwidth,
+      height=0.4\textwidth,
+      bar width=0.01\textwidth, % Ancho de cada barra
+      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
+      xtick=data, % Mostrar marcas en el eje x para cada dato
+      ylabel={Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel={Categorías}, % Etiqueta del eje x
+      xticklabel style={rotate=45}, % Rotar etiquetas
+      ymin=0, % Mínimo del eje y
+      ymax=34, % Máximo del eje y
+      %enlarge x limits=0.2, % Espaciado en los bordes
+      %legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1}, % Estilo de la leyenda
+      legend entries={Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
+      cycle list={{brown,fill=brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01)};
+    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01)};
+    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85)};
+  \end{axis}
+\end{tikzpicture}
 
 Lo que se puede ver es que para los tests en los que más rápido andan, Buch y F4 andan mucho más rápido que GB, pero para los mas lentos GB es más rápido. Tiene sentido que para los rápidos Buch y F4 sean más rápidos porque C++ es más rápido que Python, y que para los mas grandes el hecho de que GB tenga implementada la optimización de la reducción de matrices mas eficiente haga la diferencia.
 
@@ -2082,28 +2093,36 @@ Este benchmark se usó principalmente para tenerlo como comparación cuando se h
 
 \section{Paralelismo}
 
-El tests que prueba que de lo mismo correr con varios hilos que con uno solo lo que hace es correr F4 para conjuntos que se sabe que tienen una base de Gröbner finita con distintas cantidades de hilos, ver que siempre de igual, e imprime los tiempos. Estos son los resultados:
+El tests que prueba que de lo mismo correr con varios hilos que con uno solo lo que hace es correr F4 para conjuntos que se sabe que tienen una base de Gröbner finita con distintas cantidades de hilos también mide los tiempos y uso los mismos casos que los del la \cref{section:Conjuntos con bases de Gröbner finitas}. En la siguiente tabla están los datos de los resultados.
 
-\begin{minted}{text}
-  Test Case   1 threads 2 threads 4 threads 6 threads 8 threads 12 threads 16 threads
-  -----------------------------------------------------------------------------------
-  Nichols2.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-  Nichols3.in 0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-  tri1.in     0.09s     0.08s     0.07s     0.07s     0.07s     0.06s      0.06s
-  tri10.in    0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
-  tri11.in    0.02s     0.02s     0.02s     0.01s     0.01s     0.01s      0.01s
-  tri12.in    0.32s     0.27s     0.22s     0.22s     0.20s     0.21s      0.20s
-  tri13.in    0.00s     0.00s     0.01s     0.00s     0.00s     0.01s      0.01s
-  tri2.in     0.54s     0.43s     0.35s     0.32s     0.31s     0.30s      0.29s
-  tri3.in     0.03s     0.03s     0.03s     0.03s     0.03s     0.03s      0.03s
-  tri4.in     0.07s     0.06s     0.06s     0.06s     0.06s     0.06s      0.06s
-  tri5.in     0.01s     0.01s     0.01s     0.01s     0.01s     0.01s      0.01s
-  tri6.in     2.22s     2.02s     1.84s     1.85s     1.87s     1.76s      1.81s
-  tri7.in     2.22s     2.07s     1.90s     1.85s     1.85s     1.83s      1.83s
-  tri8.in     0.07s     0.06s     0.06s     0.05s     0.05s     0.05s      0.05s
-  tri9.in     0.00s     0.00s     0.00s     0.00s     0.00s     0.00s      0.00s
-\end{minted}
-% Esta tabla no está tal cual el output si no que está achicada para que entre, ¿que debería hacer?
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar, % Tipo de gráfico: barras verticales
+      width=\textwidth,
+      height=0.4\textwidth,
+      bar width=0.003\textwidth,
+      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
+      xtick=data, % Mostrar marcas en el eje x para cada dato
+      ylabel={Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel={Cantidad de hilos}, % Etiqueta del eje x
+      xticklabel style={rotate=45}, % Rotar etiquetas
+      ymin=0, % Mínimo del eje y
+      ymax=2.25, % Máximo del eje y
+      %enlarge x limits=0.2, % Espaciado en los bordes
+      %legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1}, % Estilo de la leyenda
+      legend entries={1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
+      %cycle list={{brown,fill=brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.09) (tri2, 0.54) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.22) (tri7, 2.22) (tri8, 0.07) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.08) (tri2, 0.43) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 2.02) (tri7, 2.07) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.27) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.35) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.84) (tri7, 1.90) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.22) (tri13, 0.01)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.85) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.87) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.06) (tri2, 0.29) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.81) (tri7, 1.83) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.01)};
+  \end{axis}
+\end{tikzpicture}
+
 
 Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que es solo la parte de agregar ambigüedades lo que está paralelizado.
 
