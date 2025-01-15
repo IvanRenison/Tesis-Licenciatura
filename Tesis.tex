@@ -47,11 +47,10 @@
 
 \setlist[enumerate,1]{label={\em{(\arabic*)}}}
 
-\pagenumbering{gobble} % Eliminar los números de página, porque con margen inferior de un centímetro el número queda medio afuera, y además todos los lectores de PDF te dicen en que número de página estás
+\usepackage{fancyhdr}
+\setlength{\footskip}{0.6cm} % Evita que los números de página se salgan de la página
 
 \usepackage{pgfplots} % Para los gráficos
-%\pgfplotsset{compat=1.18}
-%\usepackage{pgfplotstable}
 
 \newtheoremstyle{customstyle} % <name>
 {} % <Space above>
@@ -114,6 +113,8 @@
 % i, j: índices
 
 \begin{document}
+
+\tableofcontents
 
 \chapter{Introducción}
 
