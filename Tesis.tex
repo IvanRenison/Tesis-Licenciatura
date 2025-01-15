@@ -504,7 +504,7 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
   \end{description}
 \end{proof}
 
-\section{Reducción de polinomios y bases de Gröbner} % Separar
+\section{Reducción de polinomios}
 
 Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
@@ -723,24 +723,6 @@ Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no
 
 \noindent Pero ninguno monomio principal de $G$ divide a ninguno monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
 
-Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes. En particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
-
-\begin{definition}\label{def:base de Gröbner}
-  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
-  \[G\text{ es una base de Gröbner de }I ⇔ (G) = I ∧ →_{≤, G}\text{ es confluente} \text{.} \]
-  Además se dice que ``$G$ es una base de Gröbner'' si lo es de algún ideal.
-\end{definition}
-
-Una consecuencia directa de la definición es el siguiente lema.
-
-\begin{lemma}\label{lemma:→ gröbner es Church-Rosser}
-  Sea $G$ una base de Gröbner. Entonces
-  \[→_{≤, G}\text{ es Church-Rosser.}\]
-\end{lemma}
-\begin{proof}
-  Es una aplicación directa del \cref{thm:confluente ⇔ Church-Rosser}.
-\end{proof}
-
 Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
 \begin{definition}\label{def:reductor}
@@ -792,6 +774,26 @@ Una propiedad sobre los reductores que vamos a necesitar es que mantienen la per
   Es consecuencia directa de la definición y del \cref{thm:→ mantiene pertenencia a ideal}.
 \end{proof}
 
+\section{Bases de Gröbner}
+
+Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes. En particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+
+\begin{definition}\label{def:base de Gröbner}
+  Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
+  \[G\text{ es una base de Gröbner de }I ⇔ (G) = I ∧ →_{≤, G}\text{ es confluente} \text{.} \]
+  Además se dice que ``$G$ es una base de Gröbner'' si lo es de algún ideal.
+\end{definition}
+
+Una consecuencia directa de la definición es el siguiente lema.
+
+\begin{lemma}\label{lemma:→ gröbner es Church-Rosser}
+  Sea $G$ una base de Gröbner. Entonces
+  \[→_{≤, G}\text{ es Church-Rosser.}\]
+\end{lemma}
+\begin{proof}
+  Es una aplicación directa del \cref{thm:confluente ⇔ Church-Rosser}.
+\end{proof}
+
 Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero van a ser mucho más cómodas de trabajar usando las siguientes equivalencias.
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
@@ -807,7 +809,6 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n a_i g_i b_i$.
   \end{enumerate}
-
 \end{theorem}
 \begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (3), (3) $⇒$ (1), (3) $⇒$ (2), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
   \begin{description}
