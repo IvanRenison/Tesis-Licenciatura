@@ -42,6 +42,7 @@
 
 \usepackage[backend=biber, autolang=hyphen, bibencoding=inputenc, isbn=false, uniquename=false, style=alphabetic]{biblatex}
 \addbibresource{biblio.bib}
+% Página para buscar citas: zbmath.org
 
 \setlist[enumerate,1]{label={\em{(\arabic*)}}}
 
@@ -2032,7 +2033,7 @@ En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
 \section{Conjuntos con bases de Gröbner finitas}\label{section:Conjuntos con bases de Gröbner finitas}
 
-El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos familias, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa y los \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
+El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos grupos por así decirlo, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y los \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
 
 En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
 
@@ -2042,22 +2043,22 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
       width=\textwidth,
       height=0.4\textwidth,
       bar width=0.01\textwidth, % Ancho de cada barra
-      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
+      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
       xtick=data, % Mostrar marcas en el eje x para cada dato
       ylabel={Tiempo en segundos}, % Etiqueta del eje y
       %xlabel={Categorías}, % Etiqueta del eje x
       xticklabel style={rotate=45}, % Rotar etiquetas
       ymin=0, % Mínimo del eje y
-      ymax=34, % Máximo del eje y
+      ymax=214, % Máximo del eje y
       %enlarge x limits=0.2, % Espaciado en los bordes
-      %legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1}, % Estilo de la leyenda
+      %legend style={anchor=north west}, % Estilo de la leyenda
       legend entries={Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list={{brown,fill=brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
   ]
     % Datos para cada conjunto
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01)};
-    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01)};
-    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (trit3, 0.01) (trit4, 0.14) (trit5, 77.04)};
+    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
+    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
   \end{axis}
 \end{tikzpicture}
 
