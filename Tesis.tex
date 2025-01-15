@@ -39,6 +39,7 @@
 
 \usepackage[capitalise]{cleveref}
 \crefname{section}{Sección}{Secciones} % Para que use "Sección" en vez de "Apartado"
+\crefname{subsection}{Subsección}{Subsecciones} % Para que use "Subsección" en vez de "Subapartado"
 
 \usepackage[backend=biber, autolang=hyphen, bibencoding=inputenc, isbn=false, uniquename=false, style=alphabetic]{biblatex}
 \addbibresource{biblio.bib}
@@ -138,17 +139,15 @@ Toda esta exposición es autocontenida para facilitar su lectura, así que se in
 
 \chapter{Preliminares}\label{cap:Preliminares}
 
-En este capítulo se desarrolla toda la parte matemática, basándonos principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y teoremas de anillos y se definen las bases de Gröbner y por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
+En este capítulo se desarrolla toda la parte matemática, basada principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y propiedades de anillos y se definen las bases de Gröbner. Por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capítulo incluye demostraciones de muchos de los teoremas, pero son salteables. En una primera lectura se pueden saltear tranquilamente, y en general todo el capítulo se puede leer por encima.
+El capítulo incluye demostraciones de muchos de los resultados expuestos pero quienes tengan interés principalmente en la implementación de los algoritmos pueden obviar su lectura o leerlo solo por encima.
 
 \section{Sistemas de re-escritura}
 
-En esta sección se dan algunas definiciones y teoremas básicos de sistemas de re-escritura.
+Sistemas de re-escritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque se tiene la idea de que se \textsl{usa} la relación para convertir el objeto de la base de la flecha en el objeto de la punta de la flecha. Como recordatorio, una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ un subconjunto de $A^2$.
 
-Sistemas de re-escritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general vamos a usar relaciones denotadas con algún símbolo con forma de flecha porque está la idea de que se \textsl{usa} la relación para convertir el objeto de la izquierda en el objeto de la derecha. Como recordatorio: una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ un subconjunto de $A^2$.
-
-Para toda esta sección fijemos un conjunto $A$. Primero algunas operaciones muy comunes sobre relaciones.
+Para toda esta sección fijemos un conjunto $A$. Primero recordamos algunas operaciones muy comunes sobre relaciones.
 
 \begin{definition}\label{def:operaciones relaciones}
   Dadas relaciones $→$ y $⟿$ sobre $A$ se define:
@@ -161,12 +160,23 @@ Para toda esta sección fijemos un conjunto $A$. Primero algunas operaciones muy
     \item $↔\ =\ → ∪ ←$.
   \end{itemize}
 
-  Con $←$ y $↔$ podría haber problema para usarlas con una relación denotada por un símbolo que no tenga forma de flecha, pero en esta tesis las relaciones que se usan siempre se denotan con un símbolo con forma de flecha.
+  Con está definición se define automáticamente también $↔^*$ que se llama la clausura reflexiva y transitiva de $→$.
 \end{definition}
 
-Con está definición se define automáticamente también $↔^*$ que se llama la clausura reflexiva y transitiva de $→$.
+Con $←$ y $↔$ podría haber problema para usarlas con una relación denotada por un símbolo que no tenga forma de flecha, pero en esta tesis las relaciones que se usan siempre se denotan con un símbolo con forma de flecha.
 
-Para el resto de la sección fijemos una relación $→$ sobre $A$.
+Para el resto de la sección fijemos una relación $→$ sobre $A$. Tenemos los siguientes dos lemas.
+
+\begin{lemma}\label{lemma:→* como ∃}
+  Sean $a, b ∈ A$. Entonces
+  \[ a →^* b ⇔ ∃n ∈ ℕ ∪ \{0\}, x_0, …, x_n ∈ A : x_0 = a ∧ x_n = b ∧ ∀i ∈ {1, …, n} : x_{i-1} → x_i \text{.}\]
+  \qed
+\end{lemma}
+
+\begin{lemma}\label{lemma:↔* min equiv que contiene a →}
+  $↔^*$ es la mínima relación de equivalencia que contiene a $→$.
+  \qed
+\end{lemma}
 
 Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se puede más.
 
@@ -178,9 +188,9 @@ Como vamos a hablar de usar $→$ para transformar un objeto en otro, es útil l
     \item $a$ tiene forma normal $⇔ ∃x ∈ A : x$ es forma normal de $a$.
     \item $a ↓ b ⇔ ∃x ∈ A : a →^* x ∧ b →^* x$.
   \end{itemize}
-
-  Con $↓$ pasa lo mismo que con $←$ y $↔$ de que podría ser problemático usarla para una relación denotada con un símbolo que no tenga forma de flecha, pero en esta tesis eso no pasa.
 \end{definition}
+
+Con $↓$ pasa lo mismo que con $←$ y $↔$ de que podría ser problemático usarla para una relación denotada con un símbolo que no tenga forma de flecha, pero en esta tesis eso no pasa.
 
 También necesitamos definir las siguientes propiedades de las relaciones.
 
@@ -193,18 +203,7 @@ También necesitamos definir las siguientes propiedades de las relaciones.
   \end{itemize}
 \end{definition}
 
-Sobre estas definiciones y propiedades los siguientes teoremas y lemas:
-
-\begin{lemma}\label{lemma:→* como ∃}
-  Sean $a, b ∈ A$. Entonces
-  \[ a →^* b ⇔ ∃n ∈ ℕ ∪ \{0\}, x_0, …, x_n ∈ A : x_0 = a ∧ x_n = b ∧ ∀i ∈ {1, …, n} : x_{i-1} → x_i \text{.}\]
-  \qed
-\end{lemma}
-
-\begin{lemma}\label{lemma:↔* min equiv que contiene a →}
-  $↔^*$ es la mínima relación de equivalencia que contiene a $→$.
-  \qed
-\end{lemma}
+Las siguientes propiedades referidas a relaciones serán de utilidad.
 
 \begin{theorem}\label{thm:terminante ⇒ normalizante}
   $→$ es terminante $⇒ →$ es normalizante.
@@ -226,7 +225,7 @@ El álgebra libre es básicamente el conjunto de los polinomios no conmutativos 
     \item $⟨X⟩$ es el conjunto palabras finitas sobre $X$.
     \item $· : ⟨X⟩^2 → ⟨X⟩$ es la concatenación.
   \end{itemize}
-  A $(⟨X⟩, ·)$ se lo llama el monoide libre sobre $X$, a los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$ y a $·$ el producto de $⟨X⟩$.
+  Al par $(⟨X⟩, ·)$ se lo llama el monoide libre sobre $X$, a los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$ y a $·$ el producto de $⟨X⟩$.
 
   Si $X = \{x_1, …, x_n\}$ escribimos $⟨x_1, …, x_n⟩$ un lugar de $⟨X⟩$.
 \end{definition}
@@ -245,21 +244,24 @@ El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el product
 
 \
 
-Para todo el resto de la tesis fijemos $X$ un alfabeto finito. En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
+Para todo el resto de la tesis fijemos un alfabeto finito $X$.
+
+\
+
+En estos monomios, al igual que en los conmutativos, se puede hablar de que un monomio divida a otro, pero acá que un monomio divida a otro es equivalente a que sea una sub-palabra.
 
 \begin{definition}
-  Sean $v, w ∈ ⟨X⟩$. Se define
+  Sean $m, m' ∈ ⟨X⟩$. Se define que $m$ divida a $m'$, denotado como $m | m'$ de la siguiente forma:
   \begin{itemize}
-    \item $v | w ⇔ ∃a , b ∈ ⟨X⟩ : w = avb$.
+    \item $m | m' ⇔ ∃a , b ∈ ⟨X⟩ : m' = avb$.
   \end{itemize}
-  Y cuando $v | w$ se dice que $v$ divide a $w$.
 \end{definition}
 
 En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
-De lo que es un poco más complicado hablar acá es de el resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
+De lo que es un poco más complicado hablar acá es del resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$, pero no hace falta fijar uno concreto, sino que con que satisfaga la siguiente definición alcanza.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero no hace falta, sino que se pueden enunciar las mínimas propiedades que harán falta y trabajar con cualquier otden que las satisfaga. Eso se logra con la siguiente definición.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
@@ -297,16 +299,13 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
   Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto
   \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}\]
 
-  \noindent con las siguientes operaciones.
+  \noindent con las siguientes operaciones: la suma de los elementos de $R⟨X⟩$ como unir las $∑$, el producto por escalares de definido como
+  \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{,}\]
 
-  \noindent La suma en $R⟨X⟩$ se define de la manera esperable. El producto por escalares de define como
-  \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{.}\]
-
-  \noindent El producto entre elementos de $R⟨X⟩$ se define como
+  \noindent y el producto entre elementos de $R⟨X⟩$ definido como
   \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \text{.}\]
 
-  Y a los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
-  % Esta definición creo que hay que mejorarla, pero no se como
+  A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
 \end{definition}
 
 Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
@@ -318,16 +317,16 @@ f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
 
 \noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
-Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar mucho.
+Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar reiteradamente.
 
 \begin{definition}\label{def:cosas de polinomios}
   Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial. Se definen:
   \begin{itemize}
-    \item el coeficiente de $w$ en $f$ como $f_w = \begin{cases} w = w_i → c_i \\ \text{si no} → 0  \end{cases} $.
-    \item el soporte de $f$ como el conjunto $\sop(f) = \{w_1, …, w_n\}$.
-    \item el monomio principal de $f$ como $\lm_≤(f) = \max_≤(\sop(f))$.
-    \item el coeficiente principal de $f$ como $\lc_≤(f) = f_{\lm(f)}$.
-    \item el término principal de $f$ como $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
+    \item el coeficiente de $w$ en $f$ es $f_w = \begin{cases} c_0&\text{si }w = w_0 \\ ⋮ & \\ c_n&\text{si }w = w_n \\ 0&\text{si no} \end{cases} $. % CONSULTAR
+    \item el soporte de $f$ es el conjunto $\sop(f) = \{w_1, …, w_n\}$.
+    \item el monomio principal de $f$ es $\lm_≤(f) = \max_≤(\sop(f))$.
+    \item el coeficiente principal de $f$ es $\lc_≤(f) = f_{\lm(f)}$.
+    \item el término principal de $f$ es $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
     \item $\tail_≤(f) = f - \lt_≤(f)$.
     \item $f$ es mónico $⇔ \lc_≤(f) = 1$.
   \end{itemize}
@@ -335,7 +334,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
   Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 \end{definition}
 
-Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar porque es tedioso y aburrido.
+Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar una por una porque es tedioso y aburrido.
 
 Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
@@ -363,7 +362,7 @@ Si bien a este $<$ lo estamos llamando (y lo vamos a seguir llamando) orden, en 
   \qed
 \end{theorem}
 
-Y además, el polinomio $0$ es el mínimo.
+Además, el polinomio $0$ es el mínimo.
 
 \begin{lemma}\label{lemma:0 es mínimo}
   $0$ es el mínimo de $<$.
@@ -409,7 +408,7 @@ La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil po
 \end{theorem}
 % Tendría que decir algo de que no se incluye la demostración porque es fácil?
 
-Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a continuación para no tener que estar buscándolos en otro lado.
+Las definiciones y teoremas sobre anillos que vamos a usar las recordaremos a continuación para no tener que estar buscándolos en otro lado.
 
 \begin{definition}\label{def:ideal}
   Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal de $R$ si y solo si
@@ -420,12 +419,12 @@ Las definiciones y teoremas sobre anillos que vamos a usar las vamos a repasar a
   \end{enumerate}
 \end{definition}
 
+Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. Si se tiene un conjunto que no es un ideal se puede agregar todo lo mínimo necesario para convertirlo en un ideal. La siguiente definición define eso y el siguiente teorema dice que efectivamente se obtiene un ideal. % CONSULTAR
+
 \begin{definition}\label{def:ideal gen}
-  Sean $R$ un anillo y $G ⊆ R$. Se define la notación $(G)$ como
+  Sean $R$ un anillo y $G ⊆ R$. Se define el ideal generado por $G$, denotado $(G)$, como
   \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : n ∈ ℕ ∪ \{0\}, g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ R\} \text{.}\]
 \end{definition}
-
-Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. A $(G)$ se lo llama el ideal generado por $G$, ya que como dice el siguiente teorema, es un ideal.
 
 \begin{theorem}
   Sean $R$ un anillo y $G ⊆ R$. Entonces
@@ -433,28 +432,7 @@ Los ideales son básicamente conjuntos cerrados por la suma y por el producto po
   \qed
 \end{theorem}
 
-Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
-
-\begin{definition}\label{def:congruencia mod ideal}
-  Sean $R$ un anillo e $I ⊆ R$. Se define la relación $≡_I$ en $R$ así:
-  \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
-\end{definition}
-
-\begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
-  Sean $R$ un anillo y $I ⊆ R$ un ideal. Entonces
-  \[ ≡_I \text{es una relación de equivalencia} \text{.}\]
-  \qed
-\end{theorem}
-
-Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
-
-\begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
-  Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$. Entonces
-  \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
-  \qed
-\end{lemma}
-
-Por último, con respecto al ideal generado por un conjunto, tenemos los siguientes dos lemas.
+Sobre los ideales generados por un conjunto valen los siguientes dos lemas básicos.
 
 \begin{lemma}\label{lemma:gen G = gen G U a con a ∈ gen G}
   Sean $R$ un anillo, $G ⊆ R$ y $a ∈ (G)$. Entonces
@@ -468,6 +446,28 @@ Por último, con respecto al ideal generado por un conjunto, tenemos los siguien
   \qed
 \end{lemma}
 
+
+Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
+
+\begin{definition}\label{def:congruencia mod ideal}
+  Sean $R$ un anillo e $I ⊆ R$. Se define la relación $≡_I$ en $R$ así:
+  \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
+\end{definition}
+
+\begin{theorem}\label{thm:congruencia mod ideal es equivalencia}
+  Sean $R$ un anillo e $I ⊆ R$ un ideal. Entonces
+  \[ ≡_I \text{es una relación de equivalencia} \text{.}\]
+  \qed
+\end{theorem}
+
+Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
+
+\begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
+  Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$. Entonces
+  \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
+  \qed
+\end{lemma}
+
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
 Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$.
@@ -478,7 +478,7 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
   Sea $G ⊆ K⟨X⟩$. Entonces
   \[ (G) = \{∑_{i = 0}^n c_i m_i g_i m'_i : n ∈ ℕ ∪ \{0\}, c_1, …, c_n ∈ K, m_1, …, m_n, m'_1, …, m'_n ∈ ⟨X⟩, g_1, …, g_n ∈ G\} \text{.}\]
 \end{lemma}
-\begin{proof} Lo probamos probando que $f$ esta en uno si y solo si está en el otro.
+\begin{proof} Probemos que $f$ esta en uno si y solo si está en el otro.
   \begin{description}
     \item[Ida ($⇒$):] Supongamos $f ∈ (G)$. Sean:
 
@@ -504,14 +504,14 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
   \end{description}
 \end{proof}
 
-\section{Reducción de polinomios}
+\section{Reducción de polinomios y bases de Gröbner} % Separar
 
 Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
 \begin{definition}\label{def:reducciones}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacion $→_{≤, G}$ del siguiente modo:
+  Sean $G ⊆ K⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacion $→_{≤, G}$ del siguiente modo:
   \[ f →_{≤, G} f' ⇔ ∃a, b ∈ ⟨X⟩, g ∈ G : \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \text{.} \]
-  Y cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
+  Cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
 \end{definition}
 
 Por ejemplo, si tenemos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ tenemos:
@@ -520,12 +520,12 @@ Por ejemplo, si tenemos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ t
 
 \
 
-Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, G}$, $←_{≤, G}$, $↓_{≤, G}$, etc.
+Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, G}$, $↔^*_{≤, G}$ y $↓_{≤, G}$. % Cristian me dijo de listar todas, pero lo que hice es listar las que se usan. ¿Está bien? % CONSULTAR
 
 A continuación la prueba de que esta relación efectivamente achica.
 
 \begin{theorem}\label{thm:→ achican}
-  Sean $G ⊆ K⟨X⟩$, $g ∈ K⟨X⟩ - \{0\}$, $a, b ∈ ⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Entonces
+  Sean $G ⊆ K⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Entonces
   \[ f →_{≤, G} f' ⇒ f' < f \text{.} \]
 \end{theorem}
 \begin{proof}
@@ -537,9 +537,9 @@ A continuación la prueba de que esta relación efectivamente achica.
 
   \noindent Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > ⋯ > m_n$.
 
-  Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
+  \noindent Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
 
-  Notar también que:
+  \noindent Notar también que: % Cristian me dijo de poner punto seguidos. Lo que hice es poner \noindent. En otros lugares pasa lo mismo % CONSULTAR
 
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{2}
@@ -563,9 +563,9 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
 \begin{proof}
   Supongamos el antecedente $f_0 →_{≤, G} f_1$.
 
-  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$.
+  \noindent Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$.
 
-  Dividamos en casos según la pertenencia de $\lm_≤(agb)$ a $\sop(f)$:
+  \noindent Dividamos la demostración en casos según la pertenencia de $\lm_≤(agb)$ a $\sop(f)$:
 
   \begin{description}
     \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
@@ -705,15 +705,15 @@ El siguiente teorema caracteriza las formas normales de $→$.
   \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
 \end{theorem}
 \begin{proof}
-  Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) ∈ \sop(f)$.
+  Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) | m$.
 
-  Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
+  \noindent Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
 
-  Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
+  \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
 \end{proof}
 
-Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
+Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
 
 \[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba \text{.}\]
 
@@ -721,11 +721,9 @@ Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no
 
 \[f →_{≤, G} f - 3db g_1 = 3 dbb + 2 cba = f'' \text{.}\]
 
-\noindent Pero ninguno monomio principal de $G$ divide a ninguno monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir mas.
+\noindent Pero ninguno monomio principal de $G$ divide a ninguno monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
 
-Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes (y en particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal).
-
-Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que fuera confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes. En particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -747,23 +745,28 @@ Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición 
 
 \begin{definition}\label{def:reductor}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$. Se define que
-  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \]
+  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \] % Cristian me dijo de poner "es una forma …", pero no lo puse porque la definición solo dice "es forma …" % CONSULTAR
 \end{definition}
+% Cristian dijo: En matemática pondríamos un símbolo de producto de conjuntos
+% Pero se entiende, ¿no?
+% Lo puse así porque tenía la idea de usar la aplicación parcial, pero creo que al final no la estoy usando (no estoy seguro, tendría que revisar)
+% No se que será mejor hacer
+% CONSULTAR
 
 Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Ejemplo de reductor}\label{alg:reductor}
-  \KwData{$G = \{f_1, …, f_n\} ⊆ K⟨X⟩, g ∈ K⟨X⟩$}
-  \KwResult{$g' ∈ K⟨X⟩$}
-  $g' ← g$
+  \KwData{$G = \{g_1, …, g_n\} ⊆ K⟨X⟩, f ∈ K⟨X⟩$}
+  \KwResult{$f' ∈ K⟨X⟩$}
+  $f' ← f$
 
   $i ← 1$
 
   \While{$i ≤ n$} {
     \While{$i ≤ n$} {
-      \If{$f_i ∈ \sop(g')$} {
-        $g' ← g' - \frac{g'_{\lm(f_i)}}{\lc(f_i)}f_i$
+      \If{$g_i ∈ \sop(f')$} {
+        $f' ← f' - \frac{f'_{\lm(g_i)}}{\lc(g_i)}g_i$
 
         $i ← 1$
 
@@ -774,7 +777,7 @@ Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
       }
     }
   }
-  \Return{$g'$}
+  \Return{$f'$}
 \end{algorithm}
 
 Este algoritmo consiste básicamente en siempre buscar entre los elementos de $G$ si hay alguno con el cual reducir, y parar cuando ya no hay ninguno.
@@ -789,7 +792,7 @@ Una propiedad sobre los reductores que vamos a necesitar es que mantienen la per
   Es consecuencia directa de la definición y del \cref{thm:→ mantiene pertenencia a ideal}.
 \end{proof}
 
-Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero van a ser mucho mas cómodas de trabajar usando las siguientes equivalencias.
+Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero van a ser mucho más cómodas de trabajar usando las siguientes equivalencias.
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Las siguientes afirmaciones son equivalentes:
@@ -948,43 +951,37 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
 \section{Algoritmo de Buchberger}
 
-En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger.
+En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger. Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
 
-Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos.
-
-Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner.
-
-Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
-
-Antes definimos las ambigüedades que representan los polinomios para los cuales puede pasar eso sin que todo lo importante esté en los monomios $a$, $b$, $c$ y $d$.
-
+Antes definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
 \begin{definition}
   Sean $m, m', a, b, c, d ∈ ⟨X⟩$. Se define
   \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
 
   La ambigüedad $(a, b, c, d, m, m')$ se define como:
   \begin{itemize}
-    \item De superposición $⇔ a = ε = d ∨ b = ε = c$.
-    \item De inclusión $⇔ a = ε = b ∨ c = ε = d$.
-    \item Relevante $⇔$ es de superposición o de inclusión.
+    \item de superposición $⇔ a = ε = d ∨ b = ε = c$.
+    \item de inclusión $⇔ a = ε = b ∨ c = ε = d$.
+    \item relevante $⇔$ es de superposición o de inclusión.
   \end{itemize}
 
-  Además, si $f, f' ∈ K⟨X⟩$ se define que $(a, b, c, d, f, f')$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(f')})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+  Si $f, f' ∈ K⟨X⟩$ se define que $(a, b, c, d, f, f')$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(f')})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
 
-  Si además $F ⊆ K⟨X⟩$ se definen:
-  \begin{itemize}
-    \item $\amb(f, f') = \{(a, b, c, d, f, f') : a, b, c, d ∈ ⟨X⟩ ∧ (a, b, c, d, f, f')\text{ es una ambigüedad relevante}\}$.
-    \item $\amb(F) = ⋃_{f, f' ∈ F - \{0\}}{\amb(f, f')}$.
-  \end{itemize}
+  Además se define
+  \[ \amb(f, f') = \{(a, b, c, d, f, f') : (a, b, c, d, f, f')\text{ es una ambigüedad relevante}\} \text{.} \]
+
+  Finalmente para $F ⊆ K⟨X⟩$ se define
+  \[ \amb(F) = ⋃_{f, f' ∈ F - \{0\}}{\amb(f, f')} \text{.} \]
 
 \end{definition}
+
+Notar que por como es la definición de ambigüedad, cuando es relevante siempre es como que hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, porque los otros es como que siempre están entre cualquier par de polinomios.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, f' ∈ K⟨X⟩$ y $α = (a, b, c, d, f, f')$ una ambigüedad. Se define el S-polinomio de $α$ como
   \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(f')}} \text{.}\]
 \end{definition}
 
-Notar que por como es la definición de ambigüedad, cuando es relevante siempre es como que hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$.
 
 Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad de inclusión sería
 
@@ -1004,15 +1001,15 @@ Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad
 
 \
 
-Ahora vamos a probar que efectivamente los monomios principales se cancelan y después vamos a dar el teorema para calcular si un conjunto es una base de Gröbner.
+Ahora vamos a probar que efectivamente los monomios principales se cancelan y después vamos a dar el teorema para decidir si un conjunto es una base de Gröbner.
 
-\begin{theorem}\label{thm:lm ambs}
+\begin{lemma}\label{lemma:lm ambs}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
   \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \text{.}\]
-\end{theorem}
+\end{lemma}
 \begin{proof}\
   \begin{DispWithArrows*}
-    &\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\
+    &\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\ % Cristian me dice de poner esto en la misma linea, pero qué hago con la flecha? % CONSULTAR
     & = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
     & = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
     & = \lm_≤{(cgd)} \text{.}
@@ -1026,9 +1023,9 @@ Eso permite definir el monomio principal de una ambigüedad.
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
-Notar que por el \cref{thm:lm ambs} también vale que $\lm_≤(α) = \lm_≤(cgd)$.
+Notar que por el \cref{lemma:lm ambs} también vale que $\lm_≤(α) = \lm_≤(cgd)$.
 
-Lo de que los monomios principales se cancelen se enuncia en el siguiente teorema.
+Lo de que los monomios principales se cancelen produce el siguiente lema. % No se bien como poner esto % CONSULTAR
 
 \begin{theorem}
   Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
@@ -1038,17 +1035,17 @@ Lo de que los monomios principales se cancelen se enuncia en el siguiente teorem
   Esto es porque en la resta $\frac{afb}{\lc_≤(f)} - \frac{cgd}{\lc_≤(g)}$ los monomios principales se cancelan.
 \end{proof}
 
-Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal, por ejemplo en particular del conjunto generador, es un elemento del ideal.
+Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal es un elemento del ideal.
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
   Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \S(α) ∈ I \text{.}\]
 \end{lemma}
 \begin{proof}
-  En la definición de $\S$ se ve que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$. En particular con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$. Como $f, g ∈ I$ y $I$ es un ideal, esa combinación pertenece a $I$.
+  En la definición de $\S$ se ve que es una combinación lineal de $f$ y $g$ con elementos de $K⟨X⟩$. Más precisamente, con los elementos $\frac{a}{\lc_≤{(f)}}$, $b$, $\frac{c}{\lc_≤{(g)}}$ y $d$. Como $f, g ∈ I$ e $I$ es un ideal, esa combinación pertenece a $I$.
 \end{proof}
 
-Ahora si a continuación el anunciado teorema para computar si un conjunto es una base de Gröbner.
+Ahora si enunciamos el teorema para decidir si un conjunto es una base de Gröbner.
 
 \begin{theorem}[Condición de Buchberger]\label{thm:condición de Buchberger}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Entonces son equivalentes:
@@ -1058,30 +1055,26 @@ Ahora si a continuación el anunciado teorema para computar si un conjunto es un
   \end{enumerate}
   \qed
 \end{theorem}
-% TODO: Agregar prueba. De cualquier manera, Hof no lo prueba a esto
 
-Con esto ya se puede explicar la idea del algoritmo de Buchberger.
+La demostración se puede encontrar en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostraremos acá porque requiere varios lemas adicionales que alargarían el trabajo.
 
-Cuando estamos chequeando si un conjunto es una base de Gröbner usando el \cref{thm:condición de Buchberger}, si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$.
+Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$. Se podría pensar que agregar $g$ por ahí cambia el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal, por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal y por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (lo que refleja la no decidibilidad del problema de pertenencia a un ideal). % Así está bien esto? No estoy seguro de que poner todo en un solo párrafo sea buena idea % CONSULTAR
 
-Se podría pensar que agregar $g$ por ahí cambia el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal, por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal y por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo.
-
-El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (lo que refleja la no decidibilidad del problema de pertenencia a un ideal).
-
-Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente con la siguiente definición.
+Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente del siguiente modo.
 
 \begin{definition}
-  Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Se definen las bases de Buchberger como:
+  Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Se definen:
   \begin{itemize}
     \item $\B_{e_≤}^0(G) = G$.
     \item $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$.
     \item $\B_{e_≤}(G) = ⋃_{i = 0}^∞ \B_{e_≤}^i(G)$.
   \end{itemize}
+  A $\B_{e_≤}(G)$ se lo llama la base de Buchberger de $(G)$. % Qué tal esto así? % CONSULTAR
 \end{definition}
 
 El nombre bases de Buchberger es inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos.
 
-Con el siguiente teorema se enuncia que esos conjuntos realmente hacen lo que dijimos arriba y además que si hay una base de Gröbner finita entonces en algún momento se llega.
+Con el siguiente teorema se enuncia que esos conjuntos realmente en el infinito producen una base de Gröbner y que si hay una base de Gröbner finita entonces en algún momento se llega.
 
 \begin{theorem}\label{thm:Buchberger correctitud}
   Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Entonces
@@ -1091,23 +1084,22 @@ Con el siguiente teorema se enuncia que esos conjuntos realmente hacen lo que di
   \end{enumerate}
 \end{theorem}
 
-Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cierto no es para nada obvio. Para probar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
+Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cierto no es para nada obvio. Para demostrar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados). % Como que estoy usando "demostrar" y "probar" mezclados, ¿qué debería hacer? $ CONSULTAR
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ ∪ \{0\} : \B_{e_≤}^{i}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$:
+  Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$. Para eso Tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
 
-  Tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
-
-  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
+  \noindent Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
 
   Dividamos en casos según ese $∨$
 
   \begin{description}
     \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
-    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
+    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)(\S(α))$ y por la hipótesis inductiva que $f ∈ (G)$.
+    % Cristian puso por la HI y Lema 2.47 tenemos que S(\alpha)\in(G) y entonces f\in(G) por Lema 2.40, pero me parece que no es cierto porque en todo caso daría que S(σ) ∈ (\B_{e_≤}^i(G)) % CONSULTAR
   \end{description}
 
 \end{proof}
@@ -1116,27 +1108,27 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
   $∀i ∈ ℕ : \B_{e_≤}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Esto es consecuencia directa de el \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
+  Esto es consecuencia directa del \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:5}
   $(\B_{e_≤}(G)) = (G)$.
 \end{lemma}
 \begin{proof}
-  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$ y con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos lo que queremos probar.
+  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$. Con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos lo que queremos probar.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:6}
   $∀α ∈ \amb(\B_{e_≤}(G)) : \S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{lemma}
 \begin{proof}
-  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$. Por definición de $\amb$, se cumple que $f, g ∈ \B_{e_≤}(G)$. Sea $i ∈ ℕ  ∪ \{0\}$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ  ∪ \{0\}$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
+  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$.
 
-  Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(G)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
+  \noindent Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(G)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
 
-  Por definición de $\amb$ vale que $α ∈ \amb(\B_{e_≤}^k(G))$, por ende por definición de $\B_{e_≤}^i$ vale que $e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G)$. Esto implica que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0$ y por ende que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0$.
+  \noindent Por definición de $\amb$ tiene que valee que $α ∈ \amb(\B_{e_≤}^k(G))$ y entonces por definición de $\B_{e_≤}^i$ vale que $e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G)$. Esto implica que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0$ y por ende que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0$.
 
-  Combinando eso con que por definición de reductor vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
+  \noindent Combinando eso con que por definición de reductor vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{proof}
 
 Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger correctitud}.
@@ -1146,23 +1138,19 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
 
   Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.
 
-  Para cada $i ∈ \{1, …, n\}$ sean:
+  \noindent Para cada $i ∈ \{1, …, n\}$ sean:
   \begin{itemize}
-    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} n_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$.
-
-    Los cuales existen por por (5) del \cref{thm:equivalencias de base de Gröbner}.
+    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por (5) del \cref{thm:equivalencias de base de Gröbner}.
 
     \item $G' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$.
 
-    \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$.
-
-    Notar que $k$ está bien definido porque $G'$ es finito.
+    \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$. Notar que $k$ está bien definido porque $G'$ es finito.
   \end{itemize}
 
   Ahora vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$.
 
   Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
-  \[ ∀f ∈ (G) - \{0\} : ∃g_1, …, g_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g_i b_i \text{.}\]
+  \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g'_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
   Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma.
 
@@ -1210,15 +1198,18 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
   \Return{$B$}
 \end{algorithm}
 
-El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lenta y necesita un cambio para que pase a andar bien.
+El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lento y necesita un cambio para que pase a andar bien.
 
-Ese cambio es en lugar de para las reducciones usar el conjunto anterior usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
+Ese cambio es, en lugar de para las reducciones usar el conjunto anterior, usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
 
 Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}.
 
-En la implementación el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. El motivo teórico detrás de que hacer eso haga que pase a ser tanto mas rápido el autor no lo sabe ni lo pudo encontrar en la literatura.
+En la práctica el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. El motivo teórico detrás de que hacer eso haga que pase a ser tanto mas rápido el autor no lo sabe ni lo pudo encontrar en la literatura.
 
 Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. En la \cref{secton:optimizaciones} se aborda este tema.
+
+% Cristian dijo: "mejorar la redacción". No hice casi ningún cambio, ¿está bien así? % CONSULTAR
+
 
 \section{Algoritmo F4}
 
