@@ -28,7 +28,7 @@
 \usepackage[margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
-\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\usepackage[ruled, vlined, linesnumbered, spanish]{algorithm2e}
 \SetKw{Break}{break}
 \SetKwFor{Loop}{loop}{}{end loop}
 
@@ -128,13 +128,15 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
 pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada % CONSULTAR
+Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en MAGMA. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SAGEMATH (su elección de sage la justifica en 6.2). De acuerdo a nuestro conocimiento estas son las únicas dos implementaciones de F4 para el caso no conmutativo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en MAGMA. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SAGEMATH (su elección de sage la justifica en la Sección 6.2). De acuerdo a nuestro conocimiento estas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
-La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Hacer esa optimización podría ser un trabajo para una tesis futura.
+La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en SAGEMATH. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de SAGEMATH.
+
+Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner. Mucha aplicación práctica no tiene. En el caso conmutativo si hay aplicaciones prácticas importantes por la relación que tiene con la geometría, pero en el no conmutativo no. Pero si hay aplicaciones en matemática teórica, que son de interés para Cristian Vay, el director de este trabajo. En particular en el calculo de dimensiones de algunas álgebras.
 
 Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, si no que son necesarias para los temas de la tesis.
 
@@ -321,7 +323,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
 \begin{definition}\label{def:cosas de polinomios}
   Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $m_1, …, m_n, m ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i m_i$ y $≤$ un buen orden monomial. Se definen:
   \begin{itemize}
-    \item el coeficiente de $m$ en $f$ es $f_m = \begin{cases} c_0&\text{si }m = m_0 \\ ⋮ & \\ c_n&\text{si }m = m_n \\ 0&\text{si no} \end{cases} $. % CONSULTAR
+    \item el coeficiente de $m$ en $f$ es $f_m = \begin{cases} c_0&\text{si }m = m_0 \\ ⋮ & \\ c_n&\text{si }m = m_n \\ 0&\text{en otro caso} \end{cases} $.
     \item el soporte de $f$ es el conjunto $\sop(f) = \{m_1, …, m_n\}$.
     \item el monomio principal de $f$ es $\lm_≤(f) = \max_≤(\sop(f))$.
     \item el coeficiente principal de $f$ es $\lc_≤(f) = f_{\lm(f)}$.
@@ -418,7 +420,7 @@ Las definiciones y teoremas sobre anillos que vamos a usar las recordaremos a co
   \end{enumerate}
 \end{definition}
 
-Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. Si se tiene un conjunto que no es un ideal se puede agregar todo lo mínimo necesario para convertirlo en un ideal. La siguiente definición define eso y el siguiente teorema dice que efectivamente se obtiene un ideal. % CONSULTAR
+Los ideales son básicamente conjuntos cerrados por la suma y por el producto por cualquier elemento del anillo. Si se tiene un conjunto que no es un ideal se puede agregar todo lo mínimo necesario para convertirlo en un ideal. La siguiente definición define eso y el siguiente teorema dice que efectivamente se obtiene un ideal.
 
 \begin{definition}\label{def:ideal gen}
   Sean $R$ un anillo y $G ⊆ R$. Se define el ideal generado por $G$, denotado $(G)$, como
@@ -519,7 +521,7 @@ Por ejemplo, si tenemos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ t
 
 \
 
-Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, G}$, $↔^*_{≤, G}$ y $↓_{≤, G}$. % Cristian me dijo de listar todas, pero lo que hice es listar las que se usan. ¿Está bien? % CONSULTAR
+Como teníamos la \cref{def:operaciones relaciones} y la \cref{def:forma normal} quedan definidas automáticamente las relaciones $→^*_{≤, G}$, $↔^*_{≤, G}$ y $↓_{≤, G}$.
 
 A continuación la prueba de que esta relación efectivamente achica.
 
@@ -568,7 +570,6 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
 
   \begin{description}
     \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
-
     \begin{DispWithArrows*}
       &f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} \\
       & ⇒ f_1 + f = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f \Arrow{Definición de $→_{≤, a, g, b}$}\\
@@ -582,7 +583,6 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
       \item[Subcaso $f_{\lm_≤(agb)} = -{f_0}_{\lm_≤(agb)}$]
 
       Este es el caso en el que $\lm_≤(agb)$ se cancela en la suma $f_0 + f$. Y como además $\lm_≤(agb) ∉ \sop(f_1)$ por el antecedente, tenemos:
-
       \begin{DispWithArrows*}
         &f_1 + f →_{≤, G} f_1 + f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Subcaso} \\
         & ⇒ f_1 + f →_{≤, G} f_1 + f + \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{Condición de $g$, $a$ y $b$} \\
@@ -663,7 +663,7 @@ Recordar que $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref
       &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \Arrow{\cref{lemma:prod mon →}} \\
       & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
       & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' + f_i ↓_{≤, G} 0 + f_i \Arrow{Definición de los $f_i$}\\
-      & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\ % Debería agregar un lema para este paso? % CONSULTAR
+      & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↔^*_{≤, G} f_i \\
       & ⇒ f_0 ↔^*_{≤, G} f_n \Arrow{$f_n = f - g = f'$} \\
       & ⇒ f ↔^*_{≤, G} f_n \text{.}
@@ -725,13 +725,8 @@ Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición 
 
 \begin{definition}\label{def:reductor}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$. Se define que
-  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \] % Cristian me dijo de poner "es una forma …", pero no lo puse porque la definición solo dice "es forma …" % CONSULTAR
+  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \]
 \end{definition}
-% Cristian dijo: En matemática pondríamos un símbolo de producto de conjuntos
-% Pero se entiende, ¿no?
-% Lo puse así porque tenía la idea de usar la aplicación parcial, pero creo que al final no la estoy usando (no estoy seguro, tendría que revisar)
-% No se que será mejor hacer
-% CONSULTAR
 
 Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
 
@@ -957,11 +952,11 @@ Primero definimos las ambigüedades, que representan los polinomios para los cua
 
 \begin{definition}
   Sean $m, m', a, b, c, d ∈ ⟨X⟩$. Se define
-  \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
+  \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd \text{.}\]
 
   La ambigüedad $(a, b, c, d, m, m')$ se define como:
   \begin{itemize}
-    \item de superposición $⇔ a = ε = d ∨ b = ε = c$.
+    \item de superposición $⇔ (a = ε = d ∧ |b| < |m'| ∧ |c| < |m|) ∨ (b = ε = c ∧ |a| < |m'| ∧ |d| < |m|)$.
     \item de inclusión $⇔ a = ε = b ∨ c = ε = d$.
     \item relevante $⇔$ es de superposición o de inclusión.
   \end{itemize}
@@ -976,13 +971,12 @@ Primero definimos las ambigüedades, que representan los polinomios para los cua
 
 \end{definition}
 
-Notar que por como es la definición de ambigüedad, cuando es relevante siempre hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, porque los otros es como que siempre están entre cualquier par de polinomios.
+Notar que por como es la definición de ambigüedad, cuando es relevante siempre hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, y por eso son los que se usan para definir $\ams$. No relevantes siempre hay entre cualquier par de monomios, por ejemplo tomando $a = d = ε$, $b = m'$ y $c = m$.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, f' ∈ K⟨X⟩$ y $α = (a, b, c, d, f, f')$ una ambigüedad. Se define el S-polinomio de $α$ como
   \[ \S(α) = \frac{afb}{\lc_≤{(f)}} - \frac{cgd}{\lc_≤{(f')}} \text{.}\]
 \end{definition}
-
 
 Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad de inclusión sería
 
@@ -1005,33 +999,29 @@ Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad
 Ahora vamos a probar que efectivamente los monomios principales se cancelan y después vamos a dar el teorema para decidir si un conjunto es una base de Gröbner.
 
 \begin{lemma}\label{lemma:lm ambs}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
+  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
   \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \text{.}\]
 \end{lemma}
 \begin{proof}\
-  \begin{DispWithArrows*}
-    &\lm_≤{(afb)} \Arrow{Definición de ambigüedad para polinomios} \\ % Cristian me dice de poner esto en la misma linea, pero qué hago con la flecha? % CONSULTAR
-    & = a\lm_≤{(f)}b \Arrow{Definición de ambigüedad} \\
-    & = c\lm_≤{(g)}d \Arrow{Definición de ambigüedad para polinomios} \\
-    & = \lm_≤{(cgd)} \text{.}
-  \end{DispWithArrows*}
+  Las siguientes igualdades siguen por la definición de ambigüedad tanto para monomios como para polinomios.
+  \[ \lm_≤{(afb)} = a\lm_≤{(f)}b = c\lm_≤{(g)}d = \lm_≤{(cgd)} \] \text{.}
 \end{proof}
 
 Eso permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
+  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
 Notar que por el \cref{lemma:lm ambs} también vale que $\lm_≤(α) = \lm_≤(cgd)$.
 
-Lo de que los monomios principales se cancelen produce el siguiente lema. % No se bien como poner esto % CONSULTAR
+Lo de que los monomios principales se cancelen produce el siguiente lema.
 
-\begin{theorem}
-  Sean $a, b, c, d ∈ ⟨X⟩, f, g ∈ K⟨X⟩$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
+\begin{lemma}
+  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \lm_≤(\S(α)) < \lm_≤(α) \text{.}\]
-\end{theorem}
+\end{lemma}
 \begin{proof}
   Esto es porque en la resta $\frac{afb}{\lc_≤(f)} - \frac{cgd}{\lc_≤(g)}$ los monomios principales se cancelan.
 \end{proof}
@@ -1039,7 +1029,7 @@ Lo de que los monomios principales se cancelen produce el siguiente lema. % No s
 Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal es un elemento del ideal.
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
-  Sean $I ⊆ K⟨X⟩$ un ideal $a, b, c, d ∈ ⟨X⟩, f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
+  Sean $I ⊆ K⟨X⟩$ un ideal $f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \S(α) ∈ I \text{.}\]
 \end{lemma}
 \begin{proof}
@@ -1057,9 +1047,9 @@ Ahora si enunciamos el teorema para decidir si un conjunto es una base de Gröbn
   \qed
 \end{theorem}
 
-La demostración se puede encontrar en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostraremos acá porque requiere varios lemas adicionales que alargarían el trabajo.
+La demostración se puede encontrar por ejemplo en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostraremos acá porque requiere varios lemas adicionales que no son pertinentes para este trabajo.
 
-Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$. Se podría pensar que agregar $g$ por ahí cambia el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal, por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal y por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema con eso de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es hacer eso hasta que en algún momento todas las ambigüedades se reducen a $0$ y si eso no pasa nunca simplemente el algoritmo no termina nunca (lo que refleja la no decidibilidad del problema de pertenencia a un ideal). % Así está bien esto? No estoy seguro de que poner todo en un solo párrafo sea buena idea % CONSULTAR
+Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
 
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente del siguiente modo.
 
@@ -1070,7 +1060,7 @@ Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente de
     \item $\B_{e_≤}^{i + 1}(G) = \B_{e_≤}^i(G) ∪ \{e_≤(\B_{e_≤}^i(G))(\S(α)) : α ∈ \amb(\B_{e_≤}^i(G))\}$.
     \item $\B_{e_≤}(G) = ⋃_{i = 0}^∞ \B_{e_≤}^i(G)$.
   \end{itemize}
-  A $\B_{e_≤}(G)$ se lo llama la base de Buchberger de $(G)$. % Qué tal esto así? % CONSULTAR
+  A $\B_{e_≤}(G)$ la llamamos base de Buchberger de $(G)$.
 \end{definition}
 
 El nombre bases de Buchberger es inventado para esta tesis, otros autores no le han dado ningún nombre concreto a esos conjuntos.
@@ -1085,22 +1075,19 @@ Con el siguiente teorema se enuncia que esos conjuntos realmente en el infinito 
   \end{enumerate}
 \end{theorem}
 
-Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cierto no es para nada obvio. Para demostrar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados). % Como que estoy usando "demostrar" y "probar" mezclados, ¿qué debería hacer? $ CONSULTAR
+Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cierto no es para nada obvio. Para demostrar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ ∪ \{0\} : \B_{e_≤}^{i}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
-  Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$. Para eso Tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
+  Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$. Para eso tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
 
-  \noindent Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$.
-
-  Dividamos en casos según ese $∨$
+  \noindent Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$. Dividamos en casos según ese $∨$
 
   \begin{description}
     \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
-    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)(\S(α))$ y por la hipótesis inductiva que $f ∈ (G)$.
-    % Cristian puso por la HI y Lema 2.47 tenemos que S(\alpha)\in(G) y entonces f\in(G) por Lema 2.40, pero me parece que no es cierto porque en todo caso daría que S(σ) ∈ (\B_{e_≤}^i(G)) % CONSULTAR
+    \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
   \end{description}
 
 \end{proof}
@@ -1199,18 +1186,11 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
   \Return{$B$}
 \end{algorithm}
 
-El algoritmo así, si bien es una implementación tal cual de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lento y necesita un cambio para que pase a andar bien.
+El algoritmo así, si bien es una implementación literal de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lento y necesita mejoras. Una mejora muy importante, probablemente la más importante, consiste en usar también los nuevos polinomios que ya fueron agregados para hacer las nuevas reducciones en el paso. Es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
 
-Ese cambio es, en lugar de para las reducciones usar el conjunto anterior, usar también los nuevos polinomios que ya fueron agregados, es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
-
-Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}.
-
-En la práctica el cambio ese hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en un montón de casos. El motivo teórico detrás de que hacer eso haga que pase a ser tanto mas rápido el autor no lo sabe ni lo pudo encontrar en la literatura.
+Por lo que habíamos visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}. En la práctica esta mejora hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en una gran cantidad de casos. La justificación teórica de porque hacer eso hace que pase a ser tanto mas rápido el autor no lo sabe ni lo pudo encontrar en la literatura.
 
 Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. En la \cref{secton:optimizaciones} se aborda este tema.
-
-% Cristian dijo: "mejorar la redacción". No hice casi ningún cambio, ¿está bien así? % CONSULTAR
-
 
 \section{Algoritmo F4}
 
@@ -1616,7 +1596,7 @@ Esa función sería básicamente la que trata de responder a la pregunta que pla
 
 \section{Construcción de la respuesta}\label{section:construcción de la respuesta (librería)}
 
-La función \texttt{inIdeal} sólo decide la pertenencia al ideal generado, pero en caso afirmativo no da una forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
+La función \texttt{inIdeal} solo decide la pertenencia al ideal generado, pero en caso afirmativo no da una forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
 
 Con las bases de Gröbner pasa lo mismo, los algoritmos dan la base pero no dan una forma de escribir los elementos de la base usando los elementos del conjunto generador.
 
@@ -2025,7 +2005,7 @@ En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
 \section{Conjuntos con bases de Gröbner finitas}\label{section:Conjuntos con bases de Gröbner finitas}
 
-El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos grupos por así decirlo, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y los \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
+El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos grupos por así decirlo, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y las \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
 
 En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
 
@@ -2052,7 +2032,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
     \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
     \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
   \end{axis}
-\end{tikzpicture} % Esto se veo feo % CONSULTAR
+\end{tikzpicture} % Esto se veo feo % Poner cada caso en su propio gráfico, en una cuadricula todos
 
 Lo que se puede ver es que para los tests en los que más rápido andan, Buch y F4 andan mucho más rápido que GB, pero para los mas lentos GB es más rápido. Tiene sentido que para los rápidos Buch y F4 sean más rápidos porque C++ es más rápido que Python, y que para los mas grandes el hecho de que GB tenga implementada la optimización de la reducción de matrices mas eficiente haga la diferencia.
 
