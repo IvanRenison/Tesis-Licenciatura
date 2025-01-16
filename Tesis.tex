@@ -536,11 +536,13 @@ A continuación la prueba de que esta relación efectivamente achica.
     \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
   \end{enumerate}
 
-  \noindent Escribamos $f = ∑_{i = 1}^n c_i m_i$ con $c_1, …, c_n ∈ K$, $m_1, …, m_n ∈ ⟨X⟩, m_1 > m_2 > ⋯ > m_n$.
+  Sean:
+  \begin{itemize}
+    \item $c_1, …, c_n ∈ K, m_1, …, m_n ∈ ⟨X⟩$ con $m_1 > m_2 > ⋯ > m_n$ tales que $f = ∑_{i = 1}^n c_i m_i$.
+    \item $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
+  \end{itemize}
 
-  \noindent Sea $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
-
-  \noindent Notar también que: % Cristian me dijo de poner punto seguidos. Lo que hice es poner \noindent. En otros lugares pasa lo mismo % CONSULTAR
+  Notar también que:
 
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{2}
@@ -564,9 +566,9 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
 \begin{proof}
   Supongamos el antecedente $f_0 →_{≤, G} f_1$.
 
-  \noindent Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$.
+  Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb $, los cuales existen por definición de $→_{≤, G}$.
 
-  \noindent Dividamos la demostración en casos según la pertenencia de $\lm_≤(agb)$ a $\sop(f)$:
+  Dividamos la demostración en casos según la pertenencia de $\lm_≤(agb)$ a $\sop(f)$:
 
   \begin{description}
     \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos los siguiente:
@@ -619,9 +621,7 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
 \end{lemma}
 \begin{proof} Supongamos el antecedente.
 
-  Sean $g ∈ G$ y $a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por definición de $→_{≤, G}$.
-
-  Tenemos ahora:
+  Sean $g ∈ G$ y $a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por definición de $→_{≤, G}$. Tenemos:
   \begin{DispWithArrows*}
     &f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \\
     & ⇒ c m f' m' = c m (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) m \\
@@ -702,13 +702,22 @@ El siguiente teorema caracteriza las formas normales de $→$.
   Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$. Entonces
   \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
 \end{theorem}
-\begin{proof}
-  Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) | m$.
+\begin{proof} Probemos ida y vuelta por separado
+  \begin{description}
+    \item[Ida ($⇒$):] por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) | m$.
 
-  \noindent Sean $a, b ∈ ⟨X⟩$ tales que $m = agb$, los cuales existen por la definición de divisibilidad.
+    \noindent Sean $a, b ∈ ⟨X⟩$ tales que $m = agb$, los cuales existen por la definición de divisibilidad.
 
-  \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
+    \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
+    \item[Vuelta ($⇐$):] por contraresiprica, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
+    \begin{itemize}
+      \item $f' ∈ K⟨X⟩$ tal que $f →_{≤, G} f'$, el cual existe por el antecedente.
+      \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
+    \end{itemize}
+
+    Con esto es claro que $g$ satisface el $∃$.
+  \end{description}
 \end{proof}
 
 Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
@@ -896,15 +905,19 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
     \begin{itemize}
-      \item $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$
-      \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$
+      \item $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$.
+      \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
     \end{itemize}
 
-    Notar que $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$ y notar que $f →_{≤, G} f'$.
+    Notar que:
 
-    Además, por \cref{thm:→ achican}, $f' < f$.
+    \begin{itemize}
+      \item $f' ∈ I$ ya que $f ∈ I$ y $g ∈ (G) = I$,
+      \item $f →_{≤, G} f'$ por definición de $→_{≤, G}$ y
+      \item $f' < f$ por el \cref{thm:→ achican}.
+    \end{itemize}
 
-    Y como no vale $f →^*_{≤, G} 0$, tampoco puede valer $f' →^*_{≤, G} 0$. Sin embargo, esto contradice que $f$ sea mínimo.
+    \noindent Ahora como no vale $f →^*_{≤, G} 0$, tampoco puede valer $f' →^*_{≤, G} 0$. Sin embargo, esto contradice que $f$ sea mínimo.
 
     \item[(2) $⇒$ (5):] Supongamos (2) y tomemos $f ∈ I - \{0\}$.
 
@@ -971,7 +984,7 @@ Primero definimos las ambigüedades, que representan los polinomios para los cua
 
 \end{definition}
 
-Notar que por como es la definición de ambigüedad, cuando es relevante siempre hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, y por eso son los que se usan para definir $\ams$. No relevantes siempre hay entre cualquier par de monomios, por ejemplo tomando $a = d = ε$, $b = m'$ y $c = m$.
+Notar que por como es la definición de ambigüedad, cuando es relevante siempre hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, y por eso son los que se usan para definir $\amb$. No relevantes siempre hay entre cualquier par de monomios, por ejemplo tomando $a = d = ε$, $b = m'$ y $c = m$.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, f' ∈ K⟨X⟩$ y $α = (a, b, c, d, f, f')$ una ambigüedad. Se define el S-polinomio de $α$ como
@@ -1083,7 +1096,7 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
 \begin{proof}
   Procedamos por inducción sobre $i$. El caso base se cumple porque $G ⊆ (G)$. Para el caso inductivo, supongamos que la afirmación es cierta para $i$ y probemos que también vale para $i + 1$. Para eso tomemos $f ∈ \B_{e_≤}^{i + 1}(G)$ y probemos que $f ∈ (G)$.
 
-  \noindent Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$. Dividamos en casos según ese $∨$
+  Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$. Dividamos en casos según ese $∨$
 
   \begin{description}
     \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
@@ -1110,13 +1123,34 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
   $∀α ∈ \amb(\B_{e_≤}(G)) : \S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
 \end{lemma}
 \begin{proof}
-  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$.
+  Tomemos $α = (a, b, c, d, f, g) ∈ \amb(\B_{e_≤}(G))$. Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(G)$, así que sean:
+  \begin{itemize}
+    \item $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$,
+    \item $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y
+    \item $k = \max(i, j)$.
+  \end{itemize}
 
-  \noindent Por definición de $\amb$ vale que $f, g ∈ \B_{e_≤}(G)$, así que sea $i ∈ ℕ$ el mínimo tal que $f ∈ \B_{e_≤}^i(G)$, $j ∈ ℕ$ el mínimo tal que $g ∈ \B_{e_≤}^j(G)$ y $k = \max(i, j)$.
+  \noindent Por definición de $\amb$ tiene que valer que
+  \[ α ∈ \amb(\B_{e_≤}^k(G)) \]
 
-  \noindent Por definición de $\amb$ tiene que valee que $α ∈ \amb(\B_{e_≤}^k(G))$ y entonces por definición de $\B_{e_≤}^i$ vale que $e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G)$. Esto implica que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0$ y por ende que $e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0$.
+  \noindent y entonces por definición de $\B_{e_≤}^i$ vale que
+  \[ e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G) \text{.} \]
 
-  \noindent Combinando eso con que por definición de reductor vale que $\S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ y por ende $\S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α))$ vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$.
+  \noindent Esto implica que
+
+  \[ e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0\]
+
+  \noindent y por ende que
+
+  \[ e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0 \text{.} \]
+
+  \noindent Llamemos (i) a esto último. Por otro lado, por definición de reductor tenemos que
+  \[ \S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \]
+
+  \noindent y por ende
+  \[ \S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \text{(ii).} \]
+
+  \noindent Llamemos (ii) a esto último. Combinando (i) y (ii) vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, que es lo que queríamos probar.
 \end{proof}
 
 Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger correctitud}.
@@ -1124,9 +1158,7 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
   Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que (1), o sea, que $G$ es una base de Gröbner queda probado.
 
-  Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.
-
-  \noindent Para cada $i ∈ \{1, …, n\}$ sean:
+  Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.  Para cada $i ∈ \{1, …, n\}$ sean:
   \begin{itemize}
     \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por (5) del \cref{thm:equivalencias de base de Gröbner}.
 
@@ -1135,14 +1167,16 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
     \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$. Notar que $k$ está bien definido porque $G'$ es finito.
   \end{itemize}
 
-  Ahora vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$.
-
-  Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
+  Ahora vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g'_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
-  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma.
+  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma. Por (5) del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
+  \begin{itemize}
+    \item $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y
+    \item $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
+  \end{itemize}
 
-  Por (5) del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
+  Con esto tenemos:
 
   \begin{DispWithArrows*}
     &f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i \Arrow{Condición de $g_{i, j}$} \\
@@ -1150,10 +1184,7 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
     & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i \text{.}
   \end{DispWithArrows*}
 
-  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$.
-
-  Con esto queda completada la prueba.
-
+  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$. Así que queda $f$ escrito como queríamos y la prueba completada.
 \end{proof}
 
 Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula:
