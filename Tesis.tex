@@ -125,8 +125,7 @@ Usted posiblemente haya escuchado hablar de los polinomios de varias variables, 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale que:
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 
-Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
-pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
+Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
 El motivo por el cual no es decidible es que el problema de la palabra se reduce a esto. Ver \cite{web:wiki:WordPproblem} para información del problema de la palabra y la Sección 1.3 de \cite{article:MORA1994131} para saber como es la reducción.
 
@@ -140,7 +139,7 @@ La parte de implementar en C++ esos algoritmos se logró, pero hay una optimizac
 
 Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
 
-Una cosa para las que las bases de Gröbner no conmutativas son muy útiles para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usamos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
+Una cosa para las que las bases de Gröbner no conmutativas son muy útiles para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usamos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
