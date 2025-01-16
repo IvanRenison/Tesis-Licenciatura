@@ -516,7 +516,7 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
 Ahora vamos a definir una relación de reducción en los polinomios no conmutativos y acá es donde entra lo de sistemas de re-escritura. La relación que vamos a definir depende del orden monomial y de un conjunto de polinomios no conmutativos y lo que va a hacer es tratar de achicar un polinomio con los elementos del conjunto para que llegue a quedar lo menor posible con respecto al orden polinomial.
 
 \begin{definition}\label{def:reducciones}
-  Sean $G ⊆ K⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relacion $→_{≤, G}$ del siguiente modo:
+  Sean $G ⊆ K⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relación $→_{≤, G}$ del siguiente modo:
   \[ f →_{≤, G} f' ⇔ ∃a, b ∈ ⟨X⟩, g ∈ G : \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \text{.} \]
   Cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
 \end{definition}
@@ -716,7 +716,7 @@ El siguiente teorema caracteriza las formas normales de $→$.
 
     \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
-    \item[Vuelta ($⇐$):] por contraresiprica, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
+    \item[Vuelta ($⇐$):] por contrareciproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
     \begin{itemize}
       \item $f' ∈ K⟨X⟩$ tal que $f →_{≤, G} f'$, el cual existe por el antecedente.
       \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
@@ -1622,7 +1622,7 @@ Por último, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBa
 
 Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer el el código corra en paralelo.
 
-La paralelización está hechoa con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para hacer cosas en paralelo, así que para que corra en paralelo es igual que en cualquier otra cosa paralelizada con OpenMP.
+La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para hacer cosas en paralelo, así que para que corra en paralelo es igual que en cualquier otra cosa paralelizada con OpenMP.
 
 Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag esté puesto en la configuración del makefile para cuando se compilan los ejemplos y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
 
@@ -1728,9 +1728,9 @@ Los campos de la ambigüedad son:
 
 \begin{itemize}
   \item \texttt{p} y \texttt{q} son referencias a los monomios sobre los cuales es la ambigüedad. El motivo por el cual se guardan en la estructura es para poder implementar una de las optimizaciones.
-  \item \texttt{type} indica si la ambigüedad es de inclusión o de sobreposición.
+  \item \texttt{type} indica si la ambigüedad es de inclusión o de superposición.
   \item \texttt{pos} es la posición de \texttt{p} donde empieza el pedazo que es en común con \texttt{q} y por el cual existe la ambigüedad.
-  \item \texttt{a} y \texttt{b} son los monomios que hacen que en el caso de las de inclusión \texttt{p} sea igual a \texttt{aqb} y en el caso de las de sobreposición \texttt{ap} sea igual a \texttt{qb}.
+  \item \texttt{a} y \texttt{b} son los monomios que hacen que en el caso de las de inclusión \texttt{p} sea igual a \texttt{aqb} y en el caso de las de superposición \texttt{ap} sea igual a \texttt{qb}.
 \end{itemize}
 
 En el archivo también está la función \texttt{ambiguities} que toma dos monomios y devuelve un vector de \texttt{Amb} con todas las ambigüedades entre esos dos monomios. En esta función, al igual que en la divisibilidad de monomios, se usa la función Z para evitar tener que hacer algo cuadrático en los largos de los monomios.
@@ -1975,7 +1975,7 @@ Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para 
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
-Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en github se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
+Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en GitHub se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
 
 De los tests hay algunos que corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath} y comparan los resultados, y otros que corren solo código de la librería.
 
@@ -2049,7 +2049,7 @@ Estos benchmarks son solo para los racionales porque los conjuntos que se sabe q
 
 Los tests que hacen lo de para conjuntos generadores generados al azar y polinomios generados al azar ver con los distintos algoritmos si el polinomio está en el ideal generado o no también miden los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con GB y para los enteros módulo un primo no, porque GB es solo para racionales.
 
-Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores generados al azar y polinomios generados al azary también los tiempos máximos.
+Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores generados al azar y polinomios generados al azar y también los tiempos máximos.
 
 Estos son los resultados para los racionales:
 
