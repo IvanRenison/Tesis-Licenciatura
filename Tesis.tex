@@ -106,7 +106,7 @@
 % F: Conjunto de polinomios (que no sea un conjunto generador)
 % f, g: Polinomios
 % m: Monomios
-% c: Coeficiente de K
+% c, k: Coeficiente de K
 % a, b, c, d: Coeficientes de monomios
 % α: ambigüedades
 % n: límite de una sumatoria
@@ -128,7 +128,7 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
 pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable.
+Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada % CONSULTAR
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
@@ -142,7 +142,7 @@ Toda esta exposición es autocontenida para facilitar su lectura, así que se in
 
 En este capítulo se desarrolla toda la parte matemática, basada principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de re-escritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y propiedades de anillos y se definen las bases de Gröbner. Por último se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capítulo incluye demostraciones de muchos de los resultados expuestos pero quienes tengan interés principalmente en la implementación de los algoritmos pueden obviar su lectura o leerlo solo por encima.
+El capítulo incluye demostraciones de muchos de los resultados expuestos pero quienes tengan interés principalmente en la implementación de los algoritmos pueden obviar su lectura o leerlas solo por encima.
 
 \section{Sistemas de re-escritura}
 
@@ -254,7 +254,7 @@ En estos monomios, al igual que en los conmutativos, se puede hablar de que un m
 \begin{definition}
   Sean $m, m' ∈ ⟨X⟩$. Se define que $m$ divida a $m'$, denotado como $m | m'$ de la siguiente forma:
   \begin{itemize}
-    \item $m | m' ⇔ ∃a , b ∈ ⟨X⟩ : m' = avb$.
+    \item $m | m' ⇔ ∃a , b ∈ ⟨X⟩ : m' = a m b$.
   \end{itemize}
 \end{definition}
 
@@ -262,23 +262,21 @@ En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 De lo que es un poco más complicado hablar acá es del resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
-Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero no hace falta, sino que se pueden enunciar las mínimas propiedades que harán falta y trabajar con cualquier otden que las satisfaga. Eso se logra con la siguiente definición.
+Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas propiedades que harán falta y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
   \begin{enumerate}
-    \item $∀v, w, a, b ∈ ⟨X⟩ : v ≤ w ⇒ avb ≤ awb$.
+    \item $∀m, m', a, b ∈ ⟨X⟩ : m ≤ m' ⇒ a m b ≤ a m' b$.
     \item $∀S ⊆ ⟨X⟩ : S ≠ ∅ ⇒ S$ tiene mínimo elemento con respecto a $≤$.
   \end{enumerate}
 \end{definition}
-
-Definir esto así en general va a permitir que todo el trabajo sea sobre cualquier orden con las propiedades mínimas necesarias.
 
 Un ejemplo de orden que cumple con esta definición es el siguiente.
 
 \begin{definition}
   Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
-  \[ a ≤_{deglex} b ⇔ |a| < |b| ∨ (|a| = |b| ∧ a ≤ b) \text{.}\]
+  \[ m ≤_{deglex} m' ⇔ |m| < |m'| ∨ (|m| = |m'| ∧ m ≤ m') \text{.}\]
 \end{definition}
 
 O sea, el orden lexicográfico por grado ordena primero por cardinalidad, también llamado grado, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$. Se puede probar fácilmente que este orden es un buen orden monomial.
@@ -298,13 +296,13 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
 
 \begin{definition}
   Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto
-  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i w_i : c_1, …, c_n ∈ R, w_1, …, w_n ∈ ⟨X⟩\}\]
+  \[ R⟨X⟩ = \{∑_{i = 1}^n c_i m_i : c_1, …, c_n ∈ R, m_1, …, m_n ∈ ⟨X⟩\}\]
 
   \noindent con las siguientes operaciones: la suma de los elementos de $R⟨X⟩$ como unir las $∑$, el producto por escalares de definido como
-  \[ c (∑_{i = 1}^n c_i w_i) = (∑_{i = 1}^n c c_i w_i) \text{,}\]
+  \[ c (∑_{i = 1}^n c_i m_i) = (∑_{i = 1}^n c c_i m_i) \text{,}\]
 
-  \noindent y el producto entre elementos de $R⟨X⟩$ definido como
-  \[ (∑_{i = 1}^n c_i w_i) · (∑_{i = 1}^m c'_i w'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j w_i w'_j \text{.}\]
+  \noindent y el producto entre elementos de $R⟨X⟩$ como
+  \[ (∑_{i = 1}^n c_i m_i) · (∑_{i = 1}^m c'_i m'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j m_i m'_j \text{.}\]
 
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
 \end{definition}
@@ -321,10 +319,10 @@ f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones que después vamos a usar reiteradamente.
 
 \begin{definition}\label{def:cosas de polinomios}
-  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $w_1, …, w_n, w ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i w_i$ y $≤$ un buen orden monomial. Se definen:
+  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $m_1, …, m_n, m ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i m_i$ y $≤$ un buen orden monomial. Se definen:
   \begin{itemize}
-    \item el coeficiente de $w$ en $f$ es $f_w = \begin{cases} c_0&\text{si }w = w_0 \\ ⋮ & \\ c_n&\text{si }w = w_n \\ 0&\text{si no} \end{cases} $. % CONSULTAR
-    \item el soporte de $f$ es el conjunto $\sop(f) = \{w_1, …, w_n\}$.
+    \item el coeficiente de $m$ en $f$ es $f_m = \begin{cases} c_0&\text{si }m = m_0 \\ ⋮ & \\ c_n&\text{si }m = m_n \\ 0&\text{si no} \end{cases} $. % CONSULTAR
+    \item el soporte de $f$ es el conjunto $\sop(f) = \{m_1, …, m_n\}$.
     \item el monomio principal de $f$ es $\lm_≤(f) = \max_≤(\sop(f))$.
     \item el coeficiente principal de $f$ es $\lc_≤(f) = f_{\lm(f)}$.
     \item el término principal de $f$ es $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
@@ -335,7 +333,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
   Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 \end{definition}
 
-Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar una por una porque es tedioso y aburrido.
+Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar una por una porque sería tedioso y aburrido.
 
 Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
@@ -376,7 +374,7 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
   La relación $≤$ en $K⟨X⟩$ no tiene sucesiones estrictamente decrecientes infinitas.
 \end{lemma}
 \begin{proof}
-  Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$ que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
+  Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$, que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
 
   Notemos que:
 
@@ -390,7 +388,7 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
   \end{fact}
   Esto vale porque al aplicar la definición del orden polinomial sobre $P_1 > P_2 > P_3 > …$ y usar la \cref{fact:≤ en KX no sucesiones dec inf:1} queda $\tail(P_1) > \tail(P_2) > \tail(P_3) > …$
 
-  Como claramente $0$ es un mínimo:
+  Como por el \cref{lemma:0 es mínimo} $0$ es un mínimo:
 
   \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:3}
     $P_1 ≠ 0$.
@@ -484,19 +482,19 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
     \item[Ida ($⇒$):] Supongamos $f ∈ (G)$. Sean:
 
     \begin{itemize}
-      \item $g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por lo que estamos suponiendo y la definición de $(G)$.
+      \item $g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩$ tales que $f = ∑_{i = 1}^n f_i g_i f'_i$, los cuales existen por lo que estamos suponiendo y la definición de $(G)$.
       \item Para cada $i ∈\{1, …, n\}$:
       \begin{itemize}
-        \item $k_{i, 1}, …, k_{i, n_i} ∈ K, m_{i, 1}, …, m_{i, n_i} ∈ ⟨X⟩$ tales que $c_i = ∑_{j = 1}^{n_i} k_{i, j} m_{i, j}$.
-        \item $k'_{i, 1}, …, k'_{i, n'_i} ∈ K, m'_{i, 1}, …, m'_{i, n'_i} ∈ ⟨X⟩$ tales que $c'_i = ∑_{j = 1}^{n'_i} k'_{i, j} m'_{i, j}$.
+        \item $c_{i, 1}, …, c_{i, n_i} ∈ K, m_{i, 1}, …, m_{i, n_i} ∈ ⟨X⟩$ tales que $f_i = ∑_{j = 1}^{n_i} c_{i, j} m_{i, j}$.
+        \item $c'_{i, 1}, …, c'_{i, n'_i} ∈ K, m'_{i, 1}, …, m'_{i, n'_i} ∈ ⟨X⟩$ tales que $f'_i = ∑_{j = 1}^{n'_i} c'_{i, j} m'_{i, j}$.
       \end{itemize}
     \end{itemize}
 
     Con esto tenemos:
     \begin{DispWithArrows*}
-      f &= ∑_{i = 1}^n c_i g_i c_i' \\
-        &= ∑_{i = 1}^n (∑_{j = 1}^{n_i} k_{i, j} m_{i, j}) g_i (∑_{j = 1}^{n'_i} k'_{i, j} m'_{i, j}) \\
-        &= ∑_{i = 1}^n ∑_{j = 1}^{n_i} ∑_{j' = 1}^{n'_i} k_{i, j} k'_{i, j'} m_{i, j} g_i m'_{i, j'} \text{.}
+      f &= ∑_{i = 1}^n f_i g_i f'_i \\
+        &= ∑_{i = 1}^n (∑_{j = 1}^{n_i} c_{i, j} m_{i, j}) g_i (∑_{j = 1}^{n'_i} c'_{i, j} m'_{i, j}) \\
+        &= ∑_{i = 1}^n ∑_{j = 1}^{n_i} ∑_{j' = 1}^{n'_i} c_{i, j} c'_{i, j'} m_{i, j} g_i m'_{i, j'} \text{.}
     \end{DispWithArrows*}
 
     Esto último es una expresión que se transforma a la forma que queremos.
@@ -530,7 +528,7 @@ A continuación la prueba de que esta relación efectivamente achica.
   \[ f →_{≤, G} f' ⇒ f' < f \text{.} \]
 \end{theorem}
 \begin{proof}
-  Supongamos el antecedente. Por definición de reducciones vale que:
+  Supongamos el antecedente. Por definición de reducciones tomemos $a, b ∈ ⟨X⟩, g ∈ G$ tales que:
   \begin{enumerate}[label=(\roman*)]
     \item $\lm_≤(agb) ∈ \sop(f)$.
     \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
@@ -627,8 +625,7 @@ La relación $→_{≤, G}$ tiene varias propiedades que van a ser útiles y que
   \begin{DispWithArrows*}
     &f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \\
     & ⇒ c m f' m' = c m (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) m \\
-    & ⇒ c m f' m' = c m f m' - \frac{{(c m f m')}_{\lm_≤(c ma g bm')}}{\lc_≤(g)}c ma g bm' \Arrow{Definición $→_{≤, ma, g, bm'}$} \\
-    & ⇒ c m f m' →_{≤, ma, g, bm'} c m f' m' \Arrow{Definición $→_{≤, G}$} \\
+    & ⇒ c m f' m' = c m f m' - \frac{{(c m f m')}_{\lm_≤(c ma g bm')}}{\lc_≤(g)}c ma g bm'  \Arrow{Definición $→_{≤, G}$} \\
     & ⇒ c m f' m' →_{≤, G} c m f m' \text{.}
   \end{DispWithArrows*}
 
@@ -651,22 +648,22 @@ Recordar que $≡_{(G)}$ es la congruencia módulo un ideal definida en la \cref
       & ⇔ f - (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) ∈ (G) \\
       & ⇔ \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb ∈ (G) \text{.}
     \end{DispWithArrows*}
-    Y esto último es claramente cierto por la definición de ideal (\cref{def:ideal}).
+    Y esto último es claramente cierto por la definición de (G) (\cref{def:ideal gen}).
 
     \item[Prueba de $≡_{(G)}\ ⊆\ ↔^*_{≤, G}$:] Supongamos $f ≡_{(G)} f'$ y probemos $f ↔^*_{≤, G} f'$. Sean:
     \begin{itemize}
       \item $g = f - f'$.
-      \item $m_1, …, m_n, m_1', …, m_n' ∈ ⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $g = ∑_{i = 1}^n m_i g_i m_i'$, los cuales existen porque por definición de $≡_G$ tenemos $g ∈ (G)$ y por el \cref{lemma:(G) equiv}.
+      \item $c_1, …, c_n ∈ K, m_1, …, m_n, m_1', …, m_n' ∈ ⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $g = ∑_{i = 1}^n c_i m_i g_i m_i'$, los cuales existen porque por definición de $≡_G$ tenemos $g ∈ (G)$ y por el \cref{lemma:(G) equiv}.
       \item $f_0 = f$.
-      \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - m_i g_i m_i'$.
+      \item Para cada $i ∈ \{1, …, n\}$: $f_i = f_{i - 1} - c_i m_i g_i m_i'$.
     \end{itemize}
 
     Tenemos entonces:
     \begin{DispWithArrows*}
       &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \Arrow{\cref{lemma:prod mon →}} \\
-      & ⇒ ∀i ∈ \{1, …, n\} : m_i g_i m_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
-      & ⇒ ∀i ∈ \{1, …, n\} : m_i g_i m_i' + f_i ↓_{≤, G} 0 + f_i \Arrow{Definición de los $f_i$}\\
-      & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\ % Debería agregar un lema para este paso?
+      & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' + f_i ↓_{≤, G} 0 + f_i \Arrow{Definición de los $f_i$}\\
+      & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\ % Debería agregar un lema para este paso? % CONSULTAR
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↔^*_{≤, G} f_i \\
       & ⇒ f_0 ↔^*_{≤, G} f_n \Arrow{$f_n = f - g = f'$} \\
       & ⇒ f ↔^*_{≤, G} f_n \text{.}
@@ -708,7 +705,7 @@ El siguiente teorema caracteriza las formas normales de $→$.
 \begin{proof}
   Por contradicción, supongamos que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) | m$.
 
-  \noindent Sean $a, b ∈ ⟨X⟩$ tal que $m = agb$, los cuales existen por la definición de divisibilidad.
+  \noindent Sean $a, b ∈ ⟨X⟩$ tales que $m = agb$, los cuales existen por la definición de divisibilidad.
 
   \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
@@ -716,7 +713,7 @@ El siguiente teorema caracteriza las formas normales de $→$.
 
 Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
 
-\[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba \text{.}\]
+\[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba = f' \text{.}\]
 
 \noindent Y también:
 
@@ -808,7 +805,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$.
 
-    \item $∀f ∈ I - \{0\} : ∃g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n a_i g_i b_i$.
+    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.
   \end{enumerate}
 \end{theorem}
 \begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (3), (3) $⇒$ (1), (3) $⇒$ (2), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
@@ -924,11 +921,11 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       \item Para cada $i ∈ {1, …, n}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
     \end{itemize}
 
-    Vamos a probar que $g_1, …, g_n, …, a_1, …, a_n, b_1, …, b_n$ satisfacen el $∃$ de (5), es decir, vamos a probar $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$ y $f = ∑_{i = 1}^n a_i g_i b_i$.
+    Vamos a probar que el $∃$ de (5), se satisface de la forma $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
 
     \begin{description}
       \item[Prueba de $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm(a_i g_i b_i) ≤ \lm(f)$.
-      \item[Prueba de $f = ∑_{i = 1}^n a_i g_i b_i$:] Es consecuencia directa de como se eligieron los $g_i, a_i, b_i$.
+      \item[Prueba de $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$:] Es consecuencia directa de como se eligieron los $g_i, a_i, b_i$.
     \end{description}
 
     \item[(5) $⇒$ (4):] Supongamos (5) y probemos (4). Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm(g) | \lm(f)$.
@@ -936,12 +933,13 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \begin{description}
       \item[Prueba de $(G) = I$:] Tomemos $f ∈ I$ y probemos $f ∈ (G)$.
 
-      Por (5) tenemos que $f = ∑_{i = 1}^n a_i g_i b_i$ con $g_i ∈ G$.
+      Por (5) tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$ y $g_i ∈ G$.
 
       Esto encaja exactamente con la definición de $(G)$, así que queda probado $f ∈ (G)$.
+
       \item[Prueba de $∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$:] Fijemos $f ∈ I - \{0\}$.
 
-      Por (5) tenemos que $f = ∑_{i = 1}^n a_i g_i b_i$ con $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
+      Por (5) tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
 
       Como $\lm(a_i g_i b_i) ≤ \lm(f)$, si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
     \end{description}
@@ -955,7 +953,8 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
 En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger. Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
 
-Antes definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
+Primero definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
+
 \begin{definition}
   Sean $m, m', a, b, c, d ∈ ⟨X⟩$. Se define
   \[ (a, b, c, d, m, m')\text{ es una ambigüedad} ⇔ amb = cm'd ∧ |a|, |b| < |m'| ∧ |c|, |d| < |m| \text{.}\]
@@ -977,7 +976,7 @@ Antes definimos las ambigüedades, que representan los polinomios para los cuale
 
 \end{definition}
 
-Notar que por como es la definición de ambigüedad, cuando es relevante siempre es como que hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, porque los otros es como que siempre están entre cualquier par de polinomios.
+Notar que por como es la definición de ambigüedad, cuando es relevante siempre hay una parte de $m$ y una parte de $m'$ que son iguales y que no están en los monomios $a$, $b$, $c$ y $d$. Los casos relevantes son los únicos que van a ser importantes, porque los otros es como que siempre están entre cualquier par de polinomios.
 
 \begin{definition}
   Sean $a, b, c, d ∈ ⟨X⟩, f, f' ∈ K⟨X⟩$ y $α = (a, b, c, d, f, f')$ una ambigüedad. Se define el S-polinomio de $α$ como
@@ -2053,7 +2052,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
     \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
     \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
   \end{axis}
-\end{tikzpicture}
+\end{tikzpicture} % Esto se veo feo % CONSULTAR
 
 Lo que se puede ver es que para los tests en los que más rápido andan, Buch y F4 andan mucho más rápido que GB, pero para los mas lentos GB es más rápido. Tiene sentido que para los rápidos Buch y F4 sean más rápidos porque C++ es más rápido que Python, y que para los mas grandes el hecho de que GB tenga implementada la optimización de la reducción de matrices mas eficiente haga la diferencia.
 
