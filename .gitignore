@@ -13,3 +13,4 @@ _minted-*
 *.bcf*
 *.blg
 *.run.xml
+*.toc

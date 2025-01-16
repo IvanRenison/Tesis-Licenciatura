@@ -128,6 +128,8 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 Este problema así planteado no es decidible, % Estaría bueno agregar una cita acá, pero no se a que
 pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
+El motivo por el cual no es decidible es que el problema de la palabra se reduce a esto. Ver \cite{web:wiki:WordPproblem} para información del problema de la palabra y la Sección 1.3 de \cite{article:MORA1994131} para saber como es la reducción.
+
 Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo, que se llama base de Gröbner de $(G)$, la cual puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se va a estar hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
@@ -136,7 +138,11 @@ De antes de esta tesis existen varias implementaciones del algoritmo de Buchberg
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en SAGEMATH. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de SAGEMATH.
 
-Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner. Mucha aplicación práctica no tiene. En el caso conmutativo si hay aplicaciones prácticas importantes por la relación que tiene con la geometría, pero en el no conmutativo no. Pero si hay aplicaciones en matemática teórica, que son de interés para Cristian Vay, el director de este trabajo. En particular en el calculo de dimensiones de algunas álgebras.
+Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
+
+Una cosa para las que las bases de Gröbner no conmutativas son muy útiles para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usamos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
+
+También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
 Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, si no que son necesarias para los temas de la tesis.
 
@@ -2017,7 +2023,7 @@ A continuación una lista de algunas de las cosas (las mas importantes) que est�
   \item Por último hay un tests que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de igual. Esto está en la carpeta \texttt{test/parallelism\_tests}.
 \end{itemize}
 
-\chapter{Benchmarks}
+\chapter{Benchmarks}\label{cap:Benchmarks}
 
 Cuando se corren los tests, los que tienen además benchmarks imprimen los resultados de los benchmarks. En este capítulo se presentan esos resultados.
 
