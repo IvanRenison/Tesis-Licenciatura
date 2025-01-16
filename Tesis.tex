@@ -106,6 +106,7 @@
 % F: Conjunto de polinomios (que no sea un conjunto generador)
 % f, g: Polinomios
 % m: Monomios
+% M: conjunto de monomios
 % c, k: Coeficiente de K
 % a, b, c, d: Coeficientes de monomios
 % α: ambigüedades
@@ -1230,11 +1231,7 @@ Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas 
 
 \section{Algoritmo F4}
 
-En esta sección se explica el algoritmo F4, que es otro algoritmo para calcular Bases de Gröbner.
-
-La idea de F4 es agarrar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, tanto reduciendo con los elementos que ya están en la base como reduciendo entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila.
-
-Para hacer esto de codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
+En esta sección se explica el algoritmo F4, que es otro método para calcular Bases de Gröbner. La idea de F4 es considerar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, reduciendo con los elementos que ya están en la base y entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila. Para codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
 
 \begin{definition}
   Sea $F ⊆ K⟨X⟩$. Se define
@@ -1242,32 +1239,20 @@ Para hacer esto de codificar los polinomios como filas de una matriz vamos a nec
 \end{definition}
 
 \begin{definition}
-  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se definen:
-
-  \begin{itemize}
-    \item $\poli_T : K^n → \spn_K(M)$.
-    \item $\poli_T(v) = ∑_{i = 1}^n v_i m_i$.
-  \end{itemize}
+  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define la función $\poli_M : K^n → \spn_K(M)$ de la siguiente manera:
+  \[ \poli_M(v) = ∑_{i = 1}^n v_i m_i \text{.} \]
 \end{definition}
 
 \begin{definition}
-  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define $\mat_T$ aplicado a un polinomio como la inversa de $\poli_T$:
+  Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define $\mat_M : \spn_K(M) → K^n$ como la inversa de $\poli_M$:
+  \[ \mat_M(f) = \poli_M^{-1}(f) \text{.} \]
 
-  \begin{itemize}
-    \item $\mat_T : \spn_K(M) → K^n$.
-    \item $\mat_T(f) = \poli_T^{-1}(f)$.
-  \end{itemize}
+  \noindent Y para una lista de polinomios de define que $\mat_M$ produzca una matriz:
 
-  Para una lista de polinomios la función $\mat_T$ produce una matriz:
-
-  \begin{itemize}
-    \item $\mat_T(f_1, …, f_m) = \begin{pmatrix} \mat_T(f_1) \\ ⋮ \\ \mat_T(f_m) \end{pmatrix}$.
-  \end{itemize}
+  \[ \mat_M(f_1, …, f_m) = \begin{pmatrix} \mat_M(f_1) \\ ⋮ \\ \mat_M(f_m) \end{pmatrix} \text{.} \]
 \end{definition}
 
-Estas definiciones nos permiten hablar de pasar de polinomios a matrices y viceversa.
-
-Lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz, así que hay a tener que empezar ya teniendo en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$ calcula todos los polinomios que van a ser necesarios:
+Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios. Así, lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz. Para eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios que van a ser necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
@@ -1302,9 +1287,7 @@ Lo que antes en la reducción era restar un polinomio multiplicado por un escala
   \Return{$G'$}
 \end{algorithm}
 
-Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar que filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base.
-
-Para detectar esas filas lo que se hace es guardarse cuales son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar que filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base. Para detectar esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
 
 El siguiente seudocódigo hace eso:
 
@@ -1320,53 +1303,41 @@ El siguiente seudocódigo hace eso:
 
   $mat ← \mat_M(G' ∪ F)$
 
-  hacer reducción por filas de $mat$
+  reducir por filas $mat$
 
   $F' ← \{\poli_M(v) : v ∈ \filas(mat) : v ≠ 0 ∧ \lm(\poli_M(v)) ∉ monomios\}$
 
   \Return{$F'$}
 \end{algorithm}
 
-Y con esto se puede escribir el algoritmo F4:
+Con estos dos algoritmos ya podemos escribir el algoritmo F4:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{F4}\label{alg:F4}
-  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ un reductor}
+  \KwData{$G ⊆ K⟨X⟩$}
   \KwResult{$B ⊆ K⟨X⟩$ una base de Gröbner de $(G)$ si es que termina}
   $B ← G$
 
-  \Loop{} {
-    $ambs ← \amb(B)$
+  \While{$ambs ≠ ∅$} {
+    elegir $Α ⊆ ambs$
 
-    $B' ← B$
+    $ambs ← ambs - Α$
 
-    \While{$ambs ≠ ∅$} {
-      elegir $Α ⊆ ambs$
+    $P ← \{\S(α) : α ∈ Α\}$
 
-      $ambs ← ambs - Α$
+    $P ←$ Multireducción$(B, P)$
 
-      $P ← \{\S(α) : α ∈ Α\}$
-
-      $P ←$ Multireducción$(B', P)$
-
-      $B' ← B' ∪ P$
-    }
-
-    \If{$B' = B$} {
-      \Break
-    }
-
-    $B ← B'$
+    $B ← B ∪ P$
   }
 
   \Return{$B$}
 \end{algorithm}
 
-Este algoritmo no especifica cuáles ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes más rápido.
+Este algoritmo no especifica cuáles ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes rápidamente.
 
 En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto.
 
-Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para sacar polinomios de la base también se pueden hacer acá. Otra optimización que se puede hacer acá es usar un algoritmo de reducción de matrices que anda más rápido en las matrices de este problema en particular, llamado eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
+Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para quitar polinomios de la base también se pueden hacer acá. Otra optimización que se puede hacer es usar un algoritmo de reducción de matrices que anda más rápido en las matrices de este problema en particular, llamado eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
 
 \chapter{Librería}
 
