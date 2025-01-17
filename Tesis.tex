@@ -2012,42 +2012,129 @@ De cualquier manera esos datos no son muy importantes porque lo que importa es l
 
 Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de python. Para medir los tiempos lo que se hace es medirlos desde el programa de python, por lo cual incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de que imprime la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
+Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
+
+\begin{itemize}
+  \item Nichols2 $ = \{a^2\}$
+  \item Nichols3 $ = \{a^2,\ b^2,\ c^2,\ ac + ba + cb,\ ab + bc + ca\}$
+  \item Nichols4 $ = \{a^2,\ b^2,\ c^2,\ d^2,\ e^2,\ f^2,\ ac + ba + cb,\ ae + da + ed,\ bf + db + fd,\ cf + ec + fe,\ ab + bc + ca,\ ad + de + ea,\ bd + df + fb,\ ce + ef + fc,\ cd + dc,\ be + eb,\ af + fa\}$
+  \item tri1 $ = \{a^2 - 1,\ b^3 - 1,\ {(ababab^2ab^2)}^2 - 1\}$
+  \item tri2 $ = \{a^2 - 1,\ b^3 - 1,\ {(ababab^2)}^3 - 1\}$
+  \item tri3 $ = \{a^3 - 1,\ b^3 - 1,\ {(abab^2)}^2 - 1\}$
+  \item tri4 $ = \{a^3 - 1,\ b^3 - 1,\ {(abaab^2)}^2 - 1\}$
+  \item tri5 $ = \{a^2 - 1,\ b^5 - 1,\ {(abab^2)}^2 - 1\}$
+  \item tri6 $ = \{a^2 - 1,\ b^5 - 1,\ {(ababab^4)}^2 - 1\}$
+  \item tri7 $ = \{a^2 - 1,\ b^5 - 1,\ {(abab^2ab^4)}^2 - 1\}$
+  \item tri8 $ = \{a^2 - 1,\ b^2 - 1,\ {(ababab^3)}^2 - 1\}$
+  \item tri9 $ = \{a^2 - 1,\ b^3 - 1,\ {(abab^2)}^2 - 1\}$
+  \item tri10 $ = \{a^2 - 1,\ b^3 - 1,\ {(ababab^2)}^2 - 1\}$
+  \item tri11 $ = \{a^2 - 1,\ b^3 - 1,\ {(abababab^2)}^2 - 1\}$
+  \item tri12 $ = \{a^2 - 1,\ b^3 - 1,\ {(ababab^2abab^2)}^2 - 1\}$
+  \item tri13 $ = \{a^2 - 1,\ b^3 - 1,\ {(babababab^2ab^2)}^2 - 1\}$
+  \item trit3 $ = \{a^3 - 1,\ b^3 - 1,\ c^3 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
+  \item trit4 $ = \{a^3 - 1,\ b^3 - 1,\ c^4 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
+  \item trit5 $ = \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
+\end{itemize}
+
+Los Nichols que están porque son de interés para Cristian Vay, el director de esta tesis y su descripción está en \cite{web:Nichols}. Los tri que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y los trit son directamente sacados de la Proposición 1.9 de \cite{book:class-tri}.
+
+En todos los benchmarks que usan estos casos los usan para los racionales, porque es para los racionales que se sabe que tienen bases finitas.
+
 En las siguientes subsecciones se presentan los resultados de los benchmarks.
 
 \section{Conjuntos con bases de Gröbner finitas}\label{section:Conjuntos con bases de Gröbner finitas}
 
-El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos. Los casos que se usan acá son se dos grupos por así decirlo, los \texttt{tri} que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y las \texttt{Nichols} que están porque son de interés para Cristian Vay, el director de esta tesis. La descripción de los Nichols está en \cite{web:Nichols}.
+El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
 
 En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
-      ybar, % Tipo de gráfico: barras verticales
-      width=\textwidth,
-      height=0.4\textwidth,
-      bar width=0.01\textwidth, % Ancho de cada barra
-      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
-      xtick=data, % Mostrar marcas en el eje x para cada dato
-      ylabel={Tiempo en segundos}, % Etiqueta del eje y
-      %xlabel={Categorías}, % Etiqueta del eje x
-      xticklabel style={rotate=45}, % Rotar etiquetas
-      ymin=0, % Mínimo del eje y
-      ymax=214, % Máximo del eje y
-      %enlarge x limits=0.2, % Espaciado en los bordes
-      %legend style={anchor=north west}, % Estilo de la leyenda
-      legend entries={Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
-      cycle list={{brown,fill=brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+      ybar = 0.5pt, % Tipo de gráfico: barras verticales
+      width = \textwidth,
+      height = 0.4\textwidth,
+      bar width = 0.01\textwidth, % Ancho de cada barra
+      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+      xtick = data, % Mostrar marcas en el eje x para cada dato
+      ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel = {Categorías}, % Etiqueta del eje x
+      xticklabel style = {rotate = 45}, % Rotar etiquetas
+      ymin = 0, % Mínimo del eje y
+      enlarge x limits = 0.03, % Espaciado en los bordes
+      legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+      legend entries = {Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
+      cycle list = {{brown,fill = brown!30}, {red,fill = red!30}, {blue,fill = blue!30}}, % Colores
   ]
     % Datos para cada conjunto
     \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (trit3, 0.01) (trit4, 0.14) (trit5, 77.04)};
     \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
     \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
   \end{axis}
-\end{tikzpicture} % Esto se veo feo % Poner cada caso en su propio gráfico, en una cuadricula todos
+\end{tikzpicture}
 
-Lo que se puede ver es que para los tests en los que más rápido andan, Buch y F4 andan mucho más rápido que GB, pero para los mas lentos GB es más rápido. Tiene sentido que para los rápidos Buch y F4 sean más rápidos porque C++ es más rápido que Python, y que para los mas grandes el hecho de que GB tenga implementada la optimización de la reducción de matrices mas eficiente haga la diferencia.
+A simple-vista lo que se puede ver para los casos en los que se distingué algo es que \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo los otros no, así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
 
-Estos benchmarks son solo para los racionales porque los conjuntos que se sabe que tienen base finita que se encontraron eran para el cuerpo de los racionales.
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar = 0.5pt, % Tipo de gráfico: barras verticales
+      width = \textwidth,
+      height = 0.4\textwidth,
+      bar width = 0.01\textwidth, % Ancho de cada barra
+      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+      xtick = data, % Mostrar marcas en el eje x para cada dato
+      ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel = {Categorías}, % Etiqueta del eje x
+      xticklabel style = {rotate = 45}, % Rotar etiquetas
+      ymin = 0, % Mínimo del eje y
+      ymax = 10,
+      enlarge x limits = 0.03, % Espaciado en los bordes
+      legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+      legend entries = {Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
+      cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (trit3, 0.01) (trit4, 0.14) (trit5, 77.04)};
+    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
+    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
+  \end{axis}
+\end{tikzpicture}
+
+Y acá se puede ver que en los casos más chiquitos si pasa que Buchberger y F4 le gana a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos Buchberger y F4 sean más rápido también tiene sentido por el hecho de que C++ es mucho más rápido que Python.
+
+\section{Paralelismo}
+
+El test que prueba que de lo mismo correr con distintas cantidades de hilos también usa los mismos casos y mide los tiempos. En el siguente gráfico se pueden ver los resultados.
+
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar = 0.5pt, % Tipo de gráfico: barras verticales
+      width = \textwidth,
+      height = 0.4\textwidth,
+      bar width = 0.003\textwidth,
+      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
+      xtick = data, % Mostrar marcas en el eje x para cada dato
+      ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel = {Cantidad de hilos}, % Etiqueta del eje x
+      xticklabel style = {rotate = 45}, % Rotar etiquetas
+      ymin = 0, % Mínimo del eje y
+      ymax = 2.25, % Máximo del eje y
+      enlarge x limits = 0.03, % Espaciado en los bordes
+      legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+      legend entries = {1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.09) (tri2, 0.54) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.22) (tri7, 2.22) (tri8, 0.07) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.08) (tri2, 0.43) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 2.02) (tri7, 2.07) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.27) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.35) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.84) (tri7, 1.90) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.22) (tri13, 0.01)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.85) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.87) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00)};
+    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.06) (tri2, 0.29) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.81) (tri7, 1.83) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.01)};
+  \end{axis}
+\end{tikzpicture} % Agregar los tri
+
+
+Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que es solo la parte de agregar ambigüedades lo que está paralelizado.
+% Agregar los benchmarks de la reconstrucción
 
 \section{Pertenencia a ideales}
 
@@ -2083,40 +2170,6 @@ Estos datos igualmente mucho no sirven, porque como lo que hacen es buscar por u
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
-\section{Paralelismo}
-
-El tests que prueba que de lo mismo correr con varios hilos que con uno solo lo que hace es correr F4 para conjuntos que se sabe que tienen una base de Gröbner finita con distintas cantidades de hilos también mide los tiempos y uso los mismos casos que los del la \cref{section:Conjuntos con bases de Gröbner finitas}. En la siguiente tabla están los datos de los resultados.
-
-\noindent \begin{tikzpicture}
-  \begin{axis}[
-      ybar, % Tipo de gráfico: barras verticales
-      width=\textwidth,
-      height=0.4\textwidth,
-      bar width=0.003\textwidth,
-      symbolic x coords={Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
-      xtick=data, % Mostrar marcas en el eje x para cada dato
-      ylabel={Tiempo en segundos}, % Etiqueta del eje y
-      %xlabel={Cantidad de hilos}, % Etiqueta del eje x
-      xticklabel style={rotate=45}, % Rotar etiquetas
-      ymin=0, % Mínimo del eje y
-      ymax=2.25, % Máximo del eje y
-      %enlarge x limits=0.2, % Espaciado en los bordes
-      %legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1}, % Estilo de la leyenda
-      legend entries={1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
-      %cycle list={{brown,fill=brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
-  ]
-    % Datos para cada conjunto
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.09) (tri2, 0.54) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.22) (tri7, 2.22) (tri8, 0.07) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.08) (tri2, 0.43) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 2.02) (tri7, 2.07) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.27) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.35) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.84) (tri7, 1.90) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.22) (tri13, 0.01)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.85) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.87) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.06) (tri2, 0.29) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.81) (tri7, 1.83) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.01)};
-  \end{axis}
-\end{tikzpicture}
-
-
-Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que es solo la parte de agregar ambigüedades lo que está paralelizado.
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
 
