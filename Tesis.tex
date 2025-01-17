@@ -106,12 +106,12 @@
 % F: Conjunto de polinomios (que no sea un conjunto generador)
 % f, g: Polinomios
 % m: Monomios
-% M: conjunto de monomios
+% M: Conjunto de monomios
 % c, k: Coeficiente de K
 % a, b, c, d: Coeficientes de monomios
-% α: ambigüedades
-% n: límite de una sumatoria
-% i, j: índices
+% α: Ambigüedades
+% n: Límite de sumatorias
+% i, j: Índices
 
 \begin{document}
 
@@ -125,7 +125,7 @@
 
 En este capítulo se explica informalmente de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5  + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale que:
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
@@ -309,11 +309,9 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
 \begin{definition}
   Sea $R$ un anillo conmutativo. Se define la $R$-álgebra libre sobre $X$ como el conjunto
   \[ R⟨X⟩ = \{∑_{i = 1}^n c_i m_i : c_1, …, c_n ∈ R, m_1, …, m_n ∈ ⟨X⟩\}\]
-
-  \noindent con las siguientes operaciones: la suma de los elementos de $R⟨X⟩$ como unir las $∑$, el producto por escalares de definido como
+  con las siguientes operaciones: la suma de los elementos de $R⟨X⟩$ como unir las $∑$, el producto por escalares de definido como
   \[ c (∑_{i = 1}^n c_i m_i) = (∑_{i = 1}^n c c_i m_i) \text{,}\]
-
-  \noindent y el producto entre elementos de $R⟨X⟩$ como
+  y el producto entre elementos de $R⟨X⟩$ como
   \[ (∑_{i = 1}^n c_i m_i) · (∑_{i = 1}^m c'_i m'_i) = ∑_{i = 1}^n ∑_{j = 1}^m c_i c'_j m_i m'_j \text{.}\]
 
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos.
@@ -321,9 +319,9 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
 
 Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
 \begin{align*}
-f_0 &= a \text{,} \\
-f_1 &= ab + cb \text{,} \\
-f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
+  f_0 &= a \text{,} \\
+  f_1 &= ab + cb \text{,} \\
+  f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
 \end{align*}
 
 \noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
@@ -1027,13 +1025,14 @@ Ahora vamos a probar que efectivamente los monomios principales se cancelan y de
 \end{lemma}
 \begin{proof}\
   Las siguientes igualdades siguen por la definición de ambigüedad tanto para monomios como para polinomios.
-  \[ \lm_≤{(afb)} = a\lm_≤{(f)}b = c\lm_≤{(g)}d = \lm_≤{(cgd)} \] \text{.}
+  \[ \lm_≤{(afb)} = a\lm_≤{(f)}b = c\lm_≤{(g)}d = \lm_≤{(cgd)} \text{.} \]
 \end{proof}
 
 Eso permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
   Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
+
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
 
@@ -1142,25 +1141,17 @@ Con lo que dijimos antes tiene sentido que (1) sea cierto, pero que (2) sea cier
 
   \noindent Por definición de $\amb$ tiene que valer que
   \[ α ∈ \amb(\B_{e_≤}^k(G)) \]
-
-  \noindent y entonces por definición de $\B_{e_≤}^i$ vale que
+  y entonces por definición de $\B_{e_≤}^i$ vale que
   \[ e_≤(\B_{e_≤}^k(G))(\S(α)) ∈ \B_{e_≤}^{k + 1}(G) \text{.} \]
-
-  \noindent Esto implica que
-
+  Esto implica que
   \[ e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}^{k + 1}(G)} 0\]
-
-  \noindent y por ende que
-
+  y por ende que
   \[ e_≤(\B_{e_≤}^k(G))(\S(α)) →_{≤, \B_{e_≤}(G)} 0 \text{.} \]
-
-  \noindent Llamemos (i) a esto último. Por otro lado, por definición de reductor tenemos que
+  Llamemos (i) a esto último. Por otro lado, por definición de reductor tenemos que
   \[ \S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \]
-
-  \noindent y por ende
+  y por ende
   \[ \S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \text{(ii).} \]
-
-  \noindent Llamemos (ii) a esto último. Combinando (i) y (ii) vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, que es lo que queríamos probar.
+  Llamemos (ii) a esto último. Combinando (i) y (ii) vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, que es lo que queríamos probar.
 \end{proof}
 
 Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger correctitud}.
@@ -1250,9 +1241,7 @@ En esta sección se explica el algoritmo F4, que es otro método para calcular B
 \begin{definition}
   Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define $\mat_M : \spn_K(M) → K^n$ como la inversa de $\poli_M$:
   \[ \mat_M(f) = \poli_M^{-1}(f) \text{.} \]
-
-  \noindent Y para una lista de polinomios se define que $\mat_M$ produzca una matriz:
-
+  Y para una lista de polinomios se define que $\mat_M$ produzca una matriz:
   \[ \mat_M(f_1, …, f_m) = \begin{pmatrix} \mat_M(f_1) \\ ⋮ \\ \mat_M(f_m) \end{pmatrix} \text{.} \]
 \end{definition}
 
