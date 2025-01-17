@@ -1252,7 +1252,7 @@ En esta sección se explica el algoritmo F4, que es otro método para calcular B
   \[ \mat_M(f_1, …, f_m) = \begin{pmatrix} \mat_M(f_1) \\ ⋮ \\ \mat_M(f_m) \end{pmatrix} \text{.} \]
 \end{definition}
 
-Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios. Así, lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz. Para eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado. Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios que van a ser necesarios:
+Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios. Así, lo que antes en la reducción era restar un polinomio multiplicado por un escalar y un monomio a cada lado, la idea es que ahora pase a ser restarle una fila multiplicada por un escalar a otra en la matriz. Para eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado, es decir, con los $agb$ con $a,b ∈ ⟨X⟩$ y $g ∈ G$. Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios que van a ser necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
