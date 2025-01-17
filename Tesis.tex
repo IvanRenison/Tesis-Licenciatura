@@ -345,7 +345,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones que de
 
 Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis vamos a usar mucho, pero no las vamos a probar una por una porque sería tedioso y aburrido.
 
-Para varias cosas va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
+Mas adelante va a ser necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
   Sean $f, g ∈ K⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
@@ -557,7 +557,7 @@ A continuación la prueba de que esta relación efectivamente achica.
     \item $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$.
   \end{enumerate}
 
-  (iii) implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con cosas menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (ii)).
+  (iii) implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con términos menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (ii)).
 
   Además, por (iii) y (ii) vale que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$.
 
@@ -1048,7 +1048,7 @@ Lo de que los monomios principales se cancelen produce el siguiente lema.
   Esto es porque en la resta $\frac{afb}{\lc_≤(f)} - \frac{cgd}{\lc_≤(g)}$ los monomios principales se cancelan.
 \end{proof}
 
-Otra cosa importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal es un elemento del ideal.
+Otra propiedad importante es que estos S-polinomios son cerrados en el ideal, es decir, que el S-polinomio de dos elementos de un ideal es un elemento del ideal.
 
 \begin{lemma}\label{lemma:S es cerrado en ideal}
   Sean $I ⊆ K⟨X⟩$ un ideal $f, g ∈ I$ y $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
@@ -1071,7 +1071,7 @@ Ahora si enunciamos el teorema para decidir si un conjunto es una base de Gröbn
 
 La demostración se puede encontrar por ejemplo en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostraremos acá porque requiere varios lemas adicionales que no son pertinentes para este trabajo.
 
-Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ lo que podemos hacer es agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
+Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ podemos agregar $g$ al conjunto y con eso $f$ sí se va a reducir a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay una S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
 
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente del siguiente modo.
 
@@ -1226,7 +1226,7 @@ Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas 
 
 \section{Algoritmo F4}
 
-En esta sección se explica el algoritmo F4, que es otro método para calcular Bases de Gröbner. La idea de F4 es considerar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, reduciendo con los elementos que ya están en la base y entre los propios S-polinomios que se están considerando. Para esto lo que se hace es convertir el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila. Para codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
+En esta sección se explica el algoritmo F4, que es otro método para calcular Bases de Gröbner. La idea de F4 es considerar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, reduciendo con los elementos que ya están en la base y entre los propios S-polinomios que se están considerando. Para esto se convierte el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila. Para codificar los polinomios como filas de una matriz vamos a necesitar algunas definiciones.
 
 \begin{definition}
   Sea $F ⊆ K⟨X⟩$. Se define
@@ -1241,7 +1241,7 @@ En esta sección se explica el algoritmo F4, que es otro método para calcular B
 \begin{definition}
   Sean $M = \{m_1, …, m_n\} ⊆ ⟨X⟩$ con $m_1 > ⋯ > m_n$. Se define $\mat_M : \spn_K(M) → K^n$ como la inversa de $\poli_M$:
   \[ \mat_M(f) = \poli_M^{-1}(f) \text{.} \]
-  Y para una lista de polinomios se define que $\mat_M$ produzca una matriz:
+  Para una lista de polinomios se define que $\mat_M$ produzca una matriz:
   \[ \mat_M(f_1, …, f_m) = \begin{pmatrix} \mat_M(f_1) \\ ⋮ \\ \mat_M(f_m) \end{pmatrix} \text{.} \]
 \end{definition}
 
@@ -1280,7 +1280,9 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
   \Return{$G'$}
 \end{algorithm}
 
-Ahora lo que hay que hacer es, al reducir, elegir varios polinomios para reducir, poner los polinomios elegidos y el resultado del preprocesamiento simbólico en una matriz, hacer la reducción por filas de esa matriz y después de alguna manera detectar que filas son los polinomios elegidos reducidos para agregar solo esos polinomios a la base. Para detectar esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+% Agregar ejemplo
+
+Una vez que hemos determinados los monomios que necesitamos, armamos la matriz correspondiente a $G$ y $F$ usando la función $\mat_T$ y reducimos por fila esta matriz. Con la matriz no es obvio que hay que hacer, porque hay que solo conciderar las filas que corresponden a los polinomios reducidos, pero no nesesarimente son las mismas filas que eran antes porque la reducción por filas puede hacer cosas como intercambiar filas. Para saber cuales son esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
 
 El siguiente seudocódigo hace eso:
 
@@ -1307,26 +1309,38 @@ Con estos dos algoritmos ya podemos escribir el algoritmo F4:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{F4}\label{alg:F4}
-  \KwData{$G ⊆ K⟨X⟩$}
+  \KwData{$G ⊆ K⟨X⟩$, $e_≤$ un reductor}
   \KwResult{$B ⊆ K⟨X⟩$ una base de Gröbner de $(G)$ si es que termina}
   $B ← G$
 
-  \While{$ambs ≠ ∅$} {
-    elegir $Α ⊆ ambs$
+  \Loop{} {
+    $ambs ← \amb(B)$
 
-    $ambs ← ambs - Α$
+    $B' ← B$
 
-    $P ← \{\S(α) : α ∈ Α\}$
+    \While{$ambs ≠ ∅$} {
+      elegir $Α ⊆ ambs$
 
-    $P ←$ Multireducción$(B, P)$
+      $ambs ← ambs - Α$
 
-    $B ← B ∪ P$
+      $P ← \{\S(α) : α ∈ Α\}$
+
+      $P ←$ Multireducción$(B', P)$
+
+      $B' ← B' ∪ P$
+    }
+
+    \If{$B' = B$} {
+      \Break
+    }
+
+    $B ← B'$
   }
 
   \Return{$B$}
 \end{algorithm}
 
-Este algoritmo no especifica cuáles ambigüedades elegir, pero una buena estrategia es elegir todas las de manor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes rápidamente.
+Este algoritmo no especifica cuáles ambigüedades elegir, pero una buena estrategia es elegir todas las de menor grado. Otra opción es elegir todas, pero eso puede hacer que las matrices se vuelvan muy grandes rápidamente.
 
 En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferencia mínima) y se demuestra que es correcto.
 
@@ -1376,7 +1390,7 @@ El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo
 
 En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener (y algunas cosas extra). Para los números racionales el tipo \texttt{mpq\_class} de la librería GMP también tiene todo lo que \texttt{K} tiene que tener \cite{lib:gmp}. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
 
-El tipo \texttt{X} es lo que se usa para representar las variables como números y la idea es que se use algún tipo de números sin signo. Usar otras cosas podría funcionar pero no está probado. Por defecto se usa \texttt{\_\_uint8\_t} que permite tener hasta 256 variables. Para usar más variables hay que cambiarlo a un entero sin signo más grande como \texttt{\_\_uint32\_t}.
+El tipo \texttt{X} se usa para representar las variables como números y la idea es que se use algún tipo de números sin signo. Usar otros tipos podría funcionar pero no está probado. Por defecto se usa \texttt{\_\_uint8\_t} que permite tener hasta 256 variables. Para usar más variables hay que cambiarlo a un entero sin signo más grande como \texttt{\_\_uint32\_t}.
 
 \texttt{ord} es el orden monomial que se usa y está puesto por defecto \texttt{DegLexOrd} que es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definirlo definiendo una estructura que tenga definido un operador \texttt{()} que sea el orden. Algo así podría ser el código si es una implementación para un \texttt{X} genérico:
 
@@ -1546,7 +1560,7 @@ Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene 
 
 Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que si se quiere después hacer más pasos de la ejecución habría que volver a empezar, llamando a la función con un número más grande.
 
-Para evitar ese problema lo que se hizo es definir una estructura que el constructor tome a los polinomios y tenga un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
+Para evitar ese problema se definió una estructura que el constructor toma a los polinomios y tiene un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
 
 Para Buchberger la estructura está en el archivo \texttt{Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \texttt{F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
 
@@ -1615,7 +1629,7 @@ Por último, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBa
 
 Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer el el código corra en paralelo.
 
-La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para hacer cosas en paralelo, así que para que corra en paralelo es igual que en cualquier otra cosa paralelizada con OpenMP.
+La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizada con OpenMP.
 
 Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag esté puesto en la configuración del makefile para cuando se compilan los ejemplos y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
 
@@ -1779,7 +1793,7 @@ Una librería que hace la reducción por filas es FLINT, que lo hace para el tip
 
 ¿Qué que es una especialización en C++? Recordatorio para quienes no lo recuerdan bien: Es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template.
 
-Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y después copiar el resultado de vuelta a la matriz original.
+Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
 El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba mas lento, así que se descartó.
 
@@ -1799,7 +1813,7 @@ La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), d
 
 \subsection{El propio F4}
 
-La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso lo que se hizo es que las ambigüedades estén guardadas por grado en un vector, así:
+La primera diferencia tiene que ver con la selección de ambigüedades. En Buchberger solo había que elegir una ambigüedad, pero acá hay que elegir varias. Podría haber muchas formas de elegir, pero, como ya se dijo antes, una estrategia que funciona bien es elegir siempre todas las de menor grado. Para eso se hizo que las ambigüedades estén guardadas por grado en un vector, así:
 
 \begin{minted}{C++}
   std::vector<std::vector<std::tuple<Amb<X>, size_t, size_t>>> ambs_per_deg;
@@ -1813,7 +1827,7 @@ Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en 
 
 \subsection{Descartar ambigüedades}
 
-La primer optimización consiste en que se pueden descartar algunas ambigüedades, sin tener que reducir su S-polinomio, según si pasan ciertas cosas con otros polinomios que ya están en la base.
+La primer optimización consiste en que se pueden descartar algunas ambigüedades, sin tener que reducir su S-polinomio, según si se cumplen ciertas propiedades con otros polinomios que ya están en la base.
 
 En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una función con la siguiente signatura:
 
@@ -1826,7 +1840,7 @@ En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una funci
 
 Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
 
-Con eso lo que se hizo en el código es en el método \texttt{add\_amb} tanto de Buchberger como de F4, antes de agregar la ambigüedad, se llama a \texttt{checkDeletionCriteria} y solo se agrega la ambigüedad si da \texttt{false}.
+Usando esa función lo que se hizo en el código es en el método \texttt{add\_amb} tanto de Buchberger como de F4, antes de agregar la ambigüedad, llamar a \texttt{checkDeletionCriteria} y solo agregar la ambigüedad si da \texttt{false}.
 
 \subsection{Eliminación de polinomios}
 
@@ -1838,7 +1852,7 @@ Esta optimización se implementó en Buchberger pero no en F4, porque por algún
 
 Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que lo que se está haciendo es más bien marcar como borrados los polinomios.
 
-Las funciones que se habían explicado que toman a \texttt{G} como parámetro y se usan en Buchberger lo que se hizo es agregarles un parámetro extra que sea el vector de booleanos y que solo trabaje con los polinomios de posiciones que no están con \texttt{true}.
+Las funciones que se habían explicado, que toman a \texttt{G} como parámetro y se usan en Buchberger, lo que se hizo es agregarles un parámetro extra que sea el vector de booleanos y que solo trabaje con los polinomios de posiciones que no están con \texttt{true}.
 
 \subsection{Reducción más eficiente en F4}\label{subsection:Reducción más eficiente en F4}
 
@@ -1997,9 +2011,9 @@ Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguien
   \item RAM: 126 GB
 \end{itemize}
 
-De cualquier manera esos datos no son muy importantes porque lo que importa es la relación entre los tiempos de las distintas cosas.
+De cualquier manera esos datos no son muy importantes porque lo que importa son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de python. Para medir los tiempos lo que se hace es medirlos desde el programa de python, por lo cual incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de que imprime la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de python. A los tiempos se los mide desde el programa de python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de la impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
 Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2061,7 +2075,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
   \end{axis}
 \end{tikzpicture}
 
-A simple-vista lo que se puede ver para los casos en los que se distingué algo es que \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo los otros no, así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
+A simple-vista se puede ver que para los casos en los que se distingué algo \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo los otros no, así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2122,7 +2136,7 @@ El test que prueba que de lo mismo correr con distintas cantidades de hilos tamb
 \end{tikzpicture} % Agregar los tri
 
 
-Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que es solo la parte de agregar ambigüedades lo que está paralelizado.
+Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que solo la parte de agregar ambigüedades está paralelizada.
 % Agregar los benchmarks de la reconstrucción
 
 \section{Pertenencia a ideales}
@@ -2155,7 +2169,7 @@ Y estos para los enteros módulo un primo:
   F4_Zp: 0.0799708366s
 \end{minted}
 
-Estos datos igualmente mucho no sirven, porque como lo que hacen es buscar por una cierta cantidad de pasos, los pasos son cosas distintas en los distintos algoritmos, entonces no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
+Estos datos igualmente mucho no sirven, porque como buscan por una cierta cantidad de pasos, y los pasos son cosas distintas en los distintos algoritmos, no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
