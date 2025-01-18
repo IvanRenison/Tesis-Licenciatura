@@ -125,7 +125,7 @@
 
 En este capítulo se explica informalmente de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que por ejemplo $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que, por ejemplo, $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale que:
 \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
@@ -146,7 +146,7 @@ Algo a destacar de la implementación que se hizo es que funciona para cualquier
 
 Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
 
-Una cosa para las que las bases de Gröbner no conmutativas son muy útiles para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usamos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
+Una cosa para la que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
@@ -274,7 +274,7 @@ En estos monomios, al igual que en los conmutativos, se puede hablar de que un m
 
 En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
-De lo que es un poco más complicado hablar acá es del resultado de la división porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
+Hablar del resultado de la división es un poco más complicado acá porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que no vamos a hablar de dividir un monomio en otro ni escribir divisiones entre monomios.
 
 Mas adelante va a ser necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas propiedades que harán falta y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
 
@@ -788,7 +788,7 @@ Una propiedad sobre los reductores que vamos a necesitar es que mantienen la per
 
 \section{Bases de Gröbner}
 
-Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes. En particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y lo que vamos a hacer después es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así poder determinar si dos elementos son equivalentes. En particular poder determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que vamos a hacer es calcular una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -969,7 +969,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
 \section{Algoritmo de Buchberger}
 
-En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger. Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Esos S-polinomios entre dos polinomios lo que hacen es básicamente multiplicar cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - c g d$ de forma que se cancelen los monomios principales.
+En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger. Antes de poder calcular bases de Gröbner algo que vamos a querer hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso vamos a definir algo llamado S-polinomio de dos polinomios y usarlos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Los S-polinomios entre dos polinomios multiplican cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ vamos a tener una cuenta $k a f b - k' c g d$ de forma que se cancelen los monomios principales.
 
 Primero definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
 
@@ -1711,7 +1711,7 @@ El orden de los polinomios está definido como \texttt{template<typename K, type
 
 La reducción está implementada en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$.
 
-Esa reducción concreta lo que hace es siempre tratar de reducir por los primeros elementos del vector primero y tratar de reducir primero los monomios más grandes del polinomio.
+Esa reducción concreta siempre trata de reducir por los primeros elementos del vector primero y trata de reducir primero los monomios más grandes del polinomio.
 
 En el archivo también hay una función \texttt{reduce} (recordar que en C++ se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{true} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
@@ -1768,7 +1768,7 @@ Los campos de esta estructura guardan lo siguiente:
 \begin{itemize}
   \item \texttt{G} es la base de Gröbner que se está construyendo. Al principio se inicializa con los polinomios con los que se llama al constructor.
   \item \texttt{ambs} son las ambigüedades que todavía no se procesaron junto con los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad. Se usa una cola para procesar siempre la que hace más tiempo está esperando.
-  \item La variable \texttt{t} está porque como la base de Gröbner incluye a los polinomios originales, las primeras llamadas a \texttt{next} tienen que devolver esos polinomios y \texttt{t} lo que hace es indicar cuántos de esos ya se devolvieron. Cuando \texttt{t} es igual al tamaño de \texttt{G} es porque ya se devolvieron todos esos.
+  \item La variable \texttt{t} está porque como la base de Gröbner incluye a los polinomios originales, las primeras llamadas a \texttt{next} tienen que devolver esos polinomios y \texttt{t} indica cuántos de esos ya se devolvieron. Cuando \texttt{t} es igual al tamaño de \texttt{G} es porque ya se devolvieron todos esos.
 \end{itemize}
 
 La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} tiene varios métodos que se usan internamente. Entre todos los métodos son los siguientes:
@@ -1777,7 +1777,7 @@ La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} ti
   \item \texttt{add\_amb}: Este método simplemente toma una ambigüedad y dos índices, que son los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad, y los agrega a la cola de ambigüedades. Siempre que hay que agregar una ambigüedad se hace con este método. El motivo por el cual esto está en un método propio es para después, al implementar la optimización de descartar ambigüedades, poder hacerlo solo en este método.
   \item \texttt{add\_poly}: Este método agrega un polinomio a \texttt{G} agregando además todas las nuevas ambigüedades que aparecen a la cola de ambigüedades. Cada vez que hay que agregar un nuevo polinomio se usa este método, tanto al comienzo cuando se agregan los polinomios iniciales como cuando se agrega un S-polinomio reducido.
   \item \texttt{next}: Este es el método que corre el algoritmo. Lo principal que hace (después de usar la variable \texttt{t} para ver si tiene que devolver un elemento de \texttt{G}) es sacar ambigüedades de la cola hasta encontrar una que no se reduzca a $0$ y cuando la encuentra la agrega a la base (con \texttt{add\_poly}) y la devuelve. Si se acaban las ambigüedades devuelve vacío (recordar que devuelve \texttt{std::optional<Poly<K, ord>>}).
-  \item \texttt{fullBase}: Simplemente lo que hace es llamar a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
+  \item \texttt{fullBase}: Simplemente llama a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
 \end{itemize}
 
 Lo de las optimizaciones se explica más adelante en la \cref{secton:optimizaciones}.
@@ -1795,7 +1795,7 @@ Una librería que hace la reducción por filas es FLINT, que lo hace para el tip
 
 ¿Qué que es una especialización en C++? Recordatorio para quienes no lo recuerdan bien: Es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template.
 
-Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que lo que la función hace es primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
+Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que la función tiene que primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
 El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba mas lento, así que se descartó.
 
@@ -1842,19 +1842,19 @@ En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una funci
 
 Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
 
-Usando esa función lo que se hizo en el código es en el método \texttt{add\_amb} tanto de Buchberger como de F4, antes de agregar la ambigüedad, llamar a \texttt{checkDeletionCriteria} y solo agregar la ambigüedad si da \texttt{false}.
+Usando esa función, en el código, en el método \texttt{add\_amb} tanto de Buchberger como de F4 antes de agregar la ambigüedad, se agregó una llamada a \texttt{checkDeletionCriteria} para solo agregar la ambigüedad si da \texttt{false}.
 
 \subsection{Eliminación de polinomios}
 
 La segunda optimización consiste en que cuando se procesa una ambigüedad de inclusión se puede borrar de la base al polinomio grande de la ambigüedad.
 
-Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm(f) = a \lm(g) b$ con $a, b ∈ ⟨X⟩$. Lo que esta optimización permite es, en esas ambigüedades borrar $f$ de la base.
+Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm(f) = a \lm(g) b$ con $a, b ∈ ⟨X⟩$. Esta optimización permite en esas ambigüedades borrar $f$ de la base.
 
 Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo F4 anda más lento con esta optimización. No se investigó por qué pasa eso.
 
-Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que lo que se está haciendo es más bien marcar como borrados los polinomios.
+Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que más bien se está marcando como borrados los polinomios.
 
-Las funciones que se habían explicado, que toman a \texttt{G} como parámetro y se usan en Buchberger, lo que se hizo es agregarles un parámetro extra que sea el vector de booleanos y que solo trabaje con los polinomios de posiciones que no están con \texttt{true}.
+A las funciones que se habían explicado, que toman a \texttt{G} como parámetro y se usan en Buchberger, se les agregó un parámetro extra que es el vector de booleanos y se hizo que solo trabajen con los polinomios de posiciones que no están en \texttt{true}.
 
 \subsection{Reducción más eficiente en F4}\label{subsection:Reducción más eficiente en F4}
 
@@ -1941,7 +1941,7 @@ Y el método \texttt{add\_amb} se implementó así:
   }
 \end{minted}
 
-El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar, lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
+El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar, lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si se llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
 
 \begin{minted}{C++}
   void add_poly(Poly<K, X, ord>& f) {
@@ -1978,7 +1978,7 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 \subsection{Uso de OpenMP para paralelizar}
 
-Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso fue lo que se hizo. En el siguiente capítulo se dan los datos de qué tal anda.
+Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso se hizo. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
 
 \chapter{Tests}
 
