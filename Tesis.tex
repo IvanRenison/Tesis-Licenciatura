@@ -142,6 +142,8 @@ De antes de esta tesis existen varias implementaciones del algoritmo de Buchberg
 
 La parte de implementar en C++ esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en SAGEMATH. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de SAGEMATH.
 
+Algo a destacar de la implementación que se hizo es que funciona para cualquier cuerpo. De las implementaciones ya existentes, según conocimiento del autor, ninguna funciona para cualquier cuerpo.
+
 Alguien podría preguntar que para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
 
 Una cosa para las que las bases de Gröbner no conmutativas son muy útiles para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director del trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usamos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
@@ -1978,31 +1980,31 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso fue lo que se hizo. En el siguiente capítulo se dan los datos de qué tal anda.
 
-\section{Tests}
+\chapter{Tests}
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
-Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre anda porque cuando se corren los tests en GitHub se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
+Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
 
-De los tests hay algunos que corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath} y comparan los resultados, y otros que corren solo código de la librería.
+Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath}, y comparan los resultados, y otros corren solo código de la librería.
 
-También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testen directamente.
+También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
 
-Algunos de los tests al mismo tiempo que testen miden los tiempos para tener benchmarks.
+Algunos de los tests al mismo tiempo que testean miden los tiempos para tener benchmarks.
 
 A continuación una lista de algunas de las cosas (las mas importantes) que están en los test:
 
 \begin{itemize}
   \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \texttt{test/internal\_tests}.
-  \item Para algunos conjuntos generadores que se sabe que tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y compara los resultados usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no. Esto test está en la carpeta \texttt{test/base\_tests}.
-  \item Para algunos conjuntos generadores generados al azar se genera otro polinomio al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno de los tres da que si está en el ideal y otros no se ejecutan los que no con muchísimos mas pasos, cosa de que tenga que terminar si o si (porque supuestamente si está porque alguno dio que si está). Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
-  \item Con lo de la reconstrucción de la respuesta y la representación de un polinomio en un ideal, hay un test que corre los algoritmos con y sin reconstrucción de la respuesta y se fija que el resultado de con reconstrucción después de convertirlo en un polinomio normal sea igual al resultado sin reconstrucción. Este test está en la carpeta \texttt{test/reconstruction\_tests}.
-  \item Por último hay un tests que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de igual. Esto está en la carpeta \texttt{test/parallelism\_tests}.
+  \item Para algunos conjuntos generadores que se sabe que tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no. Esto test está en la carpeta \texttt{test/base\_tests}.
+  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno de los tres da que si está en el ideal y otros no, se ejecutan los que no con muchísimos mas pasos, cosa de que tenga que terminar si o si porque supuestamente (si no hay bugs) si está porque alguno dio que si está. Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Con respecto a la reconstrucción de la respuesta y la representación de un polinomio en un ideal, hay un test que corre los algoritmos con y sin reconstrucción de la respuesta y se fija que el resultado de con reconstrucción después de convertirlo en un polinomio normal sea igual al resultado sin reconstrucción. Este test está en la carpeta \texttt{test/reconstruction\_tests}.
+  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de el mismo resultado. Esto está en la carpeta \texttt{test/parallelism\_tests}.
 \end{itemize}
 
 \chapter{Benchmarks}\label{cap:Benchmarks}
 
-Cuando se corren los tests, los que tienen además benchmarks imprimen los resultados de los benchmarks. En este capítulo se presentan esos resultados.
+En este capítulo se presentan los resultados obtenidos tras corres los test que incluyen benchmarks.
 
 Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguientes características:
 
@@ -2013,7 +2015,7 @@ Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguien
 
 De cualquier manera esos datos no son muy importantes porque lo que importa son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de python. A los tiempos se los mide desde el programa de python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de la impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos se miden desde el programa de Python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
 Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2039,15 +2041,31 @@ Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un 
   \item trit5 $ = \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
 \end{itemize}
 
-Los Nichols que están porque son de interés para Cristian Vay, el director de esta tesis y su descripción está en \cite{web:Nichols}. Los tri que están porque \cite{thesis:Hof20} los usa, y el los sacó del Teorema 2.12 de \cite{book:class-tri}, y los trit son directamente sacados de la Proposición 1.9 de \cite{book:class-tri}.
+Los FK provienen de la teoría de álgebras de Nichols, las cuales son de interés para Cristian Vay, el director de esta tesis, y otros investigadores de FAMAF. Los FK definen algo que se llama álgebras de Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
+
+\begin{itemize}
+  \item El cuerpo es $ℚ$.
+  \item El alfabeto es $\{x_{ij} : i, j ∈ \{1, …, n\} : i ≠ j\}$, donde los $_{ij}$ son un par no ordenado.
+  \item El conjunto generador es:
+  \begin{align*}
+    & \{ x_{ij}² : i, j ∈ \{1, …, n\} : i ≠ j \} \\
+    & ∪ \{ x_{ij} x_{ik} + x_{ik} x_{jk} + x_{jk} x_{ij} : i, j, k ∈ \{1, …, n\} : i ≠ j ≠ k ≠ i \} \\
+    & ∪ \{ x_{ik} x_{ij} + x_{jk} x_{ik} + x_{ij} x_{jk} : i, j, k ∈ \{1, …, n\} : i ≠ j ≠ k ≠ i \} \\
+    & ∪ \{ x_{ij} x_{kl} + x_{kl} x_{ij} : i, j, k, l ∈ \{1, …, n\} : i ≠ j ∧ k ≠ l \} \text{.}
+  \end{align*}
+\end{itemize}
+
+\noindent Se sabe para $n ≤ 5$ los ideales generador por FK$n$ tienen bases de Gröbner finitas, pero $n > 5$ no se sabe. En \cite{web:Nichols} y \cite{book:introNichols} se puede encontrar mas información sobre las álgebras de Nichols.
+
+Los tri que están porque \cite{thesis:Hof20} los usa, con ese mismo nombre, y el los sacó del Teorema 2.12 de \cite{book:class-tri}. Los trit son directamente sacados de la Proposición 1.9 de \cite{book:class-tri}.
 
 En todos los benchmarks que usan estos casos los usan para los racionales, porque es para los racionales que se sabe que tienen bases finitas.
 
-En las siguientes subsecciones se presentan los resultados de los benchmarks.
+En las siguientes subsecciones se presentan los resultados de cada uno de los benchmarks.
 
-\section{Conjuntos con bases de Gröbner finitas}\label{section:Conjuntos con bases de Gröbner finitas}
+\section{Ideales con bases de Gröbner finitas}\label{section:Ideales con bases de Gröbner finitas}
 
-El tests que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
+El test que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que sus ideales tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
 
 En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
 
@@ -2106,7 +2124,7 @@ Y acá se puede ver que en los casos más chiquitos si pasa que Buchberger y F4 
 
 \section{Paralelismo}
 
-El test que prueba que de lo mismo correr con distintas cantidades de hilos también usa los mismos casos y mide los tiempos. En el siguente gráfico se pueden ver los resultados.
+El test que prueba que de el mismo resultado correr con distintas cantidades de hilos también usa los mismos casos y mide los tiempos. En el siguiente gráfico se pueden ver los resultados.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2136,16 +2154,16 @@ El test que prueba que de lo mismo correr con distintas cantidades de hilos tamb
 \end{tikzpicture} % Agregar los tri
 
 
-Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Tiene sentido igual que sea muy poco porque lo de que solo la parte de agregar ambigüedades está paralelizada.
+Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por lo de que solo la parte de agregar ambigüedades está paralelizada.
 % Agregar los benchmarks de la reconstrucción
 
 \section{Pertenencia a ideales}
 
-Los tests que hacen lo de para conjuntos generadores generados al azar y polinomios generados al azar ver con los distintos algoritmos si el polinomio está en el ideal generado o no también miden los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con GB y para los enteros módulo un primo no, porque GB es solo para racionales.
+El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ver con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para los enteros módulo un primo no, porque \texttt{operator\_gb} es solo para racionales.
 
-Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores generados al azar y polinomios generados al azar y también los tiempos máximos.
+Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos.
 
-Estos son los resultados para los racionales:
+Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es Buchberger y \texttt{GB} es \texttt{operator\_gb}):
 
 \begin{minted}{text}
   Average times:
@@ -2158,7 +2176,7 @@ Estos son los resultados para los racionales:
   GB: 4.6477575302s
 \end{minted}
 
-Y estos para los enteros módulo un primo:
+Y estos para los enteros módulo un primo (también tal cual los imprime el test):
 
 \begin{minted}{text}
   Average times:
@@ -2169,7 +2187,7 @@ Y estos para los enteros módulo un primo:
   F4_Zp: 0.0799708366s
 \end{minted}
 
-Estos datos igualmente mucho no sirven, porque como buscan por una cierta cantidad de pasos, y los pasos son cosas distintas en los distintos algoritmos, no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
+Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantidad de pasos, y los pasos son cosas distintas en los distintos algoritmos, no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
@@ -2181,6 +2199,10 @@ Como ya se mencionó en la \cref{subsection:Reducción más eficiente en F4}, fa
 Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que como trabajo futuro muy bueno se podría analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
 
 También, algo que se podría hacer, es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
+
+% Agregar lo de hacer código para ideales de un solo lado
+
+% Agregar lo de FK6
 
 \chapter{Bibliografía}
 
