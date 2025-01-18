@@ -422,7 +422,7 @@ La estructura del álgebra libre es un anillo, lo cual nos va a ser muy útil po
 Las definiciones y teoremas sobre anillos que vamos a usar las recordaremos a continuación para no tener que estar buscándolos en otro lado.
 
 \begin{definition}\label{def:ideal}
-  Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal de $R$ si y solo si
+  Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal de $R$ si y solo si:
   \begin{enumerate}
     \item $I ≠ ∅$.
     \item $∀a, b ∈ I : a + b ∈ I$.
@@ -2191,18 +2191,56 @@ Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantida
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
+\chapter{Conclusiones}
+
+Algunas cosas buenas de este trabajo:
+
+\begin{itemize}
+  \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es particularmente útil si se quieren correr casos que se demoran mucho.
+  \item Es la primer implementación de bases de Gröbner no conmutativas que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
+\end{itemize}
+
+Algunas cosas malas de este trabajo:
+
+\begin{itemize}
+  \item No está hecha la optimización de usar la reducción de Faugère-Lachartre. Esto es sin duda el mayor punto negativo del trabajo.
+  \item Que sea en C++ también tiene como parte negativa que como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
+\end{itemize}
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
 
-Como ya se mencionó en la \cref{subsection:Reducción más eficiente en F4}, falta hacer hacer lo de usar la reducción por filas de Faugère-Lachartre. Eso sería un trabajo futuro posible. Es medio molesto el poco soporte para las matrices de C++, así que mejorar eso en general podría ser trabajo futuro posible.
+A continuación una lista trabajos que se podrían hacer sobre el tema.
 
-Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles. Así que como trabajo futuro muy bueno se podría analizar esas implementaciones y ver que se puede hacer. En particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+\begin{itemize}
+  \item Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es una de las cosas más importantes para hacer.
 
-También, algo que se podría hacer, es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
+  \item Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo. Así que eso sería una buena cosa para hacer.
 
-% Agregar lo de hacer código para ideales de un solo lado
+  \item Algo que se podría hacer con la librería de este trabajo es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
 
-% Agregar lo de FK6
+  \item Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
+
+  \begin{definition}
+    Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal a izquierda de $R$ si y solo si:
+    \begin{enumerate}
+      \item $I ≠ ∅$.
+      \item $∀a, b ∈ I : a + b ∈ I$.
+      \item $∀a ∈ I, r ∈ R : r a ∈ I$.
+    \end{enumerate}
+  \end{definition}
+
+  Con los ideales a izquierda sobre polinomios no conmutativos también hay toda una teoría de bases de Gröbner. En \cite{phdthesis:Hof23} se puede encontrar una explicación sobre esta teoría.
+
+  Implementar el cálculo de bases de Gröbner de la teoría de ideales a izquierda es otro trabajo que se podría hacer.
+
+  También hay ideales a derecha que son análogos y tienen una teoría análoga a la de a izquierda.
+
+  \item Como ya se mencionó en el \cref{cap:Benchmarks}, los FK$n$ no se sabe para $n ≥ 6$ si tienen una base finita o no. Cuando se tenga una versión muy buena de F4 algo que se podría hacer es correrla por mucho tiempo para FK$n$ para ver si llega en algún momento a una base finita.
+
+  \item Por último, otra cosa que se podría hacer es implementar el calculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
+\end{itemize}
+
+Estas cosas para hacer podrían ser trabajos finales de la Licenciatura en Ciencias de la Computación.
 
 \chapter{Bibliografía}
 
