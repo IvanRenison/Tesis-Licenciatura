@@ -1381,13 +1381,13 @@ Para que al usar el código también se puedan variar esas tres cosas todas las 
 
 ¿Que qué son los templates en C++? Recordatorio para quienes no lo recuerdan bien: los templates en C++ permiten escribir código genérico que funciona para diferentes tipos, configuraciones o comportamientos sin necesidad de duplicar el código a mano. Escribir código con templates es equivalente a escribir una copia del código por cada combinación de parámetros de los templates.
 
-El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo. En particular, se asume que se pueden usar las siguientes cosas:
+El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo. En particular, la librería asume que tiene definidas las siguientes operaciones y construcciones:
 
 \begin{itemize}
- \item \texttt{+}, \texttt{-} (tanto unario como binario), \texttt{*} y \texttt{/} junto con sus versiones de asignación \texttt{+=}, \texttt{-=}, \texttt{*=} y \texttt{/=}, pero no se usa el resultado de estos operadores, solo el que modifican el operando izquierdo, así que pueden devolver \texttt{void}.
+ \item \texttt{+}, \texttt{-} (tanto unario como binario), \texttt{*} y \texttt{/} junto con sus versiones de asignación \texttt{+=}, \texttt{-=}, \texttt{*=} y \texttt{/=}. De las versiones asignación no se usa el resultado, solo el que modifican el operando izquierdo, así que pueden devolver \texttt{void}.
  \item \texttt{==} (y también \texttt{!=}, pero ese a partir de C++20 está automáticamente con \texttt{==}).
- \item Se asume que se puede construir un \texttt{K} con \texttt{0} y con \texttt{1}, o sea, que se puede hacer \texttt{K(0)} y \texttt{K(1)}.
- \item Para imprimir los polinomios se asume \texttt{<<} y para leerlos \texttt{>>}.
+ \item \texttt{<<} para imprimir y \texttt{>>} para leer.
+ \item Un constructor que ande con con \texttt{0} y con \texttt{1}, o sea, que se pueda hacer \texttt{K(0)} y \texttt{K(1)}.
 \end{itemize}
 
 En \texttt{extras/ModularArithmetic.hpp} se puede ver una implementación de aritmética modular que tiene todo lo que \texttt{K} tiene que tener (y algunas cosas extra). Para los números racionales el tipo \texttt{mpq\_class} de la librería GMP también tiene todo lo que \texttt{K} tiene que tener \cite{lib:gmp}. Esos dos tipos son los que se usan en los mains de ejemplo de la carpeta \texttt{mains}.
@@ -1405,9 +1405,9 @@ El tipo \texttt{X} se usa para representar las variables como números y la idea
   };
 \end{minted}
 
-Esta es la forma estándar de definir órdenes para ser parámetros de template en C++.
+Esta es la forma estándar de definir órdenes para usar en templates en C++.
 
-Tanto para \texttt{X} como para \texttt{ord} los valores por defecto están puestos solo en las estructuras de monomios y polinomios, porque en las otras funciones y estructuras no hace falta porque para usarlas hay que ya tener un monomio o un polinomio (que se pase como argumento) y de ahí C++ infiere el \texttt{X} y el \texttt{ord} automáticamente.
+Tanto para \texttt{X} como para \texttt{ord} los valores por defecto están puestos solo en las estructuras de monomios y polinomios, porque en las otras funciones y estructuras no hace falta ya que para usarlas hay que ya tener un monomio o un polinomio (que se pase como argumento) y de ahí C++ infiere \texttt{X} y \texttt{ord} automáticamente.
 
 \section{Monomios}
 
@@ -1442,7 +1442,9 @@ Los monomios están definidos en el archivo \texttt{nc\_monomial.hpp} y lo más 
   };
 \end{minted}
 
-Acá el único argumento del template es \texttt{X}, porque no hace falta nada del cuerpo ni tampoco un orden monomial (de hecho no tendría sentido que haga falta un orden monomial para definir monomios).
+En el código todos los nombres y comentarios están en inglés, así que acá todos los comentarios que vienen del código están también en inglés.
+
+El único argumento del template es \texttt{X}, porque no hace falta nada del cuerpo ni tampoco un orden monomial (de hecho no tendría sentido que haga falta un orden monomial para definir monomios).
 
 El tipo \texttt{Monomial<X>} tiene implementada la multiplicación con \texttt{operator*} (y \texttt{operator*=}), la igualdad con \texttt{operator==}, un método \texttt{size} que devuelve el grado, un método \texttt{empty} que devuelve \texttt{true} si y solo si el monomio es el monomio vacío y varios métodos relacionados a la división y a la representación de los monomios como strings.
 
@@ -1466,13 +1468,15 @@ Por ejemplo, acá hay un monomio en el formato como se suelen escribir a mano:
   5 0 3 1 3 0
 \end{lstlisting}
 
-Por ejemplo, para declarar un monomio con \texttt{X = \_\_uint8\_t}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
+Para declarar un monomio con \texttt{X = \_\_uint8\_t}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
 
 \begin{minted}{C++}
   Monomial m;
   std::cin >> m;
   m.nice_print();
 \end{minted}
+
+En el mismo archivo \texttt{nc\_monomial.hpp} está definido el orden lexicográfico por grado \texttt{DegLexOrd}.
 
 \section{Polinomios}
 
@@ -1522,13 +1526,13 @@ El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios
 
 Al igual que con los monomios, para la representación como strings, hay dos pares de métodos: \texttt{operator>>} y \texttt{operator<<} para formato numérico, y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
 
-El formato numérico consiste en, primero, un número entero no negativo $m$ (la cantidad de términos), seguido de la descripción de $m$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio. Se puede representar así el formato:
+El formato numérico consiste en, primero, un número entero no negativo $k$ que es la cantidad de términos, seguido de la descripción de $k$ términos. La descripción de cada término consiste en primero el coeficiente y después la descripción del monomio en el formato numérico de los monomios. Se puede representar así el formato:
 
 $\begin{array}{llllll}
-  m &&&& \\
+  k &&&& \\
   c_1 & n_1 & x_{1, 1} & ⋯ & x_{1, n_1} \\
   ⋮ &&&& \\
-  c_m & n_m & x_{m, 1} & ⋯ & x_{m, n_m}
+  c_m & n_m & x_{k, 1} & ⋯ & x_{k, n_m}
 \end{array}$
 
 Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
@@ -1546,7 +1550,7 @@ Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
   1 5 0 3 1 3 0
 \end{lstlisting}
 
-Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
+Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, \texttt{X = \_\_uint8\_t} y \texttt{ord = DegLexOrd<X>}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
 
 \begin{minted}{C++}
   Poly<mpq_class> p;
@@ -1558,11 +1562,11 @@ Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, leerlo en f
 
 Los algoritmos de Buchberger y F4 están ambos hechos de una forma que se usan similar, así que por eso están explicados juntos.
 
-Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar (o por lo menos no que sea la única forma de usar los algoritmos).
+Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar. Si tiene sentido tener una función como esa para casos en los que se sabe que va a terminar, pero no conviene que sea la única forma de usar los algoritmos.
 
-Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que si se quiere después hacer más pasos de la ejecución habría que volver a empezar, llamando a la función con un número más grande.
+Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que una vez que la función retorna no se puede seguir con el cálculo, lo cual en algunos casos podría ser deseable.
 
-Para evitar ese problema se definió una estructura que el constructor toma a los polinomios y tiene un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
+Para evitar esos problemas se definió una estructura que el constructor toma a los polinomios y tiene un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
 
 Para Buchberger la estructura está en el archivo \texttt{Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \texttt{F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
 
@@ -1625,15 +1629,15 @@ Para F4 esto no está implementado (en el siguiente capítulo se explica más de
 
 \section{Comparación de bases}
 
-Por último, en el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
+En el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
 
 \section{Paralelismo} % O paralelización?
 
-Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer el el código corra en paralelo.
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer que el código corra en paralelo.
 
 La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizada con OpenMP.
 
-Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag esté puesto en la configuración del makefile para cuando se compilan los ejemplos y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
+Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del makefile para cuando se compilan los mains y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
 
 
 \section{Ejemplo}
@@ -1663,7 +1667,7 @@ Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del 
   }
 \end{minted}
 
-El código de este ejemplo lo que hace es, trabajando sobre los racionales, leer un conjunto generador en formato numérico, calcularle una base de Gröbner asumiendo que tiene una base finita e imprime la base de forma bonita.
+El código de este ejemplo lo que hace es, trabajando sobre los racionales, leer un conjunto generador en formato numérico, calcularle una base de Gröbner asumiendo que tiene una base finita e imprimir la base de forma bonita.
 
 
 \chapter{Implementación}
@@ -1684,7 +1688,7 @@ Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementar
 
 Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
-Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrático (en el largo de las palabras), pero se puede hacer en tiempo lineal.
+Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrático en el largo de las palabras, pero se puede hacer en tiempo lineal.
 
 Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
@@ -1713,7 +1717,7 @@ La reducción está implementada en el archivo \texttt{reductions.hpp}, en parti
 
 Esa reducción concreta siempre trata de reducir por los primeros elementos del vector primero y trata de reducir primero los monomios más grandes del polinomio.
 
-En el archivo también hay una función \texttt{reduce} (recordar que en C++ se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{true} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
+En el archivo también hay una función \texttt{reduce} (recordar que en C++ se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{false} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
 \section{Ambigüedades}
 
@@ -1737,7 +1741,7 @@ Los campos de la ambigüedad son:
 
 \begin{itemize}
   \item \texttt{p} y \texttt{q} son referencias a los monomios sobre los cuales es la ambigüedad. El motivo por el cual se guardan en la estructura es para poder implementar una de las optimizaciones.
-  \item \texttt{type} indica si la ambigüedad es de inclusión o de superposición.
+  \item \texttt{type} indica si la ambigüedad es de inclusión o de superposición (recordar que todas las ambigüedades que se usan en el algoritmo de Buchberger son relevantes).
   \item \texttt{pos} es la posición de \texttt{p} donde empieza el pedazo que es en común con \texttt{q} y por el cual existe la ambigüedad.
   \item \texttt{a} y \texttt{b} son los monomios que hacen que en el caso de las de inclusión \texttt{p} sea igual a \texttt{aqb} y en el caso de las de superposición \texttt{ap} sea igual a \texttt{qb}.
 \end{itemize}
@@ -1750,7 +1754,7 @@ Y por último está la función \texttt{checkDeletionCriteria} que implementa la
 
 \section{Buchberger}
 
-Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se hace lo de usar una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
+Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se usa una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
 
 La base de esa estructura es así:
 
@@ -1760,6 +1764,7 @@ La base de esa estructura es así:
     std::vector<Poly<K, X, ord>> G;
     std::queue<std::tuple<Amb<X>, size_t, size_t>> ambs;
     size_t t = 0;
+    // … Métodos
   };
 \end{minted}
 
@@ -1775,7 +1780,7 @@ La estructura además de tener los métodos \texttt{next} y \texttt{fullBase} ti
 
 \begin{itemize}
   \item \texttt{add\_amb}: Este método simplemente toma una ambigüedad y dos índices, que son los índices en \texttt{G} de los polinomios a los que corresponde la ambigüedad, y los agrega a la cola de ambigüedades. Siempre que hay que agregar una ambigüedad se hace con este método. El motivo por el cual esto está en un método propio es para después, al implementar la optimización de descartar ambigüedades, poder hacerlo solo en este método.
-  \item \texttt{add\_poly}: Este método agrega un polinomio a \texttt{G} agregando además todas las nuevas ambigüedades que aparecen a la cola de ambigüedades. Cada vez que hay que agregar un nuevo polinomio se usa este método, tanto al comienzo cuando se agregan los polinomios iniciales como cuando se agrega un S-polinomio reducido.
+  \item \texttt{add\_poly}: Este método agrega un polinomio a \texttt{G} agregando además todas las nuevas ambigüedades que aparecen (llamando a \texttt{add\_amb}). Cada vez que hay que agregar un nuevo polinomio se usa este método, tanto al comienzo cuando se agregan los polinomios iniciales como cuando se agrega un S-polinomio reducido.
   \item \texttt{next}: Este es el método que corre el algoritmo. Lo principal que hace (después de usar la variable \texttt{t} para ver si tiene que devolver un elemento de \texttt{G}) es sacar ambigüedades de la cola hasta encontrar una que no se reduzca a $0$ y cuando la encuentra la agrega a la base (con \texttt{add\_poly}) y la devuelve. Si se acaban las ambigüedades devuelve vacío (recordar que devuelve \texttt{std::optional<Poly<K, ord>>}).
   \item \texttt{fullBase}: Simplemente llama a \texttt{next} en un ciclo hasta que devuelva vacío y después devuelve la base.
 \end{itemize}
@@ -1791,9 +1796,9 @@ F4 es un poco más complejo que Buchberger y tiene más partes, así que esta se
 
 Para F4 hace falta hacer la reducción por filas de una matriz. Para esto, en el archivo \texttt{matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que funciona para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho más rápido.
 
-Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de la librería GMP (que son números racionales) \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}.
+Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de GMP que ya dijimos que son los números racionales \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class}.
 
-¿Qué que es una especialización en C++? Recordatorio para quienes no lo recuerdan bien: Es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template.
+¿Qué es una especialización en C++? Recordatorio para quienes no lo recuerdan bien: Es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template.
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que la función tiene que primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
@@ -1807,11 +1812,11 @@ El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está im
 
 \subsection{Reducción}
 
-Como en F4 se reducen varios polinomios al mismo tiempo, en el código se implementó una función \texttt{multiReduction} que toma dos vectores de polinomios, la base actual y los polinomios a reducir y hace lo de reducirlos todos a la vez con la matriz.
+Como en F4 se reducen varios polinomios al mismo tiempo, se implementó una función \texttt{multiReduction} que toma dos vectores de polinomios, la base actual y los polinomios a reducir y los reduce todos a la vez.
 
 En el \cref{alg:F4} esto se hizo dentro del propio algoritmo de F4 pero en la implementación se hizo aparte porque son bastantes cosas las que tiene que hacer el código.
 
-La implementación lo que hace es construir la matriz (con \texttt{toMatrix}), después llamar a la función \texttt{rref} (que ya se explicó), después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su uno coeficiente principal (el primero no nula de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
+La implementación lo que hace es construir la matriz con una función llamada \texttt{toMatrix}, después llamar a la función \texttt{rref} que ya se explicó, después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último se convierten a polinomios las filas que su coeficiente principal (el primero no nulo de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
 
 \subsection{El propio F4}
 
@@ -1842,7 +1847,7 @@ En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una funci
 
 Que toma la base, la ambigüedad y a que polinomios corresponde y devuelve \texttt{true} si y solo si esa ambigüedad se puede descartar sin reducirla.
 
-Usando esa función, en el código, en el método \texttt{add\_amb} tanto de Buchberger como de F4 antes de agregar la ambigüedad, se agregó una llamada a \texttt{checkDeletionCriteria} para solo agregar la ambigüedad si da \texttt{false}.
+Usando esa función, en el método \texttt{add\_amb} tanto de Buchberger como de F4, antes de agregar la ambigüedad, se agregó una llamada a \texttt{checkDeletionCriteria} para solo agregar la ambigüedad si da \texttt{false}.
 
 \subsection{Eliminación de polinomios}
 
@@ -1850,7 +1855,7 @@ La segunda optimización consiste en que cuando se procesa una ambigüedad de in
 
 Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm(f) = a \lm(g) b$ con $a, b ∈ ⟨X⟩$. Esta optimización permite en esas ambigüedades borrar $f$ de la base.
 
-Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo F4 anda más lento con esta optimización. No se investigó por qué pasa eso.
+Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo cuando se probó en F4 anduvo más lento. No se investigó por qué pasó eso.
 
 Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que más bien se está marcando como borrados los polinomios.
 
@@ -1912,7 +1917,7 @@ En este campo \texttt{G\_rec}, a los elementos iniciales simplemente se los agre
 
 \section{Paralelismo}
 
-Cuando se va a paralelizar algo siempre es importante primero tratar de optimizar la versión no paralela lo más posible. En este caso lo mejor no paralelo es el algoritmo F4, pero como no está implementada la optimización de la reducción eficiente, no está todavía optimizada al máximo la versión no paralela. De cualquier manera, como la reducción de matrices es solo una parte del algoritmo, se puede pensar cómo se podría paralelizar el resto.
+Cuando se va a paralelizar algo siempre es importante primero tratar de optimizar la versión no paralela lo más posible. En este caso lo mejor no paralelo es el algoritmo F4, pero como no está implementada la optimización de la reducción eficiente, no está todavía optimizado al máximo. De cualquier manera, como la reducción de matrices es solo una parte del algoritmo, se puede pensar cómo se podría paralelizar el resto.
 
 El método \texttt{add\_poly} que ya se explicó que lo que hace es agregar un polinomio a la base y agregar las nuevas ambigüedades correspondientes, sin paralelizar se implementó así:
 
@@ -1941,7 +1946,7 @@ Y el método \texttt{add\_amb} se implementó así:
   }
 \end{minted}
 
-El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar, lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si se llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
+El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar. Lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si se llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
 
 \begin{minted}{C++}
   void add_poly(Poly<K, X, ord>& f) {
@@ -1978,15 +1983,15 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 \subsection{Uso de OpenMP para paralelizar}
 
-Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que eso se hizo. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
+Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agrego eso en la linea anterior. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
 
 \chapter{Tests}
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
-Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar \texttt{SageMath} y a veces falla la instalación.
+Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
-Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando \texttt{SageMath}, y comparan los resultados, y otros corren solo código de la librería.
+Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de maestría \cite{thesis:Hof20} usando SageMath, y comparan los resultados, y otros corren solo código de la librería.
 
 También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
 
@@ -2204,7 +2209,7 @@ Algunas cosas malas de este trabajo:
 
 \begin{itemize}
   \item No está hecha la optimización de usar la reducción de Faugère-Lachartre. Esto es sin duda el mayor punto negativo del trabajo.
-  \item Que sea en C++ también tiene como parte negativa que como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
+  \item Que sea en C++ también tiene como parte negativa que como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de Python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
 \end{itemize}
 
 \chapter{Trabajos futuros}\label{cap:trabajos futuros}
