@@ -2260,6 +2260,7 @@ Algunas cosas buenas de este trabajo:
 \begin{itemize}
   \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es particularmente útil si se quieren correr casos que se demoran mucho.
   \item Es la primer implementación de bases de Gröbner no conmutativas que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
+  \item La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb}.
 \end{itemize}
 
 Algunas cosas malas de este trabajo:
@@ -2278,7 +2279,9 @@ A continuación una lista trabajos que se podrían hacer sobre el tema.
 
   \item Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo. Así que eso sería una buena cosa para hacer.
 
-  \item Algo que se podría hacer con la librería de este trabajo es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
+  \item Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar mas lento, así que se descartaban esos cambios. Sería bueno agregar mas test y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
+
+  \item Algo que se podría hacer con la librería es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
 
   \item Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
 
