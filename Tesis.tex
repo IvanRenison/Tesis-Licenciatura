@@ -2020,7 +2020,7 @@ Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguien
 
 De cualquier manera esos datos no son muy importantes porque lo que importa son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son todos tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos se miden desde el programa de Python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son todos salvo uno tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos se miden desde el programa de Python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
 Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2080,21 +2080,22 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
       width = \textwidth,
       height = 0.4\textwidth,
       bar width = 0.01\textwidth, % Ancho de cada barra
-      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+      symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
       xtick = data, % Mostrar marcas en el eje x para cada dato
       ylabel = {Tiempo en segundos}, % Etiqueta del eje y
       %xlabel = {Categorías}, % Etiqueta del eje x
       xticklabel style = {rotate = 45}, % Rotar etiquetas
       ymin = 0, % Mínimo del eje y
+      ymax = 215,
       enlarge x limits = 0.03, % Espaciado en los bordes
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
       legend entries = {Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list = {{brown,fill = brown!30}, {red,fill = red!30}, {blue,fill = blue!30}}, % Colores
   ]
     % Datos para cada conjunto
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (trit3, 0.01) (trit4, 0.14) (trit5, 77.04)};
-    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
-    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
+    \addplot coordinates {(FK2, 0.01) (FK3, 0.01) (FK4, 0.08) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (tri2, 0.29) (tri3, 0.04) (tri4, 0.07) (tri5, 0.02) (tri6, 1.78) (tri7, 1.81) (tri8, 0.06) (tri9, 0.01) (trit3, 0.05) (trit4, 0.49) (trit5, 207.84)};
+    \addplot coordinates {(FK2, 1.70) (FK3, 0.80) (FK4, 0.87) (tri1, 0.98) (tri10, 0.85) (tri11, 0.88) (tri12, 1.04) (tri13, 0.83) (tri2, 1.16) (tri3, 0.90) (tri4, 0.94) (tri5, 0.87) (tri6, 1.27) (tri7, 1.45) (tri8, 0.91) (tri9, 0.82) (trit3, 0.87) (trit4, 1.04) (trit5, 5.21)};
   \end{axis}
 \end{tikzpicture}
 
@@ -2106,7 +2107,7 @@ A simple-vista se puede ver que para los casos en los que se distingué algo \te
       width = \textwidth,
       height = 0.4\textwidth,
       bar width = 0.01\textwidth, % Ancho de cada barra
-      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+      symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
       xtick = data, % Mostrar marcas en el eje x para cada dato
       ylabel = {Tiempo en segundos}, % Etiqueta del eje y
       %xlabel = {Categorías}, % Etiqueta del eje x
@@ -2119,9 +2120,9 @@ A simple-vista se puede ver que para los casos en los que se distingué algo \te
       cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
   ]
     % Datos para cada conjunto
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.26) (tri2, 6.00) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.54) (tri7, 33.36) (tri8, 0.09) (tri9, 0.00) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (trit3, 0.01) (trit4, 0.14) (trit5, 77.04)};
-    \addplot coordinates {(Nichols2, 0.01) (Nichols3, 0.01) (tri1, 0.08) (tri2, 0.30) (tri3, 0.26) (tri4, 0.07) (tri5, 0.02) (tri6, 1.79) (tri7, 1.85) (tri8, 0.06) (tri9, 0.01) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (trit3, 0.05) (trit4, 0.50) (trit5, 212.94)};
-    \addplot coordinates {(Nichols2, 0.82) (Nichols3, 0.81) (tri1, 0.98) (tri2, 1.19) (tri3, 0.92) (tri4, 0.96) (tri5, 0.89) (tri6, 1.30) (tri7, 1.48) (tri8, 0.94) (tri9, 0.84) (tri10, 0.86) (tri11, 0.90) (tri12, 1.04) (tri13, 0.85) (trit3, 0.91) (trit4, 1.07) (trit5, 5.29)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
+    \addplot coordinates {(FK2, 0.01) (FK3, 0.01) (FK4, 0.08) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (tri2, 0.29) (tri3, 0.04) (tri4, 0.07) (tri5, 0.02) (tri6, 1.78) (tri7, 1.81) (tri8, 0.06) (tri9, 0.01) (trit3, 0.05) (trit4, 0.49) (trit5, 207.84)};
+    \addplot coordinates {(FK2, 1.70) (FK3, 0.80) (FK4, 0.87) (tri1, 0.98) (tri10, 0.85) (tri11, 0.88) (tri12, 1.04) (tri13, 0.83) (tri2, 1.16) (tri3, 0.90) (tri4, 0.94) (tri5, 0.87) (tri6, 1.27) (tri7, 1.45) (tri8, 0.91) (tri9, 0.82) (trit3, 0.87) (trit4, 1.04) (trit5, 5.21)};
   \end{axis}
 \end{tikzpicture}
 
@@ -2137,30 +2138,86 @@ El test que prueba que de el mismo resultado correr con distintas cantidades de 
       width = \textwidth,
       height = 0.4\textwidth,
       bar width = 0.003\textwidth,
-      symbolic x coords = {Nichols2, Nichols3, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13}, % Etiquetas en el eje x
+      symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
       xtick = data, % Mostrar marcas en el eje x para cada dato
       ylabel = {Tiempo en segundos}, % Etiqueta del eje y
       %xlabel = {Cantidad de hilos}, % Etiqueta del eje x
       xticklabel style = {rotate = 45}, % Rotar etiquetas
       ymin = 0, % Mínimo del eje y
-      ymax = 2.25, % Máximo del eje y
+      ymax = 215, % Máximo del eje y
       enlarge x limits = 0.03, % Espaciado en los bordes
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
       legend entries = {1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
   ]
     % Datos para cada conjunto
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.09) (tri2, 0.54) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.22) (tri7, 2.22) (tri8, 0.07) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.08) (tri2, 0.43) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 2.02) (tri7, 2.07) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.27) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.35) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.84) (tri7, 1.90) (tri8, 0.06) (tri9, 0.00) (tri10, 0.01) (tri11, 0.02) (tri12, 0.22) (tri13, 0.01)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.85) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.07) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.87) (tri7, 1.85) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00)};
-    \addplot coordinates {(Nichols2, 0.00) (Nichols3, 0.00) (tri1, 0.06) (tri2, 0.29) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.81) (tri7, 1.83) (tri8, 0.05) (tri9, 0.00) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.01)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.10) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.01) (tri2, 0.53) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.20) (tri7, 2.19) (tri8, 0.07) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47) (trit5, 213.58)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.28) (tri13, 0.00) (tri2, 0.42) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.98) (tri7, 2.02) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47) (trit5, 212.76)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.07) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00) (tri2, 0.36) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.82) (tri7, 1.92) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 209.93)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.01) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.86) (tri7, 1.84) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 212.14)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.83) (tri7, 1.81) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 208.28)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.29) (tri3, 0.03) (tri4, 0.05) (tri5, 0.01) (tri6, 1.79) (tri7, 1.80) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.46) (trit5, 208.62)};
   \end{axis}
-\end{tikzpicture} % Agregar los tri
+\end{tikzpicture}
 
+De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo con mas hilos. Para porder ver en mas detalla, a continuación un gráfico de lo mismo pero sin trit5.
 
-Acá se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por lo de que solo la parte de agregar ambigüedades está paralelizada.
-% Agregar los benchmarks de la reconstrucción
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar = 0.5pt, % Tipo de gráfico: barras verticales
+      width = \textwidth,
+      height = 0.4\textwidth,
+      bar width = 0.003\textwidth,
+      symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4}, % Etiquetas en el eje x
+      xtick = data, % Mostrar marcas en el eje x para cada dato
+      ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel = {Cantidad de hilos}, % Etiqueta del eje x
+      xticklabel style = {rotate = 45}, % Rotar etiquetas
+      ymin = 0, % Mínimo del eje y
+      ymax = 2.5, % Máximo del eje y
+      enlarge x limits = 0.03, % Espaciado en los bordes
+      legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+      legend entries = {1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.10) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.01) (tri2, 0.53) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.20) (tri7, 2.19) (tri8, 0.07) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.28) (tri13, 0.00) (tri2, 0.42) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.98) (tri7, 2.02) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.07) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00) (tri2, 0.36) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.82) (tri7, 1.92) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.01) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.86) (tri7, 1.84) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.83) (tri7, 1.81) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+    \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.29) (tri3, 0.03) (tri4, 0.05) (tri5, 0.01) (tri6, 1.79) (tri7, 1.80) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.46)};
+  \end{axis}
+\end{tikzpicture}
+
+Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por lo de que solo la parte de agregar ambigüedades está paralelizada.
+
+\section{Construcción de la respuesta}
+
+El test que compara ejecutar Buchberger con y sin construir la respuesta también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \texttt{mains} si no que usa sus propios archivo, y además este benchmark mide los tiempos desde C++. En el siguiente gráfico se pueden ver los resultados.
+
+\noindent \begin{tikzpicture}
+  \begin{axis}[
+      ybar = 0.5pt, % Tipo de gráfico: barras verticales
+      width = \textwidth,
+      height = 0.4\textwidth,
+      bar width = 0.015\textwidth, % Ancho de cada barra
+      symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+      xtick = data, % Mostrar marcas en el eje x para cada dato
+      ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+      %xlabel = {Categorías}, % Etiqueta del eje x
+      xticklabel style = {rotate = 45}, % Rotar etiquetas
+      ymin = 0, % Mínimo del eje y
+      %ymax = 215,
+      enlarge x limits = 0.03, % Espaciado en los bordes
+      legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+      legend entries = {Normal, Construcción de la respuesta}, % Entradas de la leyenda
+  ]
+    % Datos para cada conjunto
+    \addplot coordinates {(FK2, 0.0) (FK3, 0.0) (FK4, 0.007) (tri1, 0.238) (tri10, 0.006) (tri11, 0.026) (tri12, 2.99) (tri13, 0.005) (tri2, 5.497) (tri3, 0.016) (tri4, 0.03) (tri5, 0.006) (tri6, 5.929) (tri7, 30.415) (tri8, 0.083) (tri9, 0.0) (trit3, 0.008) (trit4, 0.126) (trit5, 70.421)};
+    \addplot coordinates {(FK2, 0.0) (FK3, 0.0) (FK4, 0.011) (tri1, 0.383) (tri10, 0.007) (tri11, 0.035) (tri12, 4.26) (tri13, 0.016) (tri2, 8.544) (tri3, 0.022) (tri4, 0.052) (tri5, 0.009) (tri6, 7.749) (tri7, 101.729) (tri8, 0.113) (tri9, 0.001) (trit3, 0.011) (trit4, 0.173) (trit5, 94.521)};
+  \end{axis}
+\end{tikzpicture}
+
+Se puede ver que la construcción de la respuesta lleva mas tiempo, pero en general no tanto mas. Acá no hay demasiado mas para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de mas abajo.
 
 \section{Pertenencia a ideales}
 
