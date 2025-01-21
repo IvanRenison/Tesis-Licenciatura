@@ -66,6 +66,9 @@
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{definition}[theorem]{Definición}
 \newtheorem{lemma}[theorem]{Lema}
+\newtheorem{colorary}[theorem]{Colorario}
+\newtheorem{problem}[theorem]{Problema}
+\newtheorem{observation}[theorem]{Observación}
 \addto\captionsspanish{\renewcommand{\proofname}{Demostración}}
 \renewenvironment{proof}[1][\proofname]{{\noindent \bfseries #1: }}{\qed} % Cambiar estilo del título de la demostración
 
@@ -127,8 +130,12 @@ En este capítulo se explica informalmente de qué se trata la tesis.
 
 Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta, por lo que, por ejemplo, es lo mismo el polinomio $x y$ que el polinomio $y x$. Algo que se puede hacer es considerar que eso no pasa, que el producto de las variables no conmuta, por lo que, por ejemplo, $x y ≠ y x$ (pero que el producto de las variables con los coeficientes sí conmuta, así que por ejemplo $x 3 y = 3 x y$). Al hacer eso se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
-Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente, determinar si vale que:
-\[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
+Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente:
+
+\begin{problem}\label{problem:principal}
+  Determinar si vale que
+  \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
+\end{problem}
 
 Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
@@ -481,7 +488,9 @@ Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, l
 
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
-Con las definiciones que tenemos ahora la pregunta que planteábamos en la introducción se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$.
+\begin{observation}
+  Con las definiciones que tenemos ahora el \cref{problem:principal} se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$.
+\end{observation}
 
 Si bien $(G)$ para un anillo general está definido usando combinaciones lineales con coeficientes en el anillo, para el álgebra libre va a ser útil la siguiente equivalencia.
 
@@ -965,6 +974,18 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
   \end{description}
   Con esto se termina la prueba.
 \end{proof}
+
+\begin{observation}
+  (2) del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ esta en el ideal.
+\end{observation}
+
+Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos el siguiente corolario.
+
+\begin{colorary}\label{col:(G) = (G') cond}
+  Sean $G, G' ⊆ K⟨X⟩$ bases de Gröbner, entonces
+  \[ (G) = (G') ⇔ (∀g ∈ G : g →_{≤, G'} 0) ∧ (∀g' ∈ G' : g' →_{≤, G} 0)\]
+  \qed
+\end{colorary}
 
 
 \section{Algoritmo de Buchberger}
@@ -1606,7 +1627,7 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
   inIdeal(const std::vector<Poly<K, X, ord>>& G, Poly<K, X, ord> f, size_t st = 20);
 \end{minted}
 
-Esa función sería básicamente la que trata de responder a la pregunta que planteamos al comienzo de si un polinomio está en el ideal generado por un conjunto generador.
+Esa función sería básicamente la que trata de responder el \cref{problem:principal} de si un polinomio está en el ideal generado por un conjunto generador.
 
 \section{Construcción de la respuesta}\label{section:construcción de la respuesta (librería)}
 
@@ -1909,15 +1930,7 @@ En este campo \texttt{G\_rec}, a los elementos iniciales simplemente se los agre
 
 \section{Comparación de bases de Gröbner}
 
-La función \texttt{cmpBases} que se mencionó en la \cref{section:Comparación de bases de Gröbner (libreria)} que toma dos conjuntos generadores y asumiendo que son bases de Gröbner dice si generan el mismo ideal o no está implementada usando el siguiente teorema.
-
-\begin{theorem}
-  Sean $G, G' ⊆ K⟨X⟩$ bases de Gröbner, entonces
-  \[ (G) = (G') ⇔ (∀g ∈ G : g →_{≤, G'} 0) ∧ (∀g' ∈ G' : g' →_{≤, G} 0)\]
-  \qed
-\end{theorem}
-
-Con este teorema la función \texttt{cmpBases} es una implementación tal cual de este teorema.
+La función \texttt{cmpBases} que se mencionó en la \cref{section:Comparación de bases de Gröbner (libreria)} que toma dos conjuntos generadores y asumiendo que son bases de Gröbner dice si generan el mismo ideal o no está implementada usando tal cual el \cref{col:(G) = (G') cond}.
 
 \section{Paralelismo}
 
@@ -2074,7 +2087,7 @@ En las siguientes subsecciones se presentan los resultados de cada uno de los be
 
 El test que usa los distintos algoritmos para calcular bases de Gröbner de ideales que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
 
-En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para esos casos.
+En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger de esta tesis (\texttt{Buchberger}), de F4 de esta tesis (\texttt{F4}) y de \texttt{operator\_gb} (que usa F4) para esos casos.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2091,7 +2104,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
       ymax = 215,
       enlarge x limits = 0.03, % Espaciado en los bordes
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
-      legend entries = {Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
+      legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list = {{brown,fill = brown!30}, {red,fill = red!30}, {blue,fill = blue!30}}, % Colores
   ]
     % Datos para cada conjunto
@@ -2118,7 +2131,7 @@ A simple vista se puede ver que para los casos en los que se distingué algo \te
       ymax = 10,
       enlarge x limits = 0.03, % Espaciado en los bordes
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
-      legend entries = {Buchberger, F4, \texttt{operator\_gb}}, % Entradas de la leyenda
+      legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
   ]
     % Datos para cada conjunto
@@ -2128,7 +2141,7 @@ A simple vista se puede ver que para los casos en los que se distingué algo \te
   \end{axis}
 \end{tikzpicture}
 
-Acá se puede ver que en los casos más chiquitos si pasa que Buchberger y F4 le gana a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos Buchberger y F4 sean más rápido también tiene sentido por el hecho de que C++ es mucho más rápido que Python.
+Acá se puede ver que en los casos más chiquitos si pasa que \texttt{Buchberger} y \texttt{F4} le ganan a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos \texttt{Buchberger} y \texttt{F4} sean más rápido también tiene sentido por el hecho de que C++ es mucho más rápido que Python.
 
 \section{Paralelismo}
 
@@ -2161,7 +2174,7 @@ El test que prueba que de el mismo resultado correr con distintas cantidades de 
   \end{axis}
 \end{tikzpicture}
 
-De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo con mas hilos. Para porder ver en mas detalla, a continuación un gráfico de lo mismo pero sin trit5.
+De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo con mas hilos. Para poder ver en mas detalla, a continuación un gráfico de lo mismo pero sin trit5.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2223,7 +2236,7 @@ Se puede ver que la construcción de la respuesta lleva más tiempo, pero en gen
 
 \section{Pertenencia a ideales}
 
-El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ve con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para los enteros módulo un primo no, porque \texttt{operator\_gb} es solo para racionales. Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos. Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es Buchberger y \texttt{GB} es \texttt{operator\_gb}):
+El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ve con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para los enteros módulo un primo no, porque \texttt{operator\_gb} es solo para racionales. Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos. Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es \texttt{Buchberger} y \texttt{GB} es \texttt{operator\_gb}):
 
 \begin{minted}{text}
   Average times:
@@ -2247,15 +2260,15 @@ Y estos para los enteros módulo un primo (también tal cual los imprime el test
   F4_Zp: 0.0799708366s
 \end{minted}
 
-Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantidad de pasos, y los pasos son cosas distintas en los distintos algoritmos, no se puede comparar. En particular, un paso de F4 puede corresponder a muchos pasos de Buch.
+Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantidad de pasos, y los pasos son cosas distintas en los distintos algoritmos, no se puede comparar. En particular, un paso de \texttt{F4} puede corresponder a muchos pasos de \texttt{Buchberger}.
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
 \chapter{Conclusiones}
 
-\section{Como fue el proceso de hacer este trabajo}\label{section:proceso}
+El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para el autor este era un tema completamente nuevo, así que empezó por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas, mientras leía ese libro hizo también una implementación así nomás de bases de Gröbner conmutativas en C++. Esto fue bueno porque sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso el autor fue leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
 
-El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para el autor este era un tema completamente nuevo, así que empezó por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner si conmutativas, mientras leía ese libro hizo también una implementación así nomás de bases de Gröbner si conmutativas en C++. Esto fue bueno porque sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso el autor fue leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
+A continuación mencionamos algunas cosas positivas y negativas de este trabajo y mencionamos algunos posibles trabajos futuros.
 
 \section{Cosas buenas y cosas malas de este trabajo}
 
@@ -2272,12 +2285,12 @@ Algunas cosas malas de este trabajo:
 
 \begin{itemize}
   \item No está hecha la optimización de usar la reducción de Faugère-Lachartre. Esto es sin duda el mayor punto negativo del trabajo.
-  \item Que sea en C++ también tiene como parte negativa que, como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, porque no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ tienen algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de Python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
+  \item  Actualmente la librería no viene con nada para instalarla automáticamente porque en C++ eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de Python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
 \end{itemize}
 
 \section{Trabajos futuros}\label{section:trabajos futuros}
 
-A continuación una lista trabajos que se podrían hacer sobre el tema.
+A continuación una lista de trabajos que se podrían hacer sobre el tema.
 
 \begin{itemize}
   \item Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es una de las cosas más importantes para hacer.
@@ -2287,6 +2300,8 @@ A continuación una lista trabajos que se podrían hacer sobre el tema.
   \item Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar mas lento, así que se descartaban esos cambios. Sería bueno agregar mas test y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
 
   \item Se podría analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en que partes se pueden realizar a optimizaciones.
+
+  \item Como ya se dijo, actualmente la librería no viene con nada para instalarla automáticamente. Otros librerías de C++ si vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
 
   \item Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
 
@@ -2303,7 +2318,7 @@ A continuación una lista trabajos que se podrían hacer sobre el tema.
 
   \item Como ya se mencionó en el \cref{cap:Benchmarks}, los FK$n$ no se sabe para $n ≥ 6$ si tienen una base finita o no. Cuando se tenga una versión muy buena de F4 algo que se podría hacer es correrla por mucho tiempo para FK$n$ para ver si llega en algún momento a una base finita.
 
-  \item Actualmente para estudiar el tema de bases de Gröbner, tanto si conmutativas cono no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para si conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando el autor implementó las bases de Gröbner si conmutativas para practicar tubo que hacer su propio testing y todo. Para que estudiar el tema sea más fácil algo que sería útil es preparar del problemas estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp/}{Library Checker}, o en un grupo de \href{https://codeforces.com/}{Codeforces}.
+  \item Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas cono no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando el autor implementó las bases de Gröbner conmutativas para practicar tubo que hacer su propio testing. Para que estudiar el tema sea más fácil algo que sería útil es preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp/}{Library Checker}, o en un grupo de \href{https://codeforces.com/}{Codeforces}.
 
   \item Por último, otra cosa que se podría hacer es implementar el calculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
 \end{itemize}
