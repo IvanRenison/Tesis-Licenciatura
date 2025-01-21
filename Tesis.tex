@@ -1350,17 +1350,13 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}
 
-Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en C++ junto con estructuras para manejar polinomios no conmutativos en una librería \texttt{ncgb}. En este capítulo se explica cómo usar esa librería en su versión actual (fecha de publicación de esta tesis).
-
-Esa librería está en GitHub en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}.
+Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en C++ junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. En este capítulo se explica cómo usar esa librería en su versión actual (fecha de publicación de esta tesis). Esa librería está en GitHub en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}.
 
 \section{Estructura de las carpetas}
 
 El repositorio tiene varias carpetas, pero hay dos que son las más relevantes para el o la usuaria.
 
-La primera es la carpeta \texttt{ncgb}, que es en donde está alojada la librería en sí. Tiene muchos archivos \texttt{.hpp} que son los que hay que incluir para usar la librería y que tienen la implementación ahí mismo.
-
-En algunas librerías a veces hay archivos \texttt{.h} con las declaraciones y archivos \texttt{.cpp} con las implementaciones, pero acá eso no es así por el uso de templates.
+La primera es la carpeta \texttt{ncgb}, que es en donde está alojada la librería en sí. Tiene muchos archivos \texttt{.hpp} que son los que hay que incluir para usar la librería y que tienen la implementación ahí mismo. En algunas librerías a veces hay archivos \texttt{.h} con las declaraciones y archivos \texttt{.cpp} con las implementaciones, pero acá eso no es así por el uso de templates.
 
 La otra carpeta relevante es la carpeta \texttt{mains}, que tiene varios archivos \texttt{.cpp} con funciones \texttt{main} que hacen distintas cosas usando la librería, cada uno con una pequeña explicación de qué hace. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
@@ -1368,9 +1364,7 @@ La otra carpeta relevante es la carpeta \texttt{mains}, que tiene varios archivo
 
 Todo el código de la librería está en el namespace \texttt{ncgb}, así que para usar cualquier cosa hay que abrir \texttt{ncgb} o usar con \texttt{ncgb::}. Para las explicaciones vamos a ver todo como con el namespace abierto.
 
-Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables, y además muchas cosas de los polinomios (y de otras definiciones) dependen de un orden monomial.
-
-Para que al usar el código también se puedan variar esas tres cosas todas las funciones y estructuras están hechas como templates con esas tres cosas como argumentos. Por ejemplo, la definición de polinomio es así:
+Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables, y además muchas cosas de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que al usar el código también se puedan variar esas tres cosas todas las funciones y estructuras están hechas como templates con esas tres cosas como argumentos. Por ejemplo, la definición de polinomio es así:
 
 \begin{minted}{C++}
   template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
@@ -1624,18 +1618,18 @@ Sin embargo esa información se puede calcular y ese cálculo está implementado
 
 Estas funciones devuelven elementos del tipo \texttt{InIdealPoly} definido en el archivo \texttt{nc\_polynomial\_inIdeal.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador. En particular, guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
-Para F4 esto no está implementado (en el siguiente capítulo se explica más del porqué).
+Para F4 esto no está implementado (en el siguiente capítulo se explica más del por qué).
 
 
-\section{Comparación de bases}
+\section{Comparación de bases de Gröbner}\label{section:Comparación de bases de Gröbner (libreria)}
 
 En el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
 
 \section{Paralelismo} % O paralelización?
 
-Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo, pero solo para una parte del código, así que no es demasiado útil. De cualquier manera, en esta sección se explica como hacer que el código corra en paralelo.
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo solo para una parte del código. En esta sección se explica como hacer que el la parte del código que puede ejecutarse en paralelo lo haga.
 
-La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizada con OpenMP.
+La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una libraría de C++ para de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP.
 
 Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del makefile para cuando se compilan los mains y todo. Si solo se usa ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
 
@@ -1688,7 +1682,7 @@ Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementar
 
 Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
-Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, lo cual la forma directa de hacerlo lleva tiempo cuadrático en el largo de las palabras, pero se puede hacer en tiempo lineal.
+Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, para lo cual, la forma directa de hacerlo lleva tiempo cuadrático en el largo de las palabras, pero se puede hacer en tiempo lineal.
 
 Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
@@ -1713,9 +1707,7 @@ El orden de los polinomios está definido como \texttt{template<typename K, type
 
 \section{Reducción}
 
-La reducción está implementada en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$.
-
-Esa reducción concreta siempre trata de reducir por los primeros elementos del vector primero y trata de reducir primero los monomios más grandes del polinomio.
+La reducción está implementada en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$. Esa reducción concreta siempre trata de reducir por los primeros elementos del vector primero y empezando por los monomios más grandes del polinomio.
 
 En el archivo también hay una función \texttt{reduce} (recordar que en C++ se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios y hace la reducción solo con los polinomios que tengan un \texttt{false} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
@@ -1754,7 +1746,7 @@ Y por último está la función \texttt{checkDeletionCriteria} que implementa la
 
 \section{Buchberger}
 
-Como ya se dijo antes, por el tema de que el algoritmo puede no terminar, se usa una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
+Como ya se dijo antes, por el inconveniente de que el algoritmo puede no terminar, se usa una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
 
 La base de esa estructura es así:
 
@@ -1865,7 +1857,7 @@ A las funciones que se habían explicado, que toman a \texttt{G} como parámetro
 
 Como ya se dijo antes, para F4 también hay otra optimización que consiste en hacer la reducción por filas de la matriz de forma más eficiente aprovechando la estructura particular que tienen las matrices de F4. Esta reducción se llama reducción Faugère-Lachartre y está explicada en \cite{thesis:Hof20}.
 
-Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación específica de $ℚ$, que hay en C++. Sin embargo, queda como trabajo futuro en el \cref{cap:trabajos futuros}.
+Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación específica de $ℚ$, que hay en C++. Sin embargo, queda como trabajo futuro en la \cref{section:trabajos futuros}.
 
 \section{Construcción de la respuesta}
 
@@ -1914,6 +1906,18 @@ También se hizo una versión de la función de los S-polinomios, que toma la am
 Con esto, en la estructura \texttt{BuchbergerIncrementalReconstruct} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<InIdealPoly<K, ord>> G\_rec} que guarda la construcción como elementos de la base de cada polinomio de \texttt{G}.
 
 En este campo \texttt{G\_rec}, a los elementos iniciales simplemente se los agrega como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los elementos que vienen de un S-polinomio se les construye el \texttt{InIdealPoly} con los \texttt{InIdealPoly} de los polinomios que forman la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyReconstruct} y con el \texttt{InIdealPoly} de la reducción que devuelve la función \texttt{reduceReconstruct}.
+
+\section{Comparación de bases de Gröbner}
+
+La función \texttt{cmpBases} que se mencionó en la \cref{section:Comparación de bases de Gröbner (libreria)} que toma dos conjuntos generadores y asumiendo que son bases de Gröbner dice si generan el mismo ideal o no está implementada usando el siguiente teorema.
+
+\begin{theorem}
+  Sean $G, G' ⊆ K⟨X⟩$ bases de Gröbner, entonces
+  \[ (G) = (G') ⇔ (∀g ∈ G : g →_{≤, G'} 0) ∧ (∀g' ∈ G' : g' →_{≤, G} 0)\]
+  \qed
+\end{theorem}
+
+Con este teorema la función \texttt{cmpBases} es una implementación tal cual de este teorema.
 
 \section{Paralelismo}
 
@@ -2001,17 +2005,15 @@ A continuación una lista de algunas de las cosas (las mas importantes) que est�
 
 \begin{itemize}
   \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \texttt{test/internal\_tests}.
-  \item Para algunos conjuntos generadores que se sabe que tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no. Esto test está en la carpeta \texttt{test/base\_tests}.
-  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno de los tres da que si está en el ideal y otros no, se ejecutan los que no con muchísimos mas pasos, cosa de que tenga que terminar si o si porque supuestamente (si no hay bugs) si está porque alguno dio que si está. Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Esto test está en la carpeta \texttt{test/base\_tests}.
+  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que si está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, cosa de que tenga que terminar si o si porque por los que dieron que si sabemos que (si no hay bugs) si está. Esto está en la carpeta \texttt{test/InIdeal\_tests} % Esto me parece que no se entiende nada, pero no se como explicarlo.
   \item Con respecto a la reconstrucción de la respuesta y la representación de un polinomio en un ideal, hay un test que corre los algoritmos con y sin reconstrucción de la respuesta y se fija que el resultado de con reconstrucción después de convertirlo en un polinomio normal sea igual al resultado sin reconstrucción. Este test está en la carpeta \texttt{test/reconstruction\_tests}.
   \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de el mismo resultado. Esto está en la carpeta \texttt{test/parallelism\_tests}.
 \end{itemize}
 
 \chapter{Benchmarks}\label{cap:Benchmarks}
 
-En este capítulo se presentan los resultados obtenidos tras corres los test que incluyen benchmarks.
-
-Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguientes características:
+En este capítulo se presentan los resultados obtenidos tras correr los tests que incluyen benchmarks. Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguientes características:
 
 \begin{itemize}
   \item Procesador: AMD EPYC 7643 48-Core Processor
@@ -2020,9 +2022,9 @@ Las corridas se hicieron en la computadora `atom' de FAMAF que tiene las siguien
 
 De cualquier manera esos datos no son muy importantes porque lo que importa son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son todos salvo uno tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos se miden desde el programa de Python, así que incluyen en tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son todos salvo uno tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
-Todos los tests que tienen benchmarks salvo uno funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
+Todos los tests que tienen benchmarks, salvo uno, funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
 \begin{itemize}
   \item FK2 $ = \{a^2\}$
@@ -2060,19 +2062,19 @@ Los FK provienen de la teoría de álgebras de Nichols, las cuales son de inter�
   \end{align*}
 \end{itemize}
 
-\noindent Se sabe para $n ≤ 5$ los ideales generador por FK$n$ tienen bases de Gröbner finitas, pero $n > 5$ no se sabe. En \cite{web:Nichols} y \cite{book:introNichols} se puede encontrar mas información sobre las álgebras de Nichols.
+\noindent Se sabe que para $n ≤ 5$ los ideales generados por FK$n$ tienen bases de Gröbner finitas, pero para $n > 5$ no se sabe. En \cite{web:Nichols} y \cite{book:introNichols} se puede encontrar mas información sobre las álgebras de Nichols.
 
-Los tri que están porque \cite{thesis:Hof20} los usa, con ese mismo nombre, y el los sacó del Teorema 2.12 de \cite{book:class-tri}. Los trit son directamente sacados de la Proposición 1.9 de \cite{book:class-tri}.
+Los tri están porque \cite{thesis:Hof20} los usa, con ese mismo nombre, y él los sacó del Teorema 2.12 de \cite{book:class-tri}. Los trit son directamente tomados de la Proposición 1.9 de \cite{book:class-tri}.
 
-En todos los benchmarks que usan estos casos los usan para los racionales, porque es para los racionales que se sabe que tienen bases finitas.
+En todos los benchmarks que usan estos conjuntos se trabaja sobre los racionales, porque es para los racionales que se sabe que tienen bases finitas.
 
 En las siguientes subsecciones se presentan los resultados de cada uno de los benchmarks.
 
 \section{Ideales con bases de Gröbner finitas}\label{section:Ideales con bases de Gröbner finitas}
 
-El test que usa los distintos algoritmos para calcular bases de Gröbner de conjuntos generadores que se sabe que sus ideales tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
+El test que usa los distintos algoritmos para calcular bases de Gröbner de ideales que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos y por supuesto usa los casos que vimos recién.
 
-En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para los casos.
+En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de F4 y de \texttt{operator\_gb} para esos casos.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2099,7 +2101,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger, de
   \end{axis}
 \end{tikzpicture}
 
-A simple-vista se puede ver que para los casos en los que se distingué algo \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo los otros no, así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
+A simple vista se puede ver que para los casos en los que se distingué algo \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo los otros no. Así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2126,7 +2128,7 @@ A simple-vista se puede ver que para los casos en los que se distingué algo \te
   \end{axis}
 \end{tikzpicture}
 
-Y acá se puede ver que en los casos más chiquitos si pasa que Buchberger y F4 le gana a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos Buchberger y F4 sean más rápido también tiene sentido por el hecho de que C++ es mucho más rápido que Python.
+Acá se puede ver que en los casos más chiquitos si pasa que Buchberger y F4 le gana a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos Buchberger y F4 sean más rápido también tiene sentido por el hecho de que C++ es mucho más rápido que Python.
 
 \section{Paralelismo}
 
@@ -2188,7 +2190,7 @@ De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo
   \end{axis}
 \end{tikzpicture}
 
-Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por lo de que solo la parte de agregar ambigüedades está paralelizada.
+Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por el hecho de que solo la parte de agregar ambigüedades está paralelizada.
 
 \section{Construcción de la respuesta}
 
@@ -2217,15 +2219,11 @@ El test que compara ejecutar Buchberger con y sin construir la respuesta tambié
   \end{axis}
 \end{tikzpicture}
 
-Se puede ver que la construcción de la respuesta lleva mas tiempo, pero en general no tanto mas. Acá no hay demasiado mas para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de mas abajo.
+Se puede ver que la construcción de la respuesta lleva más tiempo, pero en general no tanto más. Acá no hay demasiado más para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de más abajo.
 
 \section{Pertenencia a ideales}
 
-El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ver con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para los enteros módulo un primo no, porque \texttt{operator\_gb} es solo para racionales.
-
-Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos.
-
-Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es Buchberger y \texttt{GB} es \texttt{operator\_gb}):
+El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ve con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para los enteros módulo un primo, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para los enteros módulo un primo no, porque \texttt{operator\_gb} es solo para racionales. Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos. Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es Buchberger y \texttt{GB} es \texttt{operator\_gb}):
 
 \begin{minted}{text}
   Average times:
@@ -2253,13 +2251,15 @@ Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantida
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
-\chapter{Conclusiones}
+\chapter{Conclusiones y trabajos futuros}
+
+\section{Conclusiones}
 
 Algunas cosas buenas de este trabajo:
 
 \begin{itemize}
-  \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es particularmente útil si se quieren correr casos que se demoran mucho.
-  \item Es la primer implementación de bases de Gröbner no conmutativas que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
+  \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es útil si se quieren correr casos que se demoran mucho.
+  \item Es la primer implementación de F4 que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
   \item La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb}.
 \end{itemize}
 
@@ -2267,21 +2267,21 @@ Algunas cosas malas de este trabajo:
 
 \begin{itemize}
   \item No está hecha la optimización de usar la reducción de Faugère-Lachartre. Esto es sin duda el mayor punto negativo del trabajo.
-  \item Que sea en C++ también tiene como parte negativa que como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de Python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
+  \item Que sea en C++ también tiene como parte negativa que, como el manejo de librerías en C++ es bastante desorganizado, si alguien quiere usar la librería tiene que arreglárselas para hacerla andar, porque no está todo solucionado para poder instalarla y usarla fácilmente. Algunas librerías de C++ tienen algo para que se puedan instalar de forma relativamente sencilla, pero eso acá no está hecho porque no parece fácil de hacer (el autor nunca hizo nada parecido). De cualquier manera, \texttt{operator\_gb} como usa SageMath tampoco es fácil de instalar, porque SageMath no es una librería de Python común que se instale con PIP si no que hay que hacer cosas más complicadas para instalarlo.
 \end{itemize}
 
-\chapter{Trabajos futuros}\label{cap:trabajos futuros}
+\section{Trabajos futuros}\label{section:trabajos futuros}
 
 A continuación una lista trabajos que se podrían hacer sobre el tema.
 
 \begin{itemize}
   \item Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es una de las cosas más importantes para hacer.
 
-  \item Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo. Así que eso sería una buena cosa para hacer.
+  \item Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en C++, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
 
   \item Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar mas lento, así que se descartaban esos cambios. Sería bueno agregar mas test y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
 
-  \item Algo que se podría hacer con la librería es analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría llegar a llevar a optimizaciones.
+  \item Se podría analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en que partes se pueden realizar a optimizaciones.
 
   \item Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
 
@@ -2294,18 +2294,12 @@ A continuación una lista trabajos que se podrían hacer sobre el tema.
     \end{enumerate}
   \end{definition}
 
-  Con los ideales a izquierda sobre polinomios no conmutativos también hay toda una teoría de bases de Gröbner. En \cite{phdthesis:Hof23} se puede encontrar una explicación sobre esta teoría.
-
-  Implementar el cálculo de bases de Gröbner de la teoría de ideales a izquierda es otro trabajo que se podría hacer.
-
-  También hay ideales a derecha que son análogos y tienen una teoría análoga a la de a izquierda.
+  Con los ideales a izquierda sobre polinomios no conmutativos también hay toda una teoría de bases de Gröbner. En \cite{phdthesis:Hof23} se puede encontrar una explicación sobre esta teoría. Implementar el cálculo de bases de Gröbner de la teoría de ideales a izquierda es otro trabajo que se podría hacer. Análogamente, también se pueden considerar ideales a derecha.
 
   \item Como ya se mencionó en el \cref{cap:Benchmarks}, los FK$n$ no se sabe para $n ≥ 6$ si tienen una base finita o no. Cuando se tenga una versión muy buena de F4 algo que se podría hacer es correrla por mucho tiempo para FK$n$ para ver si llega en algún momento a una base finita.
 
   \item Por último, otra cosa que se podría hacer es implementar el calculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
 \end{itemize}
-
-Estas cosas para hacer podrían ser trabajos finales de la Licenciatura en Ciencias de la Computación.
 
 \chapter{Bibliografía}
 
