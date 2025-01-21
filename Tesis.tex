@@ -2251,16 +2251,21 @@ Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantida
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
-\chapter{Conclusiones y trabajos futuros}
+\chapter{Conclusiones}
 
-\section{Conclusiones}
+\section{Como fue el proceso de hacer este trabajo}\label{section:proceso}
+
+El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para el autor este era un tema completamente nuevo, así que empezó por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner si conmutativas, mientras leía ese libro hizo también una implementación así nomás de bases de Gröbner si conmutativas en C++. Esto fue bueno porque sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso el autor fue leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
+
+\section{Cosas buenas y cosas malas de este trabajo}
 
 Algunas cosas buenas de este trabajo:
 
 \begin{itemize}
   \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es útil si se quieren correr casos que se demoran mucho.
   \item Es la primer implementación de F4 que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
-  \item La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb}.
+  \item La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb} (que el autor sepa).
+  \item El \cref{cap:Preliminares} de esta tesis es la primer explicación en español de bases de Gröbner no conmutativas (que el autor sepa).
 \end{itemize}
 
 Algunas cosas malas de este trabajo:
@@ -2297,6 +2302,8 @@ A continuación una lista trabajos que se podrían hacer sobre el tema.
   Con los ideales a izquierda sobre polinomios no conmutativos también hay toda una teoría de bases de Gröbner. En \cite{phdthesis:Hof23} se puede encontrar una explicación sobre esta teoría. Implementar el cálculo de bases de Gröbner de la teoría de ideales a izquierda es otro trabajo que se podría hacer. Análogamente, también se pueden considerar ideales a derecha.
 
   \item Como ya se mencionó en el \cref{cap:Benchmarks}, los FK$n$ no se sabe para $n ≥ 6$ si tienen una base finita o no. Cuando se tenga una versión muy buena de F4 algo que se podría hacer es correrla por mucho tiempo para FK$n$ para ver si llega en algún momento a una base finita.
+
+  \item Actualmente para estudiar el tema de bases de Gröbner, tanto si conmutativas cono no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para si conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando el autor implementó las bases de Gröbner si conmutativas para practicar tubo que hacer su propio testing y todo. Para que estudiar el tema sea más fácil algo que sería útil es preparar del problemas estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp/}{Library Checker}, o en un grupo de \href{https://codeforces.com/}{Codeforces}.
 
   \item Por último, otra cosa que se podría hacer es implementar el calculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
 \end{itemize}
