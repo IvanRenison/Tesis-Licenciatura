@@ -133,7 +133,7 @@ Usted posiblemente haya escuchado hablar de los polinomios de varias variables, 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente:
 
 \begin{problem}\label{problem:principal}
-  Determinar si vale que
+  Dados $G$ un conjunto de polinomios no conmutativos y $f$ un polinomio no conmutativo, determinar si vale que
   \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 \end{problem}
 
@@ -2278,7 +2278,6 @@ Algunas cosas buenas de este trabajo:
   \item Es la primer implementación de bases de Gröbner no conmutativas en C++ (que el autor sepa). Esto es muy bueno porque C++ es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es útil si se quieren correr casos que se demoran mucho.
   \item Es la primer implementación de F4 que funciona para un cuerpo arbitrario (que el autor sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
   \item La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb} (que el autor sepa).
-  \item El \cref{cap:Preliminares} de esta tesis es la primer explicación en español de bases de Gröbner no conmutativas (que el autor sepa).
 \end{itemize}
 
 Algunas cosas malas de este trabajo:
