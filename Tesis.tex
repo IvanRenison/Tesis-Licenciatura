@@ -27,7 +27,7 @@
 
 \hfuzz=1cm % Elimina warnings de "Overfull \hbox"
 
-\usepackage[margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
+\usepackage[a4paper, margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
 \usepackage[ruled, vlined, linesnumbered, spanish]{algorithm2e}
@@ -120,9 +120,20 @@
 % n: Límite de sumatorias
 % i, j: Índices
 
+% Metadatos del PDF
+\hypersetup{
+  pdftitle = {Implementación de bases de Gröbner no conmutativas en C++ con un poquito de paralelismo},    % Título del documento
+  pdfauthor = {Iván Ariel Renison}%,       % Autor del documento
+  % pdfsubject = {Asunto o tema},         % Asunto o tema del documento
+  % pdfkeywords = {palabras clave, XeLaTeX, metadatos}, % Palabras clave
+  % pdfcreator = {XeLaTeX},               % Herramienta de creación
+  % pdfproducer = {XeLaTeX con hyperref}  % Productor del PDF
+}
+
+
 \begin{document}
 
-\def\tituloTesis{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo}
+\def\tituloTesis{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo} % Repito el título porque en los metadatos tengo que poner C++ y acá \cpp
 \input{Carátula}
 
 
