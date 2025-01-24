@@ -39,7 +39,7 @@
 \usepackage{minted}
 \setminted{autogobble}
 
-\usepackage[capitalise]{cleveref}
+\usepackage[capitalise, nameinlink]{cleveref}
 \crefname{section}{Sección}{Secciones} % Para que use "Sección" en vez de "Apartado"
 \crefname{subsection}{Subsección}{Subsecciones} % Para que use "Subsección" en vez de "Subapartado"
 
@@ -561,26 +561,26 @@ A continuación la prueba de que esta relación efectivamente achica.
 \begin{proof}
   Supongamos el antecedente. Por definición de reducciones tomemos $a, b ∈ ⟨X⟩, g ∈ G$ tales que:
   \begin{enumerate}[label=(\roman*)]
-    \item $\lm_≤(agb) ∈ \sop(f)$.
-    \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
+    \item $\lm_≤(agb) ∈ \sop(f)$. \label{thm:→ achican:i}
+    \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$. \label{thm:→ achican:ii}
   \end{enumerate}
 
   Sean:
   \begin{itemize}
     \item $c_1, …, c_n ∈ K, m_1, …, m_n ∈ ⟨X⟩$ con $m_1 > m_2 > ⋯ > m_n$ tales que $f = ∑_{i = 1}^n c_i m_i$.
-    \item $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por (i).
+    \item $i$ tal que $m_i = \lm_≤(agb)$, el cual existe por \ref{thm:→ achican:i}.
   \end{itemize}
 
   Notar también que:
 
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{2}
-    \item $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$.
+    \item $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$. \label{thm:→ achican:iii}
   \end{enumerate}
 
-  (iii) implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con términos menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por (ii)).
+  \ref{thm:→ achican:iii} implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con términos menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por \ref{thm:→ achican:ii}).
 
-  Además, por (iii) y (ii) vale que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$.
+  Además, por \ref{thm:→ achican:iii} y \ref{thm:→ achican:ii} vale que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$.
 
   Combinando que los primeros $i - 1$ términos son iguales y el $i$ es menor en $f'$ que en $f$, por la definición de $<$ para polinomios vale que $f' < f$.
 
@@ -639,7 +639,7 @@ La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a co
       \end{DispWithArrows*}
         Llamemos (ii) a este último resultado.
 
-      Por (i) e (ii) tenemos $f_0 + f ↓_{≤, G} f_0' + f$.
+      Por (i) e (ii) tenemos $f_0 + f ↓_{≤, G} f_0' + f$. % No se como hacer esto con labels
     \end{description}
   \end{description}
 \end{proof}
@@ -689,8 +689,8 @@ Ahora el ya anunciado teorema de que la clausura reflexo transitiva de $→_{≤
 
     Tenemos entonces:
     \begin{DispWithArrows*}
-      &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \Arrow{\cref{lemma:prod mon →}} \\
-      & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' →_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      &∀i ∈ \{1, …, n\} : g_i →_{≤, G} 0 \Arrow{\Cref{lemma:prod mon →}} \\
+      & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' →_{≤, G} 0 \Arrow{\Cref{lemma:suma →↓}} \\
       & ⇒ ∀i ∈ \{1, …, n\} : c_i m_i g_i m_i' + f_i ↓_{≤, G} 0 + f_i \Arrow{Definición de los $f_i$}\\
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↓_{≤, G} f_i \\
       & ⇒ ∀i ∈ \{1, …, n\} : f_{i - 1} ↔^*_{≤, G} f_i \\
@@ -830,109 +830,55 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Las siguientes afirmaciones son equivalentes:
   \begin{enumerate}
-    \item $G$ es una base de Gröbner de $I$.
+    \item $G$ es una base de Gröbner de $I$. \label{thm:egb:1}
 
-    \item $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$.
+    \item $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. \label{thm:egb:2}
 
-    \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$.
+    \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. \label{thm:egb:3}
 
-    \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$.
+    \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. \label{thm:egb:4}
 
-    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.
+    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
   \end{enumerate}
 \end{theorem}
-\begin{proof} Vamos a probar (1) $⇒$ (2), (2) $⇒$ (3), (3) $⇒$ (1), (3) $⇒$ (2), (4) $⇒$ (3), (2) $⇒$ (5) y (5) $⇒$ (4).
+\begin{proof} Vamos a probar \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
   \begin{description}
 
-    \item[(1) $⇒$ (2):] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
+    \item[\ref{thm:egb:1} $⇒$ \ref{thm:egb:2}:] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
     \begin{DispWithArrows*}
-      &f ∈ I \Arrow{\cref{lemma:en ideal ⇔ congruente 0}} \\
-      & ⇔ f ≡_I 0 \Arrow{\cref{theorem:→^* = ≡}} \\
-      & ⇔ f ↔^*_{≤, G} 0 \Arrow{Por el \cref{lemma:→ gröbner es Church-Rosser}, $→_{≤, G}$ es Church-Rosser, definición de Church-Rosser} \\
+      &f ∈ I \Arrow{\Cref{lemma:en ideal ⇔ congruente 0}} \\
+      & ⇔ f ≡_I 0 \Arrow{\Cref{theorem:→^* = ≡}} \\
+      & ⇔ f ↔^*_{≤, G} 0 \Arrow{Por \cref{lemma:→ gröbner es Church-Rosser}, $→_{≤, G}$ es Church-Rosser, definición de Church-Rosser} \\
       & ⇔ f ↓_{≤, G} 0 \Arrow{Definición de $↓$} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{\cref{thm:→ achican}} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' ≤ 0 \Arrow{\cref{lemma:0 es mínimo}} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{\Cref{thm:→ achican}} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' ≤ 0 \Arrow{\Cref{lemma:0 es mínimo}} \\
       & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' = 0 \\
       & ⇔ f →^*_{≤, G} 0 \text{.}
     \end{DispWithArrows*}
 
-    % \item[(2) $⇒$ (1):]
-    % Supongamos (2), o sea $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente.
-
-    % Probemos cada término del $∧$ por separado:
-
-    % \begin{description}
-    %   \item[Prueba de $(G) = I$:] Tomemos $f ∈ K⟨X⟩$ y probemos $f ∈ (G) ⇔ f ∈ I$, probando ida y vuelta por separado:
-
-    %   \begin{description}
-    %     \item[Ida ($⇒$):] Supongamos antecedente $f ∈ (G)$.
-
-    %     Sean $c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩$, $g_1, …, g_n ∈ G$ tales que $f = ∑_{i = 1}^n c_i g_i c_i'$, los cuales existen por la definición de $(\ ·\ )$.
-
-    %     Definamos $f_0 = f$ y para $i ∈ \{1, …, n\}$ $f_i = f_{i-1} - c_i g_i c_i'$.
-
-    %     Notar que tenemos $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$ y que $f_n = 0$.
-
-    %     Esto significa que $f →^*_{≤, G} 0$ y por ende por (2) vale $f ∈ I$.
-
-    %     \item[Vuelta ($⇐$):] Supongamos el antecedente $f ∈ I$.
-
-    %     Por (2) tenemos que $f →^*_{≤, G} 0$.
-
-    %     Así que sean $f_0, f_1, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $∀i ∈ \{1, …, n\} : f_{i-1} →_{≤, G} f_i$, los cuales existen por la definición de $^*$.
-
-    %     Además, para cada $i ∈ \{1, …, n\}$ sean $c_i, c_i' ∈ K⟨X⟩, g_i ∈ G$ tales que $f_i = f_{i-1} - c_i g_i c_i'$, los cuales existen por definición de $→_{≤, G}$.
-
-    %     Notar que en particular $f_{i-1} = f_i + c_i g_i c_i'$ y por ende $f = ∑_{i = 1}^n c_i g_i c_i'$, lo cual prueba que $f ∈ (G)$.
-
-    %   \end{description}
-
-    %   \item[Prueba de $→_{≤, G}\text{ es confluente}$:]\
-
-    %   Por definición de confluencia alcanza que probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$. En tal caso, vale por lo siguiente:
-
-    %   \begin{DispWithArrows*}
-    %     &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
-    %     & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{theorem:→^* = ≡}} \\
-    %     & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
-    %     & ⇒ f_0 - f_1 ∈ (G) \Arrow{(6), ya probamos que $(G) = I$} \\
-    %     & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
-    %     & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
-    %     & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
-    %   \end{DispWithArrows*}
-    % \end{description}
-
-    \item[(2) $⇒$ (3):] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada termino del $∧$ por separado:
+    \item[\ref{thm:egb:2} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada termino del $∧$ por separado:
 
     \begin{description}
-      \item[Prueba de $(G) = I$:] Es cierto porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
-      \item[Prueba de $∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$:] Es cierto por (2).
+      \item[Prueba de $(G) = I$:] Es cierto porque \ref{thm:egb:2} $⇒$ \ref{thm:egb:1} y $(G) = I$ es parte de la definición de base de Gröbner.
+      \item[Prueba de $∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$:] Es cierto por \ref{thm:egb:2}.
     \end{description}
 
-    \item[(3) $⇒$ (1):] Supongamos el antecedente $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente. La parte de $(G) = I$ es valida porque es parte de (3).
+    \item[\ref{thm:egb:3} $⇒$ \ref{thm:egb:1}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente. La parte de $(G) = I$ es valida porque es parte de \ref{thm:egb:3}.
 
     Para la otra parte, por definición de confluente, alcanza con probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$. En tal caso, vale por lo siguiente:
     \begin{DispWithArrows*}
       &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
-      & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\cref{theorem:→^* = ≡}} \\
+      & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\Cref{theorem:→^* = ≡}} \\
       & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
       & ⇒ f_0 - f_1 ∈ (G) \Arrow{Antecedente} \\
-      & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\cref{lemma:suma →↓}} \\
+      & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\Cref{lemma:suma →↓}} \\
       & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
       & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
     \end{DispWithArrows*}
 
-    % \item[(2) $⇒$ (4):] Supongamos (2).
+    \item[\ref{thm:egb:4} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es valida porque es parte de \ref{thm:egb:4}. Para la otra parte probemoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
-    % La parte de $(G) = I$ es valida porque (2) $⇒$ (1) y $(G) = I$ es parte de la definición de base de Gröbner.
-
-    % Para la parte de $∀f ∈ I : ∃g ∈ G : \lm(g) | \lm(f)$ tomemos $f ∈ I$ y mostremos un $g$ que cumple el $∃$:
-
-    % Por (2) tenemos $f →^*_{≤, G} 0$, esto significa que en alguno de los pasos de el $→^*_{≤, G}$ se tiene que reducir el monomio principal de $f$, o sea, uno de los pasos es de la forma $→_{≤, a, g, b}$ tal que $a \lm(g) b = \lm(f)$ con $g ∈ G, a, b ∈ ⟨X⟩$, por lo tanto, tenemos que $\lm(g) | \lm(f)$.
-
-    \item[(4) $⇒$ (3):] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es valida porque es parte de (4). Para la otra parte probemoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
-
-    Por (4) sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
+    Por \ref{thm:egb:4} sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
     \begin{itemize}
       \item $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$.
       \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
@@ -948,9 +894,9 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \noindent Ahora como no vale $f →^*_{≤, G} 0$, tampoco puede valer $f' →^*_{≤, G} 0$. Sin embargo, esto contradice que $f$ sea mínimo.
 
-    \item[(2) $⇒$ (5):] Supongamos (2) y tomemos $f ∈ I - \{0\}$.
+    \item[\ref{thm:egb:2} $⇒$ \ref{thm:egb:5}:] Supongamos \ref{thm:egb:2} y tomemos $f ∈ I - \{0\}$.
 
-    Por (2) tenemos que $f →^*_{≤, G} 0$.
+    Por \ref{thm:egb:2} tenemos que $f →^*_{≤, G} 0$.
 
     Sean:
     \begin{itemize}
@@ -958,25 +904,25 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       \item Para cada $i ∈ {1, …, n}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
     \end{itemize}
 
-    Vamos a probar que el $∃$ de (5), se satisface de la forma $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
+    Vamos a probar que el $∃$ de \ref{thm:egb:5}, se satisface de la forma $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
 
     \begin{description}
       \item[Prueba de $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm(a_i g_i b_i) ≤ \lm(f)$.
       \item[Prueba de $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$:] Es consecuencia directa de como se eligieron los $g_i, a_i, b_i$.
     \end{description}
 
-    \item[(5) $⇒$ (4):] Supongamos (5) y probemos (4). Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm(g) | \lm(f)$.
+    \item[\ref{thm:egb:5} $⇒$ \ref{thm:egb:4}:] Supongamos \ref{thm:egb:5} y probemos \ref{thm:egb:4}. Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm(g) | \lm(f)$.
 
     \begin{description}
       \item[Prueba de $(G) = I$:] Tomemos $f ∈ I$ y probemos $f ∈ (G)$.
 
-      Por (5) tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$ y $g_i ∈ G$.
+      Por \ref{thm:egb:5} tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$ y $g_i ∈ G$.
 
       Esto encaja exactamente con la definición de $(G)$, así que queda probado $f ∈ (G)$.
 
       \item[Prueba de $∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$:] Fijemos $f ∈ I - \{0\}$.
 
-      Por (5) tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
+      Por \ref{thm:egb:5} tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
 
       Como $\lm(a_i g_i b_i) ≤ \lm(f)$, si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
     \end{description}
@@ -986,7 +932,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 \end{proof}
 
 \begin{observation}
-  (2) del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ esta en el ideal.
+  \ref{thm:egb:2} del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ esta en el ideal.
 \end{observation}
 
 Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos el siguiente corolario.
@@ -1125,12 +1071,12 @@ Con el siguiente teorema se enuncia que la base de Buchberger es una base de Gr�
 \begin{theorem}\label{thm:Buchberger correctitud}
   Sean $G ⊆ K⟨X⟩$ y $e_≤$ un reductor. Entonces
   \begin{enumerate}
-    \item $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$.\label{thm:Buchberger correctitud:item:1} % TODO: Hacer esto en todos lados
-    \item $(G)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.
+    \item $\B_{e_≤}(G)$ es una base de Gröbner de $(G)$. \label{thm:Buchberger correctitud:item:1}
+    \item $(G)$ tiene una base de Gröbner finita $⇒ ∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner. \label{thm:Buchberger correctitud:item:2}
   \end{enumerate}
 \end{theorem}
 
-Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que (2) es más sorprendente. Para demostrar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
+Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que \ref{thm:Buchberger correctitud:item:2} es más sorprendente. Para demostrar ambos items primero vamos a probar algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ ∪ \{0\} : \B_{e_≤}^{i}(G) ⊆ (G)$.
@@ -1190,21 +1136,21 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
 Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger correctitud}.
 
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
-  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que (1), o sea, que $G$ es una base de Gröbner queda probado.
+  Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que \ref{thm:Buchberger correctitud:item:1}, o sea, que $G$ es una base de Gröbner queda probado.
 
-  Para probar (2), asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.  Para cada $i ∈ \{1, …, n\}$ sean:
+  Para probar \ref{thm:Buchberger correctitud:item:2}, asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.  Para cada $i ∈ \{1, …, n\}$ sean:
   \begin{itemize}
-    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por (5) del \cref{thm:equivalencias de base de Gröbner}.
+    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner}.
 
     \item $G' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$.
 
     \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$. Notar que $k$ está bien definido porque $G'$ es finito.
   \end{itemize}
 
-  Tenemos que probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por (5) del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
+  Tenemos que probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g'_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
-  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma. Por (5) del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
+  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
   \begin{itemize}
     \item $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y
     \item $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
