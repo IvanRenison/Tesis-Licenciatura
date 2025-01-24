@@ -1,12 +1,13 @@
 \documentclass[12pt]{report}
 
+\usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{spanish}
+\emergencystretch=20pt
 
 \usepackage{ccicons}
 
 \usepackage{amsthm}
-\usepackage{fontspec}
 \usepackage{enumitem}
 \usepackage[bookmarks]{hyperref}
 \defaultfontfeatures{Renderer=Basic,Ligatures={TeX}}
@@ -838,7 +839,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. \label{thm:egb:4}
 
-    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
+    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K, g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
   \end{enumerate}
 \end{theorem}
 \begin{proof} Probaremos \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
@@ -904,7 +905,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       \item Para cada $i ∈ {1, …, n}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
     \end{itemize}
 
-    Probaremos que el $∃$ de \ref{thm:egb:5}, se satisface de la forma $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
+    Probaremos que el $∃$ de \ref{thm:egb:5}, se satisface con $c_i = \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}, g_i, a_i, b_i$. O sea, tenemos que probar $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
 
     \begin{description}
       \item[Prueba de $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm(a_i g_i b_i) ≤ \lm(f)$.
@@ -1331,7 +1332,7 @@ Como se dijo al principio, para esta tesis se implementaron los algoritmos de Bu
 
 \section{Estructura de la librería}
 
-El repositorio tiene varias carpetas, pero hay dos que son las más relevantes para el o la usuaria. La primera es la carpeta \texttt{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \texttt{.hpp}, donde se incluye tanto su declaración como su implementación. La otra carpeta relevante es \texttt{mains}, que tiene varios archivos \texttt{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
+El repositorio tiene varias carpetas, pero hay dos que son las más relevantes para el o la usuaria. La primera es la carpeta \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. La otra carpeta relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
 Todo el código de la librería está en el namespace \texttt{ncgb}. En todos los códigos que veamos asumiremos que \texttt{ngcb} está abierto.
 
@@ -1360,7 +1361,7 @@ El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo
 
 Y como es esperable, las operaciones tienen que cumplir todos los axiomas de cuerpos.
 
-En este trabajo se usaron dos cuerpos distintos, los números racionales, usando el tipo \texttt{mpq\_class} de la librería GMP que ya tiene todo lo que \texttt{K} tiene que tener (\cite{lib:gmp}) y la aritmética modular con una implementación propia en el archivo \texttt{extras/ModularArithmetic.hpp}, que sirve para ver un ejemplo de un cuerpo que anda con la librería (aunque tiene algunas operaciones extra).
+En este trabajo se usaron dos cuerpos distintos, los números racionales, usando el tipo \texttt{mpq\_class} de la librería GMP que ya tiene todo lo que \texttt{K} tiene que tener (\cite{lib:gmp}) y la aritmética modular con una implementación propia en el archivo \path{extras/ModularArithmetic.hpp}, que sirve para ver un ejemplo de un cuerpo que anda con la librería (aunque tiene algunas operaciones extra).
 % Lo de ModularArithmetic es genérico para un número, pero se rompe si el número no es un primo
 
 El tipo \texttt{X} se usa para representar las variables como números y la idea es que se use algún tipo de números sin signo. Usar otros tipos podría funcionar pero no está probado. Por defecto se usa \texttt{\_\_uint8\_t} que permite tener hasta 256 variables. Para usar más variables hay que cambiarlo a un entero sin signo más grande como \texttt{\_\_uint32\_t}.
@@ -1386,11 +1387,11 @@ Tanto para \texttt{X} como para \texttt{ord} los valores por defecto están pues
 % Miguel puso: Esto puede ir antes.
 % Pero no se donde podría ir antes
 
-La librería también tiene un Makefile con el que se pueden compilar los mains de la carpeta \texttt{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
+La librería también tiene un Makefile con el que se pueden compilar los mains de la carpeta \path{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
 
 \section{Monomios}
 
-Los monomios están definidos en el archivo \texttt{nc\_monomial.hpp} y lo más importante de su funcionalidad se puede resumir así:
+Los monomios están definidos en el archivo \path{ncgb/nc_monomial.hpp} y lo más importante de su funcionalidad se puede resumir así:
 
 \begin{minted}{C++}
   template<typename X = __uint8_t>
@@ -1451,11 +1452,11 @@ Para declarar un monomio con \texttt{X = \_\_uint8\_t}, leerlo en formato numér
   m.nice_print();
 \end{minted}
 
-En el mismo archivo \texttt{nc\_monomial.hpp} está definido el orden lexicográfico por grado \texttt{DegLexOrd}.
+En el mismo archivo \path{ncgb/nc_monomial.hpp} está definido el orden lexicográfico por grado \texttt{DegLexOrd}.
 
 \section{Polinomios}
 
-Los polinomios están definidos en el archivo \texttt{nc\_polynomial.hpp} y lo más importante de su funcionalidad se puede resumir así:
+Los polinomios están definidos en el archivo \path{ncgb/nc_polynomial.hpp} y lo más importante de su funcionalidad se puede resumir así:
 
 \begin{minted}{C++}
   template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
@@ -1543,7 +1544,7 @@ Se podría hacer una función que además del conjunto generador tome un número
 
 Para evitar esos problemas se definió una estructura que el constructor toma a los polinomios y tiene un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo dice y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
 
-Para Buchberger la estructura está en el archivo \texttt{Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \texttt{F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
+Para Buchberger la estructura está en el archivo \path{ncgb/Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \path{ncgb/F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
 
 La interfaz de Buchberger podría describirse así:
 
@@ -1595,16 +1596,16 @@ La función \texttt{inIdeal} solo decide la pertenencia al ideal generado, pero 
 
 Con las bases de Gröbner pasa lo mismo, los algoritmos dan la base pero no dan una forma de escribir los elementos de la base usando los elementos del conjunto generador.
 
-Sin embargo esa información se puede calcular y ese cálculo está implementado para Buchberger en el mismo archivo \texttt{Buchberger.hpp} en unas funciones y estructuras con nombres que terminan en \texttt{Cofactor}. Esta terminación es porque la forma de escribir un polinomio como combinación lineal de otros se llama representación de cofactores.
+Sin embargo esa información se puede calcular y ese cálculo está implementado para Buchberger en el mismo archivo \path{ncgb/Buchberger.hpp} en unas funciones y estructuras con nombres que terminan en \texttt{Cofactor}. Esta terminación es porque la forma de escribir un polinomio como combinación lineal de otros se llama representación con cofactores.
 
-Estas funciones devuelven elementos del tipo \texttt{CofactorPoly} definido en el archivo \texttt{nc\_cofactorPolynomial.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador. En particular, guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
+Estas funciones devuelven elementos del tipo \texttt{CofactorPoly} definido en el archivo \path{ncgb/nc_cofactorPolynomial.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador. En particular, guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
 Para F4 esto no está implementado (en el siguiente capítulo se explica más del por qué).
 
 
 \section{Comparación de bases de Gröbner}\label{section:Comparación de bases de Gröbner (libreria)}
 
-En el archivo \texttt{cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
+En el archivo \path{ncgb/cmpBases.hpp} está la función \texttt{cmpBases} que toma dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no.
 
 \section{Paralelismo} % O paralelización?
 
@@ -1617,7 +1618,7 @@ Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenm
 
 \section{Ejemplo}
 
-Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del archivo \texttt{mains/base\_Buchberger.cpp}:
+Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del archivo \path{mains/base_Buchberger.cpp}:
 
 \begin{minted}{C++}
   #include <bits/stdc++.h>
@@ -1665,10 +1666,10 @@ Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener ha
 
 Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, para lo cual, la forma directa de hacerlo lleva tiempo cuadrático en el largo de las palabras, pero se puede hacer en tiempo lineal.
 
-Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z (que en el código está en el archivo \texttt{Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
+Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z (que en el código está en el archivo \path{ncgb/Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
-Junto con la implementación de los monomios, en el archivo \texttt{nc\_monomial.hpp} está la implementación del orden lexicográfico por grado, que también es directa.
+Junto con la implementación de los monomios, en el archivo \path{ncgb/nc_monomial.hpp} está la implementación del orden lexicográfico por grado, que también es directa.
 
 \section{Polinomios}
 
@@ -1688,13 +1689,13 @@ El orden de los polinomios está definido como \texttt{template<typename K, type
 
 \section{Reducción}
 
-La reducción está implementada en el archivo \texttt{reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$ y trata siempre de reducir primero por los primeros elementos del vector y empezando por los monomios más grandes del polinomio.
+La reducción está implementada en el archivo \path{ncgb/reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$ y trata siempre de reducir primero por los primeros elementos del vector y empezando por los monomios más grandes del polinomio.
 
 En el archivo también hay una función \texttt{reduce} que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios (en \cpp se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) y hace la reducción solo con los polinomios que tengan un \texttt{false} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
 \section{Ambigüedades}
 
-Las ambigüedades, que son necesarias para el algoritmo de Buchberger, están implementadas en el archivo \texttt{ambiguities.hpp} y consisten en una estructura así:
+Las ambigüedades, que son necesarias para el algoritmo de Buchberger, están implementadas en el archivo \path{ncgb/ambiguities.hpp} y consisten en una estructura así:
 
 \begin{minted}{C++}
   template<typename X>
@@ -1767,9 +1768,9 @@ F4 es un poco más complejo que Buchberger y tiene más partes, así que esta se
 
 \subsection{Reducción por filas de matrices}
 
-Para F4 hace falta hacer la reducción por filas de una matriz. Para esto, en el archivo \texttt{matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que funciona para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho más rápido.
+Para F4 hace falta hacer la reducción por filas de una matriz. Para esto, en el archivo \path{ncgb/matrix.cpp} se definió un tipo matriz como un vector de vectores y una función \texttt{rref} que hace una eliminación gaussiana directamente y que funciona para cualquier \texttt{K}. Sin embargo, la reducción por filas de una matriz es un tema ya muy analizado y hay algunas librerías que lo hacen para distintos tipos \texttt{K} mucho más rápido.
 
-Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de GMP que ya dijimos que son los números racionales \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \texttt{matrix\_mpq\_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class} (en \cpp una especialización es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template).
+Una librería que hace la reducción por filas es FLINT, que lo hace para el tipo \texttt{mpq\_class} de GMP que ya dijimos que son los números racionales \cite{lib:flint, lib:gmp}. Para usarla, en el archivo \path{ncgb/matrix_mpq_class.hpp} hay una especialización de \texttt{rref} para \texttt{mpq\_class} (en \cpp una especialización es cuando hay código definido con un template y se hace una definición aparte para alguna combinación particular de parámetros del template).
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que la función tiene que primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
@@ -1777,7 +1778,7 @@ El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una f
 
 \subsection{Preprocesamiento simbólico}
 
-El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \texttt{F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
+El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \path{ncgb/\allowbreak F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
 
 \subsection{Reducción}
 
@@ -1836,11 +1837,11 @@ Como ya se dijo antes, para F4 también hay otra optimización que consiste en h
 
 Esta optimización no se implementó principalmente por el poco soporte para trabajar con matrices de un cuerpo arbitrario, o de una implementación específica de $ℚ$, que hay en \cpp. Sin embargo, queda como trabajo futuro en la \cref{section:trabajos futuros}.
 
-\section{Representación de cofactores}
+\section{Representación con cofactores}
 
-Como se dijo en el capítulo anterior, la representación de cofactores se implementó solo para Buchberger, y no para F4. El motivo es que, como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente, se hay que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la representación de cofactores.
+Como se dijo en el capítulo anterior, la representación con cofactores se implementó solo para Buchberger, y no para F4. El motivo es que, como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente, se hay que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la representación con cofactores.
 
-Como se explicó en la \cref{section:representación con cofectores (librería)}, para la representación de cofactores se usa el tipo \texttt{CofactorPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
+Como se explicó en la \cref{section:representación con cofectores (librería)}, para la representación con cofactores se usa el tipo \texttt{CofactorPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
 
 La estructura de la implementación de este tipo es así:
 
@@ -1880,7 +1881,7 @@ También se hizo una versión de la función de los S-polinomios, que toma la am
     const Amb<X>& amb, const Poly<K, X, ord>& f, const Poly<K, X, ord>& g);
 \end{minted}
 
-Con esto, en la estructura \texttt{BuchbergerIncrementalCofactor} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<CofactorPoly<K, ord>> G\_rec} que guarda la representación de cofactores de cada polinomio de \texttt{G}.
+Con esto, en la estructura \texttt{BuchbergerIncrementalCofactor} se agregó (con respecto a \texttt{BuchbergerIncremental}) un campo \texttt{std::vector<CofactorPoly<K, ord>> G\_rec} que guarda la representación con cofactores de cada polinomio de \texttt{G}.
 
 En este campo \texttt{G\_rec}, a los elementos iniciales simplemente se los agrega como \texttt{{Monomial(), i, Monomial(), K(1)}} y a los elementos que vienen de un S-polinomio se les construye el \texttt{CofactorPoly} con los \texttt{CofactorPoly} de los polinomios que forman la ambigüedad multiplicados por los monomios y coeficientes que devuelve \texttt{S\_polyCofactor} y con el \texttt{CofactorPoly} de la reducción que devuelve la función \texttt{reduceCofactor}.
 
@@ -1962,20 +1963,20 @@ Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para 
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
-Todos los tests están en la carpeta \texttt{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \texttt{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
+Todos los tests están en la carpeta \path{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
 Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de master \cite{thesis:Hof20} usando SageMath, y comparan los resultados, y otros corren solo código de la librería.
 
-También, algunos tests corren los mains de ejemplo de la carpeta \texttt{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
+También, algunos tests corren los mains de ejemplo de la carpeta \path{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
 
 A continuación una lista de lo mas importante de los test:
 
 \begin{itemize}
-  \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \texttt{test/internal\_tests}.
-  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \texttt{mains/compare\_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Esto test está en la carpeta \texttt{test/base\_tests}.
-  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que si está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar si o si porque por los que dieron que si sabemos que (si no hay bugs) si está. Esto está en la carpeta \texttt{test/InIdeal\_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
-  \item Con respecto a la representación de cofactores, hay un test que corre los algoritmos con y sin representación de cofactores y se fija que el resultado de con cofactores después de convertir los \texttt{CofactorPoly} en \texttt{Poly} sea igual al resultado sin cofactores. Este test está en la carpeta \texttt{test/cofactor\_tests}.
-  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de el mismo resultado. Esto está en la carpeta \texttt{test/parallelism\_tests}.
+  \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \path{test/internal_tests}.
+  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \path{mains/compare_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Esto test está en la carpeta \path{test/base_tests}.
+  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que si está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar si o si porque por los que dieron que si sabemos que (si no hay bugs) si está. Esto está en la carpeta \path{test/InIdeal_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Con respecto a la representación con cofactores, hay un test que corre los algoritmos con y sin representación con cofactores y se fija que el resultado de con cofactores después de convertir los \texttt{CofactorPoly} en \texttt{Poly} sea igual al resultado sin cofactores. Este test está en la carpeta \path{test/cofactor_tests}.
+  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de el mismo resultado. Esto está en la carpeta \path{test/parallelism_tests}.
 \end{itemize}
 
 \chapter{Benchmarks}\label{cap:Benchmarks}
@@ -1989,7 +1990,7 @@ En este capítulo se presentan los resultados obtenidos tras correr los tests qu
 
 De cualquier manera esos datos no son muy importantes porque lo importante son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son, todos salvo uno, tests que usan los mains de la carpeta \texttt{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son, todos salvo uno, tests que usan los mains de la carpeta \path{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
 Todos los tests que tienen benchmarks, salvo uno, funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2159,9 +2160,9 @@ De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo
 
 Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy poco. Esto tiene sentido por el hecho de que solo la parte de agregar ambigüedades está paralelizada.
 
-\section{Representación de cofactores}
+\section{Representación con cofactores}
 
-El test que compara ejecutar Buchberger con y sin representación de cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \texttt{mains} si no que usa sus propios archivo, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
+El test que compara ejecutar Buchberger con y sin representación con cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \path{mains} si no que usa sus propios archivo, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2178,7 +2179,7 @@ El test que compara ejecutar Buchberger con y sin representación de cofactores 
       %ymax = 215,
       enlarge x limits = 0.03, % Espaciado en los bordes
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
-      legend entries = {Normal, Representación de cofactores}, % Entradas de la leyenda
+      legend entries = {Normal, Representación con cofactores}, % Entradas de la leyenda
   ]
     % Datos para cada conjunto
     \addplot coordinates {(FK2, 0.0) (FK3, 0.0) (FK4, 0.007) (tri1, 0.238) (tri10, 0.006) (tri11, 0.026) (tri12, 2.99) (tri13, 0.005) (tri2, 5.497) (tri3, 0.016) (tri4, 0.03) (tri5, 0.006) (tri6, 5.929) (tri7, 30.415) (tri8, 0.083) (tri9, 0.0) (trit3, 0.008) (trit4, 0.126) (trit5, 70.421)};
@@ -2186,7 +2187,7 @@ El test que compara ejecutar Buchberger con y sin representación de cofactores 
   \end{axis}
 \end{tikzpicture}
 
-Se puede ver que la representación de cofactores lleva más tiempo, pero en general no tanto más. Acá no hay demasiado más para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de más abajo.
+Se puede ver que la representación con cofactores lleva más tiempo, pero en general no tanto más. Acá no hay demasiado más para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de más abajo.
 
 \section{Pertenencia a ideales}
 
@@ -2230,7 +2231,7 @@ Es la primer implementación de bases de Gröbner no conmutativas en \cpp (que y
 
 Es la primer implementación de F4 que funciona para un cuerpo arbitrario (que yo sepa). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
 
-La implementación de Buchberger incluye la parte de la construcción de la respuesta, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb} (que yo sepa).
+La implementación de Buchberger incluye la parte de la representación con cofactores, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb} (que yo sepa).
 
 \section{Trabajos futuros}\label{section:trabajos futuros}
 
@@ -2242,7 +2243,7 @@ Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que 
 
 Se podría analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en que partes se pueden realizar a optimizaciones.
 
-En la librería hay una especialización de \texttt{rref} para hacer que para \texttt{mpq\_class} sea más rápido, pero para aritmética modular se está usando un tipo propio definido en el archivo \texttt{extras/ModularArithmetic.hpp} y se usa la versión genérica de \texttt{rref}. Es posible que ya haya librerías que tengan tipos de aritmética modular más rápidos que el que se implementó y con una reducción por filas más rápida.
+En la librería hay una especialización de \texttt{rref} para hacer que para \texttt{mpq\_class} sea más rápido, pero para aritmética modular se está usando un tipo propio definido en el archivo \path{extras/ModularArithmetic.hpp} y se usa la versión genérica de \texttt{rref}. Es posible que ya haya librerías que tengan tipos de aritmética modular más rápidos que el que se implementó y con una reducción por filas más rápida.
 
 Actualmente la librería no viene con nada para instalarla automáticamente porque en \cpp eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. Otros librerías de \cpp si vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
 
