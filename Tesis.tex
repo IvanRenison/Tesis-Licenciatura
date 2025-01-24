@@ -166,7 +166,7 @@ La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimiza
 
 Alguien podría preguntar para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
 
-Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Grobner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
+Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
@@ -1788,7 +1788,7 @@ El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una f
 
 \subsection{Preprocesamiento simbólico}
 
-El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \path{ncgb/\allowbreak F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
+El preprocesamiento simbólico (\cref{alg:Preprocesamiento simbólico}) está implementado en el propio archivo \path{ncgb/F4.hpp} en la función \texttt{symbolicPreprocessing}. La implementación es directa, así que no hay mucho para comentar.
 
 \subsection{Reducción}
 
