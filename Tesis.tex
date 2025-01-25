@@ -154,13 +154,13 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 
 Acá los $f_i$ y $f'_i$ se llaman cofactores. Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-El motivo por el cual no es decidible es que el problema de la palabra se reduce a esto. Ver \cite{web:wiki:WordPproblem} para información del problema de la palabra y la Sección 1.3 de \cite{article:MORA1994131} para saber como es la reducción.
+El motivo por el cual no es decidible es que el problema de la palabra se reduce a esto. Ver \cite{web:wiki:WordPproblem} para información del problema de la palabra y la Sección 1.3 de \cite{article:MORA1994131} para saber cómo es la reducción.
 
 Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SageMath, que es un  sistema algebraico computacional y librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SageMath, que es un sistema algebraico computacional y librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
 La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de SageMath.
 
@@ -170,7 +170,7 @@ Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para t
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
-Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, si no que son necesarias para los temas de la tesis. % No se con que remplazar "cosas" acá
+Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, sino que son necesarias para los temas de la tesis. % No se con que remplazar "cosas" acá
 
 \chapter{Preliminares}\label{cap:Preliminares}
 
@@ -213,7 +213,7 @@ Para el resto de la sección fijemos una relación $→$ sobre $A$. Tenemos los 
   \qed
 \end{lemma}
 
-Como querremos hablar de usar $→$ para transformar un objeto en otro, es útil la proxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se pueda más.
+Como querremos hablar de usar $→$ para transformar un objeto en otro, es útil la próxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se pueda más.
 
 \begin{definition}\label{def:forma normal}
   Dados $a, b ∈ A$ se define:
@@ -264,12 +264,12 @@ El álgebra libre es básicamente el conjunto de los polinomios no conmutativos 
 \begin{definition}
   Sea $X$ un alfabeto finito. Se define la estructura $(⟨X⟩, ·)$ de la siguiente manera:
   \begin{itemize}
-    \item $⟨X⟩$ es el conjunto palabras finitas sobre $X$.
+    \item $⟨X⟩$ es el conjunto de palabras finitas sobre $X$.
     \item $· : ⟨X⟩^2 → ⟨X⟩$ es la concatenación.
   \end{itemize}
   Al par $(⟨X⟩, ·)$ se lo llama el monoide libre sobre $X$, a los elementos de $⟨X⟩$ se los llama monomios libres sobre $X$ y a $·$ el producto de $⟨X⟩$.
 
-  Si $X = \{x_1, …, x_n\}$ escribimos $⟨x_1, …, x_n⟩$ un lugar de $⟨X⟩$.
+  Si $X = \{x_1, …, x_n\}$ escribimos $⟨x_1, …, x_n⟩$ en lugar de $⟨X⟩$.
 \end{definition}
 
 Por ejemplo, si $X = \{a, b, c\}$, algunos monomios son:
@@ -303,7 +303,7 @@ En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 Hablar del resultado de la división es un poco más complicado acá porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que en ningún momento hablaremos de dividir un monomio en otro ni escribiremos divisiones entre monomios.
 
-Mas adelante será necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas necesarias y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
+Más adelante será necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas necesarias y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
@@ -374,7 +374,7 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
 
 Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis usaremos mucho, pero no las probamos una por una porque sería tedioso y aburrido.
 
-Mas adelante será necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
+Más adelante será necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}
   Sean $f, g ∈ K⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
@@ -519,12 +519,12 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
   Sea $G ⊆ K⟨X⟩$. Entonces
   \[ (G) = \{∑_{i = 0}^n c_i m_i g_i m'_i : n ∈ ℕ ∪ \{0\}, c_1, …, c_n ∈ K, m_1, …, m_n, m'_1, …, m'_n ∈ ⟨X⟩, g_1, …, g_n ∈ G\} \text{.}\]
 \end{lemma}
-\begin{proof} Probemos que $f$ esta en uno si y solo si está en el otro.
+\begin{proof} Probemos que $f$ está en uno si y solo si está en el otro.
   \begin{description}
     \item[Ida ($⇒$):] Supongamos $f ∈ (G)$. Sean:
 
     \begin{itemize}
-      \item $g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩$ tales que $f = ∑_{i = 1}^n f_i g_i f'_i$, los cuales existen por que estamos suponiendo $f ∈ (G)$ y por la definición de $(G)$.
+      \item $g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩$ tales que $f = ∑_{i = 1}^n f_i g_i f'_i$, los cuales existen porque estamos suponiendo $f ∈ (G)$ y por la definición de $(G)$.
       \item Para cada $i ∈\{1, …, n\}$:
       \begin{itemize}
         \item $c_{i, 1}, …, c_{i, n_i} ∈ K, m_{i, 1}, …, m_{i, n_i} ∈ ⟨X⟩$ tales que $f_i = ∑_{j = 1}^{n_i} c_{i, j} m_{i, j}$.
@@ -547,12 +547,12 @@ Si bien $(G)$ para un anillo general está definido usando combinaciones lineale
 
 \section{Reducción de polinomios}
 
-Ahora definiremos una relación de reducción en los polinomios no conmutativos la cual depende del orden monomial y de un conjunto generador $G$, cuya clausura reflexo-transitiva es igual a $≡_{(G)}$. La relación que definiremos siempre es terminante, pero no siempre confluente. Para los casos en los que si sea confluente la \cref{obs:→ confluente y terminante} nos permitirá chequear si dos polinomios son equivalentes y en particular, por el \cref{lemma:en ideal ⇔ congruente 0}, si un polinomio está en $(G)$. A los casos en los que no sea confluente después trataremos de convertirlos en confluentes.
+Ahora definiremos una relación de reducción en los polinomios no conmutativos la cual depende del orden monomial y de un conjunto generador $G$, cuya clausura reflexo-transitiva es igual a $≡_{(G)}$. La relación que definiremos siempre es terminante, pero no siempre confluente. Para los casos en los que sí sea confluente la \cref{obs:→ confluente y terminante} nos permitirá chequear si dos polinomios son equivalentes y en particular, por el \cref{lemma:en ideal ⇔ congruente 0}, si un polinomio está en $(G)$. A los casos en los que no sea confluente después trataremos de convertirlos en confluentes.
 
 \begin{definition}\label{def:reducciones}
   Sean $G ⊆ K⟨X⟩$ y $f, f' ∈ K⟨X⟩$. Se define la relación $→_{≤, G}$ del siguiente modo:
   \[ f →_{≤, G} f' ⇔ ∃a, b ∈ ⟨X⟩, g ∈ G : \lm_≤(agb) ∈ \sop(f) ∧ f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \text{.} \]
-  Cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (via $G$).
+  Cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (vía $G$).
 \end{definition}
 
 Por ejemplo, si tenemos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ tenemos:
@@ -641,7 +641,7 @@ La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a co
       \end{DispWithArrows*}
         Llamemos (i) a este último resultado.
 
-      Además por el caso y el hecho de que $lm_≤(agb) ∉ \sop(f_1)$ también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, entonces:
+      Además por el caso y el hecho de que $\lm_≤(agb) ∉ \sop(f_1)$ también tenemos $\lm_≤(agb) ∈ \sop(f_1 + f)$, entonces:
       \begin{DispWithArrows*}
         &f_1 + f →_{≤, G} f_1 + f - \frac{(f_1 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
         & ⇒ f_1 + f →_{≤, G} f_1 + f - \frac{{f_1}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \Arrow{$\lm_≤(agb) ∉ \sop(f_1)$ porque $f_0 →_{≤, G} f_1$ y definición de $→_{≤, G}$}\\
@@ -664,7 +664,7 @@ La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a co
   Sean $g ∈ G$ y $a, b ∈ ⟨X⟩$ tales que $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por definición de $→_{≤, G}$. Tenemos:
   \begin{DispWithArrows*}
     &f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb \\
-    & ⇒ c m f' m' = c m (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) m \\
+    & ⇒ c m f' m' = c m (f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb) m' \\
     & ⇒ c m f' m' = c m f m' - \frac{{(c m f m')}_{\lm_≤(c ma g bm')}}{\lc_≤(g)}c ma g bm'  \Arrow{Definición $→_{≤, G}$} \\
     & ⇒ c m f' m' →_{≤, G} c m f m' \text{.}
   \end{DispWithArrows*}
@@ -750,7 +750,7 @@ El siguiente teorema caracteriza las formas normales de $→$.
 
     \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
-    \item[Vuelta ($⇐$):] por contrareciproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
+    \item[Vuelta ($⇐$):] por contrarrecíproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
     \begin{itemize}
       \item $f' ∈ K⟨X⟩$ tal que $f →_{≤, G} f'$, el cual existe por el antecedente.
       \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
@@ -768,7 +768,7 @@ Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no
 
 \[f →_{≤, G} f - 3db g_1 = 3 dbb + 2 cba = f'' \text{.}\]
 
-\noindent Pero ninguno monomio principal de $G$ divide a ninguno monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
+\noindent Pero ningún monomio principal de $G$ divide a ningún monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
 
 Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
@@ -836,7 +836,7 @@ Una consecuencia directa de la definición es el siguiente lema.
   Es una aplicación directa del \cref{thm:confluente ⇔ Church-Rosser}.
 \end{proof}
 
-Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero las siguientes equivalencias las harán mucho mas cómodas de trabajar.
+Las bases de Gröbner se definieron por la propiedad más importante que queremos que tengan, pero las siguientes equivalencias las harán mucho más cómodas de trabajar.
 
 \begin{theorem}\label{thm:equivalencias de base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Las siguientes afirmaciones son equivalentes:
@@ -867,14 +867,14 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       & ⇔ f →^*_{≤, G} 0 \text{.}
     \end{DispWithArrows*}
 
-    \item[\ref{thm:egb:2} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada termino del $∧$ por separado:
+    \item[\ref{thm:egb:2} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada término del $∧$ por separado:
 
     \begin{description}
       \item[Prueba de $(G) = I$:] Es cierto porque \ref{thm:egb:2} $⇒$ \ref{thm:egb:1} y $(G) = I$ es parte de la definición de base de Gröbner.
       \item[Prueba de $∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$:] Es cierto por \ref{thm:egb:2}.
     \end{description}
 
-    \item[\ref{thm:egb:3} $⇒$ \ref{thm:egb:1}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente. La parte de $(G) = I$ es valida porque es parte de \ref{thm:egb:3}.
+    \item[\ref{thm:egb:3} $⇒$ \ref{thm:egb:1}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Tenemos que probar que $G$ es una base de Gröbner de $I$, es decir $(G) = I ∧ →_{≤, G}$ es confluente. La parte de $(G) = I$ es válida porque es parte de \ref{thm:egb:3}.
 
     Para la otra parte, por definición de confluente, alcanza con probar $∀f, f_0, f_1 ∈ K⟨X⟩ : f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 ⇒ f_0 ↓_{≤, G} f_1$. En tal caso, vale por lo siguiente:
     \begin{DispWithArrows*}
@@ -887,7 +887,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
     \end{DispWithArrows*}
 
-    \item[\ref{thm:egb:4} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es valida porque es parte de \ref{thm:egb:4}. Para la otra parte probemoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
+    \item[\ref{thm:egb:4} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es válida porque es parte de \ref{thm:egb:4}. Para la otra parte probémoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
     Por \ref{thm:egb:4} sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
     \begin{itemize}
@@ -935,7 +935,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
       Por \ref{thm:egb:5} tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
 
-      Como $\lm(a_i g_i b_i) ≤ \lm(f)$, si o si tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
+      Como $\lm(a_i g_i b_i) ≤ \lm(f)$, sí o sí tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
     \end{description}
 
   \end{description}
@@ -943,7 +943,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 \end{proof}
 
 \begin{observation}
-  \ref{thm:egb:2} del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ esta en el ideal.
+  \ref{thm:egb:2} del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ está en el ideal.
 \end{observation}
 
 Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos el siguiente corolario.
@@ -997,7 +997,7 @@ Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad
 
 \[S(α) = \frac{f}{3} - d f' a = \frac{2}{3} cba - dba  \text{.} \]
 
-\noindent Y una ambigüedades de superposición sería
+\noindent Y una ambigüedad de superposición sería
 
 \[ α' = (bc, ε, ε, bcda, f, f') \text{.} \]
 
@@ -1061,7 +1061,7 @@ Ahora si enunciamos el teorema para decidir si un conjunto es una base de Gröbn
 
 La demostración se puede encontrar por ejemplo en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostramos acá porque requiere varios lemas adicionales que no son pertinentes para este trabajo.
 
-Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ podemos agregar $g$ al conjunto y con eso $f$ pasa a sí reducirse a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay un S-polinomio que pasa a si reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
+Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ podemos agregar $g$ al conjunto y con eso $f$ pasa a sí reducirse a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay un S-polinomio que pasa a sí reducirse a $0$ también aparecen nuevas ambigüedades. Eso sin embargo no es tanto problema porque lo que se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
 
 Ese proceso de agregar polinomios infinitamente lo definimos matemáticamente del siguiente modo.
 
@@ -1087,7 +1087,7 @@ Con el siguiente teorema se enuncia que la base de Buchberger es una base de Gr�
   \end{enumerate}
 \end{theorem}
 
-Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que \ref{thm:Buchberger correctitud:item:2} es más sorprendente. Para demostrar ambos items primero probaremos algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
+Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que \ref{thm:Buchberger correctitud:item:2} es más sorprendente. Para demostrar ambos ítems primero probaremos algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ ∪ \{0\} : \B_{e_≤}^{i}(G) ⊆ (G)$.
@@ -1098,7 +1098,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
   Por la definición recursiva de $\B_{e_≤}^{i + 1}$ vale que $f ∈ \B_{e_≤}^i(G) ∨ ∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$. Dividamos en casos según ese $∨$.
 
   \begin{description}
-    \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es valido por ser exactamente la hipótesis inductiva.
+    \item[Caso $f ∈ \B_{e_≤}^i(G)$:] Es válido por ser exactamente la hipótesis inductiva.
     \item[Caso $∃α ∈ \amb(\B_{e_≤}^i(G)) : f = e_≤(\B_{e_≤}^i(G))(\S(α))$:] En tal caso, por el \cref{lemma:e mantiene pertenencia a ideal} vale que $f ∈ \B_{e_≤}^i(G)$ y por la hipótesis inductiva que $f ∈ (G)$.
   \end{description}
 
@@ -1144,7 +1144,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
   Llamemos (ii) a esto último. Combinando (i) y (ii) vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, que es lo que queríamos probar.
 \end{proof}
 
-Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger correctitud}.
+Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger correctitud}.
 
 \begin{proof}[Demostración del \cref{thm:Buchberger correctitud}]
   Por el \cref{lemma:Buchberger correctitud:5} y el \cref{lemma:Buchberger correctitud:6} vale la equivalencia de base de Gröbner de la condición de Buchberger (\cref{thm:condición de Buchberger}), así que \ref{thm:Buchberger correctitud:item:1}, o sea, que $G$ es una base de Gröbner queda probado.
@@ -1161,7 +1161,7 @@ Con estos lemas ahora si hagamos la demostración del \cref{thm:Buchberger corre
   Tenemos que probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g'_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
-  Tomemos $f ∈ (G) - \{0\}$ y escribamoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
+  Tomemos $f ∈ (G) - \{0\}$ y escribámoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
   \begin{itemize}
     \item $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y
     \item $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
@@ -1210,7 +1210,7 @@ Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula
 
 El algoritmo así, si bien es una implementación literal de la definición de los conjuntos $\B_{e_≤}^i$ que probamos que es correcta, es muy lento y necesita mejoras. Una mejora muy importante, probablemente la más importante, consiste en usar también los nuevos polinomios que ya fueron agregados para hacer las nuevas reducciones en el paso. Es decir, llamar a $e_≤$ con $B'$ en lugar de con $B$ en la línea 6. % Se podrá hacer con un label esto?
 
-Por lo visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}. En la práctica esta mejora hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en una gran cantidad de casos. La justificación teórica de porque hacer eso hace que pase a ser tanto mas rápido no la se ni la pude encontrar en la literatura.
+Por lo visto antes el cambio tiene sentido que sea correcto y la prueba es similar a la del \cref{thm:Buchberger correctitud}. En la práctica esta mejora hace una diferencia inmensa en la eficiencia, pasa de no andar rápido casi nunca a andar rápido en una gran cantidad de casos. La justificación teórica de por qué hacer eso hace que pase a ser tanto más rápido no la sé ni la pude encontrar en la literatura.
 
 Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas ambigüedades sin tener que reducirlas y la otra es para ir sacando algunos polinomios de la base. En la \cref{secton:optimizaciones} se aborda este tema.
 
@@ -1243,7 +1243,7 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
   \KwResult{$G' ⊆ \{agb : a, b ∈ ⟨X⟩, g ∈ G\}$}
   $G' ← ∅$
 
-  $conciderados ← \{\lm(g) : g ∈ P\}$
+  $considerados ← \{\lm(g) : g ∈ P\}$
 
   $T ← ⋃_{g ∈ P} \sop(\tail(g))$
 
@@ -1258,11 +1258,11 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
 
         $G' ← G' ∪ {agb}$
 
-        $nuevos ← \{m' ∈ \sop(\tail(agb)) : m' ∉ conciderados\}$
+        $nuevos ← \{m' ∈ \sop(\tail(agb)) : m' ∉ considerados\}$
 
         $T ← T ∪ nuevos$
 
-        $conciderados ← conciderados ∪ nuevos$
+        $considerados ← considerados ∪ nuevos$
       }
     }
   }
@@ -1272,7 +1272,7 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
 
 % Agregar ejemplo
 
-Una vez que hemos determinados los monomios que necesitamos, armamos la matriz correspondiente a $G$ y $F$ usando la función $\mat_T$ y reducimos por fila esta matriz. Con la matriz no es obvio que hay que hacer, porque hay que solo conciderar las filas que corresponden a los polinomios reducidos, pero no nesesarimente son las mismas filas que eran antes porque la reducción por filas puede hacer cosas como intercambiar filas. Para saber cuales son esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+Una vez que hemos determinados los monomios que necesitamos, armamos la matriz correspondiente a $G$ y $F$ usando la función $\mat_T$ y reducimos por fila esta matriz. Con la matriz no es obvio que hay que hacer, porque hay que solo considerar las filas que corresponden a los polinomios reducidos, pero no necesariamente son las mismas filas que eran antes porque la reducción por filas puede hacer cosas como intercambiar filas. Para saber cuáles son esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
 
 El siguiente seudocódigo hace eso:
 
@@ -1338,7 +1338,7 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}
 
-Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería  se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. Este capítulo describe la estructura general de la librería y cómo usarla en su versión actual (fecha de publicación de esta tesis).
+Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. Este capítulo describe la estructura general de la librería y cómo usarla en su versión actual (fecha de publicación de esta tesis).
 
 \section{Estructura de la librería}
 
@@ -1346,7 +1346,7 @@ El repositorio tiene varias carpetas, pero hay dos que son las más relevantes p
 
 Todo el código de la librería está en el namespace \texttt{ncgb}. En todos los códigos que veamos asumiremos que \texttt{ngcb} está abierto.
 
-Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables; además muchas operaciones y métodos de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que se puedan variar esas tres cosas se usan templates para hacer las funciones y estructuras de forma genérica. Por ejemplo, la definición de polinomio es así: % No se como remplazar "cosas" acá porque son dos tipos y un orden
+Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables; además muchas operaciones y métodos de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que se puedan variar esas tres cosas se usan templates para hacer las funciones y estructuras de forma genérica. Por ejemplo, la definición de polinomio es así: % No se como reemplazar "cosas" acá porque son dos tipos y un orden
 
 \begin{minted}{C++}
   template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
@@ -1548,7 +1548,7 @@ Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, \texttt{X =
 
 Los algoritmos de Buchberger y F4 están ambos hechos de una forma que se usan similar, así que por eso están explicados juntos.
 
-Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar. Si tiene sentido tener una función como esa para casos en los que se sabe que hay una base de Gröbner finita, pero no conviene que sea la única forma de usar los algoritmos.
+Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar. Sí tiene sentido tener una función como esa para casos en los que se sabe que hay una base de Gröbner finita, pero no conviene que sea la única forma de usar los algoritmos.
 
 Se podría hacer una función que además del conjunto generador tome un número que sea la cantidad de pasos a ejecutar y que además de devolver un conjunto devuelva si se llegó a una base de Gröbner o no. Esta opción tiene el problema de que una vez que la función retorna no se puede seguir con el cálculo, lo cual en algunos casos podría ser deseable.
 
@@ -1600,7 +1600,7 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
 
 Esa función básicamente trata de responder el \cref{problem:principal} de si un polinomio está en el ideal generado por un conjunto generador.
 
-\section{Representación con cofactores}\label{section:representación con cofectores (librería)}
+\section{Representación con cofactores}\label{section:representación con cofactores (librería)}
 
 La función \texttt{inIdeal} solo decide la pertenencia al ideal generado, pero en caso afirmativo no da una forma de escribirlo como combinación lineal de elementos del conjunto generador con polinomios como coeficientes.
 
@@ -1619,11 +1619,11 @@ En el archivo \path{ncgb/cmpBases.hpp} está la función \texttt{cmpBases} que t
 
 \section{Paralelismo} % O paralelización?
 
-Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo solo para una parte del código. En esta sección se explica como hacer que el la parte del código que puede ejecutarse en paralelo lo haga.
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo solo para una parte del código. En esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
 
 La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP.
 
-Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los mains y los test. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasandole la cantidad del hilos con los que se quiere correr.
+Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los mains y los test. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
 
 
 \section{Ejemplo}
@@ -1784,7 +1784,7 @@ Una librería que hace la reducción por filas es FLINT, que lo hace para el tip
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que la función tiene que primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
-El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba mas lento, así que se descartó.
+El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba más lento, así que se descartó.
 
 \subsection{Preprocesamiento simbólico}
 
@@ -1796,7 +1796,7 @@ Como en F4 se reducen varios polinomios al mismo tiempo, se implementó una func
 
 En el \cref{alg:F4} esto se hizo dentro del propio algoritmo de F4 pero en la implementación se hizo aparte porque es bastante lo que tiene que hacer el código.
 
-La implementación lo que hace es construir la matriz con una función llamada \texttt{toMatrix}, después llamar a la función \texttt{rref} que ya se explicó, después marcar que columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuales polinomios son los reducidos) y por último convertir a polinomios las filas que su coeficiente principal (el primero no nulo de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
+La implementación lo que hace es construir la matriz con una función llamada \texttt{toMatrix}, después llamar a la función \texttt{rref} que ya se explicó, después marcar qué columnas corresponden a monomios principales del vector por el cual se está reduciendo (esto para poder saber cuáles polinomios son los reducidos) y por último convertir a polinomios las filas que su coeficiente principal (el primero no nulo de izquierda a derecha) no está marcada como que es un monomio principal del vector por el cual se está reduciendo.
 
 \subsection{El propio F4}
 
@@ -1810,11 +1810,11 @@ El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}. En F4 este
 
 \section{Optimizaciones}\label{secton:optimizaciones}
 
-Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en los algoritmos de Buchberger y F4, que están explicadas en la Sección 4.5 de \cite{thesis:Hof20}. Acá solo se explican por arriba las optimizaciones y se explican como están implementadas.
+Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en los algoritmos de Buchberger y F4, que están explicadas en la Sección 4.5 de \cite{thesis:Hof20}. Acá solo se explican por arriba las optimizaciones y se explican cómo están implementadas.
 
 \subsection{Descartar ambigüedades}
 
-La primer optimización consiste en que se pueden descartar algunas ambigüedades, sin tener que reducir su S-polinomio, según si se cumplen ciertas propiedades con otros polinomios que ya están en la base.
+La primera optimización consiste en que se pueden descartar algunas ambigüedades, sin tener que reducir su S-polinomio, según si se cumplen ciertas propiedades con otros polinomios que ya están en la base.
 
 En particular algunos teoremas de \cite{thesis:Hof20} permiten definir una función con la siguiente signatura:
 
@@ -1837,7 +1837,7 @@ Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cu
 
 Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo cuando se probó en F4 anduvo más lento. No se investigó por qué pasó eso.
 
-Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agrego un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que más bien se está marcando como borrados los polinomios.
+Para implementar esta optimización en Buchberger lo que se hizo no es directamente borrar el polinomio de \texttt{G}, porque para eso habría que también cambiar los índices que están guardados junto con las ambigüedades, sino que se agregó un vector de booleanos \texttt{removed} a la estructura, que tiene siempre el mismo largo que \texttt{G} y vale \texttt{true} solo en las posiciones de polinomios que se borraron. O sea que más bien se está marcando como borrados los polinomios.
 
 A las funciones que se habían explicado, que toman a \texttt{G} como parámetro y se usan en Buchberger, se les agregó un parámetro extra que es el vector de booleanos y se hizo que solo trabajen con los polinomios de posiciones que no están en \texttt{true}.
 
@@ -1851,7 +1851,7 @@ Esta optimización no se implementó principalmente por el poco soporte para tra
 
 Como se dijo en el capítulo anterior, la representación con cofactores se implementó solo para Buchberger, y no para F4. El motivo es que, como para F4 de cualquier manera no está implementada la optimización de hacer la reducción más eficiente, se hay que seguir trabajando en la parte de la reducción y cuando se tenga lista la versión más eficiente es el momento de implementar la representación con cofactores.
 
-Como se explicó en la \cref{section:representación con cofectores (librería)}, para la representación con cofactores se usa el tipo \texttt{CofactorPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
+Como se explicó en la \cref{section:representación con cofactores (librería)}, para la representación con cofactores se usa el tipo \texttt{CofactorPoly} que guarda polinomios de un ideal como combinación lineal de elementos de la base.
 
 La estructura de la implementación de este tipo es así:
 
@@ -1967,26 +1967,27 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 \subsection{Uso de OpenMP para paralelizar}
 
-Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agrego eso en la linea anterior. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
+Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agregó eso en la línea anterior. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
+
 
 \chapter{Tests}
 
-Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además con algunos de los tests se hizo que hagan mediciones de tiempo para ver que tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
+Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en la carpeta \path{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
-Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de master \cite{thesis:Hof20} usando SageMath, y comparan los resultados, y otros corren solo código de la librería.
+Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de máster \cite{thesis:Hof20} usando SageMath, y comparan los resultados, y otros corren solo código de la librería.
 
 También, algunos tests corren los mains de ejemplo de la carpeta \path{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
 
-A continuación una lista de lo mas importante de los test:
+A continuación una lista de lo más importante de los tests:
 
 \begin{itemize}
   \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \path{test/internal_tests}.
-  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un tests que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \path{mains/compare_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Esto test está en la carpeta \path{test/base_tests}.
-  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que si está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar si o si porque por los que dieron que si sabemos que (si no hay bugs) si está. Esto está en la carpeta \path{test/InIdeal_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un test que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \path{mains/compare_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Este test está en la carpeta \path{test/base_tests}.
+  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que sí está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar sí o sí porque por los que dieron que sí sabemos que (si no hay bugs) sí está. Esto está en la carpeta \path{test/InIdeal_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
   \item Con respecto a la representación con cofactores, hay un test que corre los algoritmos con y sin representación con cofactores y se fija que el resultado de con cofactores después de convertir los \texttt{CofactorPoly} en \texttt{Poly} sea igual al resultado sin cofactores. Este test está en la carpeta \path{test/cofactor_tests}.
-  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre de el mismo resultado. Esto está en la carpeta \path{test/parallelism_tests}.
+  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre dé el mismo resultado. Esto está en la carpeta \path{test/parallelism_tests}.
 \end{itemize}
 
 \chapter{Benchmarks}\label{cap:Benchmarks}
@@ -2040,7 +2041,7 @@ Los FK provienen de la teoría de álgebras de Nichols, las cuales son de inter�
   \end{align*}
 \end{itemize}
 
-\noindent Se sabe que para $n ≤ 5$ los ideales generados por FK$n$ tienen bases de Gröbner finitas, pero para $n > 5$ no se sabe. En \cite{web:Nichols} y \cite{book:introNichols} se puede encontrar mas información sobre las álgebras de Nichols.
+\noindent Se sabe que para $n ≤ 5$ los ideales generados por FK$n$ tienen bases de Gröbner finitas, pero para $n > 5$ no se sabe. En \cite{web:Nichols} y \cite{book:introNichols} se puede encontrar más información sobre las álgebras de Nichols.
 
 Los tri están porque \cite{thesis:Hof20} los usa, con ese mismo nombre, y él los sacó del Teorema 2.12 de \cite{book:class-tri}. Los trit son directamente tomados de la Proposición 1.9 de \cite{book:class-tri}.
 
@@ -2079,7 +2080,7 @@ En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger de 
   \end{axis}
 \end{tikzpicture}
 
-A simple vista se puede ver que para los casos en los que se distingué algo \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo, los otros no. Así que a continuación está el gráfico de vuelta pero solo con la parte de mas abajo y dejando que las barras muy largas se salgan del gráfico.
+A simple vista se puede ver que para los casos en los que se distingue algo \texttt{operator\_gb} es mucho más rápido, pero solo se ven los casos que demoran mucho tiempo, los otros no. Así que a continuación está el gráfico de vuelta pero solo con la parte de más abajo y dejando que las barras muy largas se salgan del gráfico.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2098,6 +2099,7 @@ A simple vista se puede ver que para los casos en los que se distingué algo \te
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
       legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+  ]
   ]
     % Datos para cada conjunto
     \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
@@ -2139,7 +2141,7 @@ El test que prueba que de el mismo resultado correr con distintas cantidades de 
   \end{axis}
 \end{tikzpicture}
 
-De vuelta a simple vista no se ve casi nada, salvo que en trit5 es caso lo mismo con mas hilos. Para poder ver en mas detalla, a continuación un gráfico de lo mismo pero sin trit5.
+De vuelta a simple vista no se ve casi nada, salvo que en trit5 es casi lo mismo con más hilos. Para poder ver en más detalle, a continuación un gráfico de lo mismo pero sin trit5.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2172,7 +2174,7 @@ Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy 
 
 \section{Representación con cofactores}
 
-El test que compara ejecutar Buchberger con y sin representación con cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \path{mains} si no que usa sus propios archivo, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
+El test que compara ejecutar Buchberger con y sin representación con cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \path{mains} sino que usa sus propios archivos, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2201,7 +2203,7 @@ Se puede ver que la representación con cofactores lleva más tiempo, pero en ge
 
 \section{Pertenencia a ideales}
 
-El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ve con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para la aritmética modular, pero para los raciones incluyen la comparación con \texttt{operator\_gb} y para la aritmética modular no, porque \texttt{operator\_gb} es solo para racionales. Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos. Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es \texttt{Buchberger} y \texttt{GB} es \texttt{operator\_gb}):
+El test que para conjuntos generadores construidos al azar y polinomios construidos al azar ve con los distintos algoritmos si el polinomio está en el ideal generado o no, también mide los tiempos. Estos corren tanto para los racionales como para la aritmética modular, pero para los racionales incluyen la comparación con \texttt{operator\_gb} y para la aritmética modular no, porque \texttt{operator\_gb} es solo para racionales. Este benchmark imprime los tiempos promedios sobre todos los conjuntos generadores construidos al azar y polinomios construidos al azar y también los tiempos máximos. Estos son los resultados para los racionales (tal cual los imprime el test, \texttt{Buch} es \texttt{Buchberger} y \texttt{GB} es \texttt{operator\_gb}):
 
 \begin{minted}{text}
   Average times:
@@ -2231,11 +2233,11 @@ Este benchmark se usó principalmente para tenerlo como comparación cuando se h
 
 \chapter{Conclusiones}
 
-El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para mi este era un tema completamente nuevo, así que empece por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas, mientras leía ese libro hice también una implementación así nomás de bases de Gröbner conmutativas en \cpp. Esto fue bueno porque me sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso fui leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
+El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para mí este era un tema completamente nuevo, así que empecé por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas, mientras leía ese libro hice también una implementación así nomás de bases de Gröbner conmutativas en \cpp. Esto fue bueno porque me sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso fui leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
 
 A continuación menciono algunas cosas positivas y después algunos posibles trabajos futuros.
 
-\section{Cosas positivas este trabajo}
+\section{Cosas positivas de este trabajo}
 
 Es la primer implementación de bases de Gröbner no conmutativas en \cpp (que yo sepa). Esto es muy bueno porque \cpp es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es útil si se quieren correr casos que se demoran mucho.
 
@@ -2247,15 +2249,15 @@ La implementación de Buchberger incluye la parte de la representación con cofa
 
 Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es una de las cosas más importantes para hacer.
 
-Del algoritmo F4 (y de Buchberger) para el caso si conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+Del algoritmo F4 (y de Buchberger) para el caso sí conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
 
-Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar mas lento, así que se descartaban esos cambios. Sería bueno agregar mas test y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
+Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar más lento, así que se descartaban esos cambios. Sería bueno agregar más tests y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
 
-Se podría analizar cuanto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en que partes se pueden realizar a optimizaciones.
+Se podría analizar cuánto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en qué partes se pueden realizar optimizaciones.
 
 En la librería hay una especialización de \texttt{rref} para hacer que para \texttt{mpq\_class} sea más rápido, pero para aritmética modular se está usando un tipo propio definido en el archivo \path{extras/ModularArithmetic.hpp} y se usa la versión genérica de \texttt{rref}. Es posible que ya haya librerías que tengan tipos de aritmética modular más rápidos que el que se implementó y con una reducción por filas más rápida.
 
-Actualmente la librería no viene con nada para instalarla automáticamente porque en \cpp eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. Otros librerías de \cpp si vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
+Actualmente la librería no viene con nada para instalarla automáticamente porque en \cpp eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. Otras librerías de \cpp sí vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
 
 Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
 \begin{definition}
@@ -2270,9 +2272,9 @@ Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda qu
 
 Como ya se mencionó en el \cref{cap:Benchmarks}, los FK$n$ no se sabe para $n ≥ 6$ si tienen una base finita o no. Cuando se tenga una versión muy buena de F4 algo que se podría hacer es correrla por mucho tiempo para FK6 u otros FK para ver si llega en algún momento a una base finita.
 
-Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas cono no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando implementé las bases de Gröbner conmutativas para practicar tubo que hacer su propio testing. Para que estudiar el tema sea más fácil algo que sería útil es preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp}{Library Checker}, o en un grupo de \href{https://codeforces.com}{Codeforces}.
+Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando implementé las bases de Gröbner conmutativas para practicar tuve que hacer mi propio testing. Para que estudiar el tema sea más fácil algo que sería útil es preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp}{Library Checker}, o en un grupo de \href{https://codeforces.com}{Codeforces}.
 
-Por último, otra cosa que se podría hacer es implementar el calculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
+Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
 
 \chapter{Bibliografía}
 
