@@ -158,11 +158,11 @@ El motivo por el cual no es decidible es que el problema de la palabra se reduce
 
 Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
-Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos se puede estar refiriendo al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
+Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en SageMath, que es un sistema algebraico computacional y librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
+De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en el sistema algebraico computacional Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en Python con SageMath, que es otro sistema algebraico computacional que al mismo tiempo es librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
-La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de SageMath.
+La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de Python con SageMath.
 
 Alguien podría preguntar para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
 
@@ -170,7 +170,7 @@ Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para t
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
-Toda esta exposición es autocontenida para facilitar su lectura, así que se incluyen algunas cosas que no son estrictamente del tema de la tesis, sino que son necesarias para los temas de la tesis. % No se con que remplazar "cosas" acá
+En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria para entender el trabajo, incluyendo algunos temas que no son parte del tema de bases de Gröbner, pero son necesaria para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica como usar la librería que se desarrolló. En el \cref{cap:Implementación} se explica como son las implementaciones. En el \cref{cap:Tests} se explica brevemente que tests se hicieron para que la librería ande bien. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
 
 \chapter{Preliminares}\label{cap:Preliminares}
 
@@ -204,7 +204,7 @@ Para el resto de la sección fijemos una relación $→$ sobre $A$. Tenemos los 
 
 \begin{lemma}\label{lemma:→* como ∃}
   Sean $a, b ∈ A$. Entonces
-  \[ a →^* b ⇔ ∃n ∈ ℕ ∪ \{0\}, x_0, …, x_n ∈ A : x_0 = a ∧ x_n = b ∧ ∀i ∈ {1, …, n} : x_{i-1} → x_i \text{.}\]
+  \[ a →^* b ⇔ ∃n ∈ ℕ ∪ \{0\}, x_0, …, x_n ∈ A : x_0 = a ∧ x_n = b ∧ ∀i ∈ \{1, …, n\} : x_{i-1} → x_i \text{.}\]
   \qed
 \end{lemma}
 
@@ -213,7 +213,7 @@ Para el resto de la sección fijemos una relación $→$ sobre $A$. Tenemos los 
   \qed
 \end{lemma}
 
-Como querremos hablar de usar $→$ para transformar un objeto en otro, es útil la próxima definición que permite hablar de la forma normal de un objeto como el elemento al que se llega aplicando $→$ hasta que no se pueda más.
+Como querremos hablar de usar $→$ para transformar un objeto en otro, es útil la próxima definición que permite hablar de una forma normal de un objeto como un elemento al que se llega aplicando $→$ hasta que no se pueda más.
 
 \begin{definition}\label{def:forma normal}
   Dados $a, b ∈ A$ se define:
@@ -256,6 +256,8 @@ Si $→$ es confluente y normalizante entonces todos los elementos tienen una ú
   Si $→$ es confluente y terminante entonces calcular la forma normal de $a$ y de $b$ permite decidir si $a ↔ ^* b$.
   \qed
 \end{observation}
+
+Con esto ya está todo lo necesario sobre sistemas de re-escritura. Para aprender más sobre el tema se puede leer \cite{book:term-rewriting}.
 
 \section{Álgebra libre}
 
@@ -303,7 +305,7 @@ En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
 
 Hablar del resultado de la división es un poco más complicado acá porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que en ningún momento hablaremos de dividir un monomio en otro ni escribiremos divisiones entre monomios.
 
-Más adelante será necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas necesarias y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
+Más adelante será necesario tener un orden entre los elementos de $⟨X⟩$. Se podría fijar uno concreto definiendo directamente $≤$ para $⟨X⟩$, pero es mejor enunciar las mínimas propiedades necesarias y trabajar con cualquier orden que las satisfaga. Eso se logra con la siguiente definición.
 
 \begin{definition}\label{def:buen orden monomial}
   Sea $≤$ un orden total sobre $⟨X⟩$. Se define que $≤$ es un buen orden monomial si y solo si:
@@ -350,7 +352,7 @@ Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los sig
 \begin{align*}
   f_0 &= a \text{,} \\
   f_1 &= ab + cb \text{,} \\
-  f_2 &= 3 abb + 4 bcca - 2 acab \text{.}
+  f_2 &= 3 abb - 2 acab + 4 bcca \text{.}
 \end{align*}
 
 \noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
@@ -363,16 +365,25 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
     \item el coeficiente de $m$ en $f$ es $f_m = \begin{cases} c_0&\text{si }m = m_0 \\ ⋮ & \\ c_n&\text{si }m = m_n \\ 0&\text{en otro caso} \end{cases} $.
     \item el soporte de $f$ es el conjunto $\sop(f) = \{m_1, …, m_n\}$.
     \item el monomio principal de $f$ es $\lm_≤(f) = \max_≤(\sop(f))$.
-    \item el coeficiente principal de $f$ es $\lc_≤(f) = f_{\lm(f)}$.
+    \item el coeficiente principal de $f$ es $\lc_≤(f) = f_{\lm_≤(f)}$.
     \item el término principal de $f$ es $\lt_≤(f) = \lc_≤(f) · \lm_≤(f)$.
     \item $\tail_≤(f) = f - \lt_≤(f)$.
-    \item $f$ es mónico $⇔ \lc_≤(f) = 1$.
   \end{itemize}
 
   Los nombres lm, lc, lt y tail vienen del inglés leading monomial, leading coefficient, leading term y tail respectivamente.
 \end{definition}
 
-Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm(f) \lm(f') = \lm(f f')$, que durante el resto de la tesis usaremos mucho, pero no las probamos una por una porque sería tedioso y aburrido.
+Siguiendo con el ejemplo tenemos:
+\begin{align*}
+  {f_2}_{abb} &= 3 \text{,} \\
+  \sop(f_2) &= \{abb, acab, bcca\} \text{,} \\
+  \lm_{≤_{deglex}}(f_2) &= bcca \text{,} \\
+  \lc_{≤_{deglex}}(f_2) &= 4 \text{,} \\
+  \lt_{≤_{deglex}}(f_2) &= 4 bcca \text{,} \\
+  \tail_{≤_{deglex}}(f_2) &= 3 abb - 2 acab \text{.}
+\end{align*}
+
+Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm_≤(f) \lm_≤(f') = \lm_≤(f f')$, que durante el resto de la tesis usaremos mucho, pero no las probamos una por una porque sería tedioso y aburrido.
 
 Más adelante será necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
@@ -381,9 +392,9 @@ Más adelante será necesario comparar no solo monomios sino también polinomios
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
     \item $\lm_≤(f) < \lm_≤(g)$.
-    \item $\lm(f) = \lm(g) ∧ \tail(f) < \tail(g)$.
+    \item $\lm_≤(f) = \lm_≤(g) ∧ \tail_≤(f) < \tail_≤(g)$.
   \end{enumerate}
-  Y como es usual definimos $f ≤ g$ si y solo si $f < g ∨ f = g$.
+  Y como es usual $f ≤ g$ si y solo si $f < g ∨ f = g$.
 \end{definition}
 
 Dicho en palabras, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor. Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
@@ -413,19 +424,19 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
   La relación $≤$ en $K⟨X⟩$ no tiene sucesiones estrictamente decrecientes infinitas.
 \end{lemma}
 \begin{proof}
-  Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$, que minimice $\lm(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
+  Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$, que minimice $\lm_≤(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
 
   Notemos que:
 
   \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:1}
-    $∀i ∈ ℕ : \lm(P_i) = \lm(P_1)$.
+    $∀i ∈ ℕ : \lm_≤(P_i) = \lm_≤(P_1)$.
   \end{fact}
-  En efecto, no puede ser $\lm(P_i) < \lm(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una sucesión estrictamente decreciente infinita que rompería la minimalidad de $\lm(P_1)$ y no puede ser $\lm(P_i) > \lm(P_1)$ porque eso implicaría $P_i > P_1$ y eso contradice que $P$ sea decreciente.
+  En efecto, no puede ser $\lm_≤(P_i) < \lm_≤(P_1)$ porque entonces $P_i, P_{i + 1}, …$ sería una sucesión estrictamente decreciente infinita que rompería la minimalidad de $\lm_≤(P_1)$ y no puede ser $\lm_≤(P_i) > \lm_≤(P_1)$ porque eso implicaría $P_i > P_1$ y eso contradice que $P$ sea decreciente.
 
   \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:2}
-    $\tail(P_1), \tail(P_2), …$ es una sucesión estrictamente decreciente infinita.
+    $\tail_≤(P_1), \tail_≤(P_2), …$ es una sucesión estrictamente decreciente infinita.
   \end{fact}
-  Esto vale porque al aplicar la definición del orden polinomial sobre $P_1 > P_2 > P_3 > …$ y usar la \cref{fact:≤ en KX no sucesiones dec inf:1} queda $\tail(P_1) > \tail(P_2) > \tail(P_3) > …$
+  Esto vale porque al aplicar la definición del orden polinomial sobre $P_1 > P_2 > P_3 > …$ y usar la \cref{fact:≤ en KX no sucesiones dec inf:1} queda $\tail_≤(P_1) > \tail_≤(P_2) > \tail_≤(P_3) > …$
 
   Como por el \cref{lemma:0 es mínimo} $0$ es un mínimo:
 
@@ -433,7 +444,7 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
     $P_1 ≠ 0$.
   \end{fact}
 
-  Sin embargo, la \cref{fact:≤ en KX no sucesiones dec inf:2} contradice la minimalidad de $\lm(P_1)$ ya que por la \cref{fact:≤ en KX no sucesiones dec inf:3} vale que $\lm(\tail(P_1)) < \lm(P_1)$.
+  Sin embargo, la \cref{fact:≤ en KX no sucesiones dec inf:2} contradice la minimalidad de $\lm_≤(P_1)$ ya que por la \cref{fact:≤ en KX no sucesiones dec inf:3} vale que $\lm_≤(\tail_≤(P_1)) < \lm_≤(P_1)$.
 
 \end{proof}
 
@@ -446,7 +457,7 @@ La estructura del álgebra libre es un anillo, lo cual es muy útil por muchas d
 \end{theorem}
 % Tendría que decir algo de que no se incluye la demostración porque es fácil?
 
-Las definiciones y teoremas sobre anillos que necesarios están explicadas a continuación.
+Las definiciones y teoremas sobre anillos necesarios están a continuación.
 
 \begin{definition}\label{def:ideal}
   Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal de $R$ si y solo si:
@@ -479,9 +490,9 @@ Sobre los ideales generados por un conjunto valen los siguientes dos lemas bási
   \qed
 \end{lemma}
 
-\begin{lemma}\label{lemma:sub gen y sub gen ⇒ eq}
+\begin{lemma}\label{lemma:sub gen y sub gen ⇔ eq}
   Sean $R$ un anillo y $G, G' ⊆ R$. Entonces
-  \[ G ⊆ (G') ∧ G' ⊆ (G) ⇒ (G) = (G') \text{.}\]
+  \[ G ⊆ (G') ∧ G' ⊆ (G) ⇔ (G) = (G') \text{.}\]
   \qed
 \end{lemma}
 
@@ -506,6 +517,8 @@ Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, l
   \[ a ∈ I ⇔ a ≡_I 0 \text{.}\]
   \qed
 \end{lemma}
+
+% Estaría bueno citar algún libro para aprender más sobre anillos
 
 Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 
@@ -589,7 +602,7 @@ A continuación la prueba de que esta relación efectivamente achica.
     \item $m_i = \lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$. \label{thm:→ achican:iii}
   \end{enumerate}
 
-  \ref{thm:→ achican:iii} implica que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con términos menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por \ref{thm:→ achican:ii}).
+  \ref{thm:→ achican:ii} y \ref{thm:→ achican:iii} implican que los términos $c_1 m_1, c_2 m_2, …, c_{i-1}, m_{i-1}$ son iguales en $f$ y en $f'$ y no hay nada más en el medio, porque $f'$ es $f$ con términos menores o iguales a $\lm_≤(\frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb)$ restadas (por \ref{thm:→ achican:ii}).
 
   Además, por \ref{thm:→ achican:iii} y \ref{thm:→ achican:ii} vale que $f'_{m_i} = 0$, por ende, el término que sigue después de $m_{i-1}$ (si es que hay) es menor que $m_i$.
 
@@ -614,8 +627,7 @@ La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a co
     \item[Caso $\lm_≤(agb) ∉ \sop(f)$:] Partiendo de la condición de $a, g, b$ hacemos lo siguiente:
     \begin{DispWithArrows*}
       &f_1 = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} \\
-      & ⇒ f_1 + f = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f \Arrow{Definición de $→_{≤, a, g, b}$}\\
-      & ⇒ f_0 + f →_{≤, a, g, b} f_1 + f \\
+      & ⇒ f_1 + f = f_0 - \frac{{f_0}_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} + f \Arrow{Definición de $→_{≤, G}$}\\
       & ⇒ f_0 + f →_{≤, G} f_1 + f \Arrow{Definición de $↓$, ambos se reducen a $f_1 + f$}\\
       & ⇒ f_0 + f ↓_{≤, G} f_1 + f \text{.}
     \end{DispWithArrows*}
@@ -632,7 +644,7 @@ La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a co
         & ⇒ f_1 + f ↓_{≤, G} f_0 + f \text{.}
       \end{DispWithArrows*}
 
-      \item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:] En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, G}$:
+      \item[Subcaso $f_{\lm_≤(agb)} ≠ -{f_0}_{\lm_≤(agb)}$:] En este caso $\lm_≤(agb)$ no se cancela en la suma $f_0 + f$, así que podemos aplicar $→_{≤, G}$ con $a$, $g$, $b$:
       \begin{DispWithArrows*}
         &f_0 + f →_{≤, G} f_0 + f - \frac{(f_0 + f)_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
         & ⇒ f_0 + f →_{≤, G} f_0 + f - \frac{{f_0}_{\lm_≤(agb)} + f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb \\
@@ -681,7 +693,7 @@ Ahora el ya anunciado teorema de que la clausura reflexo transitiva de $→_{≤
   \begin{description}
     \item[Prueba de $↔^*_{≤, G}\ ⊆\ ≡_{(G)}$:] Como $↔^*_{≤, G}$ y $≡_{(G)}$ son relaciones de equivalencia y además por el \cref{lemma:↔* min equiv que contiene a →} $↔^*_{≤, G}$ es la mínima relación de equivalencia que contiene a $→_{≤, G}$, alcanza con probar $→_{≤, G}\ ⊆\ ≡_{(G)}$. Para eso supongamos $f →_{≤, G} f'$ y probemos $f ≡_{(G)} f'$.
 
-    Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm(agb) ∈ f$ y $f' = f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$. Tenemos:
+    Sean $g ∈ G, a, b ∈ K⟨X⟩$ tales que $\lm_≤(agb) ∈ f$ y $f' = f - \frac{f_{\lm_≤(agb)}}{g_{\lm_≤(agb)}} agb$, los cuales existen por definición de $→_{≤, G}$. Tenemos:
     \begin{DispWithArrows*}
       &f ≡_{(G)} f' \\
       & ⇔ f - f' ∈ (G) \\
@@ -740,11 +752,11 @@ El siguiente teorema caracteriza las formas normales de $→$.
 
 \begin{theorem}
   Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$. Entonces
-  \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm(g) | m \text{.}\]
+  \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm_≤(g) | m \text{.}\]
 \end{theorem}
 \begin{proof} Probemos ida y vuelta por separado
   \begin{description}
-    \item[Ida ($⇒$):] por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm(g) | m$.
+    \item[Ida ($⇒$):] por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm_≤(g) | m$.
 
     \noindent Sean $a, b ∈ ⟨X⟩$ tales que $m = agb$, los cuales existen por la definición de divisibilidad.
 
@@ -753,14 +765,14 @@ El siguiente teorema caracteriza las formas normales de $→$.
     \item[Vuelta ($⇐$):] por contrarrecíproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
     \begin{itemize}
       \item $f' ∈ K⟨X⟩$ tal que $f →_{≤, G} f'$, el cual existe por el antecedente.
-      \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
+      \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm_≤(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
     \end{itemize}
 
     Con esto es claro que $g$ satisface el $∃$.
   \end{description}
 \end{proof}
 
-Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
+Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que (como habíamos anticipado) no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
 
 \[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba = f' \text{.}\]
 
@@ -770,7 +782,7 @@ Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que no
 
 \noindent Pero ningún monomio principal de $G$ divide a ningún monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
 
-Como en algunos casos $→_{≤, G}$ no es confluente, la siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
+La siguiente definición nos permite hablar más cómodamente de una forma normal de un elemento (tanto en las definiciones y teoremas como en los algoritmos).
 
 \begin{definition}\label{def:reductor}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$. Se define que
@@ -788,17 +800,23 @@ Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
   $i ← 1$
 
   \While{$i ≤ n$} {
-    \While{$i ≤ n$} {
-      \If{$g_i ∈ \sop(f')$} {
-        $f' ← f' - \frac{f'_{\lm(g_i)}}{\lc(g_i)}g_i$
+    $r ← False$
 
-        $i ← 1$
+    \For{$m ∈ \sop(f')$} {
+      \If{$\lm_≤(g_i) | m$} {
+        Sean $a, b ∈ ⟨X⟩$ tales que $m = a \lm_≤(g_i) b$
+        $f' ← f' - \frac{f'_{\lm_≤(g_i)}}{\lc_≤(g_i)}a g_i b$
+
+        $r ← True$
 
         \Break
       }
-      \Else{
-        $i ← i + 1$
-      }
+    }
+
+    \If{$r$} {
+      $i ← 1$
+    } \Else {
+      $i ← i + 1$
     }
   }
   \Return{$f'$}
@@ -818,7 +836,7 @@ Una propiedad sobre los reductores que necesitaremos es que mantienen la pertene
 
 \section{Bases de Gröbner}
 
-Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular podríamos determinar si un elemento está en el ideal viendo si se llega a $0$ como la forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular podríamos determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -847,9 +865,9 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
     \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. \label{thm:egb:3}
 
-    \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. \label{thm:egb:4}
+    \item $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm_≤(g) | \lm_≤(f)$. \label{thm:egb:4}
 
-    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K, g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g_i b_i) ≤ \lm(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
+    \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K, g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g_i b_i) ≤ \lm_≤(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
   \end{enumerate}
 \end{theorem}
 \begin{proof} Probaremos \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
@@ -861,8 +879,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
       & ⇔ f ≡_I 0 \Arrow{\Cref{theorem:→^* = ≡}} \\
       & ⇔ f ↔^*_{≤, G} 0 \Arrow{Por \cref{lemma:→ gröbner es Church-Rosser}, $→_{≤, G}$ es Church-Rosser, definición de Church-Rosser} \\
       & ⇔ f ↓_{≤, G} 0 \Arrow{Definición de $↓$} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{\Cref{thm:→ achican}} \\
-      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' ≤ 0 \Arrow{\Cref{lemma:0 es mínimo}} \\
+      & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ 0 →^*_{≤, G} f' \Arrow{\Cref{thm:→ achican} y \cref{lemma:0 es mínimo}} \\
       & ⇔ ∃f' ∈ K⟨X⟩ : f →^*_{≤, G} f' ∧ f' = 0 \\
       & ⇔ f →^*_{≤, G} 0 \text{.}
     \end{DispWithArrows*}
@@ -880,18 +897,18 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \begin{DispWithArrows*}
       &f →^*_{≤, G} f_0 ∧ f →^*_{≤, G} f_1 \\
       & ⇒ f_0 ↔^*_{≤, G} f_1 \Arrow{\Cref{theorem:→^* = ≡}} \\
-      & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición $≡_{\ ·\ }$} \\
+      & ⇒ f_0 ≡_{(G)} f_1 \Arrow{Definición de $≡_G$} \\
       & ⇒ f_0 - f_1 ∈ (G) \Arrow{Antecedente} \\
       & ⇒ f_0 - f_1 →^*_{≤, G} 0 \Arrow{\Cref{lemma:suma →↓}} \\
       & ⇒ (f_0 - f_1) + f_1 ↓_{≤, G} 0 + f_1 \\
       & ⇒ f_0 ↓_{≤, G} f_1 \text{.}
     \end{DispWithArrows*}
 
-    \item[\ref{thm:egb:4} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es válida porque es parte de \ref{thm:egb:4}. Para la otra parte probémoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
+    \item[\ref{thm:egb:4} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $(G) = I ∧ ∀f ∈ I - \{0\} : ∃g ∈ G : \lm_≤(g) | \lm_≤(f)$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. La parte de $(G) = I$ es válida porque es parte de \ref{thm:egb:4}. Para la otra parte probémoslo por contradicción. En particular tomemos el mínimo $f$ tal que $f ∈ I$ pero no se cumple que $f →^*_{≤, G} 0$.
 
-    Por \ref{thm:egb:4} sea $g ∈ G$ tal que $\lm(g) | \lm(f)$ y sean también:
+    Por \ref{thm:egb:4} sea $g ∈ G$ tal que $\lm_≤(g) | \lm_≤(f)$ y sean también:
     \begin{itemize}
-      \item $a, b ∈ ⟨X⟩$ tales que $a \lm(g) b = \lm(f)$.
+      \item $a, b ∈ ⟨X⟩$ tales que $a \lm_≤(g) b = \lm_≤(f)$.
       \item $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$.
     \end{itemize}
 
@@ -912,17 +929,17 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     Sean:
     \begin{itemize}
       \item $n ∈ ℕ, f_0, …, f_n ∈ K⟨X⟩$ tales que $f_0 = f$, $f_n = 0$ y $f_0 →_{≤, G} f_1 →_{≤, G} … →_{≤, G} f_n$, los cuales existen porque $f →^*_{≤, G} 0$ y por el \cref{lemma:→* como ∃}.
-      \item Para cada $i ∈ {1, …, n}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
+      \item Para cada $i ∈ \{1, …, n\}$, $g_i ∈ G, a_i, b_i ∈ X$ tales que $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$ y $f_i = f_{i-1} - \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}a_i g_i b_i$ los cuales existen por definición de $→_{≤, G}$.
     \end{itemize}
 
-    Probaremos que el $∃$ de \ref{thm:egb:5}, se satisface con $c_i = \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}, g_i, a_i, b_i$. O sea, tenemos que probar $\lm(a_i g_i b_i) ≤ \lm(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
+    Probaremos que el $∃$ de \ref{thm:egb:5}, se satisface con $c_i = \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)}, g_i, a_i, b_i$. O sea, tenemos que probar $\lm_≤(a_i g_i b_i) ≤ \lm_≤(f)$ y $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$.
 
     \begin{description}
-      \item[Prueba de $\lm(a_i g_i b_i) ≤ \lm(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm(a_i g_i b_i) ≤ \lm(f)$.
+      \item[Prueba de $\lm_≤(a_i g_i b_i) ≤ \lm_≤(f)$ fijando $i$:] Por el \cref{thm:→ achican} y por transitividad de $<$ tenemos $f_{i-1} ≤ f$. Además tenemos $a_i g_i b_i ≤ f_{i-1}$ porque $\lm_≤(a_i g_i b_i) ∈ \sop(f_{i-1})$, así que por transitividad de $≤$ vale $\lm_≤(a_i g_i b_i) ≤ \lm_≤(f)$.
       \item[Prueba de $f = ∑_{i = 1}^n \frac{(f_{i-1})_{\lm_≤(a_i g_i b_i)}}{\lc_≤(g_i)} a_i g_i b_i$:] Es consecuencia directa de como se eligieron los $g_i, a_i, b_i$.
     \end{description}
 
-    \item[\ref{thm:egb:5} $⇒$ \ref{thm:egb:4}:] Supongamos \ref{thm:egb:5} y probemos \ref{thm:egb:4}. Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm(g) | \lm(f)$.
+    \item[\ref{thm:egb:5} $⇒$ \ref{thm:egb:4}:] Supongamos \ref{thm:egb:5} y probemos \ref{thm:egb:4}. Para eso tenemos que probar $(G) = I$ y $∀f ∈ I : ∃g ∈ G - \{0\} : \lm_≤(g) | \lm_≤(f)$.
 
     \begin{description}
       \item[Prueba de $(G) = I$:] Tomemos $f ∈ I$ y probemos $f ∈ (G)$.
@@ -931,11 +948,11 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 
       Esto encaja exactamente con la definición de $(G)$, así que queda probado $f ∈ (G)$.
 
-      \item[Prueba de $∀f ∈ I - \{0\} : ∃g ∈ G : \lm(g) | \lm(f)$:] Fijemos $f ∈ I - \{0\}$.
+      \item[Prueba de $∀f ∈ I - \{0\} : ∃g ∈ G : \lm_≤(g) | \lm_≤(f)$:] Fijemos $f ∈ I - \{0\}$.
 
-      Por \ref{thm:egb:5} tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm(a_i g_i b_i) ≤ \lm(f)$.
+      Por \ref{thm:egb:5} tenemos que $f = ∑_{i = 1}^n c_i a_i g_i b_i$ con $c_i ∈ K$, $a_i, b_i ∈ ⟨X⟩$, $g_i ∈ G$ y $\lm_≤(a_i g_i b_i) ≤ \lm_≤(f)$.
 
-      Como $\lm(a_i g_i b_i) ≤ \lm(f)$, sí o sí tiene que pasar para algún $j$ que $\lm(a_j g_j b_j) = \lm(f)$ y para este $g_j$ vale que $\lm(g_j) | \lm(f)$.
+      Como $\lm_≤(a_i g_i b_i) ≤ \lm_≤(f)$, sí o sí tiene que pasar para algún $j$ que $\lm_≤(a_j g_j b_j) = \lm_≤(f)$ y para este $g_j$ vale que $\lm_≤(g_j) | \lm_≤(f)$.
     \end{description}
 
   \end{description}
@@ -946,7 +963,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
   \ref{thm:egb:2} del \cref{thm:equivalencias de base de Gröbner} nos da una manera precisa de responder al \cref{problem:principal}. Para decidir si $f$ está en el ideal generado por $G$, primero le calculamos una base de Gröbner al ideal y si la tiene, aplicamos el \cref{alg:reductor} con esta base y si el resultado es $0$ entonces $f$ está en el ideal.
 \end{observation}
 
-Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos el siguiente corolario.
+Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇔ eq} tenemos el siguiente colorario. % ¿Está bien escrito colorario? Porque me lo pone como error
 
 \begin{colorary}\label{col:(G) = (G') cond}
   Sean $G, G' ⊆ K⟨X⟩$ bases de Gröbner, entonces
@@ -957,7 +974,9 @@ Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇒ eq} tenemo
 
 \section{Algoritmo de Buchberger}
 
-En esta sección se explica un primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger. Antes de poder calcular bases de Gröbner algo que estaría bueno hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso definiremos algo llamado S-polinomio de dos polinomios y los usaremos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Los S-polinomios entre dos polinomios multiplican cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ tendremos una cuenta $k a f b - k' c g d$ de forma que se cancelen los monomios principales.
+En esta sección se explica el primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger.
+
+Antes de poder calcular bases de Gröbner algo que estaría bueno hacer es poder computar si un conjunto es una Base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable porque hacen cuantificaciones sobre conjuntos infinitos. Para eso definiremos algo llamado S-polinomio de dos polinomios y los usaremos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una Base de Gröbner. Los S-polinomios entre dos polinomios multiplican cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ tendremos una cuenta $k a f b - k' c g d$ de forma que se cancelen los monomios principales.
 
 Primero definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
 
@@ -1115,7 +1134,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
   $(\B_{e_≤}(G)) = (G)$.
 \end{lemma}
 \begin{proof}
-  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$. Con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇒ eq} tenemos lo que queremos probar.
+  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$. Con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇔ eq} tenemos lo que queremos probar.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:6}
@@ -1151,7 +1170,7 @@ Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger corr
 
   Para probar \ref{thm:Buchberger correctitud:item:2}, asumamos el antecedente, o sea, que $(G)$ tiene una base de Gröbner finita, y tomemos una base finita $\{g_1, …, g_n\}$. Ahora tenemos que probar el consecuente, o sea, que $∃i ∈ ℕ ∪ \{0\} : (\B_{e_≤}^i(G))$ es una base de Gröbner.  Para cada $i ∈ \{1, …, n\}$ sean:
   \begin{itemize}
-    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner}.
+    \item $g_{i, 1}, …, g_{i, k_i} ∈ \B_{e_≤}(G), a_{i, 1}, …, a_{i, k_i}, b_{i, 1}, …, b_{i, k_i} ∈ ⟨X⟩$ con $\lm_≤(a_{i, j} g_{i, j} b_{i, j}) ≤ \lm_≤(g_i)$ tales que $g_i = ∑_{j = 1}^{k_i} a_{i, j} g_{i, j} b_{i, j}$. Los cuales existen por por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner}.
 
     \item $G' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$.
 
@@ -1159,11 +1178,11 @@ Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger corr
   \end{itemize}
 
   Tenemos que probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
-  \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm(a_i g'_i b_i) ≤ \lm(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
+  \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g'_i b_i) ≤ \lm_≤(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
-  Tomemos $f ∈ (G) - \{0\}$ y escribámoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ {1, …, n}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
+  Tomemos $f ∈ (G) - \{0\}$ y escribámoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ \{1, …, n\}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
   \begin{itemize}
-    \item $\lm(a'_i g_{i'_i} b'_i) ≤ \lm(f)$ y
+    \item $\lm_≤(a'_i g_{i'_i} b'_i) ≤ \lm_≤(f)$ y
     \item $f = ∑_{i = 1}^{n'} a'_i g_{i'_i} b'_i$.
   \end{itemize}
 
@@ -1243,9 +1262,9 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
   \KwResult{$G' ⊆ \{agb : a, b ∈ ⟨X⟩, g ∈ G\}$}
   $G' ← ∅$
 
-  $considerados ← \{\lm(g) : g ∈ P\}$
+  $considerados ← \{\lm_≤(g) : g ∈ P\}$
 
-  $T ← ⋃_{g ∈ P} \sop(\tail(g))$
+  $T ← ⋃_{g ∈ P} \sop(\tail_≤(g))$
 
   \While{$T ≠ ∅$} {
     elegir $m ∈ T$
@@ -1253,12 +1272,12 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
     $T ← T - \{m\}$
 
     \For{$g ∈ G$} {
-      \If{$\lm(g) | m$} {
-        calcular $a$ y $b$ tales que $m = a \lm(g) b$
+      \If{$\lm_≤(g) | m$} {
+        calcular $a$ y $b$ tales que $m = a \lm_≤(g) b$
 
         $G' ← G' ∪ {agb}$
 
-        $nuevos ← \{m' ∈ \sop(\tail(agb)) : m' ∉ considerados\}$
+        $nuevos ← \{m' ∈ \sop(\tail_≤(agb)) : m' ∉ considerados\}$
 
         $T ← T ∪ nuevos$
 
@@ -1282,7 +1301,7 @@ El siguiente seudocódigo hace eso:
   \KwResult{$F' ⊆ K⟨X⟩$}
   $G' ←$ Preprocesamiento simbólico$(G, F)$
 
-  $monomios ← \{\lm(g) : g ∈ G'\}$
+  $monomios ← \{\lm_≤(g) : g ∈ G'\}$
 
   $M ← \{m : m ∈ \sop(g), g ∈ G' ∪ F\}$
 
@@ -1290,7 +1309,7 @@ El siguiente seudocódigo hace eso:
 
   reducir por filas $mat$
 
-  $F' ← \{\poli_M(v) : v ∈ \filas(mat) : v ≠ 0 ∧ \lm(\poli_M(v)) ∉ monomios\}$
+  $F' ← \{\poli_M(v) : v ∈ \filas(mat) : v ≠ 0 ∧ \lm_≤(\poli_M(v)) ∉ monomios\}$
 
   \Return{$F'$}
 \end{algorithm}
@@ -1336,7 +1355,7 @@ En \cite{thesis:Hof20} se da un algoritmo muy parecido a este (con una diferenci
 
 Las optimizaciones mencionadas en la sección de Buchberger para descartar ambigüedades y para quitar polinomios de la base también se pueden hacer acá. Otra optimización que se puede hacer es usar un algoritmo de reducción de matrices que anda más rápido en las matrices de este problema en particular, llamado eliminación Faugère-Lachartre. Esto también es abordado en la \cref{secton:optimizaciones}.
 
-\chapter{Librería}
+\chapter{Librería}\label{cap:Librería}
 
 Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. Este capítulo describe la estructura general de la librería y cómo usarla en su versión actual (fecha de publicación de esta tesis).
 
@@ -1656,7 +1675,7 @@ Ahora un pequeño ejemplo de uso de la librería, con un ejemplo similar al del 
 Este código, que trabaja sobre los racionales, lee un conjunto generador en formato numérico, le calcula una base de Gröbner, asumiendo que tiene una finita, y la imprime de forma bonita.
 
 
-\chapter{Implementación}
+\chapter{Implementación}\label{cap:Implementación}
 
 En este capítulo se explican los detalles de cómo está hecha la implementación en su versión actual (fecha de publicación de esta tesis).
 
@@ -1833,7 +1852,7 @@ Usando esa función, en el método \texttt{add\_amb} tanto de Buchberger como de
 
 La segunda optimización consiste en que cuando se procesa una ambigüedad de inclusión se puede borrar de la base al polinomio grande de la ambigüedad.
 
-Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm(f) = a \lm(g) b$ con $a, b ∈ ⟨X⟩$. Esta optimización permite en esas ambigüedades borrar $f$ de la base.
+Para recordar, una ambigüedad de inclusión entre los polinomio $f$ y $g$ es cuando se tiene que $\lm_≤(f) = a \lm_≤(g) b$ con $a, b ∈ ⟨X⟩$. Esta optimización permite en esas ambigüedades borrar $f$ de la base.
 
 Esta optimización se implementó en Buchberger pero no en F4, porque por algún motivo cuando se probó en F4 anduvo más lento. No se investigó por qué pasó eso.
 
@@ -1970,7 +1989,7 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agregó eso en la línea anterior. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
 
 
-\chapter{Tests}
+\chapter{Tests}\label{cap:Tests}
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
@@ -2231,7 +2250,7 @@ Estos datos igualmente mucho no dicen, porque como buscan por una cierta cantida
 
 Este benchmark se usó principalmente para tenerlo como comparación cuando se hacían cambios en el código. Como se corrían siempre todos los tests y benchmarks antes y después del cambio, este servía para comparar el antes y el después.
 
-\chapter{Conclusiones}
+\chapter{Conclusiones}\label{cap:Conclusiones}
 
 El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para mí este era un tema completamente nuevo, así que empecé por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas, mientras leía ese libro hice también una implementación así nomás de bases de Gröbner conmutativas en \cpp. Esto fue bueno porque me sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso fui leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son sobre bases de Gröbner no conmutativas, e implementando lo explicado.
 
