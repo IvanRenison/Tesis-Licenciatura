@@ -804,7 +804,7 @@ Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
 
     \For{$m ∈ \sop(f')$} {
       \If{$\lm_≤(g_i) | m$} {
-        Sean $a, b ∈ ⟨X⟩$ tales que $m = a \lm_≤(g_i) b$
+        calcular $a, b ∈ ⟨X⟩$ tales que $m = a \lm_≤(g_i) b$
         $f' ← f' - \frac{f'_{\lm_≤(g_i)}}{\lc_≤(g_i)}a g_i b$
 
         $r ← True$
@@ -1106,7 +1106,7 @@ Con el siguiente teorema se enuncia que la base de Buchberger es una base de Gr�
   \end{enumerate}
 \end{theorem}
 
-Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que \ref{thm:Buchberger correctitud:item:2} es más sorprendente. Para demostrar ambos ítems primero probaremos algunos lemas en el contexto de este teorema (o sea con $G$ y $e_≤$ fijados).
+Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como definimos la base de Buchberger, mientras que \ref{thm:Buchberger correctitud:item:2} es más sorprendente. Para demostrar ambos ítems primero probaremos algunos lemas en el contexto de este teorema, o sea con $G$ y $e_≤$ fijados.
 
 \begin{lemma}\label{lemma:Buchberger correctitud:3}
   $∀i ∈ ℕ ∪ \{0\} : \B_{e_≤}^{i}(G) ⊆ (G)$.
@@ -1124,7 +1124,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:4}
-  $∀i ∈ ℕ : \B_{e_≤}(G) ⊆ (G)$.
+  $\B_{e_≤}(G) ⊆ (G)$.
 \end{lemma}
 \begin{proof}
   Esto es consecuencia directa del \cref{lemma:Buchberger correctitud:3} y la definición de $\B_{e_≤}$.
@@ -1134,7 +1134,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
   $(\B_{e_≤}(G)) = (G)$.
 \end{lemma}
 \begin{proof}
-  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$. Con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇔ eq} tenemos lo que queremos probar.
+  Por la definición de $\B_{e_≤}^i$ tenemos $G ⊆ \B_{e_≤}^i(G)$ y por ende $G ⊆ (\B_{e_≤}(G))$. Con el \cref{lemma:Buchberger correctitud:4} aplicando el \cref{lemma:sub gen y sub gen ⇔ eq} tenemos lo que queremos probar.
 \end{proof}
 
 \begin{lemma}\label{lemma:Buchberger correctitud:6}
@@ -1159,7 +1159,7 @@ Es esperable que \ref{thm:Buchberger correctitud:item:1} sea cierto por como def
   Llamemos (i) a esto último. Por otro lado, por definición de reductor tenemos que
   \[ \S(α) →^*_{≤, \B_{e_≤}^k(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \]
   y por ende
-  \[ \S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \text{(ii).} \]
+  \[ \S(α) →^*_{≤, \B_{e_≤}(G)} e_≤(\B_{e_≤}^k(G))(\S(α)) \text{.} \]
   Llamemos (ii) a esto último. Combinando (i) y (ii) vale que $\S(α) →^*_{≤, \B_{e_≤}(G)} 0$, que es lo que queríamos probar.
 \end{proof}
 
@@ -1174,10 +1174,10 @@ Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger corr
 
     \item $G' = \{g_{i, j} : i ∈ \{1, …, n\}, j ∈ \{1, …, k_i\}\}$.
 
-    \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$. Notar que $k$ está bien definido porque $G'$ es finito.
+    \item $k ∈ ℕ$ el mínimo tal que $G' ⊆ \B_{e_≤}^k(G)$. Notar que $k$ está bien definido porque $G'$ es finito y los $g_{i, j}$ están en $\B_{e_≤}(G)$.
   \end{itemize}
 
-  Tenemos que probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
+  Vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
   \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g'_i b_i) ≤ \lm_≤(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
   Tomemos $f ∈ (G) - \{0\}$ y escribámoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ \{1, …, n\}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
@@ -1194,7 +1194,7 @@ Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger corr
     & = ∑_{i = 1}^{n'} ∑_{j = 1}^{k_i'} a'_i a_{i', j} g_{i, j} b_{i', j} b'_i \text{.}
   \end{DispWithArrows*}
 
-  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$. Así que queda $f$ escrito como queríamos y la prueba completada.
+  Sabemos además que $g_{i',j} ∈ \B_{e_≤}^k(G)$ y que $g_{i', j} ≤ g_{i'_i} ≤ f$. Así que queda $f$ escrito como queríamos y la prueba queda completada.
 \end{proof}
 
 Con estos conjuntos podemos de forma directa dar un seudocódigo que los calcula:
@@ -1254,7 +1254,13 @@ En esta sección se explica el algoritmo F4, que es otro método para calcular B
   \[ \mat_M(f_1, …, f_m) = \begin{pmatrix} \mat_M(f_1) \\ ⋮ \\ \mat_M(f_m) \end{pmatrix} \text{.} \]
 \end{definition}
 
-Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios. Así, en la reducción, restar un polinomio multiplicado por un escalar y un monomio a cada lado la idea es que pase a ser restarle una fila multiplicada por un escalar a otra en la matriz. Para eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado, es decir, con los $agb$ con $a,b ∈ ⟨X⟩$ y $g ∈ G$. Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios necesarios:
+Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios en la que cada monomio se corresponde con una columna de la matriz.
+
+Con esto, en la reducción, restar un polinomio multiplicado por un escalar y un monomio a cada lado a otro polinomio, o sea, hacer $f ← f - \frac{f_{\lm_≤(g)}}{\lc_≤(g)}a g b$ al reducir $f$ con $g$, la idea es que pase a ser restarle una fila multiplicada por un escalar a otra fila en la matriz, o sea, hacer $\text{fila}_i ← \text{fila}_i - c · \text{fila}_j$.
+
+Para poder hacer eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado, es decir, cuando va a hacer falta hacer $f ← f - \frac{f_{\lm_≤(g)}}{\lc_≤(g)}a g b$ hay que tener $agb$ en la matriz. Tener solo $g$ en la matriz no serviría porque no coincidirían los monomios y por ende no coincidirían las columnas de la matriz.
+
+Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios necesarios:
 
 \begin{algorithm}[H] % La H es para que se quede acá, porque se iba a otra página. Estaría bueno hacerlo global
   \caption{Preprocesamiento simbólico}\label{alg:Preprocesamiento simbólico}
@@ -1262,7 +1268,7 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
   \KwResult{$G' ⊆ \{agb : a, b ∈ ⟨X⟩, g ∈ G\}$}
   $G' ← ∅$
 
-  $considerados ← \{\lm_≤(g) : g ∈ P\}$
+  $considerados ← ⋃_{g ∈ P} \sop(g)$
 
   $T ← ⋃_{g ∈ P} \sop(\tail_≤(g))$
 
@@ -1289,9 +1295,9 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios.
   \Return{$G'$}
 \end{algorithm}
 
-% Agregar ejemplo
+El seudocódigo se puede entender como funciona analizandolo en detalle, pero lo importante es saber que calcula los polinomios que va a hacer falta que sean las filas de la matriz, y no importa demasiado entender como funciona por dentro. % ¿Está "analizandolo" bien escrito?
 
-Una vez que hemos determinados los monomios que necesitamos, armamos la matriz correspondiente a $G$ y $F$ usando la función $\mat_T$ y reducimos por fila esta matriz. Con la matriz no es obvio que hay que hacer, porque hay que solo considerar las filas que corresponden a los polinomios reducidos, pero no necesariamente son las mismas filas que eran antes porque la reducción por filas puede hacer cosas como intercambiar filas. Para saber cuáles son esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
+Una vez que tenemos los monomios nesesarios, armamos la matriz correspondiente a $G$ y $F$ usando la función $\mat_T$ y reducimos por fila esta matriz. Con la matriz no es obvio que hay que hacer, porque hay que solo considerar las filas que corresponden a los polinomios reducidos, pero no necesariamente son las mismas filas que eran antes los polinomios sin reducir porque la reducción por filas puede hacer cosas como intercambiar filas. Para saber cuáles son esas filas lo que se hace es guardar cuáles son los monomios principales de elementos del resultado del preprocesamiento simbólico y después de hacer la reducción por filas agarrar solo las filas que tengan un uno principal en una columna que no corresponda a uno de esos monomios principales.
 
 El siguiente seudocódigo hace eso:
 
