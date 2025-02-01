@@ -321,7 +321,7 @@ Más adelante será necesario tener un orden entre los elementos de $⟨X⟩$. S
 
 Un ejemplo de orden que cumple con esta definición es el siguiente.
 
-\begin{definition}
+\begin{definition}\label{def:orden lexicográfico por grado}
   Fijemos $X = \{x_1, …, x_n\}$ y un orden total sobre $X$: $x_1 ≤ … ≤ x_n$, el cual se extiende (como es usual) de forma lexicográfica a $⟨X⟩$. El orden lexicográfico por grado $ ≤_{deglex}$ sobre $⟨X⟩$ se define así:
   \[ m ≤_{deglex} m' ⇔ |m| < |m'| ∨ (|m| = |m'| ∧ m ≤ m') \text{.}\]
 \end{definition}
@@ -1375,7 +1375,7 @@ El repositorio tiene varios directorios, pero hay dos que son las más relevante
 
 Todo el código de la librería está en el namespace \texttt{ncgb}. En todos los códigos que veamos asumiremos que \texttt{ngcb} está abierto.
 
-Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables; además muchas operaciones y métodos de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que se puedan variar esas tres cosas se usan templates para hacer las funciones y estructuras de forma genérica. Por ejemplo, la definición de polinomio es así: % No se como reemplazar "cosas" acá porque son dos tipos y un orden
+Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables; además muchas operaciones y métodos de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que se puedan variar esas tres cosas se usan templates para hacer las funciones y estructuras de forma genérica. Por ejemplo, el esqueleto de la definición de polinomio es así: % No se como reemplazar "cosas" acá porque son dos tipos y un orden
 
 \begin{minted}{C++}
   template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
@@ -1391,7 +1391,7 @@ El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo
   % Miguel puso: No entiendo qué significa esto. ¿Es relevante para que yo pueda definir un nuevo cuerpo?
   % Es relevante porque significa que podés hacer que devuelvan void, y eso de hecho pasa en ModularArithmetic
   % No se como explicarlo de otra forma.
-  \item \texttt{==} (y también \texttt{!=}, pero a partir de \cppXX está automáticamente con \texttt{==}).
+  \item \texttt{==} (y también \texttt{!=}, pero ese no hace falta definirlo a mano, porque a partir de \cppXX está automáticamente con \texttt{==}).
   % Miguel sugirió: (y también !=. Sólo es necesario si se compila con un estándar anterior a C++20 ).
   % No creo que compile con un C++ anterior al 20, pero, algo pasa es que si en C++ mayor o igual a 20 igual se define !=, se usa ese != definido a parte, no la negación de ==. No me convence lo que sugiere Miguel por que no queda claro eso.
   \item \texttt{<<} para imprimir y \texttt{>>} para leer.
@@ -1407,9 +1407,8 @@ El tipo \texttt{X} se usa para representar las variables como números y la idea
 % Miguel puso:
 %   ¿por qué tienen que ser números? ¿es buena idea?
 %   ¿Qué podría fallar? ¿Qué operaciones asumís sobre X?
-% Ni idea de que podría fallar, pero porque alguien querría usar otra cosa? O sea, el motivo para hacerlo genérico es por si alguien lo quiere usar para más de 256 variables, no para hacer cosas raras
-
-Por último, \texttt{ord} es el orden monomial que se usa y está puesto por defecto \texttt{DegLexOrd} que es el orden lexicográfico por grado y ya está definido junto con la definición de monomios. Para usar otro orden hay que definir una estructura que tenga un operador \texttt{()} que implemente el testeo del orden. Esta es la forma estándar de definir órdenes para usar en templates en \cpp. Algo así podría ser el código si es una implementación para un \texttt{X} genérico:
+% Ni idea de que podría fallar, pero porque alguien querría usar otra cosa? O sea, el motivo para hacerlo genérico es por si alguien lo quiere usar para más de 256 variables, no para hacer def:orden lexicográfico por grado
+Por último, \texttt{ord} es el orden monomial que se usa y está puesto por defecto \texttt{DegLexOrd} que es el orden lexicográfico por grado de la \cref{def:orden lexicográfico por grado} y ya está definido junto con la definición de monomios. Para usar otro orden hay que definir una estructura que tenga un operador \texttt{()} que implemente el testeo del orden. Esta es la forma estándar de definir órdenes para usar en templates en \cpp. Algo así podría ser el código si es una implementación para un \texttt{X} genérico:
 % Miguel puso: ¡Pero no dás la implementación!
 % Pero qué debería hacer?
 
@@ -1538,7 +1537,7 @@ Los polinomios están definidos en el archivo \path{ncgb/nc_polynomial.hpp} y lo
 
 Para construir un polinomio hay tres constructores: el constructor vacío que produce el polinomio $0$, un constructor que toma un monomio $m$ y un elemento del cuerpo $c$ y produce el polinomio $cm$, y un constructor que toma un vector de pares monomio-coeficiente y produce el polinomio que es la suma de cada coeficiente multiplicado con su monomio.
 
-El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=}, por ejemplo), métodos algunas de las cosas definidas en la \cref{def:cosas de polinomios} (\texttt{coeff}, \texttt{lm}, \texttt{lc} y \texttt{lt}) y métodos relacionados a la representación de los polinomios como strings. % No se porque remplazar "cosas" acá
+El tipo \texttt{Poly} tiene implementadas todas las operaciones entre polinomios (como la suma) con los operadores correspondientes (como \texttt{operator+} y \texttt{operator+=}, por ejemplo), algunas de las cosas definidas en la \cref{def:cosas de polinomios} (\texttt{coeff}, \texttt{lm}, \texttt{lc} y \texttt{lt}) y métodos relacionados a la representación de los polinomios como strings. % No se porque remplazar "cosas" acá
 
 Al igual que con los monomios, para la representación como strings, hay dos pares de métodos: \texttt{operator>>} y \texttt{operator<<} para formato numérico, y \texttt{nice\_print} y \texttt{nice\_read} para formato visualmente bonito.
 
