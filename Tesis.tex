@@ -19,7 +19,7 @@
 \titleformat{\chapter}[display]
   {\normalfont\huge\bfseries}  % Estilo del título
   {Capítulo \thechapter}                 % Número del capítulo
-  {20pt}                        % Espacio entre el número y el título
+  {2pt}                        % Espacio entre el número y el título
   {}                            % Formato del título
 \titlespacing*{\chapter}{0pt}{-15pt}{25pt}  % Ajusta los márgenes
 
@@ -141,9 +141,9 @@
 
 \chapter{Introducción}
 
-En este capítulo se explica informalmente de qué se trata la tesis.
+En este capítulo se explica de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Se puede considerar que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Así se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos nuevos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se puede considerar que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Así se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos nuevos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente:
 
@@ -154,23 +154,23 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 
 Acá los $f_i$ y $f'_i$ se llaman cofactores. Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-El motivo por el cual no es decidible es que el problema de la palabra se reduce a esto. Ver \cite{web:wiki:WordPproblem} para información del problema de la palabra y la Sección 1.3 de \cite{article:MORA1994131} para saber cómo es la reducción.
+Este problema no es decidible porque que hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver que es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción.
 
-Para trabajar en algoritmos para ese problema se considera el conjunto $(G)$ (que así se denota) de todos los polinomios no conmutativos que satisfacen ese $∃$ y se calcula algo que se llama una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Son estos últimos casos los que hacen que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
+Para trabajar en algoritmos para ese problema se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, y se calcula algo que se llama una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Que pase esto último es lo que hace que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
 De antes de esta tesis existen varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementada en el sistema algebraico computacional Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en Python con SageMath, que es otro sistema algebraico computacional que al mismo tiempo es librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
-La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para que sea al menos igual de buena que la de Python con SageMath.
+La parte de implementar en \cpp esos algoritmos se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para igualar o llegar a ser mejor que la de Python con SageMath.
 
-Alguien podría preguntar para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico. En el caso no conmutativo en cambio las aplicaciones son más limitadas, pero existen.
+Alguien podría preguntar para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico; pero en el caso no conmutativo en cambio las aplicaciones son más limitadas y especificas.
 
 Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
-En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria para entender el trabajo, incluyendo algunos temas que no son parte del tema de bases de Gröbner, pero son necesaria para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica como usar la librería que se desarrolló. En el \cref{cap:Implementación} se explica como son las implementaciones. En el \cref{cap:Tests} se explica brevemente que tests se hicieron para que la librería ande bien. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
+En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria para entender el trabajo, incluyendo algunos temas que no son parte del tema de bases de Gröbner, pero están para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica como usar la librería que se desarrolló. En el \cref{cap:Implementación} se explica como son las implementaciones. En el \cref{cap:Tests} se explica brevemente que tests se hicieron para que la librería ande bien. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
 
 \chapter{Preliminares}\label{cap:Preliminares}
 
@@ -756,13 +756,13 @@ El siguiente teorema caracteriza las formas normales de $→$.
 \end{theorem}
 \begin{proof} Probemos ida y vuelta por separado
   \begin{description}
-    \item[Ida ($⇒$):] por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm_≤(g) | m$.
+    \item[Ida ($⇒$):] Por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm_≤(g) | m$.
 
     \noindent Sean $a, b ∈ ⟨X⟩$ tales que $m = agb$, los cuales existen por la definición de divisibilidad.
 
     \noindent Entonces tenemos $f →_{≤, G} f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$ y por ende $f$ no está en forma normal.
 
-    \item[Vuelta ($⇐$):] por contrarrecíproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
+    \item[Vuelta ($⇐$):] Por contrarrecíproca, supongamos que $f$ no está en forma normal con respecto a $→_{≤, G}$ y probemos existe $g$ que satisface el $∃$. Sean:
     \begin{itemize}
       \item $f' ∈ K⟨X⟩$ tal que $f →_{≤, G} f'$, el cual existe por el antecedente.
       \item $a, b ∈ ⟨X⟩, g ∈ G$ tales que $\lm_≤(agb) ∈ \sop(f)$ y $f' = f - \frac{f_{\lm_≤(agb)}}{\lc_≤(g)}agb$, los cuales existen por la definición de $→_{≤, G}$.
@@ -836,7 +836,7 @@ Una propiedad sobre los reductores que necesitaremos es que mantienen la pertene
 
 \section{Bases de Gröbner}
 
-Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ podríamos siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular podríamos determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que $→_{≤, G}$ sea confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ se podría siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular se podría determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -1235,7 +1235,7 @@ Hay otras dos optimizaciones que se pueden hacer: una es para descartar algunas 
 
 \section{Algoritmo F4}
 
-En esta sección se explica el algoritmo F4, que es otro método para calcular Bases de Gröbner. La idea de F4 es considerar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, reduciendo con los elementos que ya están en la base y entre los propios S-polinomios que se están considerando. Para esto se convierte el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila. Para codificar los polinomios como filas de una matriz hacen falta algunas definiciones.
+En esta sección se explica el algoritmo F4, que es otro método para calcular bases de Gröbner. La idea de F4 es considerar varias ambigüedades y reducir todos sus S-polinomios al mismo tiempo, reduciendo con los elementos que ya están en la base y entre los propios S-polinomios que se están considerando. Para esto se convierte el problema en una reducción por filas de una matriz, codificando cada monomio como una columna y cada polinomio como una fila. Para codificar los polinomios como filas de una matriz hacen falta algunas definiciones.
 
 \begin{definition}
   Sea $F ⊆ K⟨X⟩$. Se define
@@ -1363,11 +1363,11 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}\label{cap:Librería}
 
-Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. Este capítulo describe la estructura general de la librería y cómo usarla en su versión actual (fecha de publicación de esta tesis).
+Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. Este capítulo describe la estructura general de la librería y cómo usarla en su versión actual (fecha de publicación de esta tesis). % Para no decir fecha de publicación de esta tesis podía poner un tag de v0.1, pero estoy esperando a agregarle una licencia
 
 \section{Estructura de la librería}
 
-El repositorio tiene varias carpetas, pero hay dos que son las más relevantes para el o la usuaria. La primera es la carpeta \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. La otra carpeta relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
+El repositorio tiene varios directorios, pero hay dos que son las más relevantes para el o la usuaria. El primero es el directorio \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. El otro directorio relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
 Todo el código de la librería está en el namespace \texttt{ncgb}. En todos los códigos que veamos asumiremos que \texttt{ngcb} está abierto.
 
@@ -1422,7 +1422,7 @@ Tanto para \texttt{X} como para \texttt{ord} los valores por defecto están pues
 % Miguel puso: Esto puede ir antes.
 % Pero no se donde podría ir antes
 
-La librería también tiene un Makefile con el que se pueden compilar los mains de la carpeta \path{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
+La librería también tiene un Makefile con el que se pueden compilar los mains del directorio \path{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
 
 \section{Monomios}
 
@@ -1999,20 +1999,20 @@ Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para 
 
 Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
-Todos los tests están en la carpeta \path{test}, la cual está dividida en varias subcarpetas con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En la carpeta \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
+Todos los tests están en el directorio \path{test}, la cual está dividida en varios subdirectorios con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En el directorio \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
 Algunos tests corren el código de la librería y el código de \texttt{operator\_gb}, que es la librería hecha por Clemens Hofstadler en su tesis de máster \cite{thesis:Hof20} usando SageMath, y comparan los resultados, y otros corren solo código de la librería.
 
-También, algunos tests corren los mains de ejemplo de la carpeta \path{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
+También, algunos tests corren los mains de ejemplo del directorio \path{mains} y otros directamente incluyen a los archivos de la librería y los testean directamente.
 
 A continuación una lista de lo más importante de los tests:
 
 \begin{itemize}
-  \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en la carpeta \path{test/internal_tests}.
-  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un test que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \path{mains/compare_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Este test está en la carpeta \path{test/base_tests}.
-  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que sí está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar sí o sí porque por los que dieron que sí sabemos que (si no hay bugs) sí está. Esto está en la carpeta \path{test/InIdeal_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
-  \item Con respecto a la representación con cofactores, hay un test que corre los algoritmos con y sin representación con cofactores y se fija que el resultado de con cofactores después de convertir los \texttt{CofactorPoly} en \texttt{Poly} sea igual al resultado sin cofactores. Este test está en la carpeta \path{test/cofactor_tests}.
-  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre dé el mismo resultado. Esto está en la carpeta \path{test/parallelism_tests}.
+  \item Hay tests de las operaciones básicas de monomios, polinomios, reducción, etc. en el directorio \path{test/internal_tests}.
+  \item Para algunos conjuntos generadores que se sabe que sus ideales generados tienen bases de Gröbner finitas hay un test que calcula una base de Gröbner con Buchberger, una con F4 y una con \texttt{operator\_gb} y chequea que los resultados sean equivalentes usando \path{mains/compare_bases.cpp}. Este archivo lo que hace es leer dos conjuntos generadores y, asumiendo que son bases de Gröbner, dice si generan el mismo ideal o no usando la función \texttt{cmpBases} explicada en la \cref{section:Comparación de bases de Gröbner (libreria)}. Este test está en el directorio \path{test/base_tests}.
+  \item Para algunos conjuntos generadores construidos al azar se construye otro polinomio también al azar y tanto con Buchberger como con F4 y con \texttt{operator\_gb} se ejecutan algunos pasos del cálculo de la base de Gröbner para ver si está el polinomio en el ideal o no. Si alguno(s) de los tres da que sí está en el ideal y otro(s) no, se ejecutan los que no con muchísimos más pasos, para que tenga que terminar sí o sí porque por los que dieron que sí sabemos que (si no hay bugs) sí está. Esto está en el directorio \path{test/InIdeal_tests}. % Esto me parece que no se entiende nada, pero no se como explicarlo.
+  \item Con respecto a la representación con cofactores, hay un test que corre los algoritmos con y sin representación con cofactores y se fija que el resultado de con cofactores después de convertir los \texttt{CofactorPoly} en \texttt{Poly} sea igual al resultado sin cofactores. Este test está en el directorio \path{test/cofactor_tests}.
+  \item Por último hay un test que corre F4 no paralelo y paralelo con distintas cantidades de hilos y se fija que siempre dé el mismo resultado. Esto está en el directorio \path{test/parallelism_tests}.
 \end{itemize}
 
 \chapter{Benchmarks}\label{cap:Benchmarks}
@@ -2026,7 +2026,7 @@ En este capítulo se presentan los resultados obtenidos tras correr los tests qu
 
 De cualquier manera esos datos no son muy importantes porque lo importante son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son, todos salvo uno, tests que usan los mains de la carpeta \path{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son, todos salvo uno, tests que usan los mains de el directorio \path{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
 Todos los tests que tienen benchmarks, salvo uno, funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2199,7 +2199,7 @@ Se puede ver que aumentar los hilos hace que sea un poco más rápido, pero muy 
 
 \section{Representación con cofactores}
 
-El test que compara ejecutar Buchberger con y sin representación con cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains de la carpeta \path{mains} sino que usa sus propios archivos, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
+El test que compara ejecutar Buchberger con y sin representación con cofactores también usa los mismos casos y mide los tiempos. Este es el único benchmark que no funciona con mains del directorio \path{mains} sino que usa sus propios archivos, y además este benchmark mide los tiempos desde \cpp. En el siguiente gráfico se pueden ver los resultados.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
