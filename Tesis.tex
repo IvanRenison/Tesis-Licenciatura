@@ -136,6 +136,10 @@
 \def\tituloTesis{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo} % Repito el título porque en los metadatos tengo que poner C++ y acá \cpp
 \input{Carátula}
 
+\section*{Resumen} % Completar
+
+
+\section*{Abstract} % Completar
 
 \tableofcontents
 
@@ -387,7 +391,7 @@ Sobre estas definiciones valen muchas propiedades fáciles de probar, como por e
 
 Más adelante será necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
-\begin{definition}
+\begin{definition}\label{def:orden polinomial}
   Sean $f, g ∈ K⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
@@ -1422,7 +1426,7 @@ Tanto para \texttt{X} como para \texttt{ord} los valores por defecto están pues
 % Miguel puso: Esto puede ir antes.
 % Pero no se donde podría ir antes
 
-La librería también tiene un Makefile con el que se pueden compilar los mains del directorio \path{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
+La librería también tiene un Makefile con el que se pueden compilar los archivos del directorio \path{mains} y correr los tests. Este Makefile puede servir de ejemplo de como se compila un archivo que usa la librería.
 
 \section{Monomios}
 
@@ -1486,6 +1490,7 @@ Para declarar un monomio con \texttt{X = \_\_uint8\_t}, leerlo en formato numér
   std::cin >> m;
   m.nice_print();
 \end{minted}
+% No se porque este snippet no tiene ningún color
 
 En el mismo archivo \path{ncgb/nc_monomial.hpp} está definido el orden lexicográfico por grado \texttt{DegLexOrd}.
 
@@ -1561,6 +1566,8 @@ Por ejemplo, acá hay un polinomio en el formato como se suelen escribir a mano:
   1 5 0 3 1 3 0
 \end{lstlisting}
 
+En el archivo \path{ncgb/nc_polynomial.hpp} también está definido el orden polinomial de la \cref{def:orden polinomial} como \texttt{PolyOrd}.
+
 Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, \texttt{X = \_\_uint8\_t} y \texttt{ord = DegLexOrd<X>}, leerlo en formato numérico e imprimirlo en formato bonito se puede hacer así:
 
 \begin{minted}{C++}
@@ -1571,7 +1578,7 @@ Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, \texttt{X =
 
 \section{Buchberger y F4}
 
-Los algoritmos de Buchberger y F4 están ambos hechos de una forma que se usan similar, así que por eso están explicados juntos.
+Los algoritmos de Buchberger y F4 tienen una interfaz similar, así que por eso están explicados juntos.
 
 Como ambos algoritmos tienen el problema de que pueden no terminar, no conviene hacer directamente una función que tome el conjunto generador y devuelva una base de Gröbner porque podría no terminar. Sí tiene sentido tener una función como esa para casos en los que se sabe que hay una base de Gröbner finita, pero no conviene que sea la única forma de usar los algoritmos.
 
@@ -1635,7 +1642,7 @@ Sin embargo esa información se puede calcular y ese cálculo está implementado
 
 Estas funciones devuelven elementos del tipo \texttt{CofactorPoly} definido en el archivo \path{ncgb/nc_cofactorPolynomial.hpp}. Este tipo representa un polinomio como una combinación lineal de elementos del conjunto generador. En particular, guarda un vector de elementos $m$, $i$, $m'$, $c$ de forma que, si los $g_i$ son el conjunto generador, el polinomio representado es $∑ m g_i m' c$.
 
-Para F4 esto no está implementado (en el siguiente capítulo se explica más del por qué).
+Para F4 esto no está implementado (en el siguiente capítulo se explica más del porqué).
 
 
 \section{Comparación de bases de Gröbner}\label{section:Comparación de bases de Gröbner (libreria)}
@@ -1646,9 +1653,9 @@ En el archivo \path{ncgb/cmpBases.hpp} está la función \texttt{cmpBases} que t
 
 Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo solo para una parte del código. En esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
 
-La paralelización está hecha con OpenMP (\cite{lib:openmp}), que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP.
+La paralelización está hecha con OpenMP \cite{lib:openmp}, que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP.
 
-Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los mains y los test. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
+Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los archivos de directorio \path{mains} y los tests. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
 
 
 \section{Ejemplo}
@@ -1699,16 +1706,16 @@ Los monomios, o sea los elementos de $⟨X⟩$, como son palabras se implementar
 
 Con esto, usando \texttt{X = \_\_uint8\_t}, que tiene 8 bits, se pueden tener hasta 256 variables. Cuando los monomios se imprimen o leen de forma bonita solo hay 26 variables, correspondiendo el 0 con la \texttt{a}. Si se quiere imprimir de forma bonita un monomio que usa variables mayores o iguales a 26 salta una aserción.
 
-Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, para lo cual, la forma directa de hacerlo lleva tiempo cuadrático en el largo de las palabras, pero se puede hacer en tiempo lineal.
+Esta estructura tiene implementadas las operaciones y métodos que se describieron en el capítulo anterior. La mayoría tienen una implementación directa. Las únicas no directas son las relacionadas a la división, porque chequear divisibilidad es chequear si una palabra es sub-palabra de otra, para lo cual, la forma directa de hacerlo llevaría tiempo cuadrático en el largo de las palabras, pero se puede hacer, y se hizo, en tiempo lineal.
 
-Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z (que en el código está en el archivo \path{ncgb/Zfunc.hpp}). En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
+Hay muchas formas de hacerlo en tiempo lineal, la que se usó es la función Z, que en el código está en el archivo \path{ncgb/Zfunc.hpp}. En \cite{web:cp-algo:Zfunc} se explica la función Z y cómo usarla para chequear si una palabra es sub-palabra de otra.
 % También quizás tiene sentido aclarar que no es la misma que la función ζ de Riemann, que es lo primero que aparece al buscar en google "función Z"
 
 Junto con la implementación de los monomios, en el archivo \path{ncgb/nc_monomial.hpp} está la implementación del orden lexicográfico por grado, que también es directa.
 
 \section{Polinomios}
 
-Los polinomios, o sea los elementos de $K⟨X⟩$ están implementados usando un vector de pares monomio-coeficiente que siempre se mantiene ordenado por el orden monomial. La base de la implementación es así:
+Los polinomios, o sea los elementos de $K⟨X⟩$ están implementados usando un vector de pares monomio-coeficiente que siempre se mantiene ordenado por el orden monomial. El esqueleto de la implementación es así:
 
 \begin{minted}{C++}
   template<typename K, typename X = __uint8_t, class ord = DegLexOrd<X>>
@@ -1718,9 +1725,7 @@ Los polinomios, o sea los elementos de $K⟨X⟩$ están implementados usando un
   };
 \end{minted}
 
-Con esta estructura para los polinomios todas las operaciones se hacen de forma directa.
-
-El orden de los polinomios está definido como \texttt{template<typename K, typename X, class ord> struct PolyOrd}.
+En esta estructura, \texttt{terms} es el vector de pares monomio-coeficiente mencionado. Con esta estructura para los polinomios todas las operaciones se hacen de forma directa.
 
 \section{Reducción}
 
@@ -1992,12 +1997,12 @@ Con esto el primer \texttt{for} se puede paralelizar directamente.
 
 \subsection{Uso de OpenMP para paralelizar}
 
-Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agregó eso en la línea anterior. En el \cref{cap:Benchmarks} se dan los datos de qué tal anda.
+Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agregó eso en la línea anterior. En el \cref{cap:Benchmarks} se presentan resultados de qué tal anda.
 
 
 \chapter{Tests}\label{cap:Tests}
 
-Siempre que se programa, para que salga bien hay que testear todo, y este trabajo no fue una excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
+Siempre que se programa, testear es fundamental para obtener buenos resultados, y este trabajo no fue la excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en el directorio \path{test}, la cual está dividida en varios subdirectorios con varios tests cada una. Para correr todos los tests se puede usar el comando \texttt{make test}. En el directorio \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
@@ -2022,13 +2027,15 @@ En este capítulo se presentan los resultados obtenidos tras correr los tests qu
 \begin{itemize}
   \item Procesador: AMD EPYC 7643 48-Core Processor
   \item RAM: 126 GB
+  \item Sistema Operativo: Debian GNU/Linux trixie/sid
+  \item Versión de \texttt{g++}: 14.2.0-12
 \end{itemize}
 
 De cualquier manera esos datos no son muy importantes porque lo importante son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son, todos salvo uno, tests que usan los mains de el directorio \path{mains} y mains hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
+Los tests que tienen benchmarks son, todos salvo uno, tests que usan los archivos de el directorio \path{mains} y archivos ejecutables hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas eso no debería ser problema.
 
-Todos los tests que tienen benchmarks, salvo uno, funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
+Todos los tests que tienen benchmarks, salvo uno (que mas adelante se explica), funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
 \begin{itemize}
   \item FK2 $ = \{a^2\}$
@@ -2274,7 +2281,7 @@ La implementación de Buchberger incluye la parte de la representación con cofa
 
 Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es una de las cosas más importantes para hacer.
 
-Del algoritmo F4 (y de Buchberger) para el caso sí conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
+Del algoritmo F4 (y de Buchberger) para el caso conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas cosas útiles, en particular, podría ser que ya alguien haya hecho la implementación de la reducción por filas de Faugère-Lachartre, ya que posiblemente sirva también para el caso no conmutativo.
 
 Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones pero al hacerlos el código resultaba andar más lento, así que se descartaban esos cambios. Sería bueno agregar más tests y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests.
 
@@ -2301,7 +2308,8 @@ Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como 
 
 Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
 
-\chapter{Bibliografía}
+\chapter*{Bibliografía}
+\addcontentsline{toc}{chapter}{Bibliografía} % Estás dos lineas están así para que no aparesca como capítulo numerado, pero si aparesca en el índice
 
 \printbibliography[heading=none]
 
