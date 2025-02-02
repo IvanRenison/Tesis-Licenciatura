@@ -136,8 +136,9 @@
 
 \section*{Resumen}
 
-En este trabajo se aborda el cálculo de algo que se llama bases de Gröbner no conmutativas, que es algo que tiene que ver con los que se llaman polinomios no conmutativos. En los primeros capítulos se da toda la explicación matemática del tema, de forma que la tesis es autocontenida y en los siguientes capítulos se explica una librería de \cpp que se hizo que implementa los algoritmos y demás cosas explicadas en la explicación matemática.
-% Ni idea de si esto está bien
+En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que es algo que tiene que ver con los llamados polinomios no conmutativos. Ya existen de antes algunas implementaciones de dicho cálculo, pero el presentado en este trabajo es el primero en \cpp y además incluye un poquito de paralelismo.
+
+En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica una librería de \cpp que se hizo, que implementa el cálculo (además de otras cosas necesarias).
 
 \section*{Abstract} % Completar
 
@@ -176,7 +177,7 @@ Acá los $f_i$ y $f'_i$ se llaman cofactores. Este problema así planteado no es
 
 Este problema no es decidible porque hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción.
 
-Para trabajar en algoritmos para ese problema se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, y se calcula algo que se llama una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Que pase esto último es lo que hace que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
+Para trabajar en algoritmos para ese problema se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, y se calcula algo llamado una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Que pase esto último es lo que hace que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
@@ -2070,7 +2071,7 @@ Todos los tests que tienen benchmarks, salvo uno (que más adelante se explica),
   \item trit5 $ = \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
 \end{itemize}
 
-Los FK provienen de la teoría de álgebras de Nichols, las cuales son de interés para Cristian Vay, el director de esta tesis, y otros investigadores de FAMAF. Los FK definen algo que se llama álgebras de Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
+Los FK provienen de la llamada teoría de álgebras de Nichols, la cual es de interés para Cristian Vay, el director de esta tesis, y otros investigadores de FAMAF. Los FK definen una álgebra llamada Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
 
 \begin{itemize}
   \item El cuerpo es $ℚ$.
