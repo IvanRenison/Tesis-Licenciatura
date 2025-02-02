@@ -25,8 +25,6 @@
 
 \DeclareEmphSequence{\bfseries}
 
-\hfuzz=1cm % Elimina warnings de "Overfull \hbox"
-
 \usepackage[a4paper, margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
 
 \usepackage{float}
@@ -808,7 +806,10 @@ La siguiente definición nos permite hablar más cómodamente de una forma norma
 
 \begin{definition}\label{def:reductor}
   Sea $e_≤ : 𝒫(K⟨X⟩) → K⟨X⟩ → K⟨X⟩$. Se define que
-  \[ e_≤\text{ es un reductor }⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.} \]
+  \begin{align*}
+    & e_≤\text{ es un reductor }\\
+    &\ \ ⇔ ∀G ⊆ K⟨X⟩, f ∈ K⟨X⟩ : e_≤(G)(f)\text{ es forma normal de }f\text{ con respecto a }→_{≤, G} \text{.}
+  \end{align*} % Esto lo hice así para que no se salga del margen, no se si es lo mejor o no
 \end{definition}
 
 Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
@@ -1013,7 +1014,7 @@ Primero definimos las ambigüedades, que representan los polinomios para los cua
     \item relevante $⇔$ es de superposición o de inclusión.
   \end{itemize}
 
-  Si $f, f' ∈ K⟨X⟩$ se define que $(a, b, c, d, f, f')$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \lm_≤{(f')})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes.
+  Si $f, f' ∈ K⟨X⟩$ se define que $(a, b, c, d, f, f')$ es una ambigüedad si y solo si $(a, b, c, d, \lm_≤{(f)}, \allowbreak \lm_≤{(f')})$ es una ambigüedad y lo mismo para ambigüedades de superposición, de inclusión y relevantes. % Tube que poner \allowbreak para que no se salga del margen
 
   Además se define
   \[ \amb(f, f') = \{(a, b, c, d, f, f') : (a, b, c, d, f, f')\text{ es una ambigüedad relevante}\} \text{.} \]
@@ -1628,7 +1629,7 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
   enum IdealMembershipStatus {
     InIdeal,   // The element is definitely in the ideal
     NotInIdeal,// The element is definitely not in the ideal
-    Unknown    // More steps are needed to determine if the element is in the ideal
+    Unknown    // More steps needed to determine if the element is in the ideal
   };
 \end{minted}
 
@@ -1637,7 +1638,7 @@ Para ambos algoritmos hay además una función \texttt{inIdeal} que toma un conj
 \begin{minted}{C++}
   template<typename K, typename X, class ord>
   IdealMembershipStatus
-  inIdeal(const std::vector<Poly<K, X, ord>>& G, Poly<K, X, ord> f, size_t st = 20);
+  inIdeal(const std::vector<Poly<K, X, ord>>& G, Poly<K, X, ord> f, size_t st);
 \end{minted}
 
 Esa función básicamente trata de responder el \cref{problem:principal} de si un polinomio está en el ideal generado por un conjunto generador.
@@ -1824,7 +1825,7 @@ Una librería que hace la reducción por filas es FLINT, que lo hace para el tip
 
 Algo malo que tiene esa especialización es que las matrices de racionales con las que trabaja FLINT no están definidas como vectores de vectores, sino que son su propio tipo \texttt{fmpq\_mat\_t}, así que la función tiene que primero copiar la matriz a una matriz de FLINT, después hacer la reducción por filas y por último copiar el resultado de vuelta a la matriz original.
 
-El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t());}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba más lento, así que se descartó.
+El motivo por el cual se hizo eso es que esas matrices de FLINT se usan de una forma muy particular y complicada. Por ejemplo, para asignarle un valor \texttt{x} de tipo \texttt{mpq\_class} a una posición de la matriz hay que hacer \texttt{fmpq\_set\_mpq(fmpq\_mat\_entry(mat, i, j), x.get\_mpq\_t(\allowbreak));}. Esto hace que si se quisiera directamente en F4 trabajar con las matrices de FLINT no se podría hacer el código genérico para cualquier \texttt{K}. Se probó también hacer que las matrices sean una estructura propia y hacer una especialización de \texttt{Matrix<mpq\_class>} para que use \texttt{fmpq\_mat\_t} por dentro, pero andaba más lento, así que se descartó. % Tube que poner \allowbreak porque si no se pasaba del margen, pero no se si es la mejor forma de hacerlo
 
 \subsection{Preprocesamiento simbólico}
 
