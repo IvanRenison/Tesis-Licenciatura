@@ -1650,9 +1650,9 @@ En el archivo \path{ncgb/cmpBases.hpp} está la función \texttt{cmpBases} que t
 
 \section{Paralelismo} % O paralelización?
 
-Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner. Eso se hizo parcialmente para F4. O sea, se hizo solo para una parte del código. En esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner para que corra en varios hilos al mismo tiempo, si la paralelización fuera muy buena, si se corre en $x$ hilos el tiempo que se demora en correr, si la computadora tiene $x$ núcleos o ma,s podría disminuir hasta $1/x$ veces el tiempo original. La paralelización se hizo parcialmente para F4, o sea, se hizo solo para una parte del código, pero al ser solo parcialmente no hace casi diferencia en el tiempo, así que no sería muy útil usarlo actualmente. De cualquier manera, en esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
 
-La paralelización está hecha con OpenMP \cite{lib:openmp}, que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP.
+La paralelización está hecha con OpenMP \cite{lib:openmp}, que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP y a continuación se explica.
 
 Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los archivos de directorio \path{mains} y los tests. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
 
