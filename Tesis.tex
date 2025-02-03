@@ -50,7 +50,8 @@
   uniquename = false,
   style = alphabetic,
   abbreviate = false,
-  clearlang = true
+  clearlang = true,
+  date = iso
 ]{biblatex}
 \addbibresource{biblio.bib}
 % Página para buscar citas: zbmath.org
@@ -185,7 +186,7 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
 
 Acá los $f_i$ y $f'_i$ se llaman cofactores. Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
-Este problema no es decidible porque hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción.
+Este problema no es decidible porque hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
 
 Para trabajar en algoritmos para ese problema se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, y se calcula algo llamado una base de Gröbner de $(G)$, que puede ser finita o infinita computacionalmente enumerable. Que pase esto último es lo que hace que el problema no sea computable. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
@@ -199,7 +200,9 @@ Alguien podría preguntar para qué sirve tratar de resolver ese problema y calc
 
 Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
 
-También hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
+Como ya se dijo, el problema de la palabra se puede reducir al \cref{problem:principal}, así que los algoritmos eficientes para bases de Gröbner no conmutativas también pueden ser útiles para el problema de la palabra.
+
+Por último, también hay algunas aplicaciones de bases de Gröbner no conmutativas (y también de conmutativas) en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
 En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria para entender el trabajo, incluyendo algunos temas que no son parte del tema de bases de Gröbner, pero están para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica cómo usar la librería que se desarrolló. En el \cref{cap:Implementación} se explica cómo son las implementaciones. En el \cref{cap:Tests} se explica brevemente qué tests se hicieron para que la librería ande bien. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
 
