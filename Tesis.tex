@@ -191,7 +191,26 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
   \[ ∃n ∈ ℕ, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 \end{problem}
 
-Acá los $f_i$ y $f'_i$ se llaman cofactores. Este problema así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
+Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \{a, b, c\}$, si:
+\begin{align*}
+  g_0 &= ab + bc \text{,} \\
+  g_1 &= ba + ca \text{,} \\
+  G &= \{g_0, g_1\} \text{,} \\
+  f_0 &= aba - bba \text{,} \\
+  f_1 &= abc + cba \text{.}
+\end{align*}
+
+\noindent Tenemos que para $f_0$ si vale el \cref{problem:principal} porque
+\begin{align*}
+  g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
+    &= aba + bca - bba - bca \\
+    &= aba - bba \\
+    &= f_0
+\end{align*}
+
+\noindent Pero para $f_1$ no vale porque no hay ninguna forma de escribirlo como combinación lineal de $g_0$ y $g_1$ con coeficientes en $ℚ⟨a, b, c⟩$. % No se si acá tendría que decir algo de que no hay porque corrí el código y dio que hay una base de Gröbner finita pero ese polinomio no está
+
+El \cref{problem:principal} así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
 
 Este problema no es decidible porque hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
 
@@ -566,6 +585,8 @@ Ahora volvemos al álgebra libre y a partir de ahora fijamos un cuerpo $K$.
 \begin{observation}
   Con las definiciones que tenemos ahora el \cref{problem:principal} se puede escribir como: dado un conjunto finito $G ⊆ K⟨X⟩$ y un elemento $f ∈ K⟨X⟩$, determinar si $f ∈ (G)$.
 \end{observation}
+
+Esta observación es tan importante que de hecho el \cref{problem:principal} se llama `problema de pertenencia al ideal'.
 
 Si bien $(G)$ para un anillo general está definido usando combinaciones lineales con coeficientes en el anillo, para el álgebra libre es útil la siguiente equivalencia que dice que alcanza con considerar solo monomios y elementos del cuerpo como cofactores.
 
