@@ -147,7 +147,7 @@
 
 \section*{Resumen}
 
-En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que es algo que tiene que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero el presentado en este trabajo es el primero en \cpp y además incluye un poquito de paralelismo.
+En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que es algo que tiene que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero la presentada en este trabajo es la primera en \cpp y además incluye un poquito de paralelismo.
 
 En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica una librería de \cpp que se hizo, la cual implementa el cálculo (además de otras cosas necesarias), y se la compara con una de las implementaciones anteriores.
 
@@ -175,7 +175,14 @@ En los primeros capítulos se proporciona una explicación matemática completa 
 
 En este capítulo se explica de qué se trata la tesis.
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se puede considerar que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Así se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos nuevos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$.
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se puede considerar que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Así se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos nuevos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
+\begin{align*}
+  f_0 &= a \text{,} \\
+  f_1 &= ab + cb \text{,} \\
+  f_2 &= 3 abb - 2 acab + 4 bcca \text{.}
+\end{align*}
+
+\noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$, o escrito formalmente:
 
@@ -382,14 +389,14 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos. Cuando tengamos una lista de variables $x_1, …, x_n$ escribimos $R⟨x_1, …, x_n⟩$ en lugar de $R⟨\{x_1, …, x_n\}⟩$.
 \end{definition}
 
-Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
+Recordemos los ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ dados en la introducción:
 \begin{align*}
   f_0 &= a \text{,} \\
   f_1 &= ab + cb \text{,} \\
   f_2 &= 3 abb - 2 acab + 4 bcca \text{.}
 \end{align*}
 
-\noindent Notar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
+\noindent Recordar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
 
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
 
