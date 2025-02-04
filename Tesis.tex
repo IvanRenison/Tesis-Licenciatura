@@ -26,6 +26,7 @@
 \DeclareEmphSequence{\bfseries}
 
 \usepackage[a4paper, margin=2cm, top=1cm, bottom=1cm]{geometry} % Adjust the margin values as desired
+\hfuzz=4pt % Las figuras de tikz dicen que tienen overfull hbox, pero poniendo los margenes (con showframe) se ve que no sobresale nada. Así que pongo esto para que no aparezcan los warnings
 
 \usepackage{float}
 \usepackage[ruled, vlined, linesnumbered, spanish]{algorithm2e}
@@ -147,26 +148,29 @@
 
 \section*{Resumen}
 
-En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que es algo que tiene que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero la presentada en este trabajo es la primera en \cpp y además incluye un poquito de paralelismo.
+En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que son unos objetos matemáticos que tienen que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero la presentada en este trabajo es la primera en \cpp y además incluye un poquito de paralelismo.
 
 En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica una librería de \cpp que se hizo, la cual implementa el cálculo (además de otras cosas necesarias), y se la compara con una de las implementaciones anteriores.
 
 \section*{Abstract} % Completar
 
+
 % \newpage
 
 % \section*{Reconocimientos}
 
-% La idea de esta sección es listar a quienes ayudaron en algo, pero no sé bien todavía cómo la voy a redactar
+% % La idea de esta sección es listar a quienes ayudaron en algo. No se si está es la mejor forma de hacerla
 
-% Tengo que poner:
+% A continuación una lista de quienes ayudaron en algo con este trabajo: % Además de yo, no se si eso lo debería decir y cómo
 
-% Cristian y Miguel
-% Lu M que la leyó e hizo bastantes sugerencias
-% Álvaro que me ayudó con atom un par de veces y también hizo algunas sugerencias cuando miró un poco la tesis
-% Algo de que usé atom
-% A Nico y Agustín García si hacen sugerencias
+% \begin{itemize}
+%   \item Mis directores Cristian Vay y Miguel Maria Pagano que ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
+%   \item Lucía Martinez Gavier que leyó la tesis y me hizo bastantes sugerencias.
+%   \item Alvaro Roy Schachner que me ayudó con cosas de Linux y la computadora Atom y que además cuando miró la tesis hizo algunas sugerencias.
+%   \item Ana María Cingolani que leyó el resumen y la introducción e hizo algunas sugerencias.
+% \end{itemize}
 
+% Además se usar recursos computacionales de la computadora Atom de FAMAF.
 
 
 \tableofcontents
@@ -1243,7 +1247,7 @@ Con estos lemas ahora sí hagamos la demostración del \cref{thm:Buchberger corr
   \end{itemize}
 
   Vamos a probar que $\B_{e_≤}^k(G)$ es una base de Gröbner de $(G)$. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} alcanza con probar:
-  \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g'_i b_i) ≤ \lm_≤(f) : f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
+  \[ ∀f ∈ (G) - \{0\} : ∃g'_1, …, g'_n ∈ \B_{e_≤}^k(G), a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g'_i b_i) ≤ \lm_≤(f) ∧ f = ∑_{i = 1}^n a_i g'_i b_i \text{.}\]
 
   Tomemos $f ∈ (G) - \{0\}$ y escribámoslo de esa forma. Por \ref{thm:egb:5} del \cref{thm:equivalencias de base de Gröbner} y el hecho de que $\{g_1, …, g_n\}$ es una base de Gröbner, sean $i'_1, …, i'_{n'} ∈ \{1, …, n\}, a'_1, …, a'_{n'}, b'_1, …, b'_{n'} ∈ ⟨X⟩$ tales que:
   \begin{itemize}
@@ -1639,7 +1643,7 @@ Se podría hacer una función que además del conjunto generador tome un número
 
 Para evitar esos problemas se definió una estructura cuyo constructor toma a los polinomios y tiene un método \texttt{next} que calcula un paso más del cálculo de la base de Gröbner y en caso de haber terminado lo indica, y un método \texttt{fullBase} para usar solo en el caso de que se sepa que hay una base finita, que hace las llamadas a \texttt{next} hasta que termina y devuelve la base.
 
-Para Buchberger la estructura está en el archivo \path{ncgb/Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \path{ncgb/F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo.
+Para Buchberger la estructura dicha está en el archivo \path{ncgb/Buchberger.hpp} y se llama \texttt{BuchbergerIncremental} y para F4 la estructura está en el archivo \path{ncgb/F4.hpp} y se llama \texttt{F4Incremental}. En el caso de Buchberger el método \texttt{next} devuelve un \texttt{std::optional<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene un polinomio de la base de Gröbner. En el caso de F4 el método \texttt{next} devuelve un \texttt{std::vector<Poly<K, ord>>} que es vacío solo en el caso de que ya se haya llegado a una base de Gröbner y si no tiene varios polinomios de la base de Gröbner. En ambos casos devolver vacío es la forma de decir que ya terminó el algoritmo. % Redacción para evitar overfull hbox
 
 La interfaz de Buchberger podría describirse así:
 
