@@ -148,9 +148,9 @@
 
 \section*{Resumen}
 
-En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que son unos objetos matemáticos que tienen que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero la presentada en este trabajo es la primera en \cpp y además incluye un poquito de paralelismo.
+En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que son unos objetos matemáticos que tienen que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero en este trabajo se presenta una que es la primera en \cpp y que además incluye un poquito de paralelismo.
 
-En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica una librería de \cpp que se hizo, la cual implementa el cálculo (además de otras cosas necesarias), y se la compara con una de las implementaciones anteriores.
+En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica la librería de \cpp donde se hizo la implementación del cálculo (además de otras cosas necesarias), y se la compara con una de las implementaciones anteriores.
 
 \section*{Abstract} % Completar
 
@@ -166,7 +166,7 @@ En los primeros capítulos se proporciona una explicación matemática completa 
 % \begin{itemize}
 %   \item Mis directores Cristian Vay y Miguel Maria Pagano que ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
 %   \item Lucía Martinez Gavier que leyó la tesis y me hizo bastantes sugerencias.
-%   \item Alvaro Roy Schachner que me ayudó con cosas de Linux y la computadora Atom y que además cuando miró la tesis hizo algunas sugerencias.
+%   \item Alvaro Roy Schachner que me ayudó con cosas de la computadora Atom y que además leyó la tesis y me hizo bastantes sugerencias.
 %   \item Ana María Cingolani que leyó el resumen y la introducción e hizo algunas sugerencias.
 % \end{itemize}
 
@@ -177,9 +177,7 @@ En los primeros capítulos se proporciona una explicación matemática completa 
 
 \chapter{Introducción}
 
-En este capítulo se explica de qué se trata la tesis.
-
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios con, por ejemplo, variables $x, y$ sobre un cuerpo $K$ se denota como $K[x, y]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se puede considerar que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Así se obtiene algo como los polinomios, pero en el que los monomios son palabras. A esos nuevos polinomios se los llama polinomios no conmutativos y, por ejemplo, para las variables $x, y$ con coeficientes en un cuerpo $K$ se denotan $K⟨x, y⟩$. En general si $X$ es un alfabeto, $K⟨X⟩$ es el conjunto de los polinomios no conmutativos sobre $X$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denota como $K[X]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se pueden considerar otros polinomios en los que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Estos nuevos polinomios, llamados polinomios no conmutativos, son parecidos a los polinomios normales, siendo sumas de coeficientes multiplicados por monomios, solo que los monomios son palabras. Los polinomios no conmutativos sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denotan como $K⟨X⟩$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
 \begin{align*}
   f_0 &= a \text{,} \\
   f_1 &= ab + cb \text{,} \\
@@ -214,7 +212,7 @@ Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \
 
 \noindent Pero para $f_1$ no vale porque no hay ninguna forma de escribirlo como combinación lineal de $g_0$ y $g_1$ con coeficientes en $ℚ⟨a, b, c⟩$. % No se si acá tendría que decir algo de que no hay porque corrí el código y dio que hay una base de Gröbner finita pero ese polinomio no está
 
-El \cref{problem:principal} así planteado no es decidible, pero sí es semi-decidible. Esto significa que no hay un algoritmo que dice si vale la expresión o no, pero sí hay un algoritmo que en los casos en los que sí vale termina diciendo que sí y los casos en los que no vale puede no terminar.
+El \cref{problem:principal} no es decidible, lo que significa que no hay un algoritmo que dice si vale la expresión o no, pero sí es semi-decidible, lo que significa que hay un algoritmo que en los casos en los que sí vale termina y dice que sí vale la expresión y en los casos en los que no vale puede no terminar.
 
 Este problema no es decidible porque hay un problema muy conocido, llamado el problema de la palabra, que se reduce a este problema. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
 
@@ -222,7 +220,7 @@ Para trabajar en algoritmos para ese problema se considera el conjunto de todos 
 
 Para calcular esas bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. Estos algoritmos, al igual que mucha de la teoría, están inspirados en la teoría para resolver el problema análogo para los polinomios conmutativos. De hecho, muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
-De antes de esta tesis existían varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementado en el sistema algebraico computacional Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en Python con SageMath, que es otro sistema algebraico computacional que al mismo tiempo es librería de Python (su elección de SageMath la justifica en la Sección 6.2). Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
+Antes de este trabajo existían varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementado en el sistema algebraico computacional Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en Python con SageMath, que es otro sistema algebraico computacional que al mismo tiempo es librería de Python. Que yo sepa esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
 El objetivo de este trabajo fue implementar en \cpp esos algoritmos y hacerlos correr en paralelo. La parte de implementarlos en \cpp se logró, pero hay una optimización que ayuda bastante y no se hizo. La parte de hacerlo correr en paralelo se hizo, pero solo para una parte y para la parte de la optimización que no se hizo tampoco se hizo nada en paralelo. Por lo tanto, la implementación que se logró en los casos muy grandes no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo del código y lograr mejorar suficiente la implementación para igualar o llegar a ser mejor que la de Python con SageMath.
 
@@ -240,7 +238,7 @@ En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria par
 
 En este capítulo se desarrolla toda la parte matemática, basada principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de reescritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y propiedades de anillos y se definen las bases de Gröbner. Por último, se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capítulo incluye demostraciones de muchos de los resultados expuestos, pero quienes tengan interés principalmente en la implementación de los algoritmos pueden obviar su lectura o leerlas solo por encima.
+El capítulo incluye demostraciones de muchos de los resultados expuestos, pero leer las demostraciones no es necesario para entender el trabajo.
 
 \section{Sistemas de reescritura}
 
@@ -1431,13 +1429,15 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}\label{cap:Librería}
 
-Como se dijo al principio, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}{\texttt{Non-commutative-Grobner-Bases}}. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis son en esa versión.
+Como se dijo en la introducción, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
 
-\section{Estructura de la librería}
+En este capítulo se explica como se usa la librería sin explicar como está implementada y en el siguiente se explica como está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis son en esa versión.
 
 El repositorio tiene varios directorios, pero hay dos que son los más relevantes para el o la usuaria. El primero es el directorio \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. El otro directorio relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
 Todo el código de la librería está en el namespace \texttt{ncgb}. En todos los códigos que veamos asumiremos que \texttt{ngcb} está abierto.
+
+\section{Uso general de la librería}
 
 Los polinomios como los definimos en el \cref{cap:Preliminares} están asociados a un cuerpo y un conjunto de variables; además, muchas operaciones y métodos de los polinomios (y de otras definiciones) dependen de un orden monomial. Para que se puedan variar esas tres cosas se usan templates para hacer las funciones y estructuras de forma genérica. Por ejemplo, el esqueleto de la definición de polinomio es así: % No se como reemplazar "cosas" acá porque son dos tipos y un orden
 
@@ -1459,12 +1459,12 @@ El tipo \texttt{K} tiene que tener implementadas todas las operaciones de cuerpo
   % Miguel sugirió: (y también !=. Sólo es necesario si se compila con un estándar anterior a C++20 ).
   % No creo que compile con un C++ anterior al 20, pero, algo pasa es que si en C++ mayor o igual a 20 igual se define !=, se usa ese != definido a parte, no la negación de ==. No me convence lo que sugiere Miguel por que no queda claro eso.
   \item \texttt{<<} para imprimir y \texttt{>>} para leer.
-  \item Hacer \texttt{K(0)} y \texttt{K(1)} tiene que andar.
+  \item Las expresiones \texttt{K(0)} y \texttt{K(1)} son validas.
 \end{itemize}
 
 Y como es esperable, las operaciones tienen que cumplir todos los axiomas de cuerpos.
 
-En este trabajo se usaron dos cuerpos distintos, los números racionales, usando el tipo \texttt{mpq\_class} de la librería GMP que ya tiene todo lo que \texttt{K} tiene que tener (\cite{lib:gmp}) y la aritmética modular con una implementación propia en el archivo \path{extras/ModularArithmetic.hpp}, que sirve para ver un ejemplo de un cuerpo que funciona con la librería (aunque tiene algunas operaciones extra).
+En este trabajo se usaron dos cuerpos distintos, los números racionales, usando el tipo \texttt{mpq\_class} de la librería GMP que cumple con todos los requisitos de \texttt{K} \cite{lib:gmp} y la aritmética modular con una implementación propia en el archivo \path{extras/ModularArithmetic.hpp}, que sirve para ver un ejemplo de un cuerpo que funciona con la librería (aunque tiene algunas operaciones extra).
 
 El tipo \texttt{X} se usa para representar las variables como números y la idea es que se use algún tipo de números sin signo. Usar otros tipos podría funcionar pero no está probado. Por defecto se usa \texttt{\_\_uint8\_t} que permite tener hasta 256 variables. Para usar más variables hay que cambiarlo a un entero sin signo más grande como \texttt{\_\_uint32\_t}.
 
@@ -1633,7 +1633,7 @@ Por ejemplo, para declarar un polinomio con \texttt{K = mpq\_class}, \texttt{X =
   p.nice_print();
 \end{minted}
 
-\section{Buchberger y F4}
+\section{Buchberger y F4}\label{section:Buchberger y F4 (librería)}
 
 Los algoritmos de Buchberger y F4 tienen una interfaz similar, así que por eso están explicados juntos.
 
@@ -1708,11 +1708,11 @@ En el archivo \path{ncgb/cmpBases.hpp} está la función \texttt{cmpBases} que t
 
 \section{Paralelismo} % O paralelización?
 
-Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner para que corra en varios hilos al mismo tiempo. Si la paralelización fuera muy buena, si se corre en $x$ hilos el tiempo que se demora en correr, si la computadora tiene $x$ núcleos o más, podría disminuir hasta $1/x$ veces el tiempo original. La paralelización se hizo parcialmente para F4, o sea, se hizo solo para una parte del código, pero al ser solo parcialmente no hace casi diferencia en el tiempo, así que no sería muy útil usarlo actualmente. De cualquier manera, en esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
+Como ya se dijo antes, uno de los objetivos del trabajo fue paralelizar el cálculo de bases de Gröbner para que corra en varios hilos al mismo tiempo. La paralelización se hizo parcialmente para F4, o sea, se hizo solo para una parte del código, pero al ser solo parcialmente no hace casi diferencia en el tiempo, así que no sería muy útil usarla actualmente. De cualquier manera, en esta sección se explica cómo hacer que la parte del código que puede ejecutarse en paralelo lo haga.
 
 La paralelización está hecha con OpenMP \cite{lib:openmp}, que es una librería de \cpp de paralelización, así que para que corra en paralelo es igual que en cualquier otro código paralelizado con OpenMP y a continuación se explica.
 
-Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Este flag está puesto en la configuración del Makefile para cuando se compilan los archivos del directorio \path{mains} y los tests. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
+Para compilar para que se corra en paralelo hay que usar el flag \texttt{-fopenmp}. Solo con usar ese flag sigue igual corriendo con un solo hilo. Para que corra con varios hilos hay varias formas, la más fácil es incluir a OpenMP con \texttt{\#include <omp.h>} y en el main llamar a la función \texttt{omp\_set\_num\_threads} pasándole la cantidad de hilos con los que se quiere correr.
 
 
 \section{Ejemplo}
@@ -1747,7 +1747,7 @@ Este código, que trabaja sobre los racionales, lee un conjunto generador en for
 
 \chapter{Implementación}\label{cap:Implementación}
 
-En este capítulo se explican los detalles de cómo está hecha la implementación.
+En este capítulo se explican los detalles de cómo está hecha la implementación de la librería.
 
 \section{Monomios}
 
@@ -1788,7 +1788,7 @@ En esta estructura, \texttt{terms} es el vector de pares monomio-coeficiente men
 
 La reducción está implementada en el archivo \path{ncgb/reductions.hpp}, en particular en la función \texttt{reduce} que toma un polinomio y un vector de polinomios y reduce el polinomio con los polinomios del vector. La reducción se hace modificando el propio argumento. Esa función sería una implementación de un reductor concreto, o sea, de un $e_≤$ y trata siempre de reducir primero por los primeros elementos del vector y empezando por los monomios más grandes del polinomio.
 
-En el archivo también hay una función \texttt{reduce} que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios (en \cpp se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) y hace la reducción solo con los polinomios que tengan un \texttt{false} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
+La función \texttt{reduce} tiene además una versión alternativa que además toma un vector de booleanos que tiene que ser del mismo largo que el vector de polinomios (en \cpp se puede tener varias funciones con el mismo nombre si tienen argumentos de distinto tipo) y hace la reducción solo con los polinomios que tengan un \texttt{false} en la misma posición en el vector de booleanos. Esta función está para poder implementar la optimización de ir eliminando algunos elementos de la base sin tener que estar modificando un vector.
 
 \section{Ambigüedades}
 
@@ -1825,7 +1825,7 @@ Y por último está la función \texttt{checkDeletionCriteria} que implementa la
 
 \section{Buchberger}
 
-Como ya se dijo antes, por el inconveniente de que el algoritmo puede no terminar, se usa una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
+Como ya se dijo en la \cref{section:Buchberger y F4 (librería)}, por el inconveniente de que el algoritmo puede no terminar, se usa una estructura con un método \texttt{next}. En esa estructura ya están implementadas las optimizaciones antes mencionadas, pero en esta sección primero se explica cómo sería la estructura sin esas optimizaciones y después en la sección \cref{secton:optimizaciones} se explica algo de cómo se agregan.
 
 La base de esa estructura es así:
 
@@ -1897,7 +1897,7 @@ El otro lugar en el que hay diferencia, y mucha, es en \texttt{next}. En F4 este
 
 \section{Optimizaciones}\label{secton:optimizaciones}
 
-Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en los algoritmos de Buchberger y F4, que están explicadas en la Sección 4.5 de \cite{thesis:Hof20}. Acá solo se explican por arriba las optimizaciones y se explican cómo están implementadas.
+Como ya se dijo varias veces, hay algunas optimizaciones que se pueden hacer en los algoritmos de Buchberger y F4, que están explicadas en la Sección 4.5 de \cite{thesis:Hof20}. Acá solo se explican superficialmente las optimizaciones y se explican cómo están implementadas.
 
 \subsection{Descartar ambigüedades}
 
@@ -2017,7 +2017,7 @@ Y el método \texttt{add\_amb} se implementó así:
   }
 \end{minted}
 
-El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar. Lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si se llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Así:
+El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría paralelizar, corriendo sus distintas iteraciones en paralelo. Lo único que lo impide es que \texttt{add\_amb} hace un \texttt{ambs.push} que sería problemático si se llega a ejecutar al mismo tiempo por más de un hilo. Para solucionar eso lo que se hizo es guardar las ambigüedades en varios vectores, uno por cada polinomio de \texttt{G} y después al final de la función agregar todas las ambigüedades a \texttt{ambs}. Haciendo eso, el código paralelizado quedó así:
 
 \begin{minted}{C++}
   void add_poly(Poly<K, X, ord>& f) {
@@ -2025,6 +2025,7 @@ El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría
     size_t lim = G.size() - 1;
     std::vector<std::vector<std::tuple<Amb<X>, size_t, size_t>>> to_add(lim);
 
+    #pragma omp parallel for
     for (size_t k = 0; k < lim; k++) {
       for (auto& amb : ambiguities(G[k].lm(), G.back().lm())) {
         if (!checkDeletionCriteria(G, amb, k, lim)) {
@@ -2050,16 +2051,12 @@ El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría
   }
 \end{minted}
 
-Con esto el primer \texttt{for} se puede paralelizar directamente.
-
-\subsection{Uso de OpenMP para paralelizar}
-
-Para paralelizar se usó la librería OpenMP \cite{lib:openmp}. Con OpenMP para que un \texttt{for} como el de \texttt{add\_poly} se corra en paralelo solo hace falta agregar en la línea anterior \texttt{\#pragma omp parallel for}, así que en el primer \texttt{for} de \texttt{add\_poly} se agregó eso en la línea anterior. En el \cref{cap:Benchmarks} se presentan resultados de qué tal anda.
+El texttt{\#pragma omp parallel for} es lo que efectivamente hace que OpenMP paralelice el \texttt{for}. En el \cref{cap:Benchmarks} se presentan resultados de qué tal anda la paralelización.
 
 
 \chapter{Tests}\label{cap:Tests}
 
-Siempre que se programa, testear es fundamental para obtener buenos resultados, y este trabajo no fue la excepción. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
+Los tests suelen ser una parte fundamental en la implementación de una librería robusta y confiable, así que en este trabajo se testeo todo lo más posible. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en el directorio \path{test}, el cual está dividido en varios subdirectorios con varios tests cada uno. Para correr todos los tests se puede usar el comando \texttt{make test}. En el directorio \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
@@ -2201,7 +2198,7 @@ Acá se puede ver que en los casos más chiquitos si pasa que \texttt{Buchberger
 
 \section{Paralelismo}
 
-El test que prueba que de el mismo resultado correr con distintas cantidades de hilos también usa los mismos casos y mide los tiempos. En el siguiente gráfico se pueden ver los resultados.
+El test que verifica que de el mismo resultado correr con distintas cantidades de hilos también usa los mismos casos y mide los tiempos. En el siguiente gráfico se pueden ver los resultados.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
@@ -2348,7 +2345,7 @@ En la librería hay una especialización de \texttt{rref} para hacer que para \t
 
 Actualmente la librería no viene con nada para instalarla automáticamente porque en \cpp eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. Otras librerías de \cpp sí vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
 
-Además de los ideales de la \cref{def:ideal} existen los ideales a izquierda que se definen de la siguiente manera.
+Los ideales de la \cref{def:ideal} no son los únicos; también existen los ideales a izquierda que se definen de la siguiente manera.
 \begin{definition}
   Sean $R$ un anillo e $I ⊆ R$. Se define que $I$ es un ideal a izquierda de $R$ si y solo si:
   \begin{enumerate}
@@ -2365,7 +2362,7 @@ Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como 
 
 Como se dijo en el \cref{cap:Tests} los tests están configurados para que se corran automáticamente en GitHub, pero a veces los tests en GitHub fallan porque falla la instalación de SageMath. Sería bueno corregir eso, que yo no lo pude arreglar.
 
-Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes como por ejemplo Rust.
+Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoría de forma más segura, preveniendo los errores de memoría, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
 
 \chapter*{Bibliografía}
 \addcontentsline{toc}{chapter}{Bibliografía} % Estás dos lineas están así para que no aparesca como capítulo numerado, pero si aparesca en el índice
