@@ -148,9 +148,9 @@
 
 \section*{Resumen}
 
-En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que son unos objetos matemáticos que tienen que ver con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero en este trabajo se presenta una que es la primera en \cpp y que además incluye un poquito de paralelismo.
+En este trabajo se aborda el cálculo de las llamadas bases de Gröbner no conmutativas, que son unos objetos matemáticos que relacionados con los llamados polinomios no conmutativos. Ya existían previamente algunas implementaciones de dicho cálculo, pero en este trabajo se presenta una que es la primera en \cpp y que además incluye un poquito de paralelismo.
 
-En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica la librería de \cpp donde se hizo la implementación del cálculo (además de otras cosas necesarias), y se la compara con una de las implementaciones anteriores.
+En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida (incluyendo la definición de los polinomios no conmutativos y las bases de Gröbner no conmutativas) y en los siguientes capítulos se explica la librería de \cpp donde se implementó el cálculo (además de otras cosas necesarias) y se la compara con una de las implementaciones anteriores.
 
 \section*{Abstract} % Completar
 
@@ -177,7 +177,7 @@ En los primeros capítulos se proporciona una explicación matemática completa 
 
 \chapter{Introducción}
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denota como $K[X]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se pueden considerar otros polinomios en los que el producto entre las variables no conmuta, así que por ejemplo, $x y ≠ y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo $x 3 y = 3 x y$. Estos nuevos polinomios, llamados polinomios no conmutativos, son parecidos a los polinomios normales, siendo sumas de coeficientes multiplicados por monomios, solo que los monomios son palabras. Los polinomios no conmutativos sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denotan como $K⟨X⟩$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denota como $K[X]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se pueden considerar otros polinomios en los que el producto entre las variables no conmuta, así que por ejemplo, el polinomio $x y$ es distinto del polinomio $y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo el polinomio $x 3 y$ es igual al polinomio $3 x y$. Estos nuevos polinomios, llamados polinomios no conmutativos, son parecidos a los polinomios normales, siendo sumas de coeficientes multiplicados por monomios, solo que los monomios son palabras. Los polinomios no conmutativos sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denotan como $K⟨X⟩$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
 \begin{align*}
   f_0 &= a \text{,} \\
   f_1 &= ab + cb \text{,} \\
@@ -226,7 +226,7 @@ El objetivo de este trabajo fue implementar en \cpp esos algoritmos y hacerlos c
 
 Alguien podría preguntar para qué sirve tratar de resolver ese problema y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico; pero en el caso no conmutativo en cambio las aplicaciones son más limitadas y específicas.
 
-Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas en el \cref{cap:Benchmarks}.
+Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas álgebras en el \cref{cap:Benchmarks}.
 
 Como ya se dijo, el problema de la palabra se puede reducir al \cref{problem:principal}, así que los algoritmos eficientes para bases de Gröbner no conmutativas también pueden ser útiles para el problema de la palabra.
 
@@ -242,7 +242,7 @@ El capítulo incluye demostraciones de muchos de los resultados expuestos, pero 
 
 \section{Sistemas de reescritura}
 
-Sistemas de reescritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general usaremos relaciones denotadas con algún símbolo con forma de flecha porque se tiene la idea de que se \textsl{usa} la relación para convertir el objeto de la base de la flecha en el objeto de la punta de la flecha. Como recordatorio, una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ un subconjunto de $A^2$.
+Sistemas de reescritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general usaremos relaciones denotadas con algún símbolo con forma de flecha porque se tiene la idea de que se \textsl{usa} la relación para convertir el objeto de la base de la flecha en el objeto de la punta de la flecha. Como recordatorio, una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ es un subconjunto de $A^2$.
 
 Para toda esta sección fijemos un conjunto $A$. Primero recordamos algunas operaciones muy comunes sobre relaciones.
 
@@ -1429,9 +1429,9 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}\label{cap:Librería}
 
-Como se dijo en la introducción, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería se encuentra disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
+Como se dijo en la introducción, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería está disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
 
-En este capítulo se explica como se usa la librería sin explicar como está implementada y en el siguiente se explica como está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis son en esa versión.
+En este capítulo se explica cómo se usa la librería sin explicar como está implementada y en el siguiente se explica como está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis se refieren esa versión.
 
 El repositorio tiene varios directorios, pero hay dos que son los más relevantes para el o la usuaria. El primero es el directorio \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. El otro directorio relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
@@ -2056,7 +2056,7 @@ El texttt{\#pragma omp parallel for} es lo que efectivamente hace que OpenMP par
 
 \chapter{Tests}\label{cap:Tests}
 
-Los tests suelen ser una parte fundamental en la implementación de una librería robusta y confiable, así que en este trabajo se testeo todo lo más posible. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
+Los tests suelen ser una parte fundamental en la implementación de una librería robusta y confiable, así que en este trabajo se testió todo lo más posible. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en el directorio \path{test}, el cual está dividido en varios subdirectorios con varios tests cada uno. Para correr todos los tests se puede usar el comando \texttt{make test}. En el directorio \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
