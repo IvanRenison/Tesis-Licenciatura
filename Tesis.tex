@@ -150,7 +150,7 @@
 
 Esta tesis presenta una implementación en \cpp para el calculo de las llamadas bases de Grobner no conmutativas. Ya existían previamente algunas implementaciones de dicho cálculo, pero en esta tesis se presenta una que es la primera en \cpp y además incluye un poquito de paralelismo.
 
-En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida y en los restantes se explica la librería de \cpp donde se implementó el cálculo (además de otras cosas necesarias) y se la compara con una de las implementaciones anteriores.
+En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida y en los restantes se explica la librería de \cpp donde se implementó el cálculo (además de otras cosas necesarias) y se la compara con una de las implementaciones anteriores. % No se con que remplazar el cosas acá
 
 \section*{Abstract} % Completar
 
@@ -2359,8 +2359,6 @@ Los ideales de la \cref{def:ideal} no son los únicos; también existen los idea
 Como ya se mencionó en el \cref{cap:Benchmarks}, no se sabe para $n ≥ 6$ si los FK$n$ tienen una base finita o no. Cuando se tenga una versión muy buena de F4 , se la podría correr por mucho tiempo para FK6 para ver si llega en algún momento a una base finita.
 
 Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando implementé las bases de Gröbner conmutativas para practicar tuve que hacer mi propio testing. Para que sea más fácil estudiar el tema sería útil preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp}{Library Checker}, o en un grupo de \href{https://codeforces.com}{Codeforces}.
-
-Como se dijo en el \cref{cap:Tests} los tests están configurados para que se corran automáticamente en GitHub, pero a veces los tests en GitHub fallan porque falla la instalación de SageMath. Sería bueno corregir eso, que yo no lo pude arreglar.
 
 Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoría de forma más segura, preveniendo los errores de memoría, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
 
