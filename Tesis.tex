@@ -148,7 +148,7 @@
 
 \section*{Resumen}
 
-Este trabajo presenta una implementación en \cpp para el calculo de las llamadas bases de Grobner no conmutativas. Ya existían previamente algunas implementaciones de dicho cálculo, pero en este trabajo se presenta una que es la primera en \cpp y además incluye un poquito de paralelismo.
+Esta tesis presenta una implementación en \cpp para el calculo de las llamadas bases de Grobner no conmutativas. Ya existían previamente algunas implementaciones de dicho cálculo, pero en esta tesis se presenta una que es la primera en \cpp y además incluye un poquito de paralelismo.
 
 En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida y en los restantes se explica la librería de \cpp donde se implementó el cálculo (además de otras cosas necesarias) y se la compara con una de las implementaciones anteriores.
 
@@ -239,7 +239,7 @@ Esta tesis está organizada de la siguiente forma. En el \cref{cap:Preliminares}
 
 En este capítulo se desarrolla toda la parte matemática, basada principalmente en la exposición de \cite{thesis:Hof20}. Primero se explican sistemas de reescritura, después se introduce el álgebra libre, se prueba que es un anillo, se dan algunas definiciones y propiedades de anillos y se definen las bases de Gröbner. Por último, se explican y dan seudocódigos para los algoritmos de Buchberger y F4, que son los dos algoritmos importantes para calcular bases de Gröbner no conmutativas.
 
-El capítulo incluye demostraciones de muchos de los resultados expuestos, pero leer las demostraciones no es necesario para entender el trabajo.
+El capítulo incluye demostraciones de muchos de los resultados expuestos, pero leer las demostraciones no es necesario para entender la tesis.
 
 \section{Sistemas de reescritura}
 
@@ -1144,7 +1144,7 @@ Ahora si enunciamos el teorema para decidir si un conjunto es una base de Gröbn
   \qed
 \end{theorem}
 
-La demostración se puede encontrar por ejemplo en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostramos acá porque requiere varios lemas adicionales que no son pertinentes para este trabajo.
+La demostración se puede encontrar por ejemplo en \cite{phdthesis:Hof23}, en donde algo similar a esto está enunciado en el Teorema 2.4.54. No lo demostramos acá porque requiere varios lemas adicionales que no son pertinentes para esta tesis.
 
 Con esto ya se puede explicar la idea del algoritmo de Buchberger. Supongamos que tenemos un conjunto que no sabemos si es base de Gröbner o no y estamos chequeando si lo es con el \cref{thm:condición de Buchberger}. Si nos encontramos con un S-polinomio $f$ que se reduce a un polinomio $g$ distinto de $0$ podemos agregar $g$ al conjunto y con eso $f$ pasa a sí reducirse a $0$. Se podría pensar que agregar $g$ cambiaría el ideal generado, pero por el \cref{lemma:S es cerrado en ideal} sabemos que $g$ es un elemento del ideal y por el \cref{thm:→ mantiene pertenencia a ideal} eso implica que $f$ también pertenece al ideal. Por ende, por el \cref{lemma:gen G = gen G U a con a ∈ gen G} se puede agregar al conjunto y que el ideal generado siga siendo el mismo. El problema de agregar un nuevo polinomio es que si bien hay un S-polinomio que pasa a sí reducirse a $0$ también aparecen nuevas ambigüedades. Eso, sin embargo, no es tanto problema porque lo que se hace es repetir hasta que en algún momento todas las ambigüedades se reducen a $0$. Si eso no pasa nunca simplemente el algoritmo no termina nunca, lo que refleja la no decidibilidad del problema de pertenencia a un ideal.
 
@@ -1428,7 +1428,7 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 \chapter{Librería}\label{cap:Librería}
 
-Como se dijo en la introducción, para esta tesis se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería está disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
+Como se dijo en la introducción, para este trabajo se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería está disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
 
 En este capítulo se explica cómo se usa la librería sin explicar como está implementada y en el siguiente se explica como está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis se refieren esa versión.
 
@@ -2112,7 +2112,7 @@ Todos los tests que tienen benchmarks, salvo uno (que más adelante se explica),
   \item trit5 $ = \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
 \end{itemize}
 
-Los FK provienen de la llamada teoría de álgebras de Nichols, la cual es de interés para Cristian Vay, el director de esta tesis, y otros investigadores de FAMAF. Los FK definen una álgebra llamada Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
+Los FK provienen de la llamada teoría de álgebras de Nichols, la cual es de interés para Cristian Vay, el director de este trabajo, y otros investigadores de FAMAF. Los FK definen una álgebra llamada Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
 
 \begin{itemize}
   \item El cuerpo es $ℚ$.
@@ -2138,7 +2138,7 @@ En las siguientes subsecciones se presentan los resultados de cada uno de los be
 
 El test que usa los distintos algoritmos para calcular bases de Gröbner de ideales que se sabe que tienen bases de Gröbner finitas incluye mediciones de los tiempos y usa los casos que vimos recién.
 
-En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger de esta tesis (\texttt{Buchberger}), de F4 de esta tesis (\texttt{F4}) y de \texttt{operator\_gb} (que usa F4) para esos casos.
+En el siguiente gráfico se muestran los tiempos de ejecución de Buchberger de este trabajo (\texttt{Buchberger}), de F4 de este trabajo (\texttt{F4}) y de \texttt{operator\_gb} (que usa F4) para esos casos.
 
 \noindent \begin{tikzpicture}
   \begin{axis}[
