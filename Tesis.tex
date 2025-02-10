@@ -76,7 +76,6 @@
 
 \theoremstyle{customstyle}
 \newtheorem{theorem}{Teorema}[chapter]
-\newtheorem{informalTheorem}[theorem]{Teorema informal}
 \newtheorem{definition}[theorem]{Definición}
 \newtheorem{lemma}[theorem]{Lema}
 \newtheorem{colorary}[theorem]{Colorario}
@@ -219,17 +218,12 @@ Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \
 
 El \cref{problem:principal} no es decidible, lo que significa que no hay un algoritmo que decide si vale la expresión o no. Sin embargo sí es semi-decidible, lo que significa que hay un algoritmo que en los casos en los que sí vale termina y en los casos en los que no vale puede no terminar.
 
-Este problema no es decidible porque el llamado problema de la palabra se reduce a este. En \cite{web:wiki:WordPproblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
+Este problema no es decidible porque el llamado problema de la palabra se reduce a este. En \cite{web:wiki:WordProblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
 
-Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, de forma que el \cref{problem:principal} se convierte en determinar si $f ∈ (G)$. Con eso se usa el siguiente teorema.
+Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, de forma que el \cref{problem:principal} se convierte en determinar si $f ∈ (G)$. Para responder a esto se usa el siguiente resultado: si $G = \{g_1, …, g_n\} ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $a$ y $b$ son polinomios que consisten en una sola palabra y $c ∈ K$, entonces
+\[ f ∈ (G) ⇔ f + c a g_i b ∈ (G) \text{.} \]
 
-\begin{informalTheorem}
-  Sean $G = \{g_1, …, g_n\} ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $a$ y $b$ polinomios que consisten en una sola palabra y $c ∈ K$, entonces
-  \[ f ∈ (G) ⇔ f + c a g_i b ∈ (G) \text{.} \]
-  \qed
-\end{informalTheorem}
-
-Con este teorema lo que se hace es tratar de cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía.
+Teniendo en cuenta este resultado se intenta cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía y porque todas las sumas mantiene la pertenencia a $(G)$.
 
 El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así sí está en $(G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no computabilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede servir un poco. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
