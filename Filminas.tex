@@ -1,5 +1,5 @@
-\documentclass{beamer}
-\usetheme{moloch}
+\documentclass[spanish, aspectratio=169]{beamer}
+%\usetheme{moloch}
 
 \usepackage{fontspec}
 
@@ -7,6 +7,9 @@
 
 \usepackage{polyglossia}
 \setdefaultlanguage{spanish}
+
+\usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
+
 
 \usepackage{relsize}
 \usepackage{xspace}
@@ -19,6 +22,7 @@
 %    \draw[step=0.5cm,gray,very thin] (0,0) grid (\paperwidth,\paperheight);
 %  \end{tikzpicture}
 %}
+
 
 \newcommand\cpp{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}\xspace}
 
@@ -42,30 +46,90 @@
 
 \begin{frame}
   \frametitle{Polinomios}
+
+  Algunos polinomios:
+  \begin{itemize}
+    \item $5 + 3 y - 2 x y + x^3 y^5$
+    \item $y^2 + x - x^2y^2$
+  \end{itemize}
+
+  Fijemos:
+  \begin{itemize}
+    \item Un alfabeto $X$
+    \item Un cuerpo $K$
+  \end{itemize}
+
+  El conjunto de polinomios se denota $K[X]$.
+
+  El producto es conmutativo. Por ejemplo:
+  \begin{itemize}
+    \item $xy = yx$
+    \item $y^2 + x - x^2y^2 = yy + x - yxxy$
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Polinomios no conmutativos}
+  \begin{align*}
+    f_0 &= a \\
+    f_1 &= ab + cb \\
+    f_2 &= 3 abb - 2 acab + 4 bcca \\
+    f_3 &= ba + ca \\
+    f_4 &= aba - bba \\
+    f_5 &= abc + cba \\
+    f_6 &= -aba + cba - 2 baba + 2 ccba
+  \end{align*}
+
+  Se denotan:
+  \begin{itemize}
+    \item $K⟨X⟩$ el conjunto de polinomios no conmutativos
+    \item $⟨X⟩$ el conjunto de monomios
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Ordenes monomiales}
+  $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
 \end{frame}
 
 \begin{frame}
   \frametitle{Problema de pertenencia al ideal}
+  Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
+  \[ ∃g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 \end{frame}
 
 \begin{frame}
   \frametitle{Ejemplo de problema de pertenencia al ideal}
+  \begin{align*}
+    g_0 &= f_1 = ab + cb \\
+    g_1 &= f_3 = ba + ca \\
+    G &= \{g_0, g_1\}
+  \end{align*}
+
+  Para $f_4 = aba - bba$ si vale:
+  \begin{align*}
+    g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
+      &= aba + bca - bba - bca \\
+      &= aba - bba \\
+      &= f_0
+  \end{align*}
+
+  Para $f_5 = abc + cba$ no vale.
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Ideales}
+  Sea $G ⊆ K⟨X⟩$, se define
+  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩\} \]
+  A $(G)$ se lo llama el ideal generado por $G$.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Teorema informal} % No se que nombre ponerle a esto
+  \frametitle{Teorema}
+  Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$, $a, b ∈ ⟨X⟩$ y $c ∈ ⟨X⟩$. Entonces
+  \[ f ∈ (G) ⇔ f + c a g b ∈ (G) \]
 \end{frame}
 
 
