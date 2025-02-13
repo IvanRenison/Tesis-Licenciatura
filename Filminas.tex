@@ -73,7 +73,7 @@
   \frametitle{Polinomios no conmutativos}
   \begin{align*}
     f_0 &= a \\
-    f_1 &= ab + cb \\
+    f_1 &= ab + bc \\
     f_2 &= 3 abb - 2 acab + 4 bcca \\
     f_3 &= ba + ca \\
     f_4 &= aba - bba \\
@@ -102,7 +102,7 @@
 \begin{frame}
   \frametitle{Ejemplo de problema de pertenencia al ideal}
   \begin{align*}
-    g_0 &= f_1 = ab + cb \\
+    g_0 &= f_1 = ab + bc \\
     g_1 &= f_3 = ba + ca \\
     G &= \{g_0, g_1\}
   \end{align*}
@@ -112,7 +112,7 @@
     g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
       &= aba + bca - bba - bca \\
       &= aba - bba \\
-      &= f_0
+      &= f_4
   \end{align*}
 
   Para $f_5 = abc + cba$ no vale.
@@ -135,14 +135,27 @@
 
 \begin{frame}
   \frametitle{Reducciones}
+  \begin{align*}
+    g_0 &= f_1 = ab + bc \\
+    g_1 &= f_3 = ba + ca \\
+    G &= \{g_0, g_1\} \\
+    & \\
+    f_4 &= aba - bba \\
+    f_5 &= abc + cba \\
+    f_6 &= -aba + cba - 2 baba + 2 ccba
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo de Buchberger}
+
+  La idea de Buchberger es ir agregando los S-polinomios reducidos
 \end{frame}
 
 \begin{frame}
   \frametitle{Bases de Gröbner}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Algoritmos}
+  $G$ es una base de Gröbner $⇔ ∀f ∈ K⟨X⟩ : f ∈ (G) ⇔ f$ se puede reducir
+  Si agregamos S-polinomios hasta que no queda ninguno entonces obtenemos una base de Gröbner
 \end{frame}
 
 \begin{frame}
