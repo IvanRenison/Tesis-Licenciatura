@@ -10,9 +10,13 @@
 
 \usepackage[math-style=ISO,bold-style=ISO]{unicode-math}
 
+\usepackage{minted}
+\setminted{autogobble}
 
 \usepackage{relsize}
 \usepackage{xspace}
+
+\usepackage{pgfplots} % Para los gráficos
 
 %\usepackage{tikz}
 %\usepackage{pgf} % Para dibujar la cuadrícula
@@ -159,15 +163,219 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Algoritmo F4}
+
+  F4 hace lo mismo que Buchberger pero de a muchos polinomios al mismo tiempo usando álgebra lineal
+\end{frame}
+
+\begin{frame}
   \frametitle{Implementaciones previas}
+  De Buchberger:
+  \begin{itemize}
+    \item Paquete GBNP de GAP
+    \item Implementación dentro de Singular
+    \item Implementación dentro de NCAlgebra
+    \item Paquete \texttt{OperatorGB} de Mathematica
+  \end{itemize}
+  De F4:
+  \begin{itemize}
+    \item Implementación dentro de Magma
+    \item Paquete \texttt{operator\_gb} de Python y SageMath
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Mi librería}
+  Librería \texttt{ncgb} de \cpp
+  \begin{itemize}
+    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas
+    \item Implementa Buchberger y F4
+    \item Funciona para un cuerpo arbitrario
+    \item Para los racionales usa la libraría FLINT para las matrices
+    \item Incluye representación de cofactores (``\textit{reconstrucción de la respuesta}'')
+    \item Tiene un poquito de paralelismo
+    \item Falta implementar la optimización de Faugère-Lachartre en F4
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Comparación}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Para los racionales:
+      \begin{minted}{text}
+        Average times:
+        Buch: 0.0041429424s
+        F4: 0.0105502963s
+        GB: 0.8995876765s
+        Max times:
+        Buch: 0.1320753098s
+        F4: 0.0925185680s
+        GB: 4.6477575302s
+      \end{minted}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      Para la aritmética modular:
+      \begin{minted}{text}
+        Average times:
+        Buch_Zp: 0.0028817248s
+        F4_Zp: 0.0072190428s
+        Max times:
+        Buch_Zp: 0.0779249668s
+        F4_Zp: 0.0799708366s
+      \end{minted}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}
   \frametitle{Comparación}
+    \begin{tiny}
+    \setlength{\jot}{0pt}
+    \begin{align*}
+      \text{FK2} =& \{a^2\} \\
+      \text{FK3} =& \{a^2,\ b^2,\ c^2,\ ac + ba + cb,\ ab + bc + ca\} \\
+      \text{FK4} =& \{a^2,\ b^2,\ c^2,\ d^2,\ e^2,\ f^2,\ ac + ba + cb,\ ae + da + ed,\ bf + db + fd,\ cf + ec + fe,\ ab + bc + ca,\ ad + de + ea, \\
+        & bd + df + fb,\ ce + ef + fc,\ cd + dc,\ be + eb,\ af + fa\} \\
+      \text{tri1} =& \{a^2 - 1,\ b^3 - 1,\ {(ababab^2ab^2)}^2 - 1\} \\
+      \text{tri2} =& \{a^2 - 1,\ b^3 - 1,\ {(ababab^2)}^3 - 1\} \\
+      \text{tri3} =& \{a^3 - 1,\ b^3 - 1,\ {(abab^2)}^2 - 1\} \\
+      \text{tri4} =& \{a^3 - 1,\ b^3 - 1,\ {(abaab^2)}^2 - 1\} \\
+      \text{tri5} =& \{a^2 - 1,\ b^5 - 1,\ {(abab^2)}^2 - 1\} \\
+      \text{tri6} =& \{a^2 - 1,\ b^5 - 1,\ {(ababab^4)}^2 - 1\} \\
+      \text{tri7} =& \{a^2 - 1,\ b^5 - 1,\ {(abab^2ab^4)}^2 - 1\} \\
+      \text{tri8} =& \{a^2 - 1,\ b^2 - 1,\ {(ababab^3)}^2 - 1\} \\
+      \text{tri9} =& \{a^2 - 1,\ b^3 - 1,\ {(abab^2)}^2 - 1\} \\
+      \text{tri10} =& \{a^2 - 1,\ b^3 - 1,\ {(ababab^2)}^2 - 1\} \\
+      \text{tri11} =& \{a^2 - 1,\ b^3 - 1,\ {(abababab^2)}^2 - 1\} \\
+      \text{tri12} =& \{a^2 - 1,\ b^3 - 1,\ {(ababab^2abab^2)}^2 - 1\} \\
+      \text{tri13} =& \{a^2 - 1,\ b^3 - 1,\ {(babababab^2ab^2)}^2 - 1\} \\
+      \text{trit3} =& \{a^3 - 1,\ b^3 - 1,\ c^3 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\} \\
+      \text{trit4} =& \{a^3 - 1,\ b^3 - 1,\ c^4 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\} \\
+      \text{trit5} =& \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}
+    \end{align*}
+    \end{tiny}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparación}
+  Tiempo en calcular una base
+  \noindent \begin{tikzpicture}
+    \begin{axis}[
+        ybar = 0.5pt, % Tipo de gráfico: barras verticales
+        width = \textwidth,
+        height = 0.8\textheight,
+        bar width = 0.01\textwidth, % Ancho de cada barra
+        symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+        xtick = data, % Mostrar marcas en el eje x para cada dato
+        ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+        %xlabel = {Categorías}, % Etiqueta del eje x
+        xticklabel style = {rotate = 45}, % Rotar etiquetas
+        ymin = 0, % Mínimo del eje y
+        ymax = 215,
+        enlarge x limits = 0.03, % Espaciado en los bordes
+        legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+        legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
+        cycle list = {{brown,fill = brown!30}, {red,fill = red!30}, {blue,fill = blue!30}}, % Colores
+    ]
+      % Datos para cada conjunto
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
+      \addplot coordinates {(FK2, 0.01) (FK3, 0.01) (FK4, 0.08) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (tri2, 0.29) (tri3, 0.04) (tri4, 0.07) (tri5, 0.02) (tri6, 1.78) (tri7, 1.81) (tri8, 0.06) (tri9, 0.01) (trit3, 0.05) (trit4, 0.49) (trit5, 207.84)};
+      \addplot coordinates {(FK2, 1.70) (FK3, 0.80) (FK4, 0.87) (tri1, 0.98) (tri10, 0.85) (tri11, 0.88) (tri12, 1.04) (tri13, 0.83) (tri2, 1.16) (tri3, 0.90) (tri4, 0.94) (tri5, 0.87) (tri6, 1.27) (tri7, 1.45) (tri8, 0.91) (tri9, 0.82) (trit3, 0.87) (trit4, 1.04) (trit5, 5.21)};
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparación}
+  Tiempo en calcular una base viendo la parte de más abajo
+  \noindent \begin{tikzpicture}
+    \begin{axis}[
+        ybar = 0.5pt, % Tipo de gráfico: barras verticales
+        width = \textwidth,
+        height = 0.8\textheight,
+        bar width = 0.01\textwidth, % Ancho de cada barra
+        symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+        xtick = data, % Mostrar marcas en el eje x para cada dato
+        ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+        %xlabel = {Categorías}, % Etiqueta del eje x
+        xticklabel style = {rotate = 45}, % Rotar etiquetas
+        ymin = 0, % Mínimo del eje y
+        ymax = 10,
+        enlarge x limits = 0.03, % Espaciado en los bordes
+        legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+        legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
+        cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
+    ]
+    ]
+      % Datos para cada conjunto
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
+      \addplot coordinates {(FK2, 0.01) (FK3, 0.01) (FK4, 0.08) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.21) (tri13, 0.01) (tri2, 0.29) (tri3, 0.04) (tri4, 0.07) (tri5, 0.02) (tri6, 1.78) (tri7, 1.81) (tri8, 0.06) (tri9, 0.01) (trit3, 0.05) (trit4, 0.49) (trit5, 207.84)};
+      \addplot coordinates {(FK2, 1.70) (FK3, 0.80) (FK4, 0.87) (tri1, 0.98) (tri10, 0.85) (tri11, 0.88) (tri12, 1.04) (tri13, 0.83) (tri2, 1.16) (tri3, 0.90) (tri4, 0.94) (tri5, 0.87) (tri6, 1.27) (tri7, 1.45) (tri8, 0.91) (tri9, 0.82) (trit3, 0.87) (trit4, 1.04) (trit5, 5.21)};
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparación}
+  Paralelismo
+  \noindent \begin{tikzpicture}
+    \begin{axis}[
+        ybar = 0.5pt, % Tipo de gráfico: barras verticales
+        width = \textwidth,
+        height = 0.8\textheight,
+        bar width = 0.003\textwidth,
+        symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4, trit5}, % Etiquetas en el eje x
+        xtick = data, % Mostrar marcas en el eje x para cada dato
+        ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+        %xlabel = {Cantidad de hilos}, % Etiqueta del eje x
+        xticklabel style = {rotate = 45}, % Rotar etiquetas
+        ymin = 0, % Mínimo del eje y
+        ymax = 215, % Máximo del eje y
+        enlarge x limits = 0.03, % Espaciado en los bordes
+        legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+        legend entries = {1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
+    ]
+      % Datos para cada conjunto
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.10) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.01) (tri2, 0.53) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.20) (tri7, 2.19) (tri8, 0.07) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47) (trit5, 213.58)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.28) (tri13, 0.00) (tri2, 0.42) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.98) (tri7, 2.02) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47) (trit5, 212.76)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.07) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00) (tri2, 0.36) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.82) (tri7, 1.92) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 209.93)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.01) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.86) (tri7, 1.84) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 212.14)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.83) (tri7, 1.81) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45) (trit5, 208.28)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.29) (tri3, 0.03) (tri4, 0.05) (tri5, 0.01) (tri6, 1.79) (tri7, 1.80) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.46) (trit5, 208.62)};
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparación}
+  Paralelismo viendo la parte de más abajo
+  \noindent \begin{tikzpicture}
+    \begin{axis}[
+        ybar = 0.5pt, % Tipo de gráfico: barras verticales
+        width = \textwidth,
+        height = 0.8\textheight,
+        bar width = 0.003\textwidth,
+        symbolic x coords = {FK2, FK3, FK4, tri1, tri2, tri3, tri4, tri5, tri6, tri7, tri8, tri9, tri10, tri11, tri12, tri13, trit3, trit4}, % Etiquetas en el eje x
+        xtick = data, % Mostrar marcas en el eje x para cada dato
+        ylabel = {Tiempo en segundos}, % Etiqueta del eje y
+        %xlabel = {Cantidad de hilos}, % Etiqueta del eje x
+        xticklabel style = {rotate = 45}, % Rotar etiquetas
+        ymin = 0, % Mínimo del eje y
+        ymax = 2.5, % Máximo del eje y
+        enlarge x limits = 0.03, % Espaciado en los bordes
+        legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
+        legend entries = {1, 2, 4, 6, 8, 16}, % Entradas de la leyenda
+    ]
+      % Datos para cada conjunto
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.10) (tri10, 0.01) (tri11, 0.02) (tri12, 0.32) (tri13, 0.01) (tri2, 0.53) (tri3, 0.03) (tri4, 0.07) (tri5, 0.01) (tri6, 2.20) (tri7, 2.19) (tri8, 0.07) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.08) (tri10, 0.01) (tri11, 0.02) (tri12, 0.28) (tri13, 0.00) (tri2, 0.42) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.98) (tri7, 2.02) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.47)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.07) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.00) (tri2, 0.36) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.82) (tri7, 1.92) (tri8, 0.06) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.06) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.22) (tri13, 0.01) (tri2, 0.32) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.86) (tri7, 1.84) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.31) (tri3, 0.03) (tri4, 0.06) (tri5, 0.01) (tri6, 1.83) (tri7, 1.81) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.45)};
+      \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.29) (tri3, 0.03) (tri4, 0.05) (tri5, 0.01) (tri6, 1.79) (tri7, 1.80) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.46)};
+    \end{axis}
+  \end{tikzpicture}
 \end{frame}
 
 \begin{frame}
