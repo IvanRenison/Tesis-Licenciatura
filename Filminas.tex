@@ -1,5 +1,6 @@
-\documentclass[spanish, aspectratio=169]{beamer}
+\documentclass[spanish, aspectratio=169, hidecontrols]{beamer}
 %\usetheme{moloch}
+\setbeamertemplate{navigation symbols}{}
 
 \usepackage{fontspec}
 
@@ -43,6 +44,10 @@
 
 \begin{document}
 
+% Cosas que tengo que tener listas:
+% El repositorio de la librería abierto en el navegador y en vscode
+% La terminal abierta en el directorio de la librería
+
 \begin{frame}
   \title{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo}
   \titlepage
@@ -50,6 +55,8 @@
 
 \begin{frame}
   \frametitle{Polinomios}
+
+  \pause
 
   Algunos polinomios:
   \begin{itemize}
@@ -75,19 +82,21 @@
 
 \begin{frame}
   \frametitle{Polinomios no conmutativos}
-  \begin{align*}
-    f_0 &= a \\
-    f_1 &= ab + bc \\
-    f_2 &= 3 abb - 2 acab + 4 bcca \\
-    f_3 &= ba + ca \\
-    f_4 &= aba - bba \\
-    f_5 &= abc + cba \\
-    f_6 &= -aba + cba - 2 baba + 2 ccba
-  \end{align*}
+  \begin{flalign*}
+    & f_0 = a &&\\
+    & f_1 = ab + bc &&\\
+    & f_2 = 3 abb - 2 acab + 4 bcca &&\\
+    & f_3 = ba + ca &&\\
+    & f_4 = aba - bba &&\\
+    & f_5 = abc + cba &&\\
+    & f_6 = -aba + cba - 2 baba + 2 ccba &&
+  \end{flalign*}
+
+  \pause
 
   Se denotan:
   \begin{itemize}
-    \item $K⟨X⟩$ el conjunto de polinomios no conmutativos
+    \item \alert{$K⟨X⟩$} el conjunto de polinomios no conmutativos
     \item $⟨X⟩$ el conjunto de monomios
   \end{itemize}
 \end{frame}
@@ -95,23 +104,32 @@
 \begin{frame}
   \frametitle{Ordenes monomiales}
   $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
+  \pause
+  \begin{flalign*}
+    & f_0 = a &&\\
+    & f_1 = ab + bc &&\\
+    & f_2 = 3 abb - 2 acab + 4 bcca &&\\
+    & f_3 = ba + ca &&\\
+    & f_4 = aba - bba &&\\
+    & f_5 = abc + cba &&\\
+    & f_6 = -aba + cba - 2 baba + 2 ccba &&
+  \end{flalign*}
 \end{frame}
 
 \begin{frame}
   \frametitle{Problema de pertenencia al ideal}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
-  \[ ∃g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ejemplo de problema de pertenencia al ideal}
+  \[ ∃g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : \alert{f = ∑_{i = 1}^n f_i g_i f'_i} \text{.}\]
+  \pause
+  Ejemplo
   \begin{align*}
     g_0 &= f_1 = ab + bc \\
     g_1 &= f_3 = ba + ca \\
     G &= \{g_0, g_1\}
   \end{align*}
 
-  Para $f_4 = aba - bba$ si vale:
+  Para $f_4 = aba - bba$ si vale\pause, porque es igual a $g_0 a - b g_1$:
+  \pause
   \begin{align*}
     g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
       &= aba + bca - bba - bca \\
@@ -125,6 +143,7 @@
 
 \begin{frame}
   \frametitle{Ideales}
+  \pause
   Sea $G ⊆ K⟨X⟩$, se define
   \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩\} \]
   A $(G)$ se lo llama el ideal generado por $G$.
@@ -132,6 +151,7 @@
 
 \begin{frame}
   \frametitle{Teorema}
+  \pause
   Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$, $a, b ∈ ⟨X⟩$ y $c ∈ ⟨X⟩$. Entonces
   \[ f ∈ (G) ⇔ f + c a g b ∈ (G) \]
 \end{frame}
@@ -152,24 +172,30 @@
 
 \begin{frame}
   \frametitle{Algoritmo de Buchberger}
+  \pause
 
   La idea de Buchberger es ir agregando los S-polinomios reducidos
 \end{frame}
 
 \begin{frame}
   \frametitle{Bases de Gröbner}
-  $G$ es una base de Gröbner $⇔ ∀f ∈ K⟨X⟩ : f ∈ (G) ⇔ f$ se puede reducir
-  Si agregamos S-polinomios hasta que no queda ninguno entonces obtenemos una base de Gröbner
+  $G$ es una base de Gröbner $⇔ ∀f ∈ K⟨X⟩ : f ∈ (G) ⇔ f$ se puede reducir \\
+
+  \pause
+
+  Si agregamos S-polinomios hasta que no queda ninguno entonces \\ obtenemos una base de Gröbner
 \end{frame}
 
 \begin{frame}
   \frametitle{Algoritmo F4}
+  \pause
 
   F4 hace lo mismo que Buchberger pero de a muchos polinomios al mismo tiempo usando álgebra lineal
 \end{frame}
 
 \begin{frame}
   \frametitle{Implementaciones previas}
+  \pause
   De Buchberger:
   \begin{itemize}
     \item Paquete GBNP de GAP
@@ -177,6 +203,7 @@
     \item Implementación dentro de NCAlgebra
     \item Paquete \texttt{OperatorGB} de Mathematica
   \end{itemize}
+  \pause
   De F4:
   \begin{itemize}
     \item Implementación dentro de Magma
@@ -187,14 +214,36 @@
 \begin{frame}
   \frametitle{Mi librería}
   Librería \texttt{ncgb} de \cpp
+  \pause
   \begin{itemize}
     \item Implementa estructuras para monomios y polinomios con sus operaciones básicas
+    \pause
     \item Implementa Buchberger y F4
-    \item Funciona para un cuerpo arbitrario
+    \pause
+    \item Funciona para un \alert{cuerpo arbitrario}
+    \pause
     \item Para los racionales usa la libraría FLINT para las matrices
-    \item Incluye representación de cofactores (``\textit{reconstrucción de la respuesta}'')
+    \pause
+    \item Incluye \alert{representación de cofactores} (``\textit{reconstrucción de la respuesta}'')
+    \pause
     \item Tiene un poquito de paralelismo
+    \pause
     \item Falta implementar la optimización de Faugère-Lachartre en F4
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ejemplo de mi librería}
+  \begin{align*}
+    g_0 &= f_1 = ab + bc \\
+    g_1 &= f_3 = ba + ca \\
+    G &= \{g_0, g_1\}
+  \end{align*}
+
+  Dijimos que:
+  \begin{itemize}
+    \item Para $f_4 = aba - bba$ si vale.
+    \item Para $f_5 = abc + cba$ no vale.
   \end{itemize}
 \end{frame}
 
@@ -349,7 +398,7 @@
 
 \begin{frame}
   \frametitle{Comparación}
-  Paralelismo viendo la parte de más abajo
+  Paralelismo sin trit5
   \noindent \begin{tikzpicture}
     \begin{axis}[
         ybar = 0.5pt, % Tipo de gráfico: barras verticales
@@ -378,12 +427,16 @@
   \end{tikzpicture}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Repaso}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Repaso}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Trabajos futuros}
+  \begin{itemize}
+    \item Implementar la optimización de Faugère-Lachartre en F4
+    \item Y si es posible paralelizarla
+  \end{itemize}
 \end{frame}
 
 \end{document}
