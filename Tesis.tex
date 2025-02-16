@@ -192,27 +192,27 @@ In the first chapters a complete mathematical explanation of the subject is prov
 A continuación una lista de quienes ayudaron en algo con este trabajo: % Además de yo, no se si eso lo debería decir y cómo
 
 \begin{itemize}
-  \item Mis directores Cristian Vay y Miguel Maria Pagano que ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
-  \item Lucía Martinez Gavier que leyó la tesis y me hizo bastantes sugerencias.
-  \item Alvaro Roy Schachner que me ayudó con cosas de la computadora Atom y que además leyó la tesis y me hizo bastantes sugerencias.
-  \item Ana María Cingolani que leyó el resumen y la introducción e hizo algunas sugerencias.
+  \item Mis directores Cristian Vay y Miguel Maria Pagano ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
+  \item Lucía Martinez Gavier leyó la tesis e hizo bastantes sugerencias.
+  \item Alvaro Roy Schachner me ayudó con cosas de la computadora Atom y además leyó la tesis e hizo bastantes sugerencias.
+  \item Ana María Cingolani leyó el resumen y la introducción e hizo algunas sugerencias.
 \end{itemize}
 
-Además se usar recursos computacionales de la computadora Atom de FAMAF.
+Además se usaron recursos computacionales de la computadora Atom de FAMAF.
 
 
 \tableofcontents
 
 \chapter{Introducción}
 
-Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denota $K[X]$. En los polinomios de este conjunto el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se pueden considerar otros polinomios en los que el producto entre las variables no conmuta, así que por ejemplo, el polinomio $x y$ es distinto del polinomio $y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo el polinomio $x 3 y$ es igual al polinomio $3 x y$. Estos nuevos polinomios, llamados polinomios no conmutativos, cuando son sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denotan $K⟨X⟩$, y conciten en combinaciones lineales de palabras del alfabeto $X$ con coeficientes en $K$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ son los siguientes:
+Usted posiblemente haya escuchado hablar de los polinomios de varias variables, esos como $5 + 3 y - 2 x y + x^3 y^5$, y que todo el conjunto de los polinomios sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denota $K[X]$. En esos polinomios el producto entre las variables conmuta; por ejemplo, el polinomio $x y$ es igual al polinomio $y x$. Sin embargo, se pueden considerar otros polinomios en los que el producto entre las variables no conmuta, así que por ejemplo, el polinomio $x y$ es distinto del polinomio $y x$; pero el producto de las variables con los coeficientes sí sigue conmutando, por ejemplo el polinomio $x 3 y$ es igual al polinomio $3 x y$. Estos nuevos polinomios, llamados polinomios no conmutativos, cuando son sobre el cuerpo $K$ y con variables en el alfabeto $X$ se denotan $K⟨X⟩$, y consisten en combinaciones lineales de palabras del alfabeto $X$ con coeficientes en $K$. Algunos ejemplos de polinomios no conmutativos en $ℚ⟨x, y, z⟩$ son los siguientes:
 \begin{align*}
-  f_0 &= a \text{,} \\
-  f_1 &= ab + bc \text{,} \\
-  f_2 &= 3 abb - 2 acab + 4 bcca \text{.}
+  f_0 &= x \text{,} \\
+  f_1 &= xy + yz \text{,} \\
+  f_2 &= 3 xyy - 2 xzxy + \frac{4}{3} yzzx \text{.}
 \end{align*}
 
-\noindent Notar que $f_1 ≠ ab + cb$ ya que el producto es no conmutativo.
+\noindent Notar que $f_1 ≠ xy + zy$ ya que el producto es no conmutativo.
 
 Un problema de decisión que existe sobre los polinomios no conmutativos es: dado un conjunto $G$ de polinomios no conmutativos y un polinomio no conmutativo $f$, decidir si $f$ se puede escribir como combinación lineal de elementos de $G$ con coeficientes en $K⟨X⟩$. O escrito formalmente:
 
@@ -221,55 +221,57 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
   \[ ∃n ∈ ℕ ∪ \{0\}, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 \end{problem}
 
-Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \{a, b, c\}$, si:
+Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \{x, t, z\}$, si:
 \begin{align*}
-  g_0 &= ab + bc \text{,} \\
-  g_1 &= ba + ca \text{,} \\
+  g_0 &= xy + yz \text{,} \\
+  g_1 &= yx + zx \text{,} \\
   G &= \{g_0, g_1\} \text{,} \\
-  f_0 &= aba - bba \text{,} \\
-  f_1 &= abc + cba \text{.}
+  f_0 &= xyx - yyx \text{,} \\
+  f_1 &= xyz + zyx \text{.}
 \end{align*}
 
 \noindent Tenemos que para $f_0$ la respuesta al \cref{problem:principal} es afirmativa porque
 \begin{align*}
-  g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
-    &= aba + bca - bba - bca \\
-    &= aba - bba \\
+  g_0 x - y g_1 &= (xy + yz)x - y(yx + zx) \\
+    &= xyx + yzx - yyx - yzx \\
+    &= xyx - yyx \\
     &= f_0
 \end{align*}
 
-\noindent Pero para $f_1$ es negativa porque no hay ninguna forma de escribirlo como combinación lineal de $g_0$ y $g_1$ con coeficientes en $ℚ⟨a, b, c⟩$. El motivo por el cual se eso es porque lo determiné corriendo el código de \cpp.
+\noindent Pero para $f_1$ es negativa porque no hay ninguna forma de escribirlo como combinación lineal de $g_0$ y $g_1$ con coeficientes en $ℚ⟨x, y, z⟩$. Más adelante se explicará el código que se hizo que permite a veces responder al \cref{problem:principal} y en particular determinar que para $f_1$ la respuesta es negativa.
 
 El \cref{problem:principal} no es decidible, lo que significa que no hay un algoritmo que decide si vale la expresión o no. Sin embargo sí es semi-decidible, lo que significa que hay un algoritmo que en los casos en los que sí vale termina y en los casos en los que no vale puede no terminar.
 
-Este problema no es decidible porque el llamado problema de la palabra se reduce a este. En \cite{web:wiki:WordProblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordara el tema.
+Este problema no es decidible porque el llamado problema de la palabra se reduce a este. En \cite{web:wiki:WordProblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordará el tema.
 
-Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera el conjunto de todos los polinomios no conmutativos que satisfacen ese $∃$, denotado como $(G)$, de forma que el \cref{problem:principal} se convierte en determinar si $f ∈ (G)$. Para responder a esto se usa el siguiente resultado: si $G = \{g_1, …, g_n\} ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $a$ y $b$ son polinomios que consisten en una sola palabra y $c ∈ K$, entonces
+Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera el conjunto denotado como $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$, de forma que el \cref{problem:principal} se convierte en determinar si $f ∈ (G)$. Para responder a esto se usa el siguiente resultado: si $G = \{g_1, …, g_n\} ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $a$ y $b$ son polinomios que consisten en una sola palabra y $c ∈ K$, entonces
 \[ f ∈ (G) ⇔ f + c a g_i b ∈ (G) \text{.} \]
 
 Teniendo en cuenta este resultado se intenta cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía y porque todas las sumas mantiene la pertenencia a $(G)$.
 
-El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así sí está en $(G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no computabilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede servir un poco. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
+El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así sí está en $(G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no computabilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede ser útil para abordar el \cref{problem:principal}. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular o enumerar las bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. La diferencia entre los dos algoritmos es que Buchberger va calculando la base de Gröbner de a un elemento por vez mientras que F4 usa herramientas de álgebra lineal para calcular de a muchos elementos al mismo tiempo.
 
 Si la explicación sobre los algoritmos no se entendió no importa porque en el \cref{cap:Preliminares} se explica bien.
 
-Estos algoritmos, al igual que mucha de la teoría, están inspirados en caso análogo para los polinomios conmutativos y muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
+Estos algoritmos, al igual que mucha de la teoría, están inspirados en el caso análogo para polinomios conmutativos y muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``el algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
 Existían previamente varias implementaciones del algoritmo de Buchberger en el caso no conmutativo, por ejemplo \cite{lib:GBNP, lib:DGPS, lib:NCAlgebra}. El algoritmo F4 para el caso no conmutativo fue primero adaptado por Xiu Xingqiang en \cite{phdthesis:XiuXingqiang12} y está implementado en el sistema algebraico computacional Magma. Luego, Clemens Hofstadler hizo en \cite{thesis:Hof20} su propia implementación en Python con SageMath, que es otro sistema algebraico computacional que al mismo tiempo es librería de Python. De acuerdo a mi conocimiento esas son las únicas dos implementaciones de F4 para el caso no conmutativo.
 
-El objetivo de este trabajo fue implementar en \cpp ambos algoritmos y hacerlos correr en paralelo. La implementación en \cpp se logró, aunque para el algoritmo F4 hay una optimización que ayuda bastante que quedó pendiente. Hacerlo correr en paralelo también se logró, pero solo para una parte y para la parte de la optimización que quedó pendiente tampoco se hizo nada en paralelo. Por eso es que tiene un ``poquito'' de paralelismo. Por la optimización que quedó pendiente en los casos muy grandes la implementación no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo y lograr mejorar suficientemente la implementación para igualar o llegar a ser mejor que la de Python con SageMath.
+El objetivo de este trabajo fue implementar en \cpp ambos algoritmos y si es posible con un poco de paralelismo. La implementación en \cpp se logró, aunque para el algoritmo F4 hay una optimización que ayuda bastante que quedó pendiente. El paralelismo también se logró, pero solo para una parte y para la parte de la optimización que quedó pendiente tampoco se hizo nada de paralelismo. Por eso es que tiene un ``poquito'' de paralelismo.
+
+Por la optimización que quedó pendiente en los casos muy grandes la implementación no le logra ganar a la implementación en Python con SageMath. Esto no significa que todo el trabajo no haya servido para nada, porque se podría continuar con el desarrollo y lograr mejorar suficientemente la implementación para igualar o llegar a ser mejor que la de Python con SageMath.
 
 Alguien podría preguntar para qué sirve intentar resolver el \cref{problem:principal} y calcular bases de Gröbner no conmutativas. En el caso conmutativo hay un montón de aplicaciones prácticas importantes, por ejemplo en robótica porque el caso conmutativo tiene mucho significado geométrico; en cambio en el caso no conmutativo las aplicaciones son más limitadas y específicas.
 
-Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que ayuda a resolver las bases de Gröbner es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas álgebras en el \cref{cap:Benchmarks}.
+Algo para lo que las bases de Gröbner no conmutativas son muy útiles es para trabajar con álgebras presentadas por generadores y relaciones. En este contexto, los generadores son las variables y las relaciones están dadas por los polinomios generadores del ideal. Un problema que las bases de Gröbner ayudan a resolver es el cálculo de la dimensión de este tipo de álgebras. Por ejemplo, algunos investigadores de FAMAF (incluido Cristian Vay, el director de este trabajo) se enfrentan a este problema trabajando con (las que llaman) álgebras de Nichols, que están explicadas en \cite{book:introNichols}. Usaremos algunos ejemplos de estas álgebras en el \cref{cap:Benchmarks}.
 
 Como ya se dijo, el problema de la palabra se puede reducir al \cref{problem:principal}, así que los algoritmos eficientes para bases de Gröbner no conmutativas también pueden ser útiles para el problema de la palabra.
 
 También hay algunas aplicaciones de bases de Gröbner no conmutativas y conmutativas en criptografía. En \cite{article:crypto_gb} se habla de eso.
 
-Esta tesis está organizada de la siguiente forma. En el \cref{cap:Preliminares} se explica toda la parte matemática necesaria para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica cómo usar la librería que se desarrolló. En el \cref{cap:Implementación} se explica cómo están hechas las implementaciones. En el \cref{cap:Tests} se explica brevemente qué tests se hicieron para eliminar los errores y darle robustez a la librería. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
+Esta tesis está organizada de la siguiente forma. En el \cref{cap:Preliminares} se explican los contenidos matemáticos mínimos necesarios para que la exposición sea autocontenida. En el \cref{cap:Librería} se explica cómo usar la librería que se desarrolló. En el \cref{cap:Implementación} se describe cómo están hechas las implementaciones. En el \cref{cap:Tests} se describe brevemente qué tests se hicieron para eliminar los errores y darle robustez a la librería. En el \cref{cap:Benchmarks} se muestran algunos resultados de benchmarks que se hicieron, comparando cosas dentro de la librería y comparando con la implementación de Python con SageMath. Por último en el \cref{cap:Conclusiones} se destacan algunos puntos positivos del trabajo y se mencionan algunos trabajos futuros que se podrían hacer.
 
 \chapter{Preliminares}\label{cap:Preliminares}
 
@@ -373,14 +375,14 @@ El álgebra libre es básicamente el conjunto de los polinomios no conmutativos 
   Si $X = \{x_1, …, x_n\}$ escribimos $⟨x_1, …, x_n⟩$ en lugar de $⟨X⟩$.
 \end{definition}
 
-Por ejemplo, si $X = \{a, b, c\}$, algunos monomios son:
+Por ejemplo, si $X = \{x, y, z\}$, algunos monomios son:
 
 \begin{align*}
-  m_0 &= abbcb \text{,} \\
-  m_1 &= bbc \text{,} \\
-  m_2 &= bcb \text{,} \\
+  m_0 &= xyyyy \text{,} \\
+  m_1 &= yyy \text{,} \\
+  m_2 &= yyy \text{,} \\
   m_3 &= ε \text{,} \\
-  m_1 · m_2 &= bccbcb \text{.}
+  m_1 · m_2 &= yyyyyy \text{.}
 \end{align*}
 
 El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no conmutativo.
@@ -445,14 +447,14 @@ Ahora pasemos a hablar de sumar monomios entre sí para tener polinomios no conm
   A los elementos de $R⟨X⟩$ se los llama polinomios no conmutativos. Cuando tengamos una lista de variables $x_1, …, x_n$ escribimos $R⟨x_1, …, x_n⟩$ en lugar de $R⟨\{x_1, …, x_n\}⟩$.
 \end{definition}
 
-Recordemos los ejemplos de polinomios no conmutativos en $ℚ⟨a, b, c⟩$ dados en la introducción:
+Recordemos los ejemplos de polinomios no conmutativos en $ℚ⟨x, y, z⟩$ dados en la introducción:
 \begin{align*}
-  f_0 &= a \text{,} \\
-  f_1 &= ab + cb \text{,} \\
-  f_2 &= 3 abb - 2 acab + 4 bcca \text{.}
+  f_0 &= x \text{,} \\
+  f_1 &= xy + zy \text{,} \\
+  f_2 &= 3 xyy - 2 xzxy + \frac{4}{3} yzzx \text{.}
 \end{align*}
 
-\noindent Recordar que $f_1 ≠ ab + bc$ ya que el producto es no conmutativo.
+\noindent Recordar que $f_1 ≠ xy + xz$ ya que el producto es no conmutativo.
 
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
 
@@ -472,12 +474,12 @@ Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
 
 Siguiendo con el ejemplo tenemos:
 \begin{align*}
-  {f_2}_{abb} &= 3 \text{,} \\
-  \sop(f_2) &= \{abb, acab, bcca\} \text{,} \\
-  \lm_{≤_{deglex}}(f_2) &= bcca \text{,} \\
+  {f_2}_{xyy} &= 3 \text{,} \\
+  \sop(f_2) &= \{xyy, xxxy, yxxx\} \text{,} \\
+  \lm_{≤_{deglex}}(f_2) &= yxxx \text{,} \\
   \lc_{≤_{deglex}}(f_2) &= 4 \text{,} \\
-  \lt_{≤_{deglex}}(f_2) &= 4 bcca \text{,} \\
-  \tail_{≤_{deglex}}(f_2) &= 3 abb - 2 acab \text{.}
+  \lt_{≤_{deglex}}(f_2) &= 4 yxxx \text{,} \\
+  \tail_{≤_{deglex}}(f_2) &= 3 xyy - 2 xxxy \text{.}
 \end{align*}
 
 Sobre estas definiciones valen muchas propiedades fáciles de probar, como por ejemplo $\lm_≤(f) \lm_≤(f') = \lm_≤(f f')$, que durante el resto de la tesis usaremos mucho, pero no las probamos una por una porque sería tedioso y aburrido.
@@ -496,9 +498,9 @@ Más adelante será necesario comparar no solo monomios sino también polinomios
 
 Dicho en palabras, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor. Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
 \begin{align*}
-  a &< ab \text{,} \\
-  bcc + c &< bcc + abb \text{,} \\
-  ac &< ac + aa \text{.}
+  x &< xy \text{,} \\
+  yzz + z &< yzz + xyy \text{,} \\
+  xz &< xz + xx \text{.}
 \end{align*}
 
 Si bien a este $<$ lo estamos llamando (y lo continuaremos llamando) orden, en realidad no es un orden sino un preorden porque cuando solo cambian los coeficientes entre un polinomio y otro, ninguno de los polinomios es menor que el otro.
@@ -667,9 +669,9 @@ Ahora definiremos una relación de reducción en los polinomios no conmutativos 
   Cuando vale $f →_{≤, G}f'$ se dice que $f$ se reduce a $f'$ (vía $G$).
 \end{definition}
 
-Por ejemplo, si tenemos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$ y $G = \{g_0\}$ tenemos:
+Por ejemplo, si tenemos $f = 2 zyx + 3 xyzxx$, $g_0 = x - yzx$ y $G = \{g_0\}$ tenemos:
 
-\[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba \text{.}\]
+\[f →_{≤, G} f + 3x g_0 x = 3 xxx + 2 zyx \text{.}\]
 
 \
 
@@ -871,13 +873,13 @@ El siguiente teorema caracteriza las formas normales de $→$.
   \end{description}
 \end{proof}
 
-Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que (como habíamos anticipado) no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 cba + 3 dbcda$, $g_0 = a - bcd$, si ahora agregamos $g_1 = b - cda$ y $G = \{g_0, g_1\}$ tenemos, como antes:
+Probamos que $→_{≤, G}$ es terminante, pero no que sea confluente, ya que (como habíamos anticipado) no siempre lo es. Por ejemplo, siguiendo con el mismo ejemplo de antes en el que ya teníamos $f = 2 zyx + 3 xyzxx$, $g_0 = x - yzx$, si ahora agregamos $g_1 = y - zxx$ y $G = \{g_0, g_1\}$ tenemos, como antes:
 
-\[f →_{≤, G} f + 3d g_0 a = 3 daa + 2 cba = f' \text{.}\]
+\[f →_{≤, G} f + 3x g_0 x = 3 xxx + 2 zyx = f' \text{.}\]
 
 \noindent Y también:
 
-\[f →_{≤, G} f - 3db g_1 = 3 dbb + 2 cba = f'' \text{.}\]
+\[f →_{≤, G} f - 3xy g_1 = 3 xyy + 2 zyx = f'' \text{.}\]
 
 \noindent Pero ningún monomio principal de $G$ divide a ningún monomio de $f'$ o $f''$ así que $f'$ y $f''$ no se pueden reducir más.
 
@@ -1557,7 +1559,7 @@ El único argumento del template es \texttt{X}, porque no hace falta nada del cu
 
 Relacionado a la división, el método más importante es \texttt{divide\_indexes} que se llama como \texttt{m0.divide\_indexes(m1)} y devuelve un vector de \texttt{size\_t} que indica las posiciones de \texttt{m1} donde empieza una sub-palabra igual a \texttt{m0}.
 
-Respecto a la representación como strings, hay dos pares de métodos. Por un lado están \texttt{operator>>} y \texttt{operator<<} que leen y escriben en un formato numérico que es cómodo para usar en código. Por otro lado, \texttt{nice\_read} y \texttt{nice\_print} que leen y escriben en el formato que se suele usar al escribir a mano los monomios.
+Respecto a la representación como strings, hay dos pares de métodos. Por un lado están \texttt{operator>>} y \texttt{operator<<} que leen y escriben en un formato numérico que es cómodo para usar en código. Por otro lado, \texttt{nice\_read} y \texttt{nice\_print} que leen y escriben en el formato que se suele usar al escribir a mano los monomios usando las variables $a$, $b$, etc.
 
 El formato numérico consiste en un número entero no negativo $n$ seguido de $n$ números $x_1$, …, $x_n$ que son los números de variables. Cuando $n = 0$ no hay ningún $x_i$. Se puede representar así el formato:
 
@@ -2122,7 +2124,7 @@ En este capítulo se presentan los resultados obtenidos tras correr los tests qu
 
 De cualquier manera, esos datos no son muy importantes porque lo importante son las relaciones entre los distintos tiempos.
 
-Los tests que tienen benchmarks son, todos salvo uno, tests que usan los archivos del directorio \path{mains} y archivos ejecutables hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en casi todos se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas, eso no debería ser problema.
+Los tests que tienen benchmarks son, todos salvo uno, tests que usan los archivos del directorio \path{mains} y archivos ejecutables hechos en Python con \texttt{operator\_gb} y son corridos con distintas entradas desde un archivo de Python. Los tiempos en todos salvo uno se miden desde el programa de Python, así que incluyen el tiempo hasta que se inicializa el programa y lee la entrada y el tiempo de impresión de la salida, pero como son siempre entradas y salidas relativamente chicas, eso no debería hacer casi diferencia. En el test en el que los tiempos no se miden desde Python, se miden desde el propio C++.
 
 Todos los tests que tienen benchmarks, salvo uno (que más adelante se explica), funcionan tomando como input un conjunto generador que se sabe que el ideal generado tiene una base de Gröbner finita. Para estos benchmarks se usaron los siguientes conjuntos generadores:
 
@@ -2168,7 +2170,7 @@ Los tri están porque \cite{thesis:Hof20} los usa, con ese mismo nombre, y él l
 
 En todos los benchmarks que usan estos conjuntos se trabaja sobre los racionales, porque es para los racionales que se sabe que tienen bases finitas.
 
-En las siguientes subsecciones se presentan los resultados de cada uno de los benchmarks.
+En las siguientes secciones se presentan los resultados de cada uno de los benchmarks.
 
 \section{Ideales con bases de Gröbner finitas}\label{section:Ideales con bases de Gröbner finitas}
 
@@ -2354,15 +2356,15 @@ Este benchmark se usó principalmente para tenerlo como comparación cuando se h
 
 \chapter{Conclusiones}\label{cap:Conclusiones}
 
-El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado de usarlo para las álgebras de Nichols. Para mí este era un tema completamente nuevo, así que empecé por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas. Mientras leía ese libro hice también una implementación propia, sin mucha prolijdad, de bases de Gröbner conmutativas en \cpp. Esto fue bueno porque me sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso fui leyendo \cite{thesis:Hof20} y \cite{phdthesis:Hof23}, que son textos sobre bases de Gröbner no conmutativas, e implementando lo explicado en \cpp.
+El tema de este trabajo fue propuesto por el director Cristian Vay por su interés ya mencionado en usarlo para las álgebras de Nichols. Para mí este era un tema completamente nuevo, así que empecé por estudiar el tema. Primero leyendo \cite{book:ideals-varieties-algorithms} que trata sobre bases de Gröbner conmutativas. Mientras leía ese libro hice también una implementación propia, sin mucha prolijidad, de bases de Gröbner conmutativas en \cpp. Esto fue bueno porque me sirvió de práctica para después hacer la implementación de bases de Gröbner no conmutativas. Después de eso fui leyendo la tesis de master \cite{thesis:Hof20} y la tesis de doctorado \cite{phdthesis:Hof23} de Clemens Hofstadler, que son textos sobre bases de Gröbner no conmutativas, e implementando lo explicado en \cpp.
 
 A continuación menciono algunos aspectos positivas y después algunos posibles trabajos futuros.
 
 \section{Aspectos positivos de este trabajo}
 
-Es la primera implementación de bases de Gröbner no conmutativas en \cpp (según mi conocimiento). Esto es muy bueno porque \cpp es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto es útil si se quieren correr casos que se demoran mucho.
+La implementación de bases de Gröbner no conmutativas presentada en esta tesis es la primera en \cpp (según mi conocimiento). Esto es muy bueno porque \cpp es un lenguaje particularmente rápido y en el que es fácil paralelizar. Esto probablemente sea útil si se quieren correr casos que se demoran mucho.
 
-Es la primer implementación de F4 que funciona para un cuerpo arbitrario (según mi conocimiento). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
+También, es la primer implementación de F4 que funciona para un cuerpo arbitrario (según mi conocimiento). Esto está bueno para que si en algún momento alguien lo quiere usar para algún cuerpo distinto lo pueda hacer.
 
 La implementación del algoritmo Buchberger incluye la parte de la representación con cofactores, que si bien es algo muy fácil, la única otra implementación que lo hace es \texttt{operator\_gb} (según mi conocimiento).
 
@@ -2370,13 +2372,13 @@ La implementación del algoritmo Buchberger incluye la parte de la representaci�
 
 Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es uno de las trabajos futuros más importantes para hacer.
 
-Del algoritmo F4 (y de Buchberger) para el caso conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero hay algunas que también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas ideas o implementaciones útiles, en particular, podría ser que ya alguien haya implementado la reducción por filas de Faugère-Lachartre en \cpp, ya que posiblemente sirva también para el caso no conmutativo.
+Del algoritmo F4 (y de Buchberger) para el caso conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero algunas también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas ideas o implementaciones útiles, en particular, podría ser que ya alguien haya implementado la reducción por filas de Faugère-Lachartre en \cpp.
 
 Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones de implementación pero al hacerlos el código resultaba andar más lento (a veces por muy poquito), así que se descartaban esos cambios. Sería bueno agregar más tests y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests, porque podría ser que fueran un poquito más lento justo en los casos de los tests pero que en general si fueran más rápidas.
 
 Se podría analizar cuánto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en qué partes se pueden realizar optimizaciones.
 
-En la librería hay una especialización de \texttt{rref} para hacer que \texttt{rref} para \texttt{mpq\_class} sea más rápido usando la implementación de la librería. Para aritmética modular como se está usando un tipo propio definido en el archivo \path{extras/ModularArithmetic.hpp} y se usa la versión genérica de \texttt{rref}. Es posible que existan librerías que tengan tipos de aritmética modular más rápidos que el que se implementó y con una reducción por filas más rápida.
+En la librería hay una especialización de \texttt{rref} para hacer que \texttt{rref} para \texttt{mpq\_class} sea más rápido usando la implementación de la librería. Para aritmética modular se está usando un tipo propio definido en el archivo \path{extras/ModularArithmetic.hpp} y se usa la versión genérica de \texttt{rref}. Es posible que existan librerías que tengan tipos de aritmética modular más rápidos que el que se implementó y con una reducción por filas más rápida, y en ese caso sería bueno usarlas.
 
 Actualmente la librería no viene con nada para instalarla automáticamente porque en \cpp eso no es fácil de hacer. Esto significa que si alguien quiere usar la librería tiene que arreglárselas y probablemente hacer algo medio feo como poner los archivos en alguna carpeta particular. Otras librerías de \cpp sí vienen con algo para eso, así que sería bueno hacerlo para esta librería también.
 
@@ -2391,11 +2393,11 @@ Los ideales de la \cref{def:ideal} no son los únicos; también existen los idea
 \end{definition}
 \noindent Con los ideales a izquierda sobre polinomios no conmutativos también hay toda una teoría de bases de Gröbner. En \cite{phdthesis:Hof23} se puede encontrar una explicación sobre esta teoría. Implementar el cálculo de bases de Gröbner de la teoría de ideales a izquierda en \cpp es otro trabajo que se podría hacer. Análogamente, también se pueden considerar ideales a derecha.
 
-Como ya se mencionó en el \cref{cap:Benchmarks}, no se sabe para $n ≥ 6$ si los FK$n$ tienen una base finita o no. Cuando se tenga una versión muy buena de F4 , se la podría correr por mucho tiempo para FK6 para ver si llega en algún momento a una base finita.
+Como ya se mencionó en el \cref{cap:Benchmarks}, no se sabe para $n ≥ 6$ si los FK$n$ tienen una base finita o no. Cuando se tenga una versión muy buena de F4, se la podría correr por mucho tiempo para FK6 para ver si llega en algún momento a una base finita.
 
 Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando implementé las bases de Gröbner conmutativas para practicar tuve que hacer mi propio testing. Para que sea más fácil estudiar el tema sería útil preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp}{Library Checker}, o en un grupo de \href{https://codeforces.com}{Codeforces}.
 
-Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoría de forma más segura, preveniendo los errores de memoría, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
+Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoría de forma más segura, previniendo los errores de memoría, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
 
 \chapter*{Bibliografía}
 \addcontentsline{toc}{chapter}{Bibliografía} % Estás dos lineas están así para que no aparesca como capítulo numerado, pero si aparesca en el índice
