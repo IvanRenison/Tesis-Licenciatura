@@ -58,11 +58,12 @@
 
   \pause
 
-  Algunos polinomios:
-  \begin{itemize}
-    \item $5 + 3 y - 2 x y + x^3 y^5$
-    \item $y^2 + x - x^2y^2$
-  \end{itemize}
+  \begin{exampleblock}{Algunos polinomios:}
+    \begin{itemize}
+      \item $5 + 3 y - 2 x y + x^3 y^5$
+      \item $y^2 + x - x^2y^2$
+    \end{itemize}
+  \end{exampleblock}
 
   Fijemos:
   \begin{itemize}
@@ -72,25 +73,30 @@
 
   El conjunto de polinomios se denota $K[X]$.
 
-  El producto es conmutativo. Por ejemplo:
-  \begin{itemize}
-    \item $xy = yx$
-    \item $y^2 + x - x^2y^2 = yy + x - yxxy$
-  \end{itemize}
+  El producto es conmutativo.
+  \begin{exampleblock}{Por ejemplo en $ℚ[x, y]$:}
+    \begin{itemize}
+      \item $xy = yx$
+      \item $y^2 + x - x^2y^2 = yy + x - yxxy$
+    \end{itemize}
+  \end{exampleblock}
 
 \end{frame}
 
 \begin{frame}
   \frametitle{Polinomios no conmutativos}
-  \begin{flalign*}
-    & f_0 = a &&\\
-    & f_1 = ab + bc &&\\
-    & f_2 = 3 abb - 2 acab + \frac{4}{3} bcca &&\\
-    & f_3 = ba + ca &&\\
-    & f_4 = aba - bba &&\\
-    & f_5 = abc + cba &&\\
-    & f_6 = -aba + cba - 2 baba + 2 ccba &&
-  \end{flalign*}
+  \pause
+  \begin{exampleblock}{Por ejemplo en $ℚ⟨x, y, z⟩$:}
+    \begin{itemize}
+      \item $f_0 = x$
+      \item $f_1 = xy + yz$
+      \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
+      \item $f_3 = yx + zx$
+      \item $f_4 = xyx - yyx$
+      \item $f_5 = xyz + zyx$
+      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
+    \end{itemize}
+  \end{exampleblock}
 
   \pause
 
@@ -105,15 +111,17 @@
   \frametitle{Ordenes monomiales}
   $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
   \pause
-  \begin{flalign*}
-    & f_0 = a &&\\
-    & f_1 = ab + bc &&\\
-    & f_2 = 3 abb - 2 acab + \frac{4}{3} bcca &&\\
-    & f_3 = ba + ca &&\\
-    & f_4 = aba - bba &&\\
-    & f_5 = abc + cba &&\\
-    & f_6 = -aba + cba - 2 baba + 2 ccba &&
-  \end{flalign*}
+  \begin{exampleblock}{En los ejemplos de antes:}
+    \begin{itemize}
+      \item $f_0 = x$
+      \item $f_1 = xy + yz$
+      \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
+      \item $f_3 = yx + zx$
+      \item $f_4 = xyx - yyx$
+      \item $f_5 = xyz + zyx$
+      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}
@@ -121,23 +129,19 @@
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
   \[ ∃g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : \alert{f = ∑_{i = 1}^n f_i g_i f'_i} \text{.}\]
   \pause
-  Ejemplo
-  \begin{align*}
-    g_0 &= f_1 = ab + bc \\
-    g_1 &= f_3 = ba + ca \\
-    G &= \{g_0, g_1\}
-  \end{align*}
-
-  Para $f_4 = aba - bba$ si vale\pause, porque es igual a $g_0 a - b g_1$:
-  \pause
-  \begin{align*}
-    g_0 a - b g_1 &= (ab + bc)a - b(ba + ca) \\
-      &= aba + bca - bba - bca \\
-      &= aba - bba \\
-      &= f_4
-  \end{align*}
-
-  Para $f_5 = abc + cba$ no vale.
+  \begin{exampleblock}{Por ejemplo, si:}
+    \begin{itemize}
+      \item $g_0 = f_1 = xy + yz$
+      \item $g_1 = f_3 = yx + zx$
+      \item $G = \{g_0, g_1\}$
+    \end{itemize}
+    Entonces:
+    \begin{itemize}
+      \item Para $f_4 = xyx - yyx$ si vale\pause, porque es igual a $g_0 x - y g_1$.
+      \pause
+      \item Para $f_5 = xyz + zyx$ no vale.
+    \end{itemize}
+  \end{exampleblock}
 
 \end{frame}
 
@@ -159,15 +163,17 @@
 
 \begin{frame}
   \frametitle{Reducciones}
-  \begin{align*}
-    g_0 &= f_1 = ab + bc \\
-    g_1 &= f_3 = ba + ca \\
-    G &= \{g_0, g_1\} \\
-    & \\
-    f_4 &= aba - bba \\
-    f_5 &= abc + cba \\
-    f_6 &= -aba + cba - 2 baba + 2 ccba
-  \end{align*}
+  \begin{example}
+    \begin{itemize}
+      \item $g_0 = f_1 = xy + yz$
+      \item $g_1 = f_3 = yx + zx$
+      \item $G = \{g_0, g_1\}$
+      \\
+      \item $f_4 = xyx - yyx$
+      \item $f_5 = xyz + zyx$
+      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
+    \end{itemize}
+  \end{example}
 \end{frame}
 
 \begin{frame}
@@ -234,17 +240,20 @@
 
 \begin{frame}
   \frametitle{Ejemplo de mi librería}
-  \begin{align*}
-    g_0 &= f_1 = ab + bc \\
-    g_1 &= f_3 = ba + ca \\
-    G &= \{g_0, g_1\}
-  \end{align*}
+  \begin{exampleblock}{}
+    Teníamos:
+    \begin{itemize}
+      \item $g_0 = f_1 = ab + bc$
+      \item $g_1 = f_3 = ba + ca$
+      \item $G = \{g_0, g_1\}$
+    \end{itemize}
 
-  Dijimos que:
-  \begin{itemize}
-    \item Para $f_4 = aba - bba$ si vale.
-    \item Para $f_5 = abc + cba$ no vale.
-  \end{itemize}
+    Dijimos que:
+    \begin{itemize}
+      \item Para $f_4 = aba - bba$ si vale.
+      \item Para $f_5 = abc + cba$ no vale.
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
