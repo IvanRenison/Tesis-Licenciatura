@@ -162,7 +162,7 @@
     \begin{itemize}
       \item Para $f_4 = xyx - yyx$ si vale\pause, porque es igual a $g_0 x - y g_1$.
       \pause
-      \item Para $f_5 = xyz + zyx$ no vale.
+      \item ¿Y para $f_5 = xyz + zyx$ valdrá? \pause Lo veremos.
     \end{itemize}
   \end{exampleblock}
 
@@ -180,7 +180,7 @@
   \frametitle{Teorema}
   \pause
   Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$ y $c, c ∈ K⟨X⟩$. Entonces
-  \[ f ∈ (G) ⇔ f + c g x' ∈ (G) \]
+  \[ f ∈ (G) ⇒ f + c g c' ∈ (G) \]
 \end{frame}
 
 
@@ -253,7 +253,7 @@
     \pause
     \item Para los racionales usa la libraría FLINT para las matrices
     \pause
-    \item Incluye \alert{representación de cofactores} (``\textit{reconstrucción de la respuesta}'')
+    \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'')
     \pause
     \item Tiene un poquito de paralelismo
     \pause
@@ -266,15 +266,15 @@
   \begin{exampleblock}{}
     Teníamos:
     \begin{itemize}
-      \item $g_0 = f_1 = ab + bc$
-      \item $g_1 = f_3 = ba + ca$
+      \item $g_0 = f_1 = xy + yz$
+      \item $g_1 = f_3 = yx + zx$
       \item $G = \{g_0, g_1\}$
     \end{itemize}
 
     Dijimos que:
     \begin{itemize}
-      \item Para $f_4 = aba - bba$ si vale.
-      \item Para $f_5 = abc + cba$ no vale.
+      \item Para $f_4 = xyx - yyx$ si vale.
+      \item Para $f_5 = xyz + zyx$ no vale.
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -310,7 +310,7 @@
 
 \begin{frame}
   \frametitle{Comparación}
-  Tiempo en calcular una base
+  Tiempo en calcular una base de Gröbner
   \noindent \begin{tikzpicture}
     \begin{axis}[
         ybar = 0.5pt, % Tipo de gráfico: barras verticales
@@ -339,7 +339,7 @@
 
 \begin{frame}
   \frametitle{Comparación}
-  Tiempo en calcular una base viendo la parte de más abajo
+  Tiempo en calcular una base de Gröbner viendo la parte de más abajo
   \noindent \begin{tikzpicture}
     \begin{axis}[
         ybar = 0.5pt, % Tipo de gráfico: barras verticales
