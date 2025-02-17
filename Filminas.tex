@@ -65,6 +65,8 @@
     \end{itemize}
   \end{exampleblock}
 
+  \pause
+
   Fijemos:
   \begin{itemize}
     \item Un alfabeto $X$
@@ -73,7 +75,10 @@
 
   El conjunto de polinomios se denota $K[X]$.
 
-  El producto es conmutativo.
+  \pause
+
+  \alert{El producto es conmutativo.}
+  \pause
   \begin{exampleblock}{Por ejemplo en $ℚ[x, y]$:}
     \begin{itemize}
       \item $xy = yx$
@@ -85,17 +90,36 @@
 
 \begin{frame}
   \frametitle{Polinomios no conmutativos}
+  Son otros polinomios en los que el producto entre las variables no conmuta
   \pause
   \begin{exampleblock}{Por ejemplo en $ℚ⟨x, y, z⟩$:}
-    \begin{itemize}
-      \item $f_0 = x$
-      \item $f_1 = xy + yz$
-      \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
-      \item $f_3 = yx + zx$
-      \item $f_4 = xyx - yyx$
-      \item $f_5 = xyz + zyx$
-      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
-    \end{itemize}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{itemize}
+          \item $f_0 = x$
+          \item $f_1 = xy + yz$
+          \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
+          \item $f_3 = yx + zx$
+          \item $f_4 = xyx - yyx$
+          \item $f_5 = xyz + zyx$
+          \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
+        \end{itemize}
+      \end{column}
+      \begin{column}{0.5\textwidth}
+        \pause
+        Se pueden sumar:
+        \begin{itemize}
+          \item $f_0 + f_1 = x + xy + yz$
+          \item $f_1 + (\frac{1}{2}xy + 2 xz) = \frac{3}{2} xy + xz + yz$
+        \end{itemize}
+        \pause
+        Y se pueden multiplicar:
+        \begin{itemize}
+          \item $f_0 f_1 = xxy + xyz$
+          \item $f_1 f_0 = xyx + yzx$
+        \end{itemize}
+      \end{column}
+    \end{columns}
   \end{exampleblock}
 
   \pause
@@ -111,23 +135,22 @@
   \frametitle{Ordenes monomiales}
   $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
   \pause
-  \begin{exampleblock}{En los ejemplos de antes:}
+  \begin{exampleblock}{En los del ejemplo de antes:}
     \begin{itemize}
       \item $f_0 = x$
       \item $f_1 = xy + yz$
       \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
-      \item $f_3 = yx + zx$
-      \item $f_4 = xyx - yyx$
-      \item $f_5 = xyz + zyx$
-      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
     \end{itemize}
+    \pause
+    Tenemos:
+    \[x ≤_{deglex} xy ≤_{deglex} yz ≤_{deglex} xyy ≤_{deglex} xzxy ≤_{deglex} yzzx\]
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}
   \frametitle{Problema de pertenencia al ideal}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
-  \[ ∃g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : \alert{f = ∑_{i = 1}^n f_i g_i f'_i} \text{.}\]
+  \[ ∃g_1, …, g_n ∈ G, c_1, …, c_n, c'_1, …, c'_n ∈ K⟨X⟩ : \alert{f = ∑_{i = 1}^n c_i g_i c'_i} \text{.}\]
   \pause
   \begin{exampleblock}{Por ejemplo, si:}
     \begin{itemize}
@@ -156,8 +179,8 @@
 \begin{frame}
   \frametitle{Teorema}
   \pause
-  Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$, $a, b ∈ ⟨X⟩$ y $c ∈ ⟨X⟩$. Entonces
-  \[ f ∈ (G) ⇔ f + c a g b ∈ (G) \]
+  Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$ y $c, c ∈ K⟨X⟩$. Entonces
+  \[ f ∈ (G) ⇔ f + c g x' ∈ (G) \]
 \end{frame}
 
 
@@ -171,7 +194,7 @@
       \\
       \item $f_4 = xyx - yyx$
       \item $f_5 = xyz + zyx$
-      \item $f_6 = -xyx + zyx - 2 yxyx + 2 zzyx$
+      \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
     \end{itemize}
   \end{example}
 \end{frame}
@@ -254,36 +277,6 @@
       \item Para $f_5 = abc + cba$ no vale.
     \end{itemize}
   \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Comparación}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      Para los racionales:
-      \begin{minted}{text}
-        Average times:
-        Buch: 0.0041429424s
-        F4: 0.0105502963s
-        GB: 0.8995876765s
-        Max times:
-        Buch: 0.1320753098s
-        F4: 0.0925185680s
-        GB: 4.6477575302s
-      \end{minted}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      Para la aritmética modular:
-      \begin{minted}{text}
-        Average times:
-        Buch_Zp: 0.0028817248s
-        F4_Zp: 0.0072190428s
-        Max times:
-        Buch_Zp: 0.0779249668s
-        F4_Zp: 0.0799708366s
-      \end{minted}
-    \end{column}
-  \end{columns}
 \end{frame}
 
 \begin{frame}
