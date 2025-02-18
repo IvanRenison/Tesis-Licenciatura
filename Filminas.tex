@@ -1,6 +1,8 @@
 \documentclass[spanish, aspectratio=169, hidecontrols]{beamer}
 %\usetheme{moloch}
+\useoutertheme{miniframes}
 \setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{footline}[frame number]
 
 \usepackage{fontspec}
 
@@ -49,9 +51,17 @@
 % La terminal abierta en el directorio de la librería
 
 \begin{frame}
+  \setbeamertemplate{headline}{}
   \title{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo}
   \titlepage
 \end{frame}
+
+\begin{frame}
+  \frametitle{Índice}
+  \tableofcontents
+\end{frame}
+
+\section{Preliminares}
 
 \begin{frame}
   \frametitle{Polinomios}
@@ -60,6 +70,7 @@
 
   \begin{exampleblock}{Algunos polinomios:}
     \begin{itemize}
+      \item $3 + x - \frac{1}{2} x^2$
       \item $5 + 3 y - 2 x y + x^3 y^5$
       \item $y^2 + x - x^2y^2$
     \end{itemize}
@@ -131,21 +142,21 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Ordenes monomiales}
-  $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
-  \pause
-  \begin{exampleblock}{En los del ejemplo de antes:}
-    \begin{itemize}
-      \item $f_0 = x$
-      \item $f_1 = xy + yz$
-      \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
-    \end{itemize}
-    \pause
-    Tenemos:
-    \[x ≤_{deglex} xy ≤_{deglex} yz ≤_{deglex} xyy ≤_{deglex} xzxy ≤_{deglex} yzzx\]
-  \end{exampleblock}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Ordenes monomiales}
+%   $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
+%   \pause
+%   \begin{exampleblock}{En los del ejemplo de antes:}
+%     \begin{itemize}
+%       \item $f_0 = x$
+%       \item $f_1 = xy + yz$
+%       \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
+%     \end{itemize}
+%     \pause
+%     Tenemos:
+%     \[x ≤_{deglex} xy ≤_{deglex} yz ≤_{deglex} xyy ≤_{deglex} xzxy ≤_{deglex} yzzx\]
+%   \end{exampleblock}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Problema de pertenencia al ideal}
@@ -177,87 +188,105 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Teorema}
+  \frametitle{Problema de pertenencia al ideal reformualdo}
+  Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
+  \[ f ∈ (G) \text{.}\]
   \pause
-  Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$ y $c, c ∈ K⟨X⟩$. Entonces
-  \[ f ∈ (G) ⇒ f + c g c' ∈ (G) \]
+  \begin{itemize}
+    \item Este problema es semi-decidible.
+    \pause
+    \item Pero no es decidible en general.
+    \pause
+    \item Hay algunos conjuntos $G$ para los cuales hay un algoritmo fácil. \pause \\
+    Esos conjuntos se llaman bases de Gröbner.
+    \pause
+    \item Todos los $G$ tienen una base de Gröbner que general el mismo ideal.
+    \pause
+    \item Pero no siempre es finita.
+  \end{itemize}
 \end{frame}
 
+% \begin{frame}
+%   \frametitle{Teorema}
+%   \pause
+%   Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$ y $c, c ∈ K⟨X⟩$. Entonces
+%   \[ f ∈ (G) ⇒ f + c g c' ∈ (G) \]
+% \end{frame}
+
+
+% \begin{frame}
+%   \frametitle{Reducciones}
+%   \begin{example}
+%     \begin{itemize}
+%       \item $g_0 = f_1 = xy + yz$
+%       \item $g_1 = f_3 = yx + zx$
+%       \item $G = \{g_0, g_1\}$
+%       \\
+%       \item $f_4 = xyx - yyx$
+%       \item $f_5 = xyz + zyx$
+%       \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
+%     \end{itemize}
+%   \end{example}
+% \end{frame}
 
 \begin{frame}
-  \frametitle{Reducciones}
-  \begin{example}
-    \begin{itemize}
-      \item $g_0 = f_1 = xy + yz$
-      \item $g_1 = f_3 = yx + zx$
-      \item $G = \{g_0, g_1\}$
-      \\
-      \item $f_4 = xyx - yyx$
-      \item $f_5 = xyz + zyx$
-      \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
-    \end{itemize}
-  \end{example}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Algoritmo de Buchberger}
+  \frametitle{Algoritmos}
   \pause
 
-  La idea de Buchberger es ir agregando los S-polinomios reducidos
-\end{frame}
-
-\begin{frame}
-  \frametitle{Bases de Gröbner}
-  $G$ es una base de Gröbner $⇔ ∀f ∈ K⟨X⟩ : f ∈ (G) ⇔ f$ se puede reducir \\
+  Van enumerando la base de Gröbner.
 
   \pause
-
-  Si agregamos S-polinomios hasta que no queda ninguno entonces \\ obtenemos una base de Gröbner
-\end{frame}
-
-\begin{frame}
-  \frametitle{Algoritmo F4}
+  Hay dos algoritmos principales:
   \pause
-
-  F4 hace lo mismo que Buchberger pero de a muchos polinomios al mismo tiempo usando álgebra lineal
+  \begin{itemize}
+    \item Buchberger: \pause va agregando los elementos de a uno.
+    \item F4: \pause usa álgebra lineal para agregar los elementos de a muchos.
+  \end{itemize}
 \end{frame}
+
+
+\section{Implementaciones anteriores}
 
 \begin{frame}
   \frametitle{Implementaciones previas}
   \pause
   De Buchberger:
   \begin{itemize}
-    \item Paquete GBNP de GAP
-    \item Implementación dentro de Singular
-    \item Implementación dentro de NCAlgebra
-    \item Paquete \texttt{OperatorGB} de Mathematica
+    \item Paquete GBNP de GAP.
+    \item Implementación dentro de Singular.
+    \item Implementación dentro de NCAlgebra.
+    \item Paquete \texttt{OperatorGB} de Mathematica.
   \end{itemize}
   \pause
   De F4:
   \begin{itemize}
-    \item Implementación dentro de Magma
-    \item Paquete \texttt{operator\_gb} de Python y SageMath
+    \item Implementación dentro de Magma.
+    \item Paquete \texttt{operator\_gb} de Python y SageMath.
   \end{itemize}
 \end{frame}
 
+\section{Mi librería}
+
 \begin{frame}
   \frametitle{Mi librería}
-  Librería \texttt{ncgb} de \cpp
+  Librería \texttt{ncgb} de \cpp.
   \pause
   \begin{itemize}
-    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas
+    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas.
     \pause
-    \item Implementa Buchberger y F4
+    \item Implementa Buchberger y F4.
     \pause
-    \item Funciona para un \alert{cuerpo arbitrario}
+    \item Funciona para un \alert{cuerpo arbitrario}.
     \pause
-    \item Para los racionales usa la libraría FLINT para las matrices
+    \item Para las matrices de un cuerpo arbitrario usa una implementación propia.
     \pause
-    \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'')
+    \item Para los racionales usa la libraría FLINT para las matrices.
     \pause
-    \item Tiene un poquito de paralelismo
+    \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'').
     \pause
-    \item Falta implementar la optimización de Faugère-Lachartre en F4
+    \item Tiene un poquito de paralelismo.
+    \pause
+    \item Falta implementar la optimización de Faugère-Lachartre en F4.
   \end{itemize}
 \end{frame}
 
@@ -278,6 +307,8 @@
     \end{itemize}
   \end{exampleblock}
 \end{frame}
+
+\section{Comparación}
 
 \begin{frame}
   \frametitle{Comparación}
@@ -429,6 +460,8 @@
   \end{tikzpicture}
 \end{frame}
 
+\section{Trabajos futuros}
+
 % \begin{frame}
 %   \frametitle{Repaso}
 % \end{frame}
@@ -436,8 +469,8 @@
 \begin{frame}
   \frametitle{Trabajos futuros}
   \begin{itemize}
-    \item Implementar la optimización de Faugère-Lachartre en F4
-    \item Y si es posible paralelizarla
+    \item Implementar la optimización de Faugère-Lachartre en F4.
+    \item Y si es posible paralelizarla.
   \end{itemize}
 \end{frame}
 
