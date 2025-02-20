@@ -71,7 +71,6 @@
     \begin{itemize}
       \item $3 + x - \frac{1}{2} x^2$
       \item $5 + 3 y - 2 x y + x^3 y^5$
-      \item $y^2 + x - x^2y^2$
     \end{itemize}
   \end{exampleblock}
 
@@ -85,41 +84,73 @@
 
   El conjunto de polinomios se denota $K[X]$.
 
-  \pause
-
-  \alert{El producto es conmutativo.}
-  \pause
-  \begin{exampleblock}{Por ejemplo en $ℚ[x, y]$:}
+  \begin{exampleblock}{En los ejemplos, $K = {\color{blue}ℚ}$ y $X = {\color{red}\{x, y\}}$:}
     \begin{itemize}
-      \item $xy = yx$
-      \item $y^2 + x - x^2y^2 = yy + x - yxxy$
+      \item ${\color{blue}3} + {\color{blue}1} {\color{red}x} + {\color{blue}(-\frac{1}{2})} {\color{red}{x}}^2$
+      \item ${\color{blue}5} + {\color{blue}3} {\color{red}y} + {\color{blue}(-2)} {\color{red}x} {\color{red}y} + {\color{blue}1} {\color{red}{x}}^3 {\color{red}{y}}^5$
     \end{itemize}
   \end{exampleblock}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Polinomios no conmutativos}
-  Son otros polinomios en los que el producto entre las variables no conmuta
+  \frametitle{¿De qué están hechos los polinomios?}
   \pause
-  \begin{exampleblock}{Por ejemplo en para los racionales:}
+  Son combinaciones lineales con coeficientes en $K$ de monomios.
+  \begin{exampleblock}{}
+    {\color{blue}Coeficientes} y {\color{violet}monomios}:
+    \begin{itemize}
+      \item ${\color{blue}3} + {\color{blue}1} {\color{violet}x} + {\color{blue}(-\frac{1}{2})} {\color{violet}x^2}$
+      \item ${\color{blue}5} + {\color{blue}3} {\color{violet}y} + {\color{blue}(-2)} {\color{violet}x y} + {\color{blue}1} {\color{violet}x^3 y^5}$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Monomios}
+  \pause
+  El producto entre las variables es conmutativo.
+  \pause
+  \begin{exampleblock}{}
+    \begin{itemize}
+      \item $xy = yx$
+      \item $x^3 y^5 = xyyxyxyy$
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Monomios no conmutativos}
+  \pause
+  Se pueden considerar otros monomios en los que el producto entre las variables no conmuta.
+  \begin{exampleblock}{}
+    \begin{itemize}
+      \item $xy ≠ yx$
+      \item $x^3 y^5 ≠ xyyxyxyy$
+      \item $casa ≠ asac$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Polinomios no conmutativos}
+  Son combinaciones lineales con coeficientes en K de monomios no conmutativos
+  \pause
+  \begin{exampleblock}{Por ejemplo en los racionales:}
     \begin{columns}
       \begin{column}{0.5\textwidth}
         \begin{itemize}
           \item $f_0 = x$
           \item $f_1 = xy + yz$
           \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
-          \item $f_3 = yx + zx$
-          \item $f_4 = xyx - yyx$
-          \item $f_5 = xyz + zyx$
-          \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
         \end{itemize}
       \end{column}
       \begin{column}{0.5\textwidth}
         \pause
         Se pueden sumar:
         \begin{itemize}
-          \item $f_0 + f_1 = x + xy + yz$
+          \item $f_0 + f_1 = f_1 + f_0 = x + xy + yz$
           \item $f_1 + (\frac{1}{2}xy + 2 xz) = \frac{3}{2} xy + 2 xz + yz$
         \end{itemize}
         \pause
@@ -134,11 +165,10 @@
 
   \pause
 
-  Se denotan:
-  \begin{itemize}
-    \item \alert{$K⟨X⟩$} el conjunto de polinomios no conmutativos
-  \end{itemize}
+  Se denota con $K⟨X⟩$ al conjunto de polinomios no conmutativos
 \end{frame}
+
+% Definir ideal en general y dar un ejemplo para el caso conmutativo
 
 % \begin{frame}
 %   \frametitle{Ordenes monomiales}
@@ -158,18 +188,18 @@
 
 \begin{frame}
   \frametitle{Problema de pertenencia al ideal}
-  Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
-  \[ ∃g_1, …, g_n ∈ G, c_1, …, c_n, c'_1, …, c'_n ∈ K⟨X⟩ : \alert{f = ∑_{i = 1}^n c_i g_i c'_i} \text{.}\]
+  Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si existen $g_1, …, g_n ∈ G$ y $c_1, …, c_n, c'_1, …, c'_n ∈ K⟨X⟩$ tales que
+  \[ f = ∑_{i = 1}^n c_i g_i c'_i \text{.}\]
   \pause
   \begin{exampleblock}{Por ejemplo, si:}
     \begin{itemize}
-      \item $g_0 = f_1 = xy + yz$
-      \item $g_1 = f_3 = yx + zx$
+      \item $g_0 = xy + yz$
+      \item $g_1 = yx + zx$
       \item $G = \{g_0, g_1\}$
     \end{itemize}
     Entonces:
     \begin{itemize}
-      \item Para $f_4 = xyx - yyx$ si vale\pause, porque es igual a $g_0 x - y g_1$.
+      \item Para $f_4 = xyx - yyx$ si vale\pause, porque es igual a $g_0 x - y g_1$. % Usar f y f'
       \pause
       \item ¿Y para $f_5 = xyz + zyx$ valdrá? \pause Lo veremos.
     \end{itemize}
@@ -191,16 +221,15 @@
   \[ f ∈ (G) \text{.}\]
   \pause
   \begin{itemize}
-    \item Este problema es semi-decidible.
-    \pause
-    \item Pero no es decidible en general.
-    \pause
-    \item Hay algunos conjuntos $G$ para los cuales hay un algoritmo fácil. \pause \\
+    \item Este problema es semi-decidible\pause, pero no es decidible en general.
+    \pause % Capás tengo que escribir (además de decir) porqué es semi-decidible
+    \item Hay algunos conjuntos $G$ para los cuales hay un algoritmo fácil. \pause \\ % Poner en otro frame
     Esos conjuntos se llaman bases de Gröbner.
     \pause
     \item Todos los $G$ tienen una base de Gröbner que general el mismo ideal.
     \pause
     \item Pero no siempre es finita.
+    \item % Agregar que si es finita se puede usar el algoritmo sensillo
   \end{itemize}
 \end{frame}
 
@@ -270,19 +299,19 @@
   Librería \texttt{ncgb} de \cpp.
   \pause
   \begin{itemize}
-    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas.
+    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas. % Poner que operaciones
     \pause
     \item Implementa Buchberger y F4.
     \pause
-    \item Funciona para un \alert{cuerpo arbitrario}.
+    \item Funciona para un \alert{cuerpo arbitrario}. % Es paramétrica en el cuerpo
     \pause
     \item Para las matrices de un cuerpo arbitrario usa una implementación propia.
     \pause
-    \item Para los racionales usa la libraría FLINT para las matrices.
+    \item Para los racionales usa la libraría FLINT para las matrices. % Decir esto más corto
     \pause
     \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'').
     \pause
-    \item Tiene un poquito de paralelismo.
+    \item Tiene un poquito de paralelismo. % Poner en filmina a parte
     \pause
     \item Falta implementar la optimización de Faugère-Lachartre en F4.
   \end{itemize}
@@ -309,7 +338,7 @@
 \section{Comparación}
 
 \begin{frame}[shrink]
-  \frametitle{Comparación}
+  \frametitle{Comparación} % Mostrar unos pocos
   \setlength{\jot}{0pt}
   \begin{align*}
     \text{FK2} =& \{a^2\} \\
@@ -394,7 +423,7 @@
   \end{tikzpicture}
 \end{frame}
 
-\begin{frame}
+\begin{frame} % Ver de hacer un gráfico que tenga en el eje x la cantidad de cores y tenga una linea por cada caso
   \frametitle{Comparación}
   Paralelismo
   \noindent \begin{tikzpicture}
@@ -458,9 +487,10 @@
 
 \section{Trabajos futuros}
 
-% \begin{frame}
-%   \frametitle{Repaso}
-% \end{frame}
+\begin{frame}
+  \frametitle{Repaso}
+  Implementé una librería de \cpp para calcular bases de Gröbner no conmutativas y resolver el problema de pertenencia al ideal.
+\end{frame}
 
 \begin{frame}
   \frametitle{Trabajos futuros}
@@ -474,6 +504,7 @@
 
 \begin{frame}[noframenumbering, plain]
   \frametitle{Fin}
+  % Agregar un gracias
 \end{frame}
 
 \end{document}
