@@ -187,7 +187,7 @@
 % \end{frame}
 
 \begin{frame}
-  \frametitle{Problema de pertenencia al ideal}
+  \frametitle{Problema principal del trabajo}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si existen $g_1, …, g_n ∈ G$ y $c_1, …, c_n, c'_1, …, c'_n ∈ K⟨X⟩$ tales que
   \[ f = ∑_{i = 1}^n c_i g_i c'_i \text{.}\]
   \pause
@@ -208,6 +208,22 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{¿Qué aplicaciones practicas tiene?}
+
+  En identidades sobre un operador asociativo.
+  \begin{exampleblock}{Por ejemplo:}
+    Si tenemos un producto asociativo, constantes $a, b, c, d$ y axiomas:
+    \begin{itemize}
+      \item $aba = a$
+      \item $bab = b$
+      \item $dc = ab$
+      \item $cd = ba$
+    \end{itemize}
+    Nos podemos preguntar si otras igualdades se pueden deducir a partir de estas.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
   \frametitle{Ideales}
   \pause
   Sea $G ⊆ K⟨X⟩$, se define
@@ -216,14 +232,24 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Problema de pertenencia al ideal reformualdo}
+  \frametitle{Problema prinicpal reformualdo}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
-  \[ f ∈ (G) \text{.}\]
+  \[ f ∈ (G) \text{.} \]
   \pause
+  El problema principal también se llama problema de pertenencia al ideal.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Decidibilidad}
+  \pause
+  Este problema es semi-decidible\pause, pero no es decidible en general.
+  % Capás tengo que escribir (además de decir) porqué es semi-decidible
+\end{frame}
+
+\begin{frame}
+  \frametitle{Cómo se intenta resolver}
   \begin{itemize}
-    \item Este problema es semi-decidible\pause, pero no es decidible en general.
-    \pause % Capás tengo que escribir (además de decir) porqué es semi-decidible
-    \item Hay algunos conjuntos $G$ para los cuales hay un algoritmo fácil. \pause \\ % Poner en otro frame
+    \item Hay algunos conjuntos $G$ para los cuales hay un algoritmo fácil. \pause \\
     Esos conjuntos se llaman bases de Gröbner.
     \pause
     \item Todos los $G$ tienen una base de Gröbner que general el mismo ideal.
