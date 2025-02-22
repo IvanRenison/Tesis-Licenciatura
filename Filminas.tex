@@ -1,6 +1,15 @@
 \documentclass[spanish, aspectratio=169, hidecontrols]{beamer}
 %\usetheme{moloch}
+
 \useoutertheme{miniframes}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\slideentry}{\advance\beamer@tempdim by -.05cm}{\advance\beamer@tempdim by\beamer@vboxoffset\advance\beamer@tempdim by\beamer@boxsize\advance\beamer@tempdim by 1.2\pgflinewidth}{}{}
+\patchcmd{\slideentry}{\kern\beamer@tempdim}{\advance\beamer@tempdim by 5pt\advance\beamer@tempdim by\wd\beamer@sectionbox\kern\beamer@tempdim}{}{}
+\makeatother
+
+\addtobeamertemplate{headline}{}{\vspace*{-5mm}}
+
 \setbeamertemplate{navigation symbols}{}
 %\setbeamertemplate{footline}[frame number]
 
@@ -20,6 +29,7 @@
 \usepackage{xspace}
 
 \usepackage{pgfplots} % Para los gráficos
+\pgfplotsset{compat=1.18}
 
 %\usepackage{tikz}
 %\usepackage{pgf} % Para dibujar la cuadrícula
@@ -83,6 +93,8 @@
   \end{itemize}
 
   El conjunto de polinomios se denota $K[X]$.
+
+  \pause
 
   \begin{exampleblock}{En los ejemplos, $K = {\color{blue}ℚ}$ y $X = {\color{red}\{x, y\}}$:}
     \begin{itemize}
@@ -298,27 +310,6 @@
   \end{itemize}
 \end{frame}
 
-
-\section{Implementaciones anteriores}
-
-\begin{frame}
-  \frametitle{Implementaciones previas}
-  \pause
-  De Buchberger:
-  \begin{itemize}
-    \item Paquete GBNP de GAP.
-    \item Implementación dentro de Singular.
-    \item Implementación dentro de NCAlgebra.
-    \item Paquete \texttt{OperatorGB} de Mathematica.
-  \end{itemize}
-  \pause
-  De F4:
-  \begin{itemize}
-    \item Implementación dentro de Magma.
-    \item Paquete \texttt{operator\_gb} de Python y SageMath.
-  \end{itemize}
-\end{frame}
-
 \section{Mi librería}
 
 \begin{frame}
@@ -326,7 +317,7 @@
   Librería \texttt{ncgb} de \cpp.
   \pause
   \begin{itemize}
-    \item Implementa estructuras para monomios y polinomios con sus operaciones básicas, como \texttt{*}, \texttt{+}, \texttt{-}, \texttt{==}, \texttt{+=}, etc.
+    \item Implementa estructuras para monomios y polinomios no conmutativos con sus operaciones básicas, como \texttt{*}, \texttt{+}, \texttt{-}, \texttt{==}, \texttt{+=}, etc.
     \pause
     \item Implementa Buchberger y F4.
     \pause
@@ -336,9 +327,9 @@
     \pause
     \item Para los racionales usa la libraría FLINT para las matrices. % Decir esto más corto
     \pause
-    \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'').
-    \pause
     \item Falta implementar la optimización de Faugère-Lachartre en F4.
+    \pause
+    \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'').
     \pause
     \item Tiene un poquito de paralelismo. % Poner en filmina a parte
   \end{itemize}
@@ -360,6 +351,52 @@
       \item Para $f_5 = xyz + zyx$ no sabíamos si vale o no.
     \end{itemize}
   \end{exampleblock}
+\end{frame}
+
+\section{Trabajos futuros}
+
+\begin{frame}
+  \frametitle{Repaso}
+  Implementé una librería de \cpp para calcular bases de Gröbner no conmutativas y resolver el problema de pertenencia al ideal.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Trabajos futuros}
+  \begin{itemize}
+    \item Implementar la optimización de Faugère-Lachartre en F4.
+    \item Y si es posible paralelizarla.
+  \end{itemize}
+\end{frame}
+
+\appendix
+
+\begin{frame}[noframenumbering, plain]
+  \frametitle{Fin}
+  \begin{center}
+    \Huge Gracias
+  \end{center}
+\end{frame}
+
+\appendix
+
+\section{Implementaciones previas}
+
+\begin{frame}
+  \frametitle{Implementaciones previas}
+  \pause
+  De Buchberger:
+  \begin{itemize}
+    \item Paquete GBNP de GAP.
+    \item Implementación dentro de Singular.
+    \item Implementación dentro de NCAlgebra.
+    \item Paquete \texttt{OperatorGB} de Mathematica.
+  \end{itemize}
+  \pause
+  De F4:
+  \begin{itemize}
+    \item Implementación dentro de Magma.
+    \item Paquete \texttt{operator\_gb} de Python y SageMath.
+  \end{itemize}
 \end{frame}
 
 \section{Comparación}
@@ -498,30 +535,6 @@
       \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.07) (tri1, 0.06) (tri10, 0.01) (tri11, 0.01) (tri12, 0.20) (tri13, 0.00) (tri2, 0.29) (tri3, 0.03) (tri4, 0.05) (tri5, 0.01) (tri6, 1.79) (tri7, 1.80) (tri8, 0.05) (tri9, 0.00) (trit3, 0.04) (trit4, 0.46)};
     \end{axis}
   \end{tikzpicture}
-\end{frame}
-
-\section{Trabajos futuros}
-
-\begin{frame}
-  \frametitle{Repaso}
-  Implementé una librería de \cpp para calcular bases de Gröbner no conmutativas y resolver el problema de pertenencia al ideal.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Trabajos futuros}
-  \begin{itemize}
-    \item Implementar la optimización de Faugère-Lachartre en F4.
-    \item Y si es posible paralelizarla.
-  \end{itemize}
-\end{frame}
-
-\appendix
-
-\begin{frame}[noframenumbering, plain]
-  \frametitle{Fin}
-  \begin{center}
-    \Huge Gracias
-  \end{center}
 \end{frame}
 
 \end{document}
