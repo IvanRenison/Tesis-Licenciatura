@@ -194,7 +194,8 @@ A continuación una lista de quienes ayudaron en algo con este trabajo: % Ademá
 \begin{itemize}
   \item Mis directores Cristian Vay y Miguel Maria Pagano ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
   \item Lucía Martinez Gavier leyó la tesis e hizo bastantes sugerencias.
-  \item Alvaro Roy Schachner me ayudó con cosas de la computadora Atom y además leyó la tesis e hizo bastantes sugerencias.
+  \item Álvaro Roy Schachner me ayudó con cosas de la computadora Atom y además leyó la tesis e hizo bastantes sugerencias.
+  \item Agustín Garcia Iglesias como miembro del tribunal leyó la tesis e hizo algunas sugerencias.
   \item Ana María Cingolani leyó el resumen y la introducción e hizo algunas sugerencias.
 \end{itemize}
 
@@ -609,7 +610,7 @@ Cada ideal define una clase de equivalencia en el anillo, la cual se llama congr
   \qed
 \end{theorem}
 
-Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de esta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
+Esta congruencia es parecida a la de los enteros módulo un natural (de hecho, la congruencia de los enteros módulo un natural es un subcaso de ésta tomando como ideal a todos los múltiplos del módulo). Vale que la clase de equivalencia del $0$ es el propio ideal:
 
 \begin{lemma}\label{lemma:en ideal ⇔ congruente 0}
   Sean $R$ un anillo, $I ⊆ R$ un ideal y $a ∈ R$. Entonces
@@ -855,7 +856,7 @@ El siguiente teorema caracteriza las formas normales de $→$.
   Sean $G ⊆ K⟨X⟩, f ∈ K⟨X⟩$. Entonces
   \[ f\text{ está en forma normal con respecto a} →_{≤, G} ⇔ ∄g ∈ G, m ∈ \sop(f) : \lm_≤(g) | m \text{.}\]
 \end{theorem}
-\begin{proof} Probemos ida y vuelta por separado
+\begin{proof} Probemos ida y vuelta por separado.
   \begin{description}
     \item[Ida ($⇒$):] Por contradicción, supongamos el antecedente y que tenemos $g ∈ G, m ∈ \sop(f)$ tales que $\lm_≤(g) | m$.
 
@@ -940,7 +941,7 @@ Una propiedad sobre los reductores que necesitaremos es que mantienen la pertene
 
 \section{Bases de Gröbner}
 
-Que $→_{≤, G}$ sea confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ se podría siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular se podría determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ se podría siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular se podría determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -1468,7 +1469,7 @@ Las optimizaciones mencionadas en la sección de Buchberger para descartar ambig
 
 Como se dijo en la introducción, para este trabajo se implementaron los algoritmos de Buchberger y F4 en \cpp junto con estructuras para manejar polinomios no conmutativos en una librería llamada \texttt{ncgb}. La librería está disponible en el repositorio \url{https://github.com/IvanRenison/Non-commutative-Grobner-Bases}.
 
-En este capítulo se explica cómo se usa la librería sin explicar como está implementada y en el siguiente se explica como está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis se refieren esa versión.
+En este capítulo se explica cómo se usa la librería sin explicar como está implementada y en el siguiente se explica cómo está implementada. En la fecha de la escritura de esta tesis, el último commit tiene el tag \href{https://github.com/IvanRenison/Non-commutative-Grobner-Bases/tree/v0.1}{\texttt{v0.1}} y todas las explicaciones de esta tesis se refieren esa versión.
 
 El repositorio tiene varios directorios, pero hay dos que son los más relevantes. El primero es el directorio \path{ncgb}, que es donde está alojada la librería en sí. Como la librería es genérica sobre algunos parámetros, se usan templates. Las clases y funciones genéricas se definen en archivos \path{.hpp}, donde se incluye tanto su declaración como su implementación. El otro directorio relevante es \path{mains}, que tiene varios archivos \path{.cpp} con funciones \texttt{main} que usan la librería. Estos archivos son útiles para ver ejemplos de cómo usar la librería.
 
@@ -2088,12 +2089,12 @@ El primer \texttt{for} de \texttt{add\_poly} así como está casi que se podría
   }
 \end{minted}
 
-El \texttt{\#pragma omp parallel for} es lo que efectivamente hace que OpenMP paralelice el \texttt{for}. En el \cref{cap:Benchmarks} se presentan resultados de qué tal anda la paralelización.
+El \texttt{\#pragma omp parallel for} es lo que efectivamente hace que OpenMP paralelice el \texttt{for}. En el \cref{cap:Benchmarks} se presentan resultados sobre qué tal anda la paralelización.
 
 
 \chapter{Tests}\label{cap:Tests}
 
-Los tests suelen ser una parte fundamental en la implementación de una librería robusta y confiable, así que en este trabajo se testió todo lo más posible. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que hagan mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
+Los tests suelen ser una parte fundamental en la implementación de una librería robusta y confiable, así que en este trabajo se testeó todo lo más posible. A medida que se fue escribiendo el código se fueron haciendo tests del código para eliminar los bugs. Además, con algunos de los tests se hizo que realicen mediciones de tiempo para ver qué tan rápido andaba el código. Esto último se llama benchmarking. En esta sección se explican los tests y en el siguiente capítulo los benchmarks que se hicieron.
 
 Todos los tests están en el directorio \path{test}, el cual está dividido en varios subdirectorios con varios tests cada uno. Para correr todos los tests se puede usar el comando \texttt{make test}. En el directorio \path{.github/workflows} está configurado para que al subir los cambios al repositorio se corran los tests automáticamente, aunque eso no siempre funciona porque cuando se corren los tests en GitHub se tiene que instalar SageMath y a veces falla la instalación.
 
@@ -2231,7 +2232,7 @@ A simple vista se puede ver que para los casos en los que se distingue algo \tex
   \end{axis}
 \end{tikzpicture}
 
-Acá se puede ver que en los casos más chiquitos si pasa que \texttt{Buchberger} y \texttt{F4} le ganan a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos \texttt{Buchberger} y \texttt{F4} sean más rápido también tiene sentido por el hecho de que \cpp es mucho más rápido que Python.
+Acá se puede ver que en los casos más chiquitos sí pasa que \texttt{Buchberger} y \texttt{F4} le ganan a \texttt{operator\_gb}. Que en los grandes gane \texttt{operator\_gb} tiene sentido por el hecho de que tiene implementada la optimización de reducir las matrices mas eficientemente. Que en los chicos \texttt{Buchberger} y \texttt{F4} sean más rápido también tiene sentido por el hecho de que \cpp es mucho más rápido que Python.
 
 \section{Paralelismo}
 
@@ -2370,11 +2371,11 @@ La implementación del algoritmo Buchberger incluye la parte de la representaci�
 
 \section{Trabajos futuros}\label{section:trabajos futuros}
 
-Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y esa es uno de las trabajos futuros más importantes para hacer.
+Como ya se dijo varias veces, falta usar la reducción por filas de Faugère-Lachartre que es más eficiente, y ese es uno de los trabajos futuros más importantes para hacer.
 
 Del algoritmo F4 (y de Buchberger) para el caso conmutativo hay varias implementaciones en \cpp, por ejemplo \cite{lib:openf4, lib:mathic, lib:M4GB}, inclusive en paralelo, como \cite{DBLP:journals/jsc/Reeves98, lib:parallelGBC}. Muchas son solo para los enteros módulo un primo, pero algunas también para los racionales. Es muy probable que analizando esas implementaciones se puedan sacar muchas ideas o implementaciones útiles, en particular, podría ser que ya alguien haya implementado la reducción por filas de Faugère-Lachartre en \cpp.
 
-Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones de implementación pero al hacerlos el código resultaba andar más lento (a veces por muy poquito), así que se descartaban esos cambios. Sería bueno agregar más tests y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests, porque podría ser que fueran un poquito más lento justo en los casos de los tests pero que en general si fueran más rápidas.
+Cuando se fue haciendo la librería, muchas veces pasaba que había cambios que parecían optimizaciones de implementación pero al hacerlos el código resultaba andar más lento (a veces por muy poquito), así que se descartaban esos cambios. Sería bueno agregar más tests y probar hacer cambios para ver si mejoran o no los tiempos teniendo más tests, porque podría ser que fueran un poquito más lento justo en los casos de los tests pero que en general sí fueran más rápidas.
 
 Se podría analizar cuánto tiempo se consume en las distintas partes de los algoritmos, porque eso podría ayudar a saber en qué partes se pueden realizar optimizaciones.
 
@@ -2397,7 +2398,7 @@ Como ya se mencionó en el \cref{cap:Benchmarks}, no se sabe para $n ≥ 6$ si l
 
 Actualmente para estudiar el tema de bases de Gröbner, tanto conmutativas como no conmutativas, hay libros y artículos sobre el tema, en particular \cite{book:ideals-varieties-algorithms} para conmutativas y \cite{thesis:Hof20} para no conmutativas, pero para practicar las implementaciones no hay mucha ayuda. Por ejemplo, cuando implementé las bases de Gröbner conmutativas para practicar tuve que hacer mi propio testing. Para que sea más fácil estudiar el tema sería útil preparar problemas del estilo de programación competitiva sobre el tema. Estos problemas se podrían poner en, por ejemplo, \href{https://judge.yosupo.jp}{Library Checker}, o en un grupo de \href{https://codeforces.com}{Codeforces}.
 
-Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoría de forma más segura, previniendo los errores de memoría, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
+Por último, otra cosa que se podría hacer es implementar el cálculo de bases de Gröbner no conmutativas en otros lenguajes, como por ejemplo Rust, que, además de ser un lenguaje muy rápido como \cpp, maneja la memoria de forma más segura, previniendo los errores de memoria, que en la implementación en \cpp podría haber porque se usan referencias en algunos lugares.
 
 \chapter*{Bibliografía}
 \addcontentsline{toc}{chapter}{Bibliografía} % Estás dos lineas están así para que no aparesca como capítulo numerado, pero si aparesca en el índice
