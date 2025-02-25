@@ -336,6 +336,51 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Resultados del paralelismo}
+  \center
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel = {Número de cores},
+      ylabel = {Tiempo en segundos},
+      grid = major,
+      ymin = 0,
+      xmin = 0,
+      xmax = 17,
+      xtick = {1, 2, 4, 6, 8, 16}
+    ]
+      \addplot coordinates { % FK4
+        (1, 0.07) (2, 0.06) (4, 0.06) (6, 0.06) (8, 0.07) (16, 0.07)
+      };
+
+      \addplot coordinates { % tri1
+        (1, 0.10) (2, 0.08) (4, 0.07) (6, 0.06) (8, 0.06) (16, 0.06)
+      };
+
+      \addplot coordinates { % tri2
+        (1, 0.53) (2, 0.42) (4, 0.36) (6, 0.32) (8, 0.31) (16, 0.29)
+      };
+
+      \addplot coordinates { % tri12
+        (1, 0.32) (2, 0.28) (4, 0.22) (6, 0.22) (8, 0.20) (16, 0.20)
+      };
+
+      \addplot coordinates { % tri7
+        (1, 2.19) (2, 2.02) (4, 1.92) (6, 1.84) (8, 1.81) (16, 1.80)
+      };
+
+      %\addplot coordinates { % tri4
+      %  (1, 0.47) (2, 0.47) (4, 0.45) (6, 0.45) (8, 0.45) (16, 0.46)
+      %};
+
+      % \addplot coordinates { % trit5
+      %   (1, 213.58) (2, 212.76) (4, 209.93) (6, 212.14) (8, 208.28) (16, 208.62)
+      % };
+
+    \end{axis}
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}
   \frametitle{Ejemplo de mi librería}
   \begin{exampleblock}{}
     Teníamos:
