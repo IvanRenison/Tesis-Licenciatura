@@ -94,8 +94,6 @@
 
   El conjunto de polinomios se denota $K[X]$.
 
-  \pause
-
   \begin{exampleblock}{En los ejemplos, $K = {\color{blue}ℚ}$ y $X = {\color{red}\{x, y\}}$:}
     \begin{itemize}
       \item ${\color{blue}3} + {\color{blue}1} {\color{red}x} + {\color{blue}(-\frac{1}{2})} {\color{red}{x}}^2$
@@ -127,6 +125,7 @@
     \begin{itemize}
       \item $xy = yx$
       \item $x^3 y^5 = xyyxyxyy$
+      \item $casa = asac$
     \end{itemize}
   \end{exampleblock}
 
@@ -220,7 +219,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{¿Qué aplicaciones practicas tiene?}
+  \frametitle{¿Qué aplicaciones prácticas tiene?}
 
   En identidades sobre un operador asociativo.
   \begin{exampleblock}{Por ejemplo:}
@@ -244,7 +243,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Problema prinicpal reformualdo}
+  \frametitle{Problema principal reformualdo}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
   \[ f ∈ (G) \text{.} \]
   \pause
@@ -297,16 +296,14 @@
 
 \begin{frame}
   \frametitle{Algoritmos}
-  \pause
 
   Van enumerando la base de Gröbner.
 
   \pause
   Hay dos algoritmos principales:
-  \pause
   \begin{itemize}
-    \item Buchberger: \pause va agregando los elementos de a uno.
-    \item F4: \pause usa álgebra lineal para agregar los elementos de a muchos.
+    \item Buchberger: va agregando los elementos de a uno.
+    \item F4: usa álgebra lineal para agregar los elementos de a muchos.
   \end{itemize}
 \end{frame}
 
@@ -327,11 +324,9 @@
     \pause
     \item Para los racionales usa la libraría FLINT para las matrices. % Decir esto más corto
     \pause
-    \item Falta implementar la optimización de Faugère-Lachartre en F4.
-    \pause
     \item Incluye \alert{representación de cofactores} en Buchberger (``\textit{reconstrucción de la respuesta}'').
     \pause
-    \item Tiene un poquito de paralelismo. % Poner en filmina a parte
+    \item Tiene un poquito de paralelismo.
   \end{itemize}
 \end{frame}
 
@@ -411,11 +406,6 @@
 \section{Conclusiones}
 
 \begin{frame}
-  \frametitle{Repaso}
-  Implementé una librería de \cpp para calcular bases de Gröbner no conmutativas y resolver el problema de pertenencia al ideal.
-\end{frame}
-
-\begin{frame}
   \frametitle{Trabajos futuros}
   \begin{itemize}
     \item Implementar la optimización de Faugère-Lachartre en F4.
@@ -438,7 +428,6 @@
 
 \begin{frame}
   \frametitle{Implementaciones previas}
-  \pause
   De Buchberger:
   \begin{itemize}
     \item Paquete GBNP de GAP.
@@ -446,7 +435,6 @@
     \item Implementación dentro de NCAlgebra.
     \item Paquete \texttt{OperatorGB} de Mathematica.
   \end{itemize}
-  \pause
   De F4:
   \begin{itemize}
     \item Implementación dentro de Magma.
