@@ -57,8 +57,8 @@
 \begin{document}
 
 % Cosas que tengo que tener listas:
-% El repositorio de la librería abierto en el navegador y en vscode
-% La terminal abierta en el directorio de la librería
+% El repositorio de la librería abierto en vscode
+% La terminal abierta en el directorio de la librería con la ventana del tamaño correcto
 
 \begin{frame}[plain]
   \title{Implementación de bases de Gröbner no conmutativas en \cpp con un poquito de paralelismo}
@@ -75,44 +75,13 @@
 \begin{frame}
   \frametitle{Polinomios}
 
-  \pause
+  Dados un alfabeto $X$ y un cuerpo $K$ el conjunto de polinomios se denota $K[X]$.
 
   \begin{exampleblock}{Algunos polinomios:}
-    \begin{itemize}
-      \item $3 + x - \frac{1}{2} x^2$
-      \item $5 + 3 y - 2 x y + x^3 y^5$
-    \end{itemize}
-  \end{exampleblock}
-
-  \pause
-
-  Fijemos:
-  \begin{itemize}
-    \item Un alfabeto $X$
-    \item Un cuerpo $K$
-  \end{itemize}
-
-  El conjunto de polinomios se denota $K[X]$.
-
-  \begin{exampleblock}{En los ejemplos, $K = {\color{blue}ℚ}$ y $X = {\color{red}\{x, y\}}$:}
-    \begin{itemize}
-      \item ${\color{blue}3} + {\color{blue}1} {\color{red}x} + {\color{blue}(-\frac{1}{2})} {\color{red}{x}}^2$
-      \item ${\color{blue}5} + {\color{blue}3} {\color{red}y} + {\color{blue}(-2)} {\color{red}x} {\color{red}y} + {\color{blue}1} {\color{red}{x}}^3 {\color{red}{y}}^5$
-    \end{itemize}
-  \end{exampleblock}
-
-\end{frame}
-
-\begin{frame}
-  \frametitle{¿De qué están hechos los polinomios?}
-  \pause
-  Son combinaciones lineales con coeficientes en $K$ de monomios.
-  \begin{exampleblock}{}
-    {\color{blue}Coeficientes} y {\color{violet}monomios}:
-    \begin{itemize}
-      \item ${\color{blue}3} + {\color{blue}1} {\color{violet}x} + {\color{blue}(-\frac{1}{2})} {\color{violet}x^2}$
-      \item ${\color{blue}5} + {\color{blue}3} {\color{violet}y} + {\color{blue}(-2)} {\color{violet}x y} + {\color{blue}1} {\color{violet}x^3 y^5}$
-    \end{itemize}
+    \begin{large}
+      \[ 3 + x - \frac{1}{2} x^2 \]
+      \[ 5 + 3 y - 2 x y + x^3 y^5 \]
+    \end{large}
   \end{exampleblock}
 \end{frame}
 
@@ -179,24 +148,6 @@
   Se denota con $K⟨X⟩$ al conjunto de polinomios no conmutativos
 \end{frame}
 
-% Definir ideal en general y dar un ejemplo para el caso conmutativo
-
-% \begin{frame}
-%   \frametitle{Ordenes monomiales}
-%   $≤_{deglex}$ ordena a $⟨X⟩$ primero por largo y después por orden lexicográfico.
-%   \pause
-%   \begin{exampleblock}{En los del ejemplo de antes:}
-%     \begin{itemize}
-%       \item $f_0 = x$
-%       \item $f_1 = xy + yz$
-%       \item $f_2 = 3 xyy - 2 xzxy + \frac{4}{3} yzzx$
-%     \end{itemize}
-%     \pause
-%     Tenemos:
-%     \[x ≤_{deglex} xy ≤_{deglex} yz ≤_{deglex} xyy ≤_{deglex} xzxy ≤_{deglex} yzzx\]
-%   \end{exampleblock}
-% \end{frame}
-
 \begin{frame}
   \frametitle{Problema principal del trabajo}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si existen $g_1, …, g_n ∈ G$ y $c_1, …, c_n, c'_1, …, c'_n ∈ K⟨X⟩$ tales que
@@ -243,7 +194,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Problema principal reformualdo}
+  \frametitle{Problema principal reformulado}
   Dados $G ⊆ K⟨X⟩$ y $f ∈ K⟨X⟩$, determinar si vale que
   \[ f ∈ (G) \text{.} \]
   \pause
@@ -254,7 +205,6 @@
   \frametitle{Decidibilidad}
   \pause
   Este problema es semi-decidible\pause, pero no es decidible en general.
-  % Capás tengo que escribir (además de decir) porqué es semi-decidible
 \end{frame}
 
 \begin{frame}
@@ -271,29 +221,6 @@
   \end{itemize}
 \end{frame}
 
-% \begin{frame}
-%   \frametitle{Teorema}
-%   \pause
-%   Sean $G ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $g ∈ G$ y $c, c ∈ K⟨X⟩$. Entonces
-%   \[ f ∈ (G) ⇒ f + c g c' ∈ (G) \]
-% \end{frame}
-
-
-% \begin{frame}
-%   \frametitle{Reducciones}
-%   \begin{example}
-%     \begin{itemize}
-%       \item $g_0 = f_1 = xy + yz$
-%       \item $g_1 = f_3 = yx + zx$
-%       \item $G = \{g_0, g_1\}$
-%       \\
-%       \item $f_4 = xyx - yyx$
-%       \item $f_5 = xyz + zyx$
-%       \item $f_6 = -xzx + yzx - 2xyxz - 2 xzxz$
-%     \end{itemize}
-%   \end{example}
-% \end{frame}
-
 \begin{frame}
   \frametitle{Algoritmos}
 
@@ -302,8 +229,10 @@
   \pause
   Hay dos algoritmos principales:
   \begin{itemize}
-    \item Buchberger: va agregando los elementos de a uno.
-    \item F4: usa álgebra lineal para agregar los elementos de a muchos.
+    \item Buchberger: va agregando los elementos de a uno.\\
+    (George M. Bergman, 1978)
+    \item F4: usa álgebra lineal para agregar los elementos de a muchos.\\
+    (Xingqiang Xiu, 2012)
   \end{itemize}
 \end{frame}
 
