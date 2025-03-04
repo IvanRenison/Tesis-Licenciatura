@@ -155,13 +155,13 @@
 
 \section*{Resumen}
 
-Esta tesis presenta una implementación en \cpp para el calculo de las llamadas bases de Gröbner no conmutativas. Ya existían previamente algunas implementaciones de dicho cálculo, pero la que se presenta en esta tesis es la primera en \cpp y además incluye un poquito de paralelismo.
+Esta tesis presenta una implementación en \cpp para el cálculo de las llamadas bases de Gröbner no conmutativas. Ya existían previamente algunas implementaciones de dicho cálculo, pero la que se presenta en esta tesis es la primera en \cpp y además incluye un poquito de paralelismo.
 
 En los primeros capítulos se proporciona una explicación matemática completa del tema, para que la tesis sea autocontenida y en los restantes se explica la librería de \cpp donde se implementó el cálculo (junto con las estructuras y algoritmos auxiliares necesarios) y se la compara con una de las implementaciones anteriores.
 
 \section*{Abstract}
 
-This thesis presents an implementation in \cpp for the computation of the so called noncommutative Gröbner bases. Some implementations of this computation already existed previously, but the one presented in this thesis is the first one in \cpp and it also includes a little bit of parallelism.
+This thesis presents an implementation in \cpp for the computation of the so called noncommutative Gröbner bases. Some implementations of this computation already exist previously, but the one presented in this thesis is the first one in \cpp and it also includes a little bit of parallelism.
 
 In the first chapters a complete mathematical explanation of the subject is provided, so that the thesis is self contained, and in the remaining chapters the \cpp library where the calculation was implemented (together with the necessary structures and auxiliary algorithms) is explained and compared with one of the previous implementations.
 
@@ -195,6 +195,7 @@ A continuación una lista de quienes ayudaron en algo con este trabajo: % Ademá
   \item Mis directores Cristian Vay y Miguel Maria Pagano ayudaron un montón, tanto en la parte de aprender los temas, como en la parte de hacer el código y en la parte de escribir.
   \item Lucía Martinez Gavier leyó la tesis e hizo bastantes sugerencias.
   \item Álvaro Roy Schachner me ayudó con cosas de la computadora Atom y además leyó la tesis e hizo bastantes sugerencias.
+  \item Felipe Clariá Dambolena leyó la tesis e hizo bastantes sugerencias.
   \item Agustín Garcia Iglesias como miembro del tribunal leyó la tesis e hizo algunas sugerencias.
   \item Ana María Cingolani leyó el resumen y la introducción e hizo algunas sugerencias.
 \end{itemize}
@@ -241,16 +242,16 @@ Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \
 
 \noindent Pero para $f_1$ es negativa porque no hay ninguna forma de escribirlo como combinación lineal de $g_0$ y $g_1$ con coeficientes en $ℚ⟨x, y, z⟩$. Más adelante se explicará el código que se hizo que permite a veces responder al \cref{problem:principal} y en particular determinar que para $f_1$ la respuesta es negativa.
 
-El \cref{problem:principal} no es decidible, lo que significa que no hay un algoritmo que decide si vale la expresión o no. Sin embargo sí es semi-decidible, lo que significa que hay un algoritmo que en los casos en los que sí vale termina y en los casos en los que no vale puede no terminar.
+El \cref{problem:principal} no es decidible, lo que significa que no hay un algoritmo que decide si vale la expresión o no. Sin embargo sí es semi-decidible, lo que significa que hay un algoritmo que en los casos en los que sí vale la expresión termina y en los casos en los que no vale la expresión puede no terminar.
 
 Este problema no es decidible porque el llamado problema de la palabra se reduce a este. En \cite{web:wiki:WordProblem} se puede ver qué es el problema de la palabra y en la Sección 1.3 de \cite{article:MORA1994131} cómo es la reducción. En esta tesis no se abordará el tema.
 
 Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera el conjunto denotado como $(G)$ de todos los polinomios no conmutativos que satisfacen ese $∃$, de forma que el \cref{problem:principal} se convierte en determinar si $f ∈ (G)$. Para responder a esto se usa el siguiente resultado: si $G = \{g_1, …, g_n\} ⊆ K⟨X⟩$, $f ∈ K⟨X⟩$, $a$ y $b$ son polinomios que consisten en una sola palabra y $c ∈ K$, entonces
 \[ f ∈ (G) ⇔ f + c a g_i b ∈ (G) \text{.} \]
 
-Teniendo en cuenta este resultado se intenta cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía y porque todas las sumas mantiene la pertenencia a $(G)$.
+Teniendo en cuenta este resultado se intenta cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía y porque todas las sumas mantienen la pertenencia a $(G)$.
 
-El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así sí está en $(G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no computabilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede ser útil para abordar el \cref{problem:principal}. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
+El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así valga que $f ∈ (G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no decidibilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede ser útil para abordar el \cref{problem:principal}. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular o enumerar las bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. La diferencia entre los dos algoritmos es que Buchberger va calculando la base de Gröbner de a un elemento por vez mientras que F4 usa herramientas de álgebra lineal para calcular de a muchos elementos al mismo tiempo.
 
@@ -488,7 +489,7 @@ Sobre estas definiciones valen muchas propiedades fáciles de probar, como por e
 Más adelante será necesario comparar no solo monomios sino también polinomios, así que el orden $≤$ se extiende a $K⟨X⟩$ así:
 
 \begin{definition}\label{def:orden polinomial}
-  Sean $f, g ∈ K⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
+  Sean $R$ un anillo conmutativo y $f, g ∈ R⟨X⟩$. Se define que $f < g$ si y solo si vale alguna de las siguientes:
   \begin{enumerate}
     \item $f = 0 ∧ g ≠ 0$.
     \item $\lm_≤(f) < \lm_≤(g)$.
@@ -507,7 +508,8 @@ Dicho en palabras, el orden en los polinomios es orden lexicográfico con el pol
 Si bien a este $<$ lo estamos llamando (y lo continuaremos llamando) orden, en realidad no es un orden sino un preorden porque cuando solo cambian los coeficientes entre un polinomio y otro, ninguno de los polinomios es menor que el otro.
 
 \begin{theorem}
-  La relación $<$ en $K⟨X⟩$ es un preorden parcial.
+  Sea $R$ un anillo conmutativo. Entonces
+    \[ \text{la relación }<\text{ en }R⟨X⟩\text{ es un preorden parcial.} \]
   \qed
 \end{theorem}
 
@@ -521,7 +523,8 @@ Además, el polinomio $0$ es el mínimo.
 En este orden, al igual que para los monomios, vale que no hay sucesiones estrictamente decrecientes infinitas.
 
 \begin{lemma}\label{lemma:≤ en KX no sucesiones dec inf}
-  La relación $≤$ en $K⟨X⟩$ no tiene sucesiones estrictamente decrecientes infinitas.
+  Sea $R$ un anillo conmutativo. Entonces
+    \[ \text{la relación }≤\text{ en }R⟨X⟩\text{ no tiene sucesiones estrictamente decrecientes infinitas.} \]
 \end{lemma}
 \begin{proof}
   Supongamos que existen sucesiones estrictamente decrecientes infinitas. Tomemos una sucesión estrictamente decreciente infinita $P$, o sea que valga $P_1 > P_2 > P_3 > …$, que minimice $\lm_≤(P_1)$. Tomar este mínimo es posible por el \cref{thm:≤ no sucesiones dec inf} que dice que no hay sucesiones estrictamente decrecientes infinitas en los monomios.
@@ -600,7 +603,7 @@ Sobre los ideales generados por un conjunto valen los siguientes dos lemas bási
 Cada ideal define una clase de equivalencia en el anillo, la cual se llama congruencia módulo el ideal.
 
 \begin{definition}\label{def:congruencia mod ideal}
-  Sean $R$ un anillo e $I ⊆ R$. Se define la relación $≡_I$ en $R$ así:
+  Sean $R$ un anillo e $I ⊆ R$. Se define la relación $≡_I$ en $R$, llamada congruencia módulo $I$, así:
   \[ a ≡_I b ⇔ a - b ∈ I \text{.}\]
 \end{definition}
 
@@ -941,7 +944,7 @@ Una propiedad sobre los reductores que necesitaremos es que mantienen la pertene
 
 \section{Bases de Gröbner}
 
-Que $→_{≤, G}$ fuera confluente siempre sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ se podría siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular se podría determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
+Que $→_{≤, G}$ fuera siempre confluente sería muy útil porque significaría que para cualquier clase de equivalencia de $≡_{(G)}$ se podría siempre llegar a una misma forma normal y así determinar si dos elementos son equivalentes. En particular se podría determinar si un elemento está en el ideal viendo si se llega a $0$ como forma normal. Los casos en los que sí es confluente se llaman bases de Gröbner y después algo que haremos es calcularle una base de Gröbner de un ideal generado por un conjunto que no es base de Gröbner.
 
 \begin{definition}\label{def:base de Gröbner}
   Sean $I$ un ideal de $K⟨X⟩$ y $G ⊆ K⟨X⟩$. Se define que
@@ -975,7 +978,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \item $∀f ∈ I - \{0\} : ∃c_1, …, c_n ∈ K, g_1, …, g_n ∈ G, a_1, …, a_n, b_1, …, b_n ∈ ⟨X⟩ : \lm_≤(a_i g_i b_i) ≤ \lm_≤(f) ∧ f = ∑_{i = 1}^n c_i a_i g_i b_i$.  \label{thm:egb:5}
   \end{enumerate}
 \end{theorem}
-\begin{proof} Probaremos \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
+\begin{proof} Probaremos \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
   \begin{description}
 
     \item[\ref{thm:egb:1} $⇒$ \ref{thm:egb:2}:] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
@@ -1134,7 +1137,7 @@ Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad
 Ahora probaremos que efectivamente los monomios principales se cancelan y después enunciaremos el teorema para decidir si un conjunto es una base de Gröbner.
 
 \begin{lemma}\label{lemma:lm ambs}
-  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
+  Sea $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
   \[ \lm_≤{(afb)} = \lm_≤{(cgd)} \text{.}\]
 \end{lemma}
 \begin{proof}\
@@ -1145,7 +1148,7 @@ Ahora probaremos que efectivamente los monomios principales se cancelan y despu�
 Eso permite definir el monomio principal de una ambigüedad.
 
 \begin{definition}
-  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
+  Sea $α = (a, b, c, d, f, g)$ una ambigüedad. Se define el monomio principal de $α$ como
 
   \[ \lm_≤(α) = \lm_≤(afb) \text{.}\]
 \end{definition}
@@ -1155,7 +1158,7 @@ Notar que por el \cref{lemma:lm ambs} también vale que $\lm_≤(α) = \lm_≤(c
 Lo de que los monomios principales se cancelen produce el siguiente lema.
 
 \begin{lemma}
-  Sean $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
+  Sea $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces
   \[ \lm_≤(\S(α)) < \lm_≤(α) \text{.}\]
 \end{lemma}
 \begin{proof}
@@ -1362,7 +1365,7 @@ Estas definiciones son un diccionario polinomios-matrices y matrices-polinomios 
 
 Con esto, en la reducción, restar un polinomio multiplicado por un escalar y un monomio a cada lado a otro polinomio, o sea, hacer $f ← f - \frac{f_{\lm_≤(g)}}{\lc_≤(g)}a g b$ al reducir $f$ con $g$, la idea es que pase a ser restarle una fila multiplicada por un escalar a otra fila en la matriz, o sea, hacer $\text{fila}_i ← \text{fila}_i - c · \text{fila}_j$.
 
-Para poder hacer eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado, es decir, cuando va a hacer falta hacer $f ← f - \frac{f_{\lm_≤(g)}}{\lc_≤(g)}a g b$ hay que tener $agb$ en la matriz. Tener solo $g$ en la matriz no serviría porque no coincidirían los monomios y por ende no coincidirían las columnas de la matriz.
+Para poder hacer eso, al comenzar hay que tener en la matriz los polinomios a restar ya multiplicados por los monomios a cada lado, es decir, cuando haga falta hacer $f ← f - \frac{f_{\lm_≤(g)}}{\lc_≤(g)}a g b$ hay que tener $agb$ en la matriz. Tener solo $g$ en la matriz no serviría porque no coincidirían los monomios y por ende no coincidirían las columnas de la matriz.
 
 Para eso definimos el algoritmo de preprocesamiento simbólico que, dado el conjunto por el cual se reduce $G$ y el conjunto a reducir $F$, calcula todos los polinomios necesarios:
 
@@ -2151,7 +2154,7 @@ Todos los tests que tienen benchmarks, salvo uno (que más adelante se explica),
   \item trit5 $ = \{a^3 - 1,\ b^3 - 1,\ c^5 - 1,\ {(ab)}^2 - 1,\ {(ac)}^2 - 1,\ {(bc)}^2 - 1\}$
 \end{itemize}
 
-Los FK provienen de la llamada teoría de álgebras de Nichols, la cual es de interés para Cristian Vay, el director de este trabajo, y otros investigadores de FAMAF. Los FK definen una álgebra llamada Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
+Los FK provienen de la llamada teoría de álgebras de Nichols \cite{book:introNichols}, la cual es de interés para Cristian Vay, el director de este trabajo, y otros investigadores de FAMAF. Los FK definen una álgebra llamada Fomin-Kirillov y son una familia infinita parametrizada por un $n ∈ ℕ$, que fijando el $n$ se describe a continuación.
 
 \begin{itemize}
   \item El cuerpo es $ℚ$.
@@ -2223,7 +2226,6 @@ A simple vista se puede ver que para los casos en los que se distingue algo \tex
       legend style = {at = {(0.024, 0.94)}, anchor = north west}, % Estilo de la leyenda
       legend entries = {\texttt{Buchberger}, \texttt{F4}, \texttt{operator\_gb}}, % Entradas de la leyenda
       cycle list = {{brown,fill = brown!30}, {red,fill=red!30}, {blue,fill=blue!30}}, % Colores
-  ]
   ]
     % Datos para cada conjunto
     \addplot coordinates {(FK2, 0.00) (FK3, 0.00) (FK4, 0.01) (tri1, 0.26) (tri10, 0.01) (tri11, 0.03) (tri12, 3.27) (tri13, 0.01) (tri2, 6.01) (tri3, 0.02) (tri4, 0.04) (tri5, 0.01) (tri6, 6.53) (tri7, 33.33) (tri8, 0.09) (tri9, 0.00) (trit3, 0.01) (trit4, 0.14) (trit5, 77.16)};
@@ -2323,7 +2325,7 @@ El test que compara ejecutar Buchberger con y sin representación con cofactores
   \end{axis}
 \end{tikzpicture}
 
-Se puede ver que la representación con cofactores lleva más tiempo, pero en general no tanto más. Acá no hay demasiado más para ver mirando solo la parte de abajo, así que no se hace un gráfico con la parte de más abajo.
+Se puede ver que la representación con cofactores lleva más tiempo, pero en general no tanto más. Acá no hay demasiado más para ver en la parte de abajo, así que no se hace un gráfico con solo la parte de más abajo.
 
 \section{Pertenencia a ideales}
 
