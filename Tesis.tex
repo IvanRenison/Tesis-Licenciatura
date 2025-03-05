@@ -223,7 +223,7 @@ Un problema de decisión que existe sobre los polinomios no conmutativos es: dad
   \[ ∃n ∈ ℕ ∪ \{0\}, g_1, …, g_n ∈ G, f_1, …, f_n, f'_1, …, f'_n ∈ K⟨X⟩ : f = ∑_{i = 1}^n f_i g_i f'_i \text{.}\]
 \end{problem}
 
-Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \{x, t, z\}$, si:
+Acá los $f_i$ y $f'_i$ se llaman cofactores. Por ejemplo con $K = ℚ$ y $X = \{x, y, z\}$, si:
 \begin{align*}
   g_0 &= xy + yz \text{,} \\
   g_1 &= yx + zx \text{,} \\
@@ -251,11 +251,11 @@ Para trabajar en algoritmos que aborden el \cref{problem:principal} se considera
 
 Teniendo en cuenta este resultado se intenta cancelar los términos de $f$ sumando distintos $c a g_i b$, y si en algún momento se llega a $0$ entonces vale que $f ∈ (G)$ porque el $0$ es la sumatoria vacía y porque todas las sumas mantienen la pertenencia a $(G)$.
 
-El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así valga que $f ∈ (G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no decidibilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también puede ser útil para abordar el \cref{problem:principal}. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
+El problema es que a veces puede pasar que ya no queden más términos para cancelar y no se haya llegado a $0$ pero aun así valga que $f ∈ (G)$. Para solucionar este problema lo que se hace es agregar elementos a $G$ para obtener lo que se llama una base de Gröbner de $(G)$, con la cual siempre que el polinomio está en $(G)$ se puede llegar a $0$ cancelando términos. El único problema de esto es que la base de Gröbner no siempre es finita, lo que refleja la no decidibilidad del problema. De cualquier manera, en los casos en los que es infinita, es computacionalmente enumerable, y el poder enumerarla también es útil para abordar el \cref{problem:principal}. % Pongo computacionalmente enumerable y no solo enumerable porque enumerable no dice nada
 
 Para calcular o enumerar las bases de Gröbner hay dos algoritmos destacados, llamados el algoritmo de Buchberger y el algoritmo F4. La diferencia entre los dos algoritmos es que Buchberger va calculando la base de Gröbner de a un elemento por vez mientras que F4 usa herramientas de álgebra lineal para calcular de a muchos elementos al mismo tiempo.
 
-Si la explicación sobre los algoritmos no se entendió no importa porque en el \cref{cap:Preliminares} se explica bien.
+Si la explicación sobre el problema y los algoritmos no se entendió ahora no importa porque en el \cref{cap:Preliminares} se explica bien.
 
 Estos algoritmos, al igual que mucha de la teoría, están inspirados en el caso análogo para polinomios conmutativos y muchos de los nombres de las cosas se usaron primero para el caso conmutativo y después se usó el mismo nombre para el caso no conmutativo. Por ejemplo, ``el algoritmo de Buchberger'' en otros contextos puede referirse al algoritmo para el caso conmutativo. En esta tesis siempre se estará hablando del caso no conmutativo. Para una explicación del caso conmutativo ver \cite{book:ideals-varieties-algorithms}.
 
@@ -283,7 +283,7 @@ El capítulo incluye demostraciones de muchos de los resultados expuestos, pero 
 
 \section{Sistemas de reescritura}
 
-Sistemas de reescritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general usaremos relaciones denotadas con algún símbolo con forma de flecha porque se tiene la idea de que se \textsl{usa} la relación para convertir el objeto de la base de la flecha en el objeto de la punta de la flecha. Como recordatorio, una relación entre $A$ y $B$ es un subconjunto de $A × B$ y una relación sobre $A$ es un subconjunto de $A^2$.
+Sistemas de reescritura trata básicamente sobre el estudio de relaciones entre objetos con la idea de usar las relaciones para convertir un objeto en otro. En general usaremos relaciones denotadas con algún símbolo con forma de flecha porque se tiene la idea de que se \textsl{usa} la relación para convertir el objeto de la base de la flecha en el objeto de la punta de la flecha. Como recordatorio, una relación sobre $A$ es un subconjunto de $A^2$.
 
 Para toda esta sección fijemos un conjunto $A$. Primero recordamos algunas operaciones muy comunes sobre relaciones.
 
@@ -384,7 +384,7 @@ Por ejemplo, si $X = \{x, y, z\}$, algunos monomios son:
   m_1 &= yyz \text{,} \\
   m_2 &= yzy \text{,} \\
   m_3 &= ε \text{,} \\
-  m_1 · m_2 &= yzzyzy \text{.}
+  m_1 · m_2 &= yyzyzy \text{.}
 \end{align*}
 
 El $ε$ de $m_3$ es la palabra vacía. Notar que $m_1 ≠ m_2$ ya que el producto es no conmutativo.
@@ -402,7 +402,7 @@ En estos monomios, al igual que en los conmutativos, se puede hablar de que un m
   \[ m | m' ⇔ ∃a , b ∈ ⟨X⟩ : m' = a m b \text{.} \]
 \end{definition}
 
-En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = a m_1 b$.
+En el ejemplo de antes tenemos que $m_1 | m_0$ ya que $m_0 = x m_1 y$.
 
 Hablar del resultado de la división es un poco más complicado acá porque tendría que haber dos resultados, el $a$ y el $b$ de la definición, así que en ningún momento hablaremos de dividir un monomio en otro ni escribiremos divisiones entre monomios.
 
@@ -423,7 +423,7 @@ Un ejemplo de orden que cumple con esta definición es el siguiente.
   \[ m ≤_{deglex} m' ⇔ |m| < |m'| ∨ (|m| = |m'| ∧ m ≤ m') \text{.}\]
 \end{definition}
 
-O sea, el orden lexicográfico por grado ordena primero por cardinalidad, también llamado grado, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $bc ≤_{deglex} abb$, $aabbc ≤_{deglex} abbcc$ y $ε ≤_{deglex} a$. Se puede probar fácilmente que este orden es un buen orden monomial.
+O sea, el orden lexicográfico por grado ordena primero por cardinalidad, también llamado grado, y desempata con el orden lexicográfico. Por ejemplo, tenemos que $yz ≤_{deglex} xyy$, $xxyyz ≤_{deglex} xyyzz$ y $ε ≤_{deglex} x$. Se puede probar fácilmente que este orden es un buen orden monomial.
 
 \
 
@@ -461,7 +461,7 @@ Recordemos los ejemplos de polinomios no conmutativos en $ℚ⟨x, y, z⟩$ dado
 Sobre los polinomios no conmutativos se hacen las siguientes definiciones.
 
 \begin{definition}\label{def:cosas de polinomios}
-  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$, $m_1, …, m_n, m ∈ ⟨X⟩$, $f = ∑_{i = 1}^n c_i m_i$ y $≤$ un buen orden monomial. Se definen:
+  Sean $R$ un anillo conmutativo, $f ∈ R⟨X⟩$, $c_1, …, c_n ∈ R - \{0\}$ y $m_1, …, m_n, m ∈ ⟨X⟩$ con $f = ∑_{i = 1}^n c_i m_i$. Se definen:
   \begin{itemize}
     \item el coeficiente de $m$ en $f$ es $f_m = \begin{cases} c_0&\text{si }m = m_0 \\ ⋮ & \\ c_n&\text{si }m = m_n \\ 0&\text{en otro caso} \end{cases} $.
     \item el soporte de $f$ es el conjunto $\sop(f) = \{m_1, …, m_n\}$.
@@ -498,7 +498,7 @@ Más adelante será necesario comparar no solo monomios sino también polinomios
   Y como es usual $f ≤ g$ si y solo si $f < g ∨ f = g$.
 \end{definition}
 
-Dicho en palabras, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor. Por ejemplo, tenemos estas desigualdades en $K⟨X⟩$:
+Dicho en palabras, el orden en los polinomios es orden lexicográfico con el polinomio visto como una lista de monomios, sin coeficientes, ordenada de mayor a menor. Por ejemplo, tenemos estas desigualdades en $ℚ⟨x, y, z⟩$:
 \begin{align*}
   x &< xy \text{,} \\
   yzz + z &< yzz + xyy \text{,} \\
@@ -541,7 +541,7 @@ En este orden, al igual que para los monomios, vale que no hay sucesiones estric
   \end{fact}
   Esto vale porque al aplicar la definición del orden polinomial sobre $P_1 > P_2 > P_3 > …$ y usar la \cref{fact:≤ en KX no sucesiones dec inf:1} queda $\tail_≤(P_1) > \tail_≤(P_2) > \tail_≤(P_3) > …$
 
-  Como por el \cref{lemma:0 es mínimo} $0$ es un mínimo:
+  Como el \cref{lemma:0 es mínimo} dice que $0$ es un mínimo:
 
   \begin{fact}\label{fact:≤ en KX no sucesiones dec inf:3}
     $P_1 ≠ 0$.
@@ -715,7 +715,7 @@ A continuación la prueba de que esta relación efectivamente achica.
 
 \end{proof}
 
-La relación $→_{≤, G}$ tiene varias propiedades útiles que se prueban a continuación.
+La relación $→_{≤, G}$ tiene varias otras propiedades útiles que se prueban a continuación.
 
 \begin{lemma}\label{lemma:suma →↓}
   Sean $G ⊆ K⟨X⟩$ y $f_0, f_1, f ∈ K⟨X⟩$. Entonces
@@ -913,6 +913,7 @@ Un ejemplo de reductor podría calcularse con el siguiente seudocódigo.
     \For{$m ∈ \sop(f')$} {
       \If{$\lm_≤(g_i) | m$} {
         calcular $a, b ∈ ⟨X⟩$ tales que $m = a \lm_≤(g_i) b$
+
         $f' ← f' - \frac{f'_{\lm_≤(g_i)}}{\lc_≤(g_i)}a g_i b$
 
         $r ← True$
@@ -969,7 +970,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
   \begin{enumerate}
     \item $G$ es una base de Gröbner de $I$. \label{thm:egb:1}
 
-    \item $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. \label{thm:egb:2}
+    \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. \label{thm:egb:2}
 
     \item $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. \label{thm:egb:3}
 
@@ -981,7 +982,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
 \begin{proof} Probaremos \ref{thm:egb:1} $⇒$ \ref{thm:egb:2}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:3} $⇒$ \ref{thm:egb:1}, \ref{thm:egb:4} $⇒$ \ref{thm:egb:3}, \ref{thm:egb:2} $⇒$ \ref{thm:egb:5} y \ref{thm:egb:5} $⇒$ \ref{thm:egb:4}.
   \begin{description}
 
-    \item[\ref{thm:egb:1} $⇒$ \ref{thm:egb:2}:] Supongamos que $G$ es una base de Gröbner de $I$ y tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
+    \item[\ref{thm:egb:1} $⇒$ \ref{thm:egb:2}:] Supongamos que $G$ es una base de Gröbner de $I$. Tenemos que probar $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. El primer término del $∧$ es valido porque es parte de la definición de base de Gröbner. Para el segundo término tomemos $f ∈ K⟨X⟩$. Tenemos que probar $f ∈ I ⇔ f →^*_{≤, G} 0$. Vamos de un lado para el otro:
     \begin{DispWithArrows*}
       &f ∈ I \Arrow{\Cref{lemma:en ideal ⇔ congruente 0}} \\
       & ⇔ f ≡_I 0 \Arrow{\Cref{theorem:→^* = ≡}} \\
@@ -995,7 +996,7 @@ Las bases de Gröbner se definieron por la propiedad más importante que queremo
     \item[\ref{thm:egb:2} $⇒$ \ref{thm:egb:3}:] Supongamos el antecedente $∀f ∈ K⟨X⟩ : f ∈ I ⇔ f →^*_{≤, G} 0$. Tenemos que probar que $(G) = I ∧ ∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$. Probemos cada término del $∧$ por separado:
 
     \begin{description}
-      \item[Prueba de $(G) = I$:] Es cierto porque \ref{thm:egb:2} $⇒$ \ref{thm:egb:1} y $(G) = I$ es parte de la definición de base de Gröbner.
+      \item[Prueba de $(G) = I$:] Es valido porque es parte del antecedente.
       \item[Prueba de $∀f ∈ K⟨X⟩ : f ∈ I ⇒ f →^*_{≤, G} 0$:] Es cierto por \ref{thm:egb:2}.
     \end{description}
 
@@ -1084,7 +1085,7 @@ Combinando esta observación con el \cref{lemma:sub gen y sub gen ⇔ eq} tenemo
 
 En esta sección se explica el primer algoritmo para calcular bases de Gröbner llamado Algoritmo de Buchberger.
 
-Antes de poder calcular bases de Gröbner algo que estaría bueno hacer es poder computar si un conjunto es una base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable ya que hacen cuantificaciones sobre conjuntos infinitos. Para eso definiremos algo llamado S-polinomio de dos polinomios y los usaremos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una base de Gröbner. Los S-polinomios entre dos polinomios multiplican cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ tendremos una cuenta $k a f b - k' c g d$ de forma que se cancelen los monomios principales.
+Antes de poder calcular bases de Gröbner algo que estaría bueno hacer es poder computar si un conjunto es una base de Gröbner, porque ninguna de las equivalencias del \cref{thm:equivalencias de base de Gröbner} es directamente calculable ya que hacen cuantificaciones sobre conjuntos infinitos. Para eso definiremos algo llamado S-polinomio de dos polinomios y lo usaremos para enunciar un teorema que nos da una forma computable de determinar si un conjunto es una base de Gröbner. Los S-polinomios entre dos polinomios multiplican cada polinomio por monomios a cada lado y por un escalar de forma que los monomios principales se cancelen. O sea, para polinomios $f$ y $g$ tendremos una cuenta $k a f b - k' c g d$ de forma que se cancelen los monomios principales.
 
 Primero definimos las ambigüedades, que representan los polinomios para los cuales puede pasar eso.
 
@@ -1134,7 +1135,7 @@ Por ejemplo, si $f = 2 cba + 3 dbcda$ y $f' = b + bcd$, entonces una ambigüedad
 
 \
 
-Ahora probaremos que efectivamente los monomios principales se cancelan y después enunciaremos el teorema para decidir si un conjunto es una base de Gröbner.
+Ahora probaremos que efectivamente los monomios principales se cancelan y otras propiedades y después enunciaremos el teorema para decidir si un conjunto es una base de Gröbner.
 
 \begin{lemma}\label{lemma:lm ambs}
   Sea $α = (a, b, c, d, f, g)$ una ambigüedad. Entonces:
