@@ -189,7 +189,7 @@
   \frametitle{Ideales}
   \pause
   Sea $G ⊆ K⟨X⟩$, se define
-  \[ (G) = \{∑_{i = 1}^n c_i g_i c_i' : g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩\} \]
+  \[ (G) = \left\{∑_{i = 1}^n c_i g_i c_i' : g_1, …, g_n ∈ G, c_1, …, c_n, c_1', …, c_n' ∈ K⟨X⟩\right\} \]
   A $(G)$ se lo llama el ideal generado por $G$.
 \end{frame}
 
@@ -203,8 +203,20 @@
 
 \begin{frame}
   \frametitle{Decidibilidad}
+
+  Un problema es:
   \pause
-  Este problema es semi-decidible\pause, pero no es decidible en general.
+
+  \begin{itemize}
+    \item \alert{Decidible} si hay un algoritmo que siempre termina y da la respuesta.
+    \pause
+    \item \alert{Semi-decidible} si hay un algoritmo que para los casos afirmativos termina.
+  \end{itemize}
+
+  {\color{white} hola}
+
+  \pause
+  Este problema no es decidible en general \pause pero sí es semi-decidible.
 \end{frame}
 
 \begin{frame}
@@ -224,14 +236,14 @@
 \begin{frame}
   \frametitle{Algoritmos}
 
-  Van enumerando la base de Gröbner.
+  Los algoritmos van enumerando la base de Gröbner.
 
   \pause
   Hay dos algoritmos principales:
   \begin{itemize}
-    \item Buchberger: va agregando los elementos de a uno.\\
+    \item Buchberger: va calculando los polinomios de a uno.\\
     (George M. Bergman, 1978)
-    \item F4: usa álgebra lineal para agregar los elementos de a muchos.\\
+    \item F4: usa álgebra lineal para calcular muchos polinomios a la vez.\\
     (Xingqiang Xiu, 2012)
   \end{itemize}
 \end{frame}
@@ -247,7 +259,7 @@
     \pause
     \item Implementa Buchberger y F4.
     \pause
-    \item Es \alert{paramétrica en el cuerpo}.
+    \item Es \alert{paramétrica sobre el cuerpo}.
     \pause
     \item Para las matrices de un cuerpo arbitrario usa una implementación propia.
     \pause
